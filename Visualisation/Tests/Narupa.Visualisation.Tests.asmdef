@@ -1,0 +1,25 @@
+{
+    "name": "Narupa.Visualisation.Tests",
+    "references": [
+        "Narupa.Visualisation",
+        "Narupa.Testing",
+        "Narupa.Frame",
+        "Narupa.Core"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "NSubstitute.dll",
+        "System.Threading.Tasks.Extensions.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": []
+}

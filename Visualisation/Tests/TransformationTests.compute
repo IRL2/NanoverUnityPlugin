@@ -1,0 +1,44 @@
+﻿// Copyright (c) Intangible Realities Laboratory. All rights reserved.
+// Licensed under the GPL. See License.txt in the project root for license information.
+
+#pragma kernel IsotropicTransformation_ObjectToWorld
+#pragma kernel IsotropicTransformation_WorldToObject
+#pragma kernel IsotropicTransformation_Inverse
+
+#include "TestDefaults.cginc"
+
+#include "../Shader/Instancing.cginc"
+#include "../Shader/Transformation.cginc"
+
+#include "Test.cginc"
+
+[numthreads(1,1,1)]
+void IsotropicTransformation_ObjectToWorld ()
+{
+    ObjectToWorld = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    WorldToObject = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+
+    setup_isotropic_transformation(float3(1, -1, 0), 2);
+    assert_equal(float4x4(2, 0, 0, 1, 0, 2, 0, -1, 0, 0, 2, 0, 0, 0, 0, 1), unity_ObjectToWorld, __LINE__);
+};
+
+[numthreads(1,1,1)]
+void IsotropicTransformation_WorldToObject ()
+{
+    ObjectToWorld = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    WorldToObject = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    
+    setup_isotropic_transformation(float3(1, -1, 0), 2);
+    assert_equal(float4x4(0.5, 0, 0, -0.5, 0, 0.5, 0, 0.5, 0, 0, 0.5, 0, 0, 0, 0, 1), unity_WorldToObject, __LINE__);
+};
+
+[numthreads(1,1,1)]
+void IsotropicTransformation_Inverse ()
+{
+    ObjectToWorld = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    WorldToObject = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    
+    setup_isotropic_transformation(float3(1, -1, 0), float3(2, 0.5, 1));
+    float4x4 identity = mul(unity_ObjectToWorld, unity_WorldToObject);
+    assert_equal(float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), identity, __LINE__);
+};
