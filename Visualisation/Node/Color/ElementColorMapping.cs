@@ -20,13 +20,13 @@ namespace Narupa.Visualisation.Node.Color
         /// Default color used when a color is not found.
         /// </summary>
         [SerializeField]
-        private UnityEngine.Color defaultColor;
+        private UnityEngine.Color defaultColor = UnityEngine.Color.white;
 
         /// <summary>
         /// List of assignments, acting as a dictionary so Unity can serialize.
         /// </summary>
         [SerializeField]
-        private List<ElementColorAssignment> dictionary;
+        private List<ElementColorAssignment> dictionary = new List<ElementColorAssignment>();
 #pragma warning disable 0649
 
         /// <summary>

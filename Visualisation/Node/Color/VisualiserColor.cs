@@ -11,7 +11,7 @@ namespace Narupa.Visualisation.Node.Color
     /// Base code for a visualiser node which generates a set of colors.
     /// </summary>
     [Serializable]
-    public abstract class VisualiserColor
+    public abstract class VisualiserColor : GenericOutputNode
     {
         protected readonly ColorArrayProperty colors = new ColorArrayProperty();
 
@@ -19,7 +19,5 @@ namespace Narupa.Visualisation.Node.Color
         /// Color array output.
         /// </summary>
         public IReadOnlyProperty<UnityEngine.Color[]> Colors => colors;
-
-        public abstract void Refresh();
     }
 }

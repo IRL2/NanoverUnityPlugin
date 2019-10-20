@@ -11,7 +11,7 @@ namespace Narupa.Visualisation.Node.Scale
     /// Base code for visualiser node which generates a set of scales.
     /// </summary>
     [Serializable]
-    public abstract class VisualiserScale
+    public abstract class VisualiserScale : GenericOutputNode
     {
         protected readonly FloatArrayProperty scales = new FloatArrayProperty();
 
@@ -19,10 +19,5 @@ namespace Narupa.Visualisation.Node.Scale
         /// Scale array output.
         /// </summary>
         public IReadOnlyProperty<float[]> Scales => scales;
-
-        /// <summary>
-        /// Refresh the scales calculated by this node.
-        /// </summary>
-        public abstract void Refresh();
     }
 }

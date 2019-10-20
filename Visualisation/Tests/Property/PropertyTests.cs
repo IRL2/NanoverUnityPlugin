@@ -6,9 +6,9 @@ using NUnit.Framework;
 namespace Narupa.Visualisation.Tests.Property
 {
     public abstract class PropertyTests<TProperty, TValue>
-        where TProperty : IProperty<TValue>, new()
+        where TProperty : Property<TValue>, new()
     {
-        protected bool IsReferenceType => typeof(TValue).IsByRef;
+        protected virtual bool IsReferenceType => typeof(TValue).IsByRef;
 
         protected abstract TValue ExampleNonNullValue { get; }
 
@@ -570,6 +570,38 @@ namespace Narupa.Visualisation.Tests.Property
             };
 
             Assert.IsFalse(input.IsDirty);
+        }
+        
+        [Test]
+        public void ImplicitConversion()
+        {
+            var property = new TProperty
+            {
+                Value = ExampleNonNullValue
+            };
+
+            TValue value = property;
+            
+            Assert.AreEqual(ExampleNonNullValue, value);
+        }
+        
+        [Test]
+        public void ImplicitConversion_NullValue_ThrowsException()
+        {
+            var property = new TProperty();
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                TValue value = property;
+            });
+        }
+        
+        [Test]
+        public void PropertyType()
+        {
+            var property = new TProperty();
+
+           Assert.AreEqual(typeof(TValue), property.PropertyType);
         }
     }
 }

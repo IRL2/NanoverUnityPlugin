@@ -25,6 +25,16 @@ namespace Narupa.Visualisation.Node.Scale
             Value = 1f
         };
 
+        protected override void ClearDirty()
+        {
+            base.ClearDirty();
+            scale.IsDirty = false;
+        }
+
+        protected override bool IsInputDirty => base.IsInputDirty || scale.IsDirty;
+
+        protected override bool IsInputValid => base.IsInputValid && scale.HasNonNullValue();
+
         /// <summary>
         /// Get the scale of the provided atomic element.
         /// </summary>
