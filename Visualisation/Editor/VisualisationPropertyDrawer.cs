@@ -49,7 +49,7 @@ namespace Narupa.Visualisation.Editor
 
             var valueProperty = GetValueProperty(property);
 
-            if (valueProperty.isArray)
+            if (valueProperty.isArray && valueProperty.type != "string")
             {
                 EditorGUI.HelpBox(position, "Set array input from within code.", MessageType.None);
             }

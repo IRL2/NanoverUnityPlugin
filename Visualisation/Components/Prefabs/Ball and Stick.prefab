@@ -73,6 +73,9 @@ MonoBehaviour:
     sourceFieldName: particleElements
     destinationFieldName: elements
   node:
+    elements:
+      isValueProvided: 0
+      value: 
     mapping:
       isValueProvided: 1
       value: {fileID: 11400000, guid: f1a9c849f018f42adbab12e856c0da60, type: 2}
@@ -93,6 +96,9 @@ MonoBehaviour:
     sourceFieldName: particleElements
     destinationFieldName: elements
   node:
+    elements:
+      isValueProvided: 0
+      value: 
     scale:
       isValueProvided: 1
       value: 0.7
@@ -211,11 +217,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Highlight
       objectReference: {fileID: 0}
-    - target: {fileID: 8528582866378757822, guid: 21b4d0fa672569c40b7812c64bed8c37,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8528582866378757812, guid: 21b4d0fa672569c40b7812c64bed8c37,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -276,16 +277,6 @@ PrefabInstance:
       propertyPath: node.parentAdaptor.value
       value: 
       objectReference: {fileID: 8528582866378757811}
-    - target: {fileID: 8528582866378757808, guid: 21b4d0fa672569c40b7812c64bed8c37,
-        type: 3}
-      propertyPath: node.bondScale.value
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 8528582866378757823, guid: 21b4d0fa672569c40b7812c64bed8c37,
-        type: 3}
-      propertyPath: node.rendererScale.value
-      value: 1.2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21b4d0fa672569c40b7812c64bed8c37, type: 3}
 --- !u!4 &7504981869284947536 stripped

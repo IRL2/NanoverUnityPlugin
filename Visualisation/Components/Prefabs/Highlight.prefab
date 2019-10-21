@@ -71,6 +71,9 @@ MonoBehaviour:
     sourceFieldName: particleElements
     destinationFieldName: elements
   node:
+    elements:
+      isValueProvided: 0
+      value: 
     scale:
       isValueProvided: 1
       value: 0.7
@@ -105,7 +108,7 @@ MonoBehaviour:
       value: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     bondScale:
       isValueProvided: 1
-      value: 0.07
+      value: 0.08
     bondPairs:
       isValueProvided: 0
       value: []
@@ -164,7 +167,7 @@ MonoBehaviour:
       value: {r: 1, g: 1, b: 1, a: 1}
     rendererScale:
       isValueProvided: 1
-      value: 1.1
+      value: 1.2
     particleFilter:
       isValueProvided: 0
       value: 

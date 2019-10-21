@@ -15,7 +15,8 @@ namespace Narupa.Visualisation.Node.Scale
     [Serializable]
     public abstract class PerElementScale : VisualiserScale
     {
-        private readonly ElementArrayProperty elements = new ElementArrayProperty();
+        [SerializeField]
+        private ElementArrayProperty elements = new ElementArrayProperty();
 
         /// <summary>
         /// Atomic element array input.
