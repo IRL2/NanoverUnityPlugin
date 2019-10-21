@@ -56,8 +56,26 @@ namespace Narupa.Frame.Event
         /// </summary>
         public bool HaveBondOrdersChanged
         {
-            get => GetIsChanged("bond.order");
-            set => SetIsChanged("bond.order", value);
+            get => GetIsChanged(FrameData.BondOrderArrayKey);
+            set => SetIsChanged(FrameData.BondOrderArrayKey, value);
+        }
+        
+        public bool HaveParticleResiduesChanged
+        {
+            get => GetIsChanged(FrameData.ParticleResidueArrayKey);
+            set => SetIsChanged(FrameData.ParticleResidueArrayKey, value);
+        }
+        
+        public bool HaveParticleNamesChanged
+        {
+            get => GetIsChanged(FrameData.ParticleNameArrayKey);
+            set => SetIsChanged(FrameData.ParticleNameArrayKey, value);
+        }
+        
+        public bool HaveResidueNamesChanged
+        {
+            get => GetIsChanged(FrameData.ResidueNameArrayKey);
+            set => SetIsChanged(FrameData.ResidueNameArrayKey, value);
         }
 
         /// <summary>

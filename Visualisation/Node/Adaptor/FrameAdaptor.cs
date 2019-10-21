@@ -47,6 +47,59 @@ namespace Narupa.Visualisation.Node.Adaptor
         public IReadOnlyProperty<int[]> BondOrders => bondOrders;
 
         private IntArrayProperty bondOrders = new IntArrayProperty();
+        
+        /// <summary>
+        /// Array of particle residues of the provided frame.
+        /// </summary>
+        public IReadOnlyProperty<int[]> ParticleResidues => particleResidues;
+
+        private IntArrayProperty particleResidues = new IntArrayProperty();
+        
+        /// <summary>
+        /// Array of particle names of the provided frame.
+        /// </summary>
+        public IReadOnlyProperty<string[]> ParticleNames => particleNames;
+
+        private StringArrayProperty particleNames = new StringArrayProperty();
+        
+        /// <summary>
+        /// Array of particle names of the provided frame.
+        /// </summary>
+        public IReadOnlyProperty<string[]> ResidueNames => residueNames;
+
+        private StringArrayProperty residueNames = new StringArrayProperty();
+
+        [SerializeField]
+        private FrameAdaptorProperty parentAdaptor = new FrameAdaptorProperty();
+
+        public void Refresh()
+        {
+            if (parentAdaptor.IsDirty)
+            {
+                if (parentAdaptor.HasNonNullValue())
+                {
+                    particlePositions.LinkedProperty = parentAdaptor.Value.Adaptor.particlePositions;
+                    particleElements.LinkedProperty = parentAdaptor.Value.Adaptor.particleElements;
+                    particleNames.LinkedProperty = parentAdaptor.Value.Adaptor.particleNames;
+                    particleResidues.LinkedProperty = parentAdaptor.Value.Adaptor.particleResidues;
+                    bondOrders.LinkedProperty = parentAdaptor.Value.Adaptor.bondOrders;
+                    bondPairs.LinkedProperty = parentAdaptor.Value.Adaptor.bondPairs;
+                    residueNames.LinkedProperty = parentAdaptor.Value.Adaptor.residueNames;
+                }
+                else
+                {
+                    particlePositions.LinkedProperty = null;
+                    particleElements.LinkedProperty = null;
+                    particleNames.LinkedProperty = null;
+                    particleResidues.LinkedProperty = null;
+                    bondOrders.LinkedProperty = null;
+                    bondPairs.LinkedProperty = null;
+                    residueNames.LinkedProperty = null;
+                }
+
+                parentAdaptor.IsDirty = false;
+            }
+        }
 
         /// <summary>
         /// Callback for when the frame is changed. Updates the output properties
@@ -54,6 +107,9 @@ namespace Narupa.Visualisation.Node.Adaptor
         /// </summary>
         private void OnFrameUpdated(IFrame frame, FrameChanges changes = null)
         {
+            if (parentAdaptor.HasNonNullValue())
+                return;
+            
             if (frame == null)
                 return;
 
@@ -68,6 +124,15 @@ namespace Narupa.Visualisation.Node.Adaptor
 
             if (changes?.HaveBondOrdersChanged ?? true)
                 bondOrders.Value = FrameSource.CurrentFrame.BondOrders;
+
+            if (changes?.HaveParticleResiduesChanged ?? true)
+                particleResidues.Value = FrameSource.CurrentFrame.ParticleResidues;
+            
+            if (changes?.HaveParticleNamesChanged ?? true)
+                particleNames.Value = FrameSource.CurrentFrame.ParticleNames;
+            
+            if (changes?.HaveResidueNamesChanged ?? true)
+                particleNames.Value = FrameSource.CurrentFrame.ResidueNames;
         }
 
         private ITrajectorySnapshot source;
