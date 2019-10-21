@@ -35,7 +35,7 @@ namespace Narupa.Frame
 
         /// <inheritdoc />
         [CanBeNull]
-        public string Type => Frame.ParticleTypes[index];
+        public string Type => Frame.ParticleTypes?[index];
 
         /// <inheritdoc />
         public Vector3 Position => Frame.ParticlePositions[index];
