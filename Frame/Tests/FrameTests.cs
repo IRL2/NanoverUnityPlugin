@@ -111,10 +111,9 @@ namespace Narupa.Frame.Tests
         {
             var frame = new Frame()
             {
-                ParticlePositions = new[] { Vector3.zero },
-                ParticleTypes = new[] { "type" }
+                ParticlePositions = new[] { Vector3.zero }
             };
-            Assert.AreEqual("type", frame.Particles[0].Type);
+            Assert.IsNull(frame.Particles[0].Type);
         }
 
 
@@ -126,6 +125,56 @@ namespace Narupa.Frame.Tests
                 ParticlePositions = new[] { Vector3.zero, Vector3.one },
             };
             CollectionAssert.IsNotEmpty(frame.Particles);
+        }
+        
+        [Test]
+        public void ParticleNames_Assignment()
+        {
+            var frame = new Frame
+            {
+                ParticleNames = new[] {"abc", "def"}
+            };
+            CollectionAssert.AreEqual(new[] {"abc", "def"}, frame.ParticleNames);
+        }
+        
+        [Test]
+        public void ResidueNames_Assignment()
+        {
+            var frame = new Frame
+            {
+                ResidueNames = new[] {"abc", "def"}
+            };
+            CollectionAssert.AreEqual(new[] {"abc", "def"}, frame.ResidueNames);
+        }
+        
+        [Test]
+        public void ParticleResidues_Assignment()
+        {
+            var frame = new Frame
+            {
+                ParticleResidues = new[] {1, 3}
+            };
+            CollectionAssert.AreEqual(new[] {1, 3}, frame.ParticleResidues);
+        }
+        
+        [Test]
+        public void BondOrders_Assignment()
+        {
+            var frame = new Frame
+            {
+                BondOrders = new[] {1, 3}
+            };
+            CollectionAssert.AreEqual(new[] {1, 3}, frame.BondOrders);
+        }
+        
+        [Test]
+        public void Bonds_Assignment()
+        {
+            var frame = new Frame
+            {
+                BondPairs = new[] { new BondPair(0, 1), new BondPair(1,2)}  
+            };
+            CollectionAssert.AreEqual( new[] { new BondPair(0, 1), new BondPair(1,2)}  , frame.Bonds);
         }
     }
 }

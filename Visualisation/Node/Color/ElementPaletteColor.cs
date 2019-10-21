@@ -20,6 +20,16 @@ namespace Narupa.Visualisation.Node.Color
 
         public IProperty<ElementColorMapping> Mapping => mapping;
 
+        protected override bool IsInputDirty => base.IsInputDirty || mapping.IsDirty;
+
+        protected override bool IsInputValid => base.IsInputValid && mapping.HasNonNullValue();
+
+        protected override void ClearDirty()
+        {
+            base.ClearDirty();
+            mapping.IsDirty = false;
+        }
+
         /// <inheritdoc cref="PerElementColor.GetColor" />
         protected override UnityEngine.Color GetColor(Element element)
         {
