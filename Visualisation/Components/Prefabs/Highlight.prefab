@@ -49,8 +49,11 @@ MonoBehaviour:
   inputLinkCollection: []
   node:
     parentAdaptor:
-      isValueProvided: 0
+      isValueProvided: 1
       value: {fileID: 0}
+    particleFilter:
+      isValueProvided: 0
+      value: 
 --- !u!114 &8528582866378757809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +146,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757809}
     sourceFieldName: scales
     destinationFieldName: particleScales
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particleFilter
+    destinationFieldName: particleFilter
   node:
     particlePositions:
       isValueProvided: 0
@@ -158,7 +164,10 @@ MonoBehaviour:
       value: {r: 1, g: 1, b: 1, a: 1}
     rendererScale:
       isValueProvided: 1
-      value: 1.2
+      value: 1.1
+    particleFilter:
+      isValueProvided: 0
+      value: 
     mesh:
       isValueProvided: 1
       value: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}

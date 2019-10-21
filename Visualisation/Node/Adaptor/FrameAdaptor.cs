@@ -71,6 +71,9 @@ namespace Narupa.Visualisation.Node.Adaptor
 
         [SerializeField]
         private FrameAdaptorProperty parentAdaptor = new FrameAdaptorProperty();
+        
+        [SerializeField]
+        private IntArrayProperty particleFilter = new IntArrayProperty();
 
         public void Refresh()
         {

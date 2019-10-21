@@ -62,6 +62,9 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private FloatProperty rendererScale = new FloatProperty();
+        
+        [SerializeField]
+        private IntArrayProperty particleFilter = new IntArrayProperty();
 
         [SerializeField]
         private MeshProperty mesh = new MeshProperty();
@@ -77,7 +80,12 @@ namespace Narupa.Visualisation.Node.Renderer
                                   && particlePositions.HasNonEmptyValue()
                                   && rendererColor.HasValue
                                   && rendererScale.HasValue
-                                  && Transform != null;
+                                  && Transform != null 
+                                  && InstanceCount > 0;
+
+        private int InstanceCount => particleFilter.HasNonNullValue()
+                                         ? particleFilter.Value.Length
+                                         : particlePositions.Value.Length;
 
         /// <summary>
         /// Render the provided bonds
@@ -90,13 +98,14 @@ namespace Narupa.Visualisation.Node.Renderer
 
                 InstancingUtility.SetTransform(drawCommand, Transform);
 
-                drawCommand.SetInstanceCount(particlePositions.Value.Length);
+                drawCommand.SetInstanceCount(InstanceCount);
                 drawCommand.SetFloat("_Scale", rendererScale.Value);
                 drawCommand.SetColor("_Color", rendererColor.Value);
 
                 UpdatePositionsIfDirty();
                 UpdateColorsIfDirty();
                 UpdateScalesIfDirty();
+                UpdateFilterIfDirty();
                 
                 drawCommand.MarkForRenderingThisFrame(camera);
             }
@@ -135,6 +144,16 @@ namespace Narupa.Visualisation.Node.Renderer
                 InstancingUtility.SetScales(drawCommand, particleScales.Value);
 
                 particleScales.IsDirty = false;
+            }
+        }
+        
+        private void UpdateFilterIfDirty()
+        {
+            if (particleFilter.IsDirty && particleFilter.HasNonEmptyValue())
+            {
+                InstancingUtility.SetFilter(drawCommand, particleFilter.Value);
+
+                particleFilter.IsDirty = false;
             }
         }
 

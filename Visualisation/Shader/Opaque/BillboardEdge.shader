@@ -28,6 +28,7 @@ Shader "NarupaXR/Opaque/Billboard Edge"
             #define POSITION_ARRAY
             #define EDGE_ARRAY
             #pragma multi_compile __ COLOR_ARRAY
+            #pragma multi_compile __ FILTER_ARRAY
             
             #include "../Base/BillboardEdge.cginc"
             

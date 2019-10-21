@@ -27,7 +27,8 @@ Shader "NarupaXR/Opaque/Billboard Circle"
             #define POSITION_ARRAY
             #pragma multi_compile __ SCALE_ARRAY
             #pragma multi_compile __ COLOR_ARRAY
-            
+            #pragma multi_compile __ FILTER_ARRAY
+             
             #include "../Base/BillboardCircle.cginc"
             
             ENDCG
