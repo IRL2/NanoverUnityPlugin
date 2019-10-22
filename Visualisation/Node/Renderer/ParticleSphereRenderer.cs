@@ -172,6 +172,7 @@ namespace Narupa.Visualisation.Node.Renderer
             particleColors.IsDirty = true;
             particlePositions.IsDirty = true;
             particleScales.IsDirty = true;
+            particleFilter.IsDirty = true;
         }
 
     }

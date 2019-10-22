@@ -57,6 +57,8 @@ namespace Narupa.Visualisation.Property
 
 
         public abstract Type PropertyType { get; }
+        
+        public bool IsDirty { get; set; } = true;
     }
 
     /// <summary>
@@ -160,9 +162,6 @@ namespace Narupa.Visualisation.Property
         {
             IsDirty = true;
         }
-
-        /// <inheritdoc cref="IProperty{TValue}.IsDirty" />
-        public bool IsDirty { get; set; } = true;
 
         public override Type PropertyType => typeof(TValue);
     }

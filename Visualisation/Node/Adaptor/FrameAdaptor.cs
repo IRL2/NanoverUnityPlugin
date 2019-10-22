@@ -135,7 +135,7 @@ namespace Narupa.Visualisation.Node.Adaptor
                 particleNames.Value = FrameSource.CurrentFrame.ParticleNames;
             
             if (changes?.HaveResidueNamesChanged ?? true)
-                particleNames.Value = FrameSource.CurrentFrame.ResidueNames;
+                residueNames.Value = FrameSource.CurrentFrame.ResidueNames;
         }
 
         private ITrajectorySnapshot source;

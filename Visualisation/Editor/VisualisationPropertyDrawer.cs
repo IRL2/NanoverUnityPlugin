@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Narupa.Core;
+using Narupa.Visualisation.Components;
 using Narupa.Visualisation.Property;
 using UnityEditor;
 using UnityEngine;
@@ -102,7 +103,27 @@ namespace Narupa.Visualisation.Editor
         private void DrawValueGui(SerializedProperty property, Rect rect)
         {
             var valueSerializedProperty = GetValueProperty(property);
+            EditorGUI.BeginChangeCheck();
             EditorGUI.PropertyField(rect, valueSerializedProperty, GUIContent.none, true);
+            if (EditorGUI.EndChangeCheck())
+            {
+                var obj = GetVisualisationBaseObject(property.serializedObject.targetObject);
+
+                var field = obj.GetType()
+                               .GetFieldInSelfOrParents(property.name, BindingFlags.Instance
+                                                                     | BindingFlags.Public
+                                                                     | BindingFlags.NonPublic)
+                               ?.GetValue(obj) as Property.Property;
+                if (field != null)
+                    field.IsDirty = true;
+            }
+        }
+        
+        private static object GetVisualisationBaseObject(Object src)
+        {
+            if (src is VisualisationComponent component)
+                return component.GetWrappedVisualisationNode();
+            return src;
         }
 
         /// <summary>
