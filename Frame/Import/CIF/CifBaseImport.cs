@@ -234,6 +234,8 @@ namespace Narupa.Frame.Import.CIF
                               ? GetTableHandler(currentCategory, keywords)
                               : null;
 
+            var dataItemCount = keywords.Count;
+
             while (HasLine)
             {
                 if (IsBlankOrComment())
@@ -245,11 +247,60 @@ namespace Narupa.Frame.Import.CIF
                 }
                 else
                 {
-                    handler?.Invoke(SplitWithDelimiter(CurrentLine));
+                    var dataItems = SplitWithDelimiter(CurrentLine);
+                    while (dataItems.Length < dataItemCount)
+                    {
+                        NextLine();
+                        var existingCount = dataItems.Length;
+                        if (CurrentLine[0] == ';')
+                        {
+                            Array.Resize(ref dataItems, dataItems.Length + 1);
+                            dataItems[existingCount] = ParseTextBlock();
+                        }
+                        else
+                        {
+                            var moreDataItems = SplitWithDelimiter(CurrentLine);
+                            Array.Resize(ref dataItems, dataItems.Length + moreDataItems.Length);
+                            moreDataItems.CopyTo(dataItems, existingCount);
+                            if (dataItems.Length > dataItemCount)
+                                throw new InvalidOperationException("Read in too many parameters");
+                        }
+                    }
+
+                    handler?.Invoke(dataItems);
                 }
 
                 NextLine();
             }
+        }
+
+        // Parse a text block starting with ;
+        private string ParseTextBlock()
+        {
+            string val = null;
+
+            var value = CurrentLine.Substring(1);
+            if (value.Trim().Length > 0)
+            {
+                val = value;
+            }
+
+            NextLine();
+            while (CurrentLine[0] != ';')
+            {
+                value = CurrentLine.Trim();
+                if (value.Length > 0)
+                {
+                    if (val == null)
+                        val = value;
+                    else
+                        val += "\n" + value;
+                }
+
+                NextLine();
+            }
+
+            return val;
         }
 
         /// <summary>

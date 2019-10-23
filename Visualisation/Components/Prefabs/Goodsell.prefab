@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
   - component: {fileID: -6296168603134018358}
-  - component: {fileID: 4406625998695126511}
   - component: {fileID: 7466151666213273982}
+  - component: {fileID: 3130336651086379168}
   m_Layer: 0
   m_Name: Goodsell
   m_TagString: Untagged
@@ -73,12 +73,12 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: particleResidues
     destinationFieldName: particleResidues
-  - sourceComponent: {fileID: 4406625998695126511}
-    sourceFieldName: particleFilter
-    destinationFieldName: particleFilter
   - sourceComponent: {fileID: 7466151666213273982}
     sourceFieldName: colors
     destinationFieldName: particleColors
+  - sourceComponent: {fileID: 3130336651086379168}
+    sourceFieldName: particleFilter
+    destinationFieldName: particleFilter
   node:
     particlePositions:
       isValueProvided: 0
@@ -122,41 +122,6 @@ MonoBehaviour:
       particleResidues:
         isValueProvided: 0
         value: 
---- !u!114 &4406625998695126511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c435587a717749d5a8d39c7e63224679, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleResidues
-    destinationFieldName: particleResidues
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
-    destinationFieldName: particleElements
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residueNames
-    destinationFieldName: residueNames
-  node:
-    includeHydrogens:
-      isValueProvided: 1
-      value: 0
-    particleResidues:
-      isValueProvided: 0
-      value: 
-    particleElements:
-      isValueProvided: 0
-      value: 
-    residueNames:
-      isValueProvided: 0
-      value: []
 --- !u!114 &7466151666213273982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,5 +162,66 @@ MonoBehaviour:
       value: []
     waterColor: {r: 1, g: 0.7216981, b: 0.7216981, a: 1}
     chainColors:
-    - NonHeteroColor: {r: 0.7480393, g: 0.8867924, b: 0.6734603, a: 1}
-      HeteroColor: {r: 0.50021935, g: 0.9245283, b: 0.49279103, a: 1}
+    - NonHeteroColor: {r: 0.6, g: 0.8000001, b: 1, a: 1}
+      HeteroColor: {r: 0.49803925, g: 0.69803923, b: 1, a: 1}
+    - NonHeteroColor: {r: 0.6, g: 0.69803923, b: 1, a: 1}
+      HeteroColor: {r: 0.49803925, g: 0.6, b: 1, a: 1}
+    - NonHeteroColor: {r: 0.69803923, g: 0.8980393, b: 0.6, a: 1}
+      HeteroColor: {r: 0.6, g: 0.8980393, b: 0.49803925, a: 1}
+    - NonHeteroColor: {r: 0.6, g: 0.8980393, b: 0.69803923, a: 1}
+      HeteroColor: {r: 0.49803925, g: 0.8980393, b: 0.6, a: 1}
+    - NonHeteroColor: {r: 0.6, g: 0.6, b: 1, a: 1}
+      HeteroColor: {r: 0.49803925, g: 0.49803925, b: 1, a: 1}
+    - NonHeteroColor: {r: 0.69803923, g: 0.6, b: 1, a: 1}
+      HeteroColor: {r: 0.6, g: 0.49803925, b: 1, a: 1}
+    - NonHeteroColor: {r: 1, g: 0.69803923, b: 0.69803923, a: 1}
+      HeteroColor: {r: 1, g: 0.6, b: 0.6, a: 1}
+    - NonHeteroColor: {r: 1, g: 0.49803925, b: 0.49803925, a: 1}
+      HeteroColor: {r: 1, g: 0.40000004, b: 0.40000004, a: 1}
+    - NonHeteroColor: {r: 1, g: 0.8000001, b: 0.6, a: 1}
+      HeteroColor: {r: 1, g: 0.69803923, b: 0.49803925, a: 1}
+    - NonHeteroColor: {r: 1, g: 0.69803923, b: 0.49803925, a: 1}
+      HeteroColor: {r: 1, g: 0.6, b: 0.40000004, a: 1}
+    - NonHeteroColor: {r: 1, g: 0.49803925, b: 1, a: 1}
+      HeteroColor: {r: 1, g: 0.40000004, b: 1, a: 1}
+--- !u!114 &3130336651086379168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c435587a717749d5a8d39c7e63224679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particleResidues
+    destinationFieldName: particleResidues
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particleElements
+    destinationFieldName: particleElements
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: residueNames
+    destinationFieldName: residueNames
+  node:
+    includeHydrogens:
+      isValueProvided: 1
+      value: 0
+    includeWater:
+      isValueProvided: 1
+      value: 0
+    includeNonStandardResidues:
+      isValueProvided: 1
+      value: 0
+    particleResidues:
+      isValueProvided: 0
+      value: 
+    particleElements:
+      isValueProvided: 0
+      value: 
+    residueNames:
+      isValueProvided: 0
+      value: []

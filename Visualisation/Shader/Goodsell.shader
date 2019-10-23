@@ -106,7 +106,7 @@ Shader "NarupaXR/Goodsell"
                 for (int x = 0; x < NUM_OFFSETS; x++) {
                     float2 uv = i.uv + 0.001 * offsets[x];
                     float c = tex2D(_ResidueTex, uv);
-                    if(abs(c-d) > 1.5)
+                    if(abs(c-d) > 4.5)
                         unit += 1;
                 }
             

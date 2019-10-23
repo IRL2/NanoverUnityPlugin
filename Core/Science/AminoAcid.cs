@@ -97,7 +97,7 @@ namespace Narupa.Core.Science
         [CanBeNull]
         public static AminoAcid GetAminoAcidFromResidue(string residueName)
         {
-            return StandardAminoAcids.SingleOrDefault(
+            return StandardAminoAcids.FirstOrDefault(
                 aa => aa.ThreeLetterCode.Equals(residueName,
                                                 StringComparison.InvariantCultureIgnoreCase));
         }
