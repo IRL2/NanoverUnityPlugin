@@ -89,6 +89,16 @@ namespace Narupa.Frame.Event
             get => GetIsChanged(FrameData.ResidueNameArrayKey);
             set => SetIsChanged(FrameData.ResidueNameArrayKey, value);
         }
+        
+        /// <summary>
+        /// Indicates whether the residue entities have been changed in
+        /// comparison to a previous frame.
+        /// </summary>
+        public bool HaveResidueEntitiesChanged
+        {
+            get => GetIsChanged(FrameData.ResidueChainArrayKey);
+            set => SetIsChanged(FrameData.ResidueChainArrayKey, value);
+        }
 
         /// <summary>
         /// Merge another <see cref="FrameChanges" />, such that the update

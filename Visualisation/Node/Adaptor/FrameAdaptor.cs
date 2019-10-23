@@ -68,6 +68,13 @@ namespace Narupa.Visualisation.Node.Adaptor
         public IReadOnlyProperty<string[]> ResidueNames => residueNames;
 
         private StringArrayProperty residueNames = new StringArrayProperty();
+        
+        /// <summary>
+        /// Array of residue entities of the provided frame.
+        /// </summary>
+        public IReadOnlyProperty<int[]> ResidueEntities => residueEntities;
+
+        private IntArrayProperty residueEntities = new IntArrayProperty();
 
         [SerializeField]
         private FrameAdaptorProperty parentAdaptor = new FrameAdaptorProperty();
@@ -88,6 +95,7 @@ namespace Narupa.Visualisation.Node.Adaptor
                     bondOrders.LinkedProperty = parentAdaptor.Value.Adaptor.bondOrders;
                     bondPairs.LinkedProperty = parentAdaptor.Value.Adaptor.bondPairs;
                     residueNames.LinkedProperty = parentAdaptor.Value.Adaptor.residueNames;
+                    residueEntities.LinkedProperty = parentAdaptor.Value.Adaptor.residueEntities;
                 }
                 else
                 {
@@ -98,6 +106,7 @@ namespace Narupa.Visualisation.Node.Adaptor
                     bondOrders.LinkedProperty = null;
                     bondPairs.LinkedProperty = null;
                     residueNames.LinkedProperty = null;
+                    residueEntities.LinkedProperty = null;
                 }
 
                 parentAdaptor.IsDirty = false;
@@ -136,6 +145,9 @@ namespace Narupa.Visualisation.Node.Adaptor
             
             if (changes?.HaveResidueNamesChanged ?? true)
                 residueNames.Value = FrameSource.CurrentFrame.ResidueNames;
+
+            if (changes?.HaveResidueEntitiesChanged ?? true)
+                residueEntities.Value = FrameSource.CurrentFrame.ResidueEntities;
         }
 
         private ITrajectorySnapshot source;

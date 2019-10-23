@@ -90,6 +90,15 @@ namespace Narupa.Frame
             get => Data.GetValueOrDefault<string[]>(FrameData.ResidueNameArrayKey);
             set => Data[FrameData.ResidueNameArrayKey] = value;
         }
+        
+        /// <summary>
+        /// Array of residue entities.
+        /// </summary>
+        public int[] ResidueEntities
+        {
+            get => Data.GetValueOrDefault<int[]>(FrameData.ResidueChainArrayKey);
+            set => Data[FrameData.ResidueChainArrayKey] = value;
+        }
 
         /// <summary>
         /// Array of particle names.

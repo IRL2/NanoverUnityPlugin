@@ -157,6 +157,22 @@ namespace Narupa.Visualisation
                                                0, 
                                                 camera);
         }
+        
+        public void AddToCommandBuffer(CommandBuffer buffer)
+        {
+            if (!IsRenderable)
+                return;
+
+            UpdateDrawArgumentsBuffer();
+            UpdateDataBuffers();
+            
+            buffer.DrawMeshInstancedIndirect(mesh,
+                                             submeshIndex,
+                                             renderMaterial,
+                                             0,
+                                             drawArgumentsBuffer,
+                                             0);
+        }
 
         private void UpdateDataBuffers()
         {
