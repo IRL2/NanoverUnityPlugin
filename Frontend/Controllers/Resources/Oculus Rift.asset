@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controllerId: oculus_touch
   leftController:
-    prefab: {fileID: 5158294989934675571, guid: 5c0b8b9861f24c64888a21f4f580cfc1,
+    prefab: {fileID: 2543036398859962509, guid: 5c0b8b9861f24c64888a21f4f580cfc1,
       type: 3}
     hideSteamVrModel: 0
   rightController:
-    prefab: {fileID: 5158294989934675571, guid: 13803d8877859d74d9247eb700a2db7e,
+    prefab: {fileID: 3552374343134065379, guid: 13803d8877859d74d9247eb700a2db7e,
       type: 3}
     hideSteamVrModel: 0

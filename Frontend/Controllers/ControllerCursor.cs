@@ -13,30 +13,8 @@ namespace Narupa.Frontend.Controllers
     /// considered to be for use as a tool. Gizmos should be centered on this object,
     /// and added using <see cref="SetGizmo" />.
     /// </summary>
-    public class ControllerCursor : MonoBehaviour, IPosedObject
+    public class ControllerCursor : ControllerPivot
     {
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(transform.position, 0.05f);
-            Gizmos.DrawSphere(transform.position, 0.01f);
-        }
-
-        private void Update()
-        {
-            if (transform.hasChanged)
-            {
-                PoseChanged?.Invoke();
-                transform.hasChanged = false;
-            }
-        }
-
-        /// <inheritdoc cref="IPosedObject.Pose" />
-        public Transformation? Pose => Transformation.FromTransform(transform);
-
-        /// <inheritdoc cref="IPosedObject.PoseChanged" />
-        public event Action PoseChanged;
-
         private GameObject currentGizmo;
 
         /// <summary>

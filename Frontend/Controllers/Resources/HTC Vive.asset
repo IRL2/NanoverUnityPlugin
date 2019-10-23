@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controllerId: vive_controller
   leftController:
-    prefab: {fileID: 5158294989934675571, guid: 135c6241474f4f9488174f2d695eadff,
+    prefab: {fileID: 6054607360830509457, guid: 135c6241474f4f9488174f2d695eadff,
       type: 3}
-    hideSteamVrModel: 0
+    hideSteamVrModel: 1
   rightController:
-    prefab: {fileID: 5158294989934675571, guid: 135c6241474f4f9488174f2d695eadff,
+    prefab: {fileID: 6054607360830509457, guid: 135c6241474f4f9488174f2d695eadff,
       type: 3}
-    hideSteamVrModel: 0
+    hideSteamVrModel: 1

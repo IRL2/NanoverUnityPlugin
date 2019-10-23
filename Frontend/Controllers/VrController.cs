@@ -2,42 +2,51 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using Narupa.Frontend.Input;
 using UnityEngine;
 
 namespace Narupa.Frontend.Controllers
 {
     /// <summary>
-    /// Component that indicates the root game object responsible for representing a controller.
+    /// Component that indicates the root game object responsible for representing a controller that is in the scene.
     /// </summary>
     public class VrController : MonoBehaviour
     {
-        private bool isControllerActive = false;
-
-        [SerializeField]
-        private ControllerCursor cursor;
-
         /// <summary>
         /// Indicate the controller has been reset (connected or disconnected).
         /// </summary>
         /// <param name="controller"></param>
-        public void ResetController(GameObject controller)
+        public void ResetController(VrControllerPrefab controller)
         {
-            isControllerActive = controller != null;
-            if (isControllerActive)
+            IsControllerActive = controller != null;
+            if (IsControllerActive)
             {
-                cursor = controller.transform.GetComponentInChildren<ControllerCursor>();
+                Cursor = controller.Cursor;
+                GripPose = controller.GripPose;
             }
             else
             {
-                cursor = null;
+                Cursor = null;
+                GripPose = null;
             }
 
             ControllerReset?.Invoke();
         }
 
-        public ControllerCursor Cursor => cursor;
+        /// <summary>
+        /// The cursor point where tools should be centered.
+        /// </summary>
+        public ControllerCursor Cursor { get; private set; }
 
-        public bool IsControllerActive => isControllerActive;
+        /// <summary>
+        /// The pose marking the location of a gripped hand.
+        /// </summary>
+        public IPosedObject GripPose { get; private set; }
+
+        /// <summary>
+        /// Is the controller currently active?
+        /// </summary>
+        public bool IsControllerActive { get; private set; } = false;
 
         public event Action ControllerReset;
     }

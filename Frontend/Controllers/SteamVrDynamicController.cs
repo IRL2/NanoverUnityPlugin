@@ -20,7 +20,7 @@ namespace Narupa.Frontend.Controllers
         [SerializeField]
         private Transform prefabRoot;
 
-        private GameObject currentPrefab;
+        private VrControllerPrefab currentPrefab;
 
         [SerializeField]
         private VrController controller;

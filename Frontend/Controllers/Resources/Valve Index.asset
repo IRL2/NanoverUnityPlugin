@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controllerId: knuckles
   leftController:
-    prefab: {fileID: 5158294989934675571, guid: 977be6926046a4a4d80d291d6aaa1244,
+    prefab: {fileID: 6899497067853069755, guid: 977be6926046a4a4d80d291d6aaa1244,
       type: 3}
     hideSteamVrModel: 0
   rightController:
-    prefab: {fileID: 5158294989934675571, guid: e4f78c2b374903640abba36899d2973f,
+    prefab: {fileID: 9036256438583217342, guid: e4f78c2b374903640abba36899d2973f,
       type: 3}
     hideSteamVrModel: 0

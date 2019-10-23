@@ -21,7 +21,7 @@ namespace Narupa.Frontend.Controllers
         {
             [SerializeField]
             [Tooltip("Prefab to place at the position of the controller.")]
-            internal GameObject prefab;
+            internal VrControllerPrefab prefab;
 
             [SerializeField]
             [Tooltip("Should the default SteamVR model be hidden.")]
@@ -52,7 +52,7 @@ namespace Narupa.Frontend.Controllers
         /// <summary>
         /// Get the prefab for the given input source.
         /// </summary>
-        public GameObject GetPrefab(SteamVR_Input_Sources input)
+        public VrControllerPrefab GetPrefab(SteamVR_Input_Sources input)
         {
             if (input == SteamVR_Input_Sources.LeftHand)
                 return leftController.prefab;

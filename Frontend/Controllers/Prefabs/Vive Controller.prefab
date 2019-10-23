@@ -1,5 +1,48 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4474508807785679248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5187858761693537411}
+  - component: {fileID: 5478597001159715368}
+  m_Layer: 0
+  m_Name: Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5187858761693537411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4474508807785679248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0125, z: -0.0783}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6747845785462496252}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5478597001159715368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4474508807785679248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51bc0c4f3b864bad808af7c85b67ca49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5158294989934675571
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,6 +52,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6747845785462496252}
+  - component: {fileID: 6054607360830509457}
   m_Layer: 0
   m_Name: Vive Controller
   m_TagString: Untagged
@@ -28,9 +72,24 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7370082903936835382}
+  - {fileID: 5187858761693537411}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6054607360830509457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5158294989934675571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18417681407e45fc8e7f6295c81a490c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gripPose: {fileID: 5478597001159715368}
+  cursor: {fileID: 3771533623967349175}
 --- !u!1001 &6042956129691765142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,3 +180,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6042956129691765142}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3771533623967349175 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7461278536000598049, guid: a6dcfdedc0b0b1f42a69be68c9a57aec,
+    type: 3}
+  m_PrefabInstance: {fileID: 6042956129691765142}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f184af3b80d744b42b9b72f7f7f9570b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
