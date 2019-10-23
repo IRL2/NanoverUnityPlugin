@@ -25,6 +25,26 @@ namespace Narupa.Visualisation.Node.Filter
         [SerializeField]
         private StringArrayProperty residueNames = new StringArrayProperty();
 
+        /// <summary>
+        /// Should hydrogens be included?
+        /// </summary>
+        public IProperty<bool> IncludeHydrogens => includeHydrogens;
+
+        /// <summary>
+        /// The indices of the residue for each particle.
+        /// </summary>
+        public IProperty<int[]> ParticleResidues => particleResidues;
+
+        /// <summary>
+        /// The residue names.
+        /// </summary>
+        public IProperty<string[]> ResidueNames => residueNames;
+        
+        /// <summary>
+        /// The particle elements.
+        /// </summary>
+        public IProperty<Element[]> ParticleElements => particleElements;
+
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => particleResidues.HasNonEmptyValue()
                                              && residueNames.HasNonEmptyValue()
