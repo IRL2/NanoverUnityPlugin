@@ -25,14 +25,17 @@ namespace Narupa.Visualisation.Node.Scale
             Value = 1f
         };
 
+        /// <inheritdoc cref="PerElementScale.ClearDirty"/>
         protected override void ClearDirty()
         {
             base.ClearDirty();
             scale.IsDirty = false;
         }
 
+        /// <inheritdoc cref="PerElementScale.IsInputDirty"/>
         protected override bool IsInputDirty => base.IsInputDirty || scale.IsDirty;
 
+        /// <inheritdoc cref="PerElementScale.IsInputValid"/>
         protected override bool IsInputValid => base.IsInputValid && scale.HasNonNullValue();
 
         /// <summary>
