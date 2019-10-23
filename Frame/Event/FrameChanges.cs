@@ -60,18 +60,30 @@ namespace Narupa.Frame.Event
             set => SetIsChanged(FrameData.BondOrderArrayKey, value);
         }
         
+        /// <summary>
+        /// Indicates whether the particle residues have been changed in
+        /// comparison to a previous frame.
+        /// </summary>
         public bool HaveParticleResiduesChanged
         {
             get => GetIsChanged(FrameData.ParticleResidueArrayKey);
             set => SetIsChanged(FrameData.ParticleResidueArrayKey, value);
         }
         
+        /// <summary>
+        /// Indicates whether the particle names have been changed in
+        /// comparison to a previous frame.
+        /// </summary>
         public bool HaveParticleNamesChanged
         {
             get => GetIsChanged(FrameData.ParticleNameArrayKey);
             set => SetIsChanged(FrameData.ParticleNameArrayKey, value);
         }
         
+        /// <summary>
+        /// Indicates whether the residue names have been changed in
+        /// comparison to a previous frame.
+        /// </summary>
         public bool HaveResidueNamesChanged
         {
             get => GetIsChanged(FrameData.ResidueNameArrayKey);

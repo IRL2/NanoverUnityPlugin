@@ -63,7 +63,7 @@ namespace Narupa.Visualisation.Node.Adaptor
         private StringArrayProperty particleNames = new StringArrayProperty();
         
         /// <summary>
-        /// Array of particle names of the provided frame.
+        /// Array of residue names of the provided frame.
         /// </summary>
         public IReadOnlyProperty<string[]> ResidueNames => residueNames;
 

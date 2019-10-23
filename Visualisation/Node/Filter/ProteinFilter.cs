@@ -1,42 +1,49 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Narupa.Core.Science;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Filter
 {
     /// <summary>
-    /// Filters particles by the name of their residues.
+    /// Filters particles by if they're in a standard amino acid, optionally excluding hydrogens.
     /// </summary>
     [Serializable]
-    public class ResidueNameFilter : VisualiserFilter
+    public class ProteinFilter : VisualiserFilter
     {
         [SerializeField]
-        private StringProperty pattern = new StringProperty();
-
+        private BoolProperty includeHydrogens = new BoolProperty();
+        
         [SerializeField]
         private IntArrayProperty particleResidues = new IntArrayProperty();
+        
+        [SerializeField]
+        private ElementArrayProperty particleElements = new ElementArrayProperty();
 
         [SerializeField]
         private StringArrayProperty residueNames = new StringArrayProperty();
 
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
-        protected override bool IsInputValid => pattern.HasNonNullValue()
-                                             && particleResidues.HasNonEmptyValue()
-                                             && residueNames.HasNonEmptyValue();
+        protected override bool IsInputValid => particleResidues.HasNonEmptyValue()
+                                             && residueNames.HasNonEmptyValue()
+                                                && particleElements.HasNonEmptyValue()
+        && includeHydrogens.HasNonNullValue();
 
         /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
-        protected override bool IsInputDirty => pattern.IsDirty
-                                             || particleResidues.IsDirty
-                                             || residueNames.IsDirty;
+        protected override bool IsInputDirty => particleResidues.IsDirty
+                                                || particleElements.IsDirty
+                                             || residueNames.IsDirty
+        || includeHydrogens.IsDirty;
 
         /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
-            pattern.IsDirty = false;
             particleResidues.IsDirty = false;
             residueNames.IsDirty = false;
+            includeHydrogens.IsDirty = false;
+            particleElements.IsDirty = false;
         }
 
         /// <inheritdoc cref="VisualiserFilter.MaximumFilterCount"/>
@@ -45,10 +52,11 @@ namespace Narupa.Visualisation.Node.Filter
         /// <inheritdoc cref="VisualiserFilter.GetFilteredIndices"/>
         protected override IEnumerable<int> GetFilteredIndices()
         {
-            var regex = new Regex(pattern.Value);
             for (var i = 0; i < particleResidues.Value.Length; i++)
             {
-                if (regex.IsMatch(residueNames.Value[particleResidues.Value[i]]))
+                if (!includeHydrogens.Value && particleElements.Value[i] == Element.Hydrogen)
+                    continue;
+                if (AminoAcid.IsStandardAminoAcid(residueNames.Value[particleResidues.Value[i]]))
                     yield return i;
             }
         }

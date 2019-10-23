@@ -16,6 +16,9 @@ namespace Narupa.Visualisation.Components.Adaptor
             set => node.FrameSource = value;
         }
 
+        /// <summary>
+        /// The wrapped <see cref="FrameAdaptor"/>.
+        /// </summary>
         public Node.Adaptor.FrameAdaptor Adaptor => node;
 
         private void Update()

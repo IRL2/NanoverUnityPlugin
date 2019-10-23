@@ -5,14 +5,21 @@ using Narupa.Visualisation.Property;
 
 namespace Narupa.Visualisation.Node.Filter
 {
+    /// <summary>
+    /// Filters particles by some criterea.
+    /// </summary>
     public abstract class VisualiserFilter : GenericOutputNode
     {
-        protected readonly IntArrayProperty particleFilter = new IntArrayProperty();
+        private readonly IntArrayProperty particleFilter = new IntArrayProperty();
 
         private int[] filter = new int[0];
 
+        /// <summary>
+        /// The maximum possible number of filtered indices. Used to allocate an initial array.
+        /// </summary>
         protected abstract int MaximumFilterCount { get; }
         
+        /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
             Array.Resize(ref filter, MaximumFilterCount);
@@ -25,13 +32,17 @@ namespace Narupa.Visualisation.Node.Filter
             particleFilter.Value = filter;
         }
         
+        /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
         protected override void ClearOutput()
         {
             Array.Resize(ref filter, 0);
             particleFilter.Value = filter;
         }
-
-
+        
+        /// <summary>
+        /// Return the indices of particles which meet the criteria.
+        /// </summary>
+        /// <returns></returns>
         protected abstract IEnumerable<int> GetFilteredIndices();
 
         /// <summary>
