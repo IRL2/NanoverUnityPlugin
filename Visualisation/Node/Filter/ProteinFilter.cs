@@ -102,6 +102,7 @@ namespace Narupa.Visualisation.Node.Filter
         /// <inheritdoc cref="VisualiserFilter.GetFilteredIndices"/>
         protected override IEnumerable<int> GetFilteredIndices()
         {
+            // Cache properties for performance
             var includeHydrogens = this.includeHydrogens.Value;
             var includeWater = this.includeWater.Value;
             var includeNonStandardResidues = this.includeNonStandardResidues.Value;

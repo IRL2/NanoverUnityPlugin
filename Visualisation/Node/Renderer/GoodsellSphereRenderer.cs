@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Renderer
 {
     /// <summary>
-    /// Renders goodsell style spheres, by writing the residue ID to a separate texture.
+    /// Extends the normal sphere rendering by providing residue IDs in a separate buffer.
     /// </summary>
     [Serializable]
     public class GoodsellSphereRenderer : ParticleSphereRenderer

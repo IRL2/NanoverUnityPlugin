@@ -6,12 +6,22 @@ using UnityEngine.Rendering;
 
 namespace Narupa.Visualisation
 {
+    /// <summary>
+    /// Base node for a renderer based upon using <see cref="CommandBuffer"/>,
+    /// which is a list of commands (rendering to textures, blitting, etc.)
+    /// that can be executed at some point in the rendering pipeline.
+    /// </summary>
     public abstract class CommandBufferRenderer
     {
+        /// <summary>
+        /// Cached store of per camera command buffers.
+        /// </summary>
         private Dictionary<Camera, List<(CameraEvent, CommandBuffer)>> buffers =
             new Dictionary<Camera, List<(CameraEvent, CommandBuffer)>>();
 
-        // Remove command buffers from all cameras we added into
+        /// <summary>
+        /// Cleanup all buffers, removing them from the cameras.
+        /// </summary>
         public virtual void Cleanup()
         {
             foreach (var (camera, buffers) in buffers)
@@ -28,8 +38,15 @@ namespace Narupa.Visualisation
                 Object.DestroyImmediate(material);
         }
 
+        /// <summary>
+        /// Materials created for this renderer. Stored so they
+        /// can be destroyed by <see cref="Cleanup()"/>
+        /// </summary>
         private List<Material> materials = new List<Material>();
 
+        /// <summary>
+        /// Create a new material for use with this renderer.
+        /// </summary>
         protected Material CreateMaterial(Shader shader)
         {
             var material = new Material(shader);
@@ -37,6 +54,11 @@ namespace Narupa.Visualisation
             return material;
         }
 
+        /// <summary>
+        /// Render to the given camera using a command buffer, using a cached buffer
+        /// if it has already been created.
+        /// </summary>
+        /// <param name="cam"></param>
         public virtual void Render(Camera cam)
         {
             if (buffers.ContainsKey(cam))
@@ -49,118 +71,9 @@ namespace Narupa.Visualisation
             }
         }
 
-        protected int? AddAO(CommandBuffer buffer, Shader shader, int depthId)
-        {
-            if (shader == null)
-                return null;
-
-            var material = CreateMaterial(shader);
-
-            var aoId = Shader.PropertyToID("_AmbientOcclusion");
-            buffer.GetTemporaryRT(aoId, -1, -1, 0,
-                                  FilterMode.Bilinear,
-                                  RenderTextureFormat.ARGB32,
-                                  RenderTextureReadWrite.Linear);
-
-            buffer.SetRenderTarget(aoId);
-
-            buffer.ClearRenderTarget(true, true, Color.white);
-
-            buffer.SetGlobalTexture("_DepthTex", depthId);
-
-            buffer.Blit(depthId, aoId, material);
-
-            return aoId;
-        }
-
-
-        protected int ApplyShading(CommandBuffer buffer, Shader shader, RenderTargetIdentifier src, int dest)
-        {
-            if (shader == null)
-                return dest;
-
-            var blurId = Shader.PropertyToID("_Temp2");
-
-            buffer.GetTemporaryRT(blurId, -2, -2, 24,
-                                  FilterMode.Bilinear,
-                                  RenderTextureFormat.ARGB32,
-                                  RenderTextureReadWrite.Linear);
-
-            var material = CreateMaterial(shader);
-
-            buffer.SetGlobalTexture("_MainTex", dest);
-            buffer.SetGlobalTexture("_ShadeTex", src);
-
-            buffer.SetRenderTarget(blurId);
-
-            buffer.Blit(dest, blurId, material);
-
-            return blurId;
-        }
-        
-        protected int ColorBlur(CommandBuffer buffer, Shader shader, int src, float radius)
-        {
-            if (shader == null)
-                return src;
-
-            var material = CreateMaterial(shader);
-
-            var blurID = Shader.PropertyToID("_Temp1");
-
-            const float blurDistance = 1f;
-
-            buffer.GetTemporaryRT(blurID, -2, -2, 24,
-                                  FilterMode.Bilinear,
-                                  RenderTextureFormat.ARGB32,
-                                  RenderTextureReadWrite.Linear);
-
-            // horizontal blur
-            buffer.SetGlobalVector("offsets",
-                                   new Vector4(radius * blurDistance / Screen.width, 0, 0, 0));
-            buffer.SetGlobalTexture("_MainTex", src);
-            buffer.Blit(src, blurID, material);
-
-            // vertical blur
-            buffer.SetGlobalVector("offsets",
-                                   new Vector4(0, radius * blurDistance / Screen.height, 0, 0));
-            buffer.SetGlobalTexture("_MainTex", blurID);
-            buffer.Blit(blurID, src, material);
-
-            return src;
-        }
-
-
-        protected int DepthBlur(CommandBuffer buffer, Shader shader, int src, float radius)
-        {
-            if (shader == null)
-                return src;
-
-            var material = CreateMaterial(shader);
-
-            var blurID = Shader.PropertyToID("_BlurTemp");
-
-            const float blurDistance = 2f;
-
-            buffer.GetTemporaryRT(blurID, -2, -2, 24,
-                                  FilterMode.Bilinear,
-                                  RenderTextureFormat.RFloat,
-                                  RenderTextureReadWrite.Linear);
-
-            // horizontal blur
-            buffer.SetGlobalVector("offsets",
-                                   new Vector4(radius * blurDistance / Screen.width, 0, 0, 0));
-            buffer.SetGlobalTexture("_DepthTex", src);
-            buffer.Blit(src, blurID, material);
-
-            // vertical blur
-            buffer.SetGlobalVector("offsets",
-                                   new Vector4(0, radius * blurDistance / Screen.height, 0, 0));
-            buffer.SetGlobalTexture("_DepthTex", blurID);
-            buffer.Blit(blurID, src, material);
-
-            return src;
-        }
-
+        /// <summary>
+        /// Get the command buffers and their triggering events for a given camera.
+        /// </summary>
         protected abstract IEnumerable<(CameraEvent Event, CommandBuffer Buffer)> GetBuffers(Camera camera);
     }
     

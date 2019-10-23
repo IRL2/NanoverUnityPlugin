@@ -6,6 +6,10 @@ using UnityEngine.Rendering;
 
 namespace Narupa.Visualisation.Node.Renderer
 {
+    /// <summary>
+    /// Renderer which draws spheres using a command buffer, allowing them to be
+    /// outlined depending on their relative residue indices.
+    /// </summary>
     [ExecuteAlways]
     [Serializable]
     public class GoodsellRenderer : CommandBufferRenderer
@@ -13,32 +17,38 @@ namespace Narupa.Visualisation.Node.Renderer
         [SerializeField]
         private Vector3ArrayProperty particlePositions = new Vector3ArrayProperty();
 
-        public IProperty<Vector3[]> ParticlePositions => particlePositions;
-
         [SerializeField]
         private ColorArrayProperty particleColors = new ColorArrayProperty();
-        
+
         [SerializeField]
         private IntArrayProperty particleResidues = new IntArrayProperty();
-
         
         [SerializeField]
         private IntArrayProperty particleFilter = new IntArrayProperty();
 
+        /// <summary>
+        /// The transform to center this renderer on.
+        /// </summary>
         public Transform Transform { get; set; }
 
+        /// <inheritdoc cref="CommandBufferRenderer.Cleanup"/>
         public override void Cleanup()
         {
             base.Cleanup();
             renderer.ResetBuffers();
         }
 
+        /// <summary>
+        /// Setup this renderer.
+        /// </summary>
         public void Setup()
         {
             renderer.ParticlePositions.LinkedProperty = particlePositions;
             renderer.ParticleColors.LinkedProperty = particleColors;
             renderer.ParticleResidues.LinkedProperty = particleResidues;
             renderer.ParticleFilter.LinkedProperty = particleFilter;
+            
+            renderer.Transform = Transform;
         }
 
         [SerializeField]
@@ -52,6 +62,7 @@ namespace Narupa.Visualisation.Node.Renderer
 
         private bool isRendering = false;
         
+        /// <inheritdoc cref="CommandBufferRenderer.Render"/>
         public override void Render(Camera cam)
         {
             if (renderer.IsInputDirty && renderer.ShouldRender != isRendering)
@@ -59,11 +70,14 @@ namespace Narupa.Visualisation.Node.Renderer
                 Cleanup();
                 isRendering = renderer.ShouldRender;
             }
+
             renderer.UpdateRenderer();
             base.Render(cam);
         }
 
-        protected override IEnumerable<(CameraEvent Event, CommandBuffer Buffer)> GetBuffers(Camera camera)
+        /// <inheritdoc cref="CommandBufferRenderer.GetBuffers"/>
+        protected override IEnumerable<(CameraEvent Event, CommandBuffer Buffer)> GetBuffers(
+            Camera camera)
         {
             if (GetColorBuffer(camera) is CommandBuffer colorBuffer)
                 yield return (cameraEvent, colorBuffer);
@@ -80,8 +94,6 @@ namespace Narupa.Visualisation.Node.Renderer
                 return null;
 
             var material = CreateMaterial(shader);
-
-            renderer.Transform = Transform;
 
             var colorId = Shader.PropertyToID("_ColorTexture");
             var depthId = Shader.PropertyToID("_DepthTexture");
@@ -122,9 +134,5 @@ namespace Narupa.Visualisation.Node.Renderer
 
             return buffer;
         }
-
-
-       
-
     }
 }
