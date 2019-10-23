@@ -162,6 +162,7 @@ namespace Narupa.Visualisation.Property
         private void LinkedPropertyOnValueChanged()
         {
             IsDirty = true;
+            OnValueChanged();
         }
 
         public override Type PropertyType => typeof(TValue);
