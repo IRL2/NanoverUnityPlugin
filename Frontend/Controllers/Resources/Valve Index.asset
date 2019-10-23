@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147d743152d75b346866ef0a4600e9ae, type: 3}
+  m_Name: Valve Index
+  m_EditorClassIdentifier: 
+  controllerId: knuckles
+  leftController:
+    prefab: {fileID: 6899497067853069755, guid: 977be6926046a4a4d80d291d6aaa1244,
+      type: 3}
+    hideSteamVrModel: 0
+  rightController:
+    prefab: {fileID: 9036256438583217342, guid: e4f78c2b374903640abba36899d2973f,
+      type: 3}
+    hideSteamVrModel: 0
