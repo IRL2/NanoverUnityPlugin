@@ -21,6 +21,21 @@ namespace Narupa.Visualisation.Node.Filter
         [SerializeField]
         private StringArrayProperty residueNames = new StringArrayProperty();
 
+        /// <summary>
+        /// Regex pattern to identify which residue names to filter.
+        /// </summary>
+        public IProperty<string> Pattern => pattern;
+
+        /// <summary>
+        /// The indices of the residue for each particle.
+        /// </summary>
+        public IProperty<int[]> ParticleResidues => particleResidues;
+
+        /// <summary>
+        /// The residue names.
+        /// </summary>
+        public IProperty<string[]> ResidueNames => residueNames;
+
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => pattern.HasNonNullValue()
                                              && particleResidues.HasNonEmptyValue()

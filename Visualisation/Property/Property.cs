@@ -106,6 +106,7 @@ namespace Narupa.Visualisation.Property
                 LinkedProperty = null;
                 HasValue = true;
                 this.value = value;
+                IsDirty = true;
                 OnValueChanged();
             }
         }
