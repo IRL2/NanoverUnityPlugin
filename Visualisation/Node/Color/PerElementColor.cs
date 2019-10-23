@@ -23,15 +23,19 @@ namespace Narupa.Visualisation.Node.Color
         /// </summary>
         public IProperty<Element[]> Elements => elements;
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => elements.IsDirty;
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => elements.HasNonEmptyValue();
 
+        /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
             elements.IsDirty = false;
         }
         
+        /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
             var elementArray = elements.Value;
@@ -43,6 +47,7 @@ namespace Narupa.Visualisation.Node.Color
             colors.Value = colorArray;
         }
 
+        /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
         protected override void ClearOutput()
         {
             colors.UndefineValue();
