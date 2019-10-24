@@ -52,6 +52,7 @@ namespace Narupa.Visualisation.Editor
 
             if (valueProperty.isArray && valueProperty.type != "string")
             {
+                // Don't draw arrays in the editor.
                 EditorGUI.HelpBox(position, "Set array input from within code.", MessageType.None);
             }
             else
@@ -103,19 +104,24 @@ namespace Narupa.Visualisation.Editor
         private void DrawValueGui(SerializedProperty property, Rect rect)
         {
             var valueSerializedProperty = GetValueProperty(property);
+            
+            // Draw a property field, wrapping in a ChangeCheck to 
+            // check if its been changed, and dirty the underlying
+            // field if so
             EditorGUI.BeginChangeCheck();
             EditorGUI.PropertyField(rect, valueSerializedProperty, GUIContent.none, true);
             if (EditorGUI.EndChangeCheck())
             {
+                // Get the underlying field as a Property
                 var obj = GetVisualisationBaseObject(property.serializedObject.targetObject);
-
                 var field = obj.GetType()
                                .GetFieldInSelfOrParents(property.name, BindingFlags.Instance
                                                                      | BindingFlags.Public
                                                                      | BindingFlags.NonPublic)
                                ?.GetValue(obj) as Property.Property;
+
                 if (field != null)
-                    field.IsDirty = true;
+                    field.MarkValueAsChanged();
             }
         }
         

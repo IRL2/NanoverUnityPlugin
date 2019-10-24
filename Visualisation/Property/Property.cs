@@ -35,7 +35,7 @@ namespace Narupa.Visualisation.Property
             if (isValueProvided)
             {
                 isValueProvided = false;
-                OnValueChanged();
+                MarkValueAsChanged();
             }
         }
 
@@ -59,6 +59,11 @@ namespace Narupa.Visualisation.Property
         public abstract Type PropertyType { get; }
         
         public bool IsDirty { get; set; } = true;
+
+        public virtual void MarkValueAsChanged()
+        {
+            IsDirty = true;
+        }
     }
 
     /// <summary>
@@ -89,6 +94,12 @@ namespace Narupa.Visualisation.Property
             }
         }
 
+        public override void MarkValueAsChanged()
+        {
+            base.MarkValueAsChanged();
+            OnValueChanged();
+        }
+
         /// <inheritdoc cref="IProperty{TValue}.Value" />
         public virtual TValue Value
         {
@@ -106,8 +117,7 @@ namespace Narupa.Visualisation.Property
                 LinkedProperty = null;
                 HasValue = true;
                 this.value = value;
-                IsDirty = true;
-                OnValueChanged();
+                MarkValueAsChanged();
             }
         }
 
@@ -121,6 +131,9 @@ namespace Narupa.Visualisation.Property
             get => linkedProperty;
             set
             {
+                if (linkedProperty == value)
+                    return;
+                
                 if (value == this)
                     throw new ArgumentException("Cannot link property to itself!");
 
@@ -135,11 +148,12 @@ namespace Narupa.Visualisation.Property
 
 
                 if (linkedProperty != null)
-                    linkedProperty.ValueChanged -= LinkedPropertyOnValueChanged;
+                    linkedProperty.ValueChanged -= MarkValueAsChanged;
                 linkedProperty = value;
                 if (linkedProperty != null)
-                    linkedProperty.ValueChanged += LinkedPropertyOnValueChanged;
-                IsDirty = true;
+                    linkedProperty.ValueChanged += MarkValueAsChanged;
+                
+                MarkValueAsChanged();
             }
         }
 
@@ -148,7 +162,6 @@ namespace Narupa.Visualisation.Property
         {
             LinkedProperty = null;
             base.UndefineValue();
-            IsDirty = true;
         }
 
         /// <summary>
@@ -157,11 +170,6 @@ namespace Narupa.Visualisation.Property
         public static implicit operator TValue(Property<TValue> property)
         {
             return property.Value;
-        }
-
-        private void LinkedPropertyOnValueChanged()
-        {
-            IsDirty = true;
         }
 
         public override Type PropertyType => typeof(TValue);
