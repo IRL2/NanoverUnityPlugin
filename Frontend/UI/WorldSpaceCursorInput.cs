@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 namespace Narupa.Frontend.UI
 {
     /// <summary>
-    /// Implementation of <see cref="BaseInput" /> that uses a physical object's near a canvas as a
+    /// Implementation of <see cref="BaseInput" /> that uses a physical object's near a
+    /// canvas as a
     /// mouse pointer.
     /// </summary>
     public class WorldSpaceCursorInput : BaseInput
@@ -35,7 +36,9 @@ namespace Narupa.Frontend.UI
         }
 
         /// <summary>
-        /// Register a canvas with a controller pivot and a click action.
+        /// Register a canvas with an <see cref="IPosedObject" /> to provide the location
+        /// of the physical cursor and an <see cref="IButton" /> to provide information on
+        /// if a click is occuring.
         /// </summary>
         public void RegisterCanvas(Canvas canvas,
                                    IPosedObject cursor,
@@ -83,7 +86,8 @@ namespace Narupa.Frontend.UI
 
 
         /// <summary>
-        /// Get the projection of the cursor onto the canvas, returning null if it is too far away
+        /// Get the projection of the cursor onto the canvas, returning null if it is too
+        /// far away.
         /// </summary>
         public Vector3? GetProjectedCursorPoint()
         {
