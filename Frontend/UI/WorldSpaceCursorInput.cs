@@ -1,19 +1,32 @@
+using System.Collections;
 using Narupa.Frontend.Input;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
 namespace Narupa.Frontend.UI
 {
     /// <summary>
     /// Implementation of <see cref="BaseInput" /> that uses a physical object's near a
-    /// canvas as a
-    /// mouse pointer.
+    /// canvas as a mouse pointer.
     /// </summary>
     public class WorldSpaceCursorInput : BaseInput
     {
-        private bool isInitialised = false;
+        private static WorldSpaceCursorInput Instance { get; set; }
 
-        public static WorldSpaceCursorInput Instance { get; private set; }
+        [SerializeField]
+        private Camera camera;
+
+        private IPosedObject cursor;
+        private Canvas canvas;
+        private IButton clickButton;
+
+        private float distanceToCanvas;
+        private Vector2 screenPosition;
+        private bool isCursorOnCanvas;
+
+        private bool previousClickState = false;
+        private bool currentClickState = false;
 
         protected override void Awake()
         {
@@ -21,32 +34,40 @@ namespace Narupa.Frontend.UI
             Instance = this;
         }
 
+        protected override void Start()
+        {
+            base.Start();
+            StartCoroutine(InitialiseWhenInputModuleReady());
+        }
+
         private void Update()
         {
-            if (!isInitialised && EventSystem.current.currentInputModule != null)
-            {
-                var eventSystem = EventSystem.current;
-                var inputModule = eventSystem.currentInputModule;
+            Vector3? worldPoint;
+            worldPoint = GetProjectedCursorPoint();
 
-                inputModule.inputOverride = this;
-                isInitialised = true;
+            isCursorOnCanvas = worldPoint.HasValue;
+            if (worldPoint.HasValue)
+            {
+                screenPosition = camera.WorldToScreenPoint(worldPoint.Value);
             }
 
-            UpdateInput();
+            previousClickState = currentClickState;
+            currentClickState = mousePresent && clickButton.IsPressed;
         }
 
         /// <summary>
-        /// Register a canvas with an <see cref="IPosedObject" /> to provide the location
+        /// Sets the canvas with an <see cref="IPosedObject" /> to provide the location
         /// of the physical cursor and an <see cref="IButton" /> to provide information on
         /// if a click is occuring.
         /// </summary>
-        public void RegisterCanvas(Canvas canvas,
-                                   IPosedObject cursor,
-                                   IButton click)
+        public static void SetCanvasAndCursor(Canvas canvas,
+                                              IPosedObject cursor,
+                                              IButton click)
         {
-            this.canvas = canvas;
-            this.cursor = cursor;
-            clickButton = click;
+            Assert.IsNotNull(Instance);
+            Instance.canvas = canvas;
+            Instance.cursor = cursor;
+            Instance.clickButton = click;
         }
 
         /// <summary>
@@ -58,38 +79,26 @@ namespace Narupa.Frontend.UI
             cursor = null;
         }
 
-        private IPosedObject cursor;
-        private Canvas canvas;
-        private IButton clickButton;
-
-        [SerializeField]
-        private Camera camera;
-
-        private float distanceToCanvas;
-        private Vector2 screenPosition;
-        private bool isCursorOnCanvas;
-
-        private void UpdateInput()
+        /// <summary>
+        /// Coroutine that waits until the <see cref="EventSystem" /> has prepared the
+        /// input module before overriding the input.
+        /// </summary>
+        private IEnumerator InitialiseWhenInputModuleReady()
         {
-            Vector3? worldPoint;
-            worldPoint = GetProjectedCursorPoint();
+            while (EventSystem.current.currentInputModule == null)
+                yield return new WaitForEndOfFrame();
 
-            isCursorOnCanvas = worldPoint.HasValue;
-            if (worldPoint.HasValue)
-            {
-                screenPosition = camera.WorldToScreenPoint(worldPoint.Value);
-            }
+            var eventSystem = EventSystem.current;
+            var inputModule = eventSystem.currentInputModule;
 
-            prevState = currentState;
-            currentState = mousePresent && clickButton.IsPressed;
+            inputModule.inputOverride = this;
         }
-
 
         /// <summary>
         /// Get the projection of the cursor onto the canvas, returning null if it is too
         /// far away.
         /// </summary>
-        public Vector3? GetProjectedCursorPoint()
+        private Vector3? GetProjectedCursorPoint()
         {
             if (cursor?.Pose == null)
                 return null;
@@ -104,26 +113,28 @@ namespace Narupa.Frontend.UI
             return world;
         }
 
-        private bool prevState = false;
-        private bool currentState = false;
-
+        /// <inheritdoc cref="BaseInput.mousePosition" />
         public override Vector2 mousePosition => screenPosition;
 
+        /// <inheritdoc cref="BaseInput.mousePresent" />
         public override bool mousePresent => isCursorOnCanvas;
 
+        /// <inheritdoc cref="BaseInput.GetMouseButtonDown" />
         public override bool GetMouseButtonDown(int button)
         {
-            return button == 0 && currentState && !prevState;
+            return button == 0 && currentClickState && !previousClickState;
         }
 
+        /// <inheritdoc cref="BaseInput.GetMouseButton" />
         public override bool GetMouseButton(int button)
         {
-            return button == 0 && currentState;
+            return button == 0 && currentClickState;
         }
 
+        /// <inheritdoc cref="BaseInput.GetMouseButtonUp" />
         public override bool GetMouseButtonUp(int button)
         {
-            return button == 0 && !currentState && prevState;
+            return button == 0 && !currentClickState && previousClickState;
         }
     }
 }

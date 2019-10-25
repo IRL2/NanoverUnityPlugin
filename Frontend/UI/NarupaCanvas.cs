@@ -22,12 +22,24 @@ namespace Narupa.Frontend.UI
     [RequireComponent(typeof(Canvas))]
     public class NarupaCanvas : MonoBehaviour
     {
+        /// <summary>
+        /// The controller that can interact with this canvas.
+        /// </summary>
+        /// <remarks>
+        /// Currently, only one controller can interact with a given canvas.
+        /// </remarks>
         [SerializeField]
         private VrController controller;
 
+        /// <summary>
+        /// The SteamVR action that triggers a virtual mouse click for the UI.
+        /// </summary>
         [SerializeField]
         private SteamVR_Action_Boolean inputAction;
 
+        /// <summary>
+        /// The input source to use for <see cref="inputAction" />.
+        /// </summary>
         [SerializeField]
         private SteamVR_Input_Sources inputSource;
 
@@ -49,10 +61,9 @@ namespace Narupa.Frontend.UI
         /// </summary>
         protected virtual void RegisterCanvas()
         {
-            Assert.IsNotNull(WorldSpaceCursorInput.Instance);
-            WorldSpaceCursorInput.Instance.RegisterCanvas(canvas,
-                                                          controller.HeadPose,
-                                                          inputAction.WrapAsButton(inputSource));
+            WorldSpaceCursorInput.SetCanvasAndCursor(canvas,
+                                                     controller.HeadPose,
+                                                     inputAction.WrapAsButton(inputSource));
         }
     }
 }

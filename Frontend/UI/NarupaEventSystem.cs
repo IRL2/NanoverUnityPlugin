@@ -3,8 +3,8 @@ using UnityEngine.EventSystems;
 namespace Narupa.Frontend.UI
 {
     /// <summary>
-    /// Override the Unity <see cref="EventSystem"/> so that losing application focus does not affect the
-    /// UI.
+    /// Override for <see cref="EventSystem" /> so that losing application focus
+    /// does not affect the UI.
     /// </summary>
     public class NarupaEventSystem : EventSystem
     {

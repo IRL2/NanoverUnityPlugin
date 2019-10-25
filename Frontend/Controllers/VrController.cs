@@ -8,8 +8,7 @@ using UnityEngine;
 namespace Narupa.Frontend.Controllers
 {
     /// <summary>
-    /// Component that indicates the root game object responsible for representing a
-    /// controller that is in the scene.
+    /// The persistent script to represent a left or right controller in VR.
     /// </summary>
     /// <remarks>
     /// This class exposes various poses (such as cursor and grip points) in a way that
@@ -25,7 +24,7 @@ namespace Narupa.Frontend.Controllers
         public void ResetController(VrControllerPrefab controller)
         {
             IsControllerActive = controller != null;
-            
+
             SetupPose(ref cursor, controller?.Cursor, cursorPose, OnCursorPoseChanged);
             SetupPose(ref grip, controller?.Grip, gripPose, OnGripPoseChanged);
             SetupPose(ref head, controller?.Head, headPose, OnHeadPoseChanged);
@@ -64,7 +63,7 @@ namespace Narupa.Frontend.Controllers
         {
             gripPose.SetPose(grip.Pose);
         }
-        
+
         private void OnHeadPoseChanged()
         {
             headPose.SetPose(cursor.Pose);
@@ -82,7 +81,7 @@ namespace Narupa.Frontend.Controllers
         /// The pose marking the location of a gripped hand.
         /// </summary>
         public IPosedObject GripPose => gripPose;
-        
+
         /// <summary>
         /// The pose marking the location where the bulk of the controller is
         /// </summary>
@@ -104,7 +103,7 @@ namespace Narupa.Frontend.Controllers
 
         public void InstantiateCursorGizmo(GameObject interactionGizmo)
         {
-            if(cursorGizmo != null)
+            if (cursorGizmo != null)
                 Destroy(cursorGizmo);
             if (cursor != null)
             {

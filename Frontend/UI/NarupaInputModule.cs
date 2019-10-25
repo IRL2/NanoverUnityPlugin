@@ -4,19 +4,23 @@ using UnityEngine.EventSystems;
 namespace Narupa.Frontend.UI
 {
     /// <summary>
-    /// Override of the default Unity <see cref="StandaloneInputModule"/> that exposes the current hovered game object.
+    /// Override for <see cref="StandaloneInputModule" /> that exposes
+    /// the current hovered game object.
     /// </summary>
     public class NarupaInputModule : StandaloneInputModule
     {
-        private static PointerEventData GetPointerEventData(int pointerId = -1)
+        /// <summary>
+        /// Get the <see cref="PointerEventData"/> for the UI.
+        /// </summary>
+        /// <remarks>
+        /// Exposes the protected method <see cref="StandaloneInputModule.GetPointerData"/>.
+        /// </remarks>
+        private PointerEventData GetPointerEventData(int pointerId = -1)
         {
             PointerEventData eventData;
-            Instance.GetPointerData(pointerId, out eventData, true);
+            GetPointerData(pointerId, out eventData, true);
             return eventData;
         }
-
-        private static NarupaInputModule Instance
-            => EventSystem.current.currentInputModule as NarupaInputModule;
 
         /// <summary>
         /// Get the current hovered over game object.
