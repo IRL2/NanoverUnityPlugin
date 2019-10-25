@@ -10,24 +10,33 @@ namespace Narupa.Frontend.Controllers
     public class VrControllerPrefab : MonoBehaviour
     {
         [SerializeField]
-        private ControllerPivot gripPose;
+        private ControllerPivot cursor;
 
         [SerializeField]
-        private ControllerCursor cursor;
-
+        private ControllerPivot grip;
+        
+        [SerializeField]
+        private ControllerPivot head;
+        
         /// <summary>
         /// The cursor point where tools should be centered.
         /// </summary>
-        public ControllerCursor Cursor => cursor;
+        public ControllerPivot Cursor => cursor;
 
         /// <summary>
-        /// The pivot marking the center of the controller.
+        /// The pivot marking the grip of the controller.
         /// </summary>
-        public ControllerPivot GripPose => gripPose;
+        public ControllerPivot Grip => grip;
+        
+        /// <summary>
+        /// The pivot marking the physical bulk of the controller.
+        /// </summary>
+        public ControllerPivot Head => head;
 
         private void Awake()
         {
-            Assert.IsNotNull(gripPose);
+            Assert.IsNotNull(grip);
+            Assert.IsNotNull(head);
             Assert.IsNotNull(cursor);
         }
     }

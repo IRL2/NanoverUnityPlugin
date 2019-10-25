@@ -35,7 +35,15 @@ namespace Narupa.Frontend.Controllers
         }
 
         /// <inheritdoc cref="IPosedObject.Pose" />
-        public Transformation? Pose => Transformation.FromTransform(transform);
+        public Transformation? Pose
+        {
+            get
+            {
+                var transformation = Transformation.FromTransform(transform);
+                transformation.Scale = Vector3.one * radius;
+                return transformation;
+            }
+        }
 
         /// <inheritdoc cref="IPosedObject.PoseChanged" />
         public event Action PoseChanged;

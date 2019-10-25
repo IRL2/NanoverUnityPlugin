@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3862733673415153312}
   - component: {fileID: 7461278536000598049}
   m_Layer: 0
-  m_Name: Cursor
+  m_Name: Controller Cursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,6 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1614558393225009984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f184af3b80d744b42b9b72f7f7f9570b, type: 3}
+  m_Script: {fileID: 11500000, guid: 51bc0c4f3b864bad808af7c85b67ca49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 0.025
