@@ -7,7 +7,7 @@ using Valve.VR;
 namespace Narupa.Frontend.UI
 {
     /// <summary>
-    /// Implementation of <see cref="BaseInput" /> that uses a physical object's near a canvas as a
+    /// Implementation of <see cref="BaseInput" /> that uses a physical object near a canvas as a
     /// mouse pointer.
     /// </summary>
     public class WorldSpaceCursorInput : BaseInput
