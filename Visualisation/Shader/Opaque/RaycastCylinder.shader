@@ -31,6 +31,7 @@ Shader "NarupaXR/Opaque/Raycast Cylinder"
             #define EDGE_ARRAY
             #pragma multi_compile __ SCALE_ARRAY
             #pragma multi_compile __ COLOR_ARRAY
+            #pragma multi_compile __ FILTER_ARRAY
             
             #include "../Base/RaycastCylinder.cginc"
             

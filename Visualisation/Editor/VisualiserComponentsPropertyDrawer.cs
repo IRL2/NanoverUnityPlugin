@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
@@ -115,17 +116,55 @@ namespace Narupa.Visualisation.Editor
             public SerializedProperty DestinationProperty;
         }
 
+        class ValidShortcut
+        {
+            public GUIContent Label;
+            public Object Source;
+            public string Name;
+        }
+
+        static IEnumerable<ValidShortcut> GetShortcuts(MonoBehaviour behaviour,
+                                                       Type destinationType)
+        {
+            if (behaviour == null)
+                yield break;
+            var go = behaviour.gameObject;
+            foreach (var shortcut in GetShortcuts(go, destinationType)) 
+                yield return shortcut;
+        }
+
+        private static IEnumerable<ValidShortcut> GetShortcuts(GameObject go, Type destinationType)
+        {
+            foreach (var obj in go.GetComponents<VisualisationComponent>())
+            {
+                var comp = GetVisualisationBaseObject(obj);
+                var fields = comp.GetType()
+                                 .GetFieldsInSelfOrParents(BindingFlags.Instance
+                                                         | BindingFlags.NonPublic
+                                                         | BindingFlags.Public)
+                                 .Where(field => GetPropertyType(field.GetValue(comp)) ==
+                                                 destinationType);
+                foreach (var field in fields)
+                {
+                    yield return new ValidShortcut
+                    {
+                        Label = new GUIContent($"{go.name}[{comp.GetType().Name}]: {field.Name}"),
+                        Source = obj,
+                        Name = field.Name
+                    };
+                }
+            }
+            if(go.transform.parent != null)
+                foreach (var shortcut in GetShortcuts(go.transform.parent.gameObject,
+                                                      destinationType))
+                    yield return shortcut;
+        }
+
         private static void DrawSourceForLinkedProperty(Rect rect, SerializedInputLink link)
         {
             var sourceFieldWidth = 96;
-            var sourceComponentRect = new Rect(rect.x,
-                                               rect.y,
-                                               rect.width - sourceFieldWidth - 4,
-                                               rect.height);
-            var sourceFieldRect = new Rect(rect.xMax - sourceFieldWidth - 4,
-                                           rect.y,
-                                           sourceFieldWidth,
-                                           rect.height);
+
+            var sourceDropdownRect = new Rect(rect.x - 16, rect.y, 16, rect.height);
 
             var destinationObject =
                 GetVisualisationBaseObject(link.DestinationProperty.serializedObject.targetObject);
@@ -139,6 +178,32 @@ namespace Narupa.Visualisation.Editor
                                    .GetValue(destinationObject);
 
             var destinationType = GetPropertyType(destinationValue);
+
+            var shortcuts =
+                GetShortcuts(
+                    link.DestinationProperty.serializedObject.targetObject as MonoBehaviour,
+                    destinationType).ToArray();
+
+            var i = EditorGUI.Popup(sourceDropdownRect, -1, shortcuts
+                                                    .Select(shortcut => shortcut.Label)
+                                                    .ToArray());
+
+            if (i >= 0)
+            {
+                var shortcut = shortcuts[i];
+                link.SourceComponent.objectReferenceValue = shortcut.Source;
+                link.SourceProperty.stringValue = shortcut.Name;
+            }
+
+            var sourceComponentRect = new Rect(rect.x,
+                                               rect.y,
+                                               rect.width - sourceFieldWidth - 4,
+                                               rect.height);
+            var sourceFieldRect = new Rect(rect.xMax - sourceFieldWidth - 4,
+                                           rect.y,
+                                           sourceFieldWidth,
+                                           rect.height);
+
 
             EditorGUI.PropertyField(sourceComponentRect, link.SourceComponent, GUIContent.none);
 

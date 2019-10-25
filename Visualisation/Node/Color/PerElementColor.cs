@@ -15,7 +15,8 @@ namespace Narupa.Visualisation.Node.Color
     [Serializable]
     public abstract class PerElementColor : VisualiserColor
     {
-        private readonly ElementArrayProperty elements = new ElementArrayProperty();
+        [SerializeField]
+        private ElementArrayProperty elements = new ElementArrayProperty();
 
         /// <summary>
         /// Atomic element array input.

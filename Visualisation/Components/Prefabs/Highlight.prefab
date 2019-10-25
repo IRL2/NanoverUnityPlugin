@@ -10,12 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
-  - component: {fileID: 8528582866378757810}
   - component: {fileID: 8528582866378757809}
   - component: {fileID: 8528582866378757808}
   - component: {fileID: 8528582866378757823}
   m_Layer: 0
-  m_Name: Ball and Stick
+  m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,34 +49,11 @@ MonoBehaviour:
   inputLinkCollection: []
   node:
     parentAdaptor:
-      isValueProvided: 0
+      isValueProvided: 1
       value: {fileID: 0}
     particleFilter:
       isValueProvided: 0
       value: 
---- !u!114 &8528582866378757810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f2b3de3cca14b4c9cfc612f0e1d254b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
-    destinationFieldName: elements
-  node:
-    elements:
-      isValueProvided: 0
-      value: 
-    mapping:
-      isValueProvided: 1
-      value: {fileID: 11400000, guid: f1a9c849f018f42adbab12e856c0da60, type: 2}
 --- !u!114 &8528582866378757809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,19 +99,16 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757809}
     sourceFieldName: scales
     destinationFieldName: particleScales
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
-    destinationFieldName: particleColors
   node:
     material:
       isValueProvided: 1
-      value: {fileID: 2100000, guid: 8ab524378960e644f9a238927b43e467, type: 2}
+      value: {fileID: 2100000, guid: 83c9cf4769ff3f945b306bb6168a22ab, type: 2}
     mesh:
       isValueProvided: 1
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      value: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     bondScale:
       isValueProvided: 1
-      value: 0.06
+      value: 0.08
     bondPairs:
       isValueProvided: 0
       value: []
@@ -173,12 +146,12 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: particlePositions
     destinationFieldName: particlePositions
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
-    destinationFieldName: particleColors
   - sourceComponent: {fileID: 8528582866378757809}
     sourceFieldName: scales
     destinationFieldName: particleScales
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particleFilter
+    destinationFieldName: particleFilter
   node:
     particlePositions:
       isValueProvided: 0
@@ -194,13 +167,13 @@ MonoBehaviour:
       value: {r: 1, g: 1, b: 1, a: 1}
     rendererScale:
       isValueProvided: 1
-      value: 1
+      value: 1.2
     particleFilter:
       isValueProvided: 0
       value: 
     mesh:
       isValueProvided: 1
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      value: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     material:
       isValueProvided: 1
-      value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
+      value: {fileID: 2100000, guid: bc819f6f12ed6794fa7beb2ac4014658, type: 2}

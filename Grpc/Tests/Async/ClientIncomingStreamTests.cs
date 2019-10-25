@@ -179,7 +179,7 @@ namespace Narupa.Grpc.Tests.Async
             stream.MessageReceived += callback;
             var task = GetStreamTask(stream);
 
-            await Task.WhenAny(task, Task.Delay(150));
+            await Task.WhenAny(task, Task.Delay(180));
 
             callback.Received(2).Invoke(Arg.Any<TMessage>());
 

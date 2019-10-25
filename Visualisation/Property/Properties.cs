@@ -4,6 +4,7 @@
 using System;
 using Narupa.Core.Science;
 using Narupa.Frame;
+using Narupa.Visualisation.Components.Adaptor;
 using Narupa.Visualisation.Node.Color;
 using UnityEngine;
 
@@ -131,6 +132,14 @@ namespace Narupa.Visualisation.Property
     /// </summary>
     [Serializable]
     public class GradientProperty : Property<Gradient>
+    {
+    }
+    
+    /// <summary>
+    /// Serializable <see cref="Property" /> for a <see cref="FrameAdaptor" /> value.
+    /// </summary>
+    [Serializable]
+    public class FrameAdaptorProperty : Property<FrameAdaptor>
     {
     }
 

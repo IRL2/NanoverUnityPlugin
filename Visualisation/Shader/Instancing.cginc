@@ -8,7 +8,13 @@
     #define INSTANCING_CGINC_INCLUDED
     
     #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
-        #define instance_id unity_InstanceID
+    
+        #if defined(FILTER_ARRAY)
+            StructuredBuffer<int> FilterArray;
+            #define instance_id FilterArray[unity_InstanceID]
+        #else
+            #define instance_id unity_InstanceID
+        #endif
     #else
         #define instance_id 0
     #endif

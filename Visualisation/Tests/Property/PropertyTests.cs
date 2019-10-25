@@ -15,7 +15,7 @@ namespace Narupa.Visualisation.Tests.Property
         protected abstract TValue DifferentNonNullValue { get; }
 
         [Test]
-        public void InitialProperty_HasValue()
+        public void Initial_HasValue()
         {
             var property = new TProperty();
 
@@ -23,7 +23,7 @@ namespace Narupa.Visualisation.Tests.Property
         }
 
         [Test]
-        public void InitialProperty_HasNonNullValue()
+        public void Initial_HasNonNullValue()
         {
             var property = new TProperty();
 
@@ -31,7 +31,7 @@ namespace Narupa.Visualisation.Tests.Property
         }
 
         [Test]
-        public void InitialProperty_DefaultValue_HasValue()
+        public void Initial_DefaultValue_HasValue()
         {
             var property = new TProperty()
             {
@@ -40,9 +40,20 @@ namespace Narupa.Visualisation.Tests.Property
 
             Assert.IsTrue(property.HasValue);
         }
+        
+        [Test]
+        public void Initial_DefaultValue_GetValue()
+        {
+            var property = new TProperty()
+            {
+                Value = default
+            };
+
+            Assert.AreEqual(default(TValue), property.Value);
+        }
 
         [Test]
-        public void InitialProperty_DefaultValue_HasNonNullValue()
+        public void Initial_DefaultValue_HasNonNullValue()
         {
             var property = new TProperty()
             {
@@ -53,7 +64,7 @@ namespace Narupa.Visualisation.Tests.Property
         }
 
         [Test]
-        public void InitialProperty_ExampleValue_HasValue()
+        public void Initial_ExampleValue_HasValue()
         {
             var property = new TProperty()
             {
@@ -62,20 +73,9 @@ namespace Narupa.Visualisation.Tests.Property
 
             Assert.IsTrue(property.HasValue);
         }
-
+        
         [Test]
-        public void InitialProperty_ExampleValue_HasNonNullValue()
-        {
-            var property = new TProperty()
-            {
-                Value = ExampleNonNullValue
-            };
-
-            Assert.IsTrue(property.HasNonNullValue());
-        }
-
-        [Test]
-        public void InitialProperty_ExampleValue_Value()
+        public void Initial_ExampleValue_GetValue()
         {
             var property = new TProperty()
             {
@@ -85,9 +85,19 @@ namespace Narupa.Visualisation.Tests.Property
             Assert.AreEqual(ExampleNonNullValue, property.Value);
         }
 
-
         [Test]
-        public void InitialProperty_Value_Exception()
+        public void Initial_ExampleValue_HasNonNullValue()
+        {
+            var property = new TProperty()
+            {
+                Value = ExampleNonNullValue
+            };
+
+            Assert.IsTrue(property.HasNonNullValue());
+        }
+        
+        [Test]
+        public void Initial_GetValue_ThrowsException()
         {
             var property = new TProperty();
 
@@ -226,7 +236,7 @@ namespace Narupa.Visualisation.Tests.Property
         }
 
         [Test]
-        public void Initial_LinkedProperty()
+        public void Initial_LinkedProperty_IsNull()
         {
             var input = new TProperty();
             Assert.IsNull(input.LinkedProperty);
@@ -235,65 +245,88 @@ namespace Narupa.Visualisation.Tests.Property
         [Test]
         public void Linked_HasLinkedProperty()
         {
-            var input = new TProperty();
-            var output = new TProperty();
-            input.LinkedProperty = output;
+            var first = new TProperty();
+            var second = new TProperty();
+            second.LinkedProperty = first;
 
-            Assert.IsTrue(input.HasLinkedProperty);
+            Assert.IsTrue(second.HasLinkedProperty);
         }
 
         [Test]
         public void Linked_LinkedProperty()
         {
-            var input = new TProperty();
-            var output = new TProperty();
-            input.LinkedProperty = output;
+            var first = new TProperty();
+            var second = new TProperty();
+            second.LinkedProperty = first;
 
-            Assert.AreEqual(output, input.LinkedProperty);
+            Assert.AreEqual(first, second.LinkedProperty);
         }
 
         [Test]
         public void Linked_NoValue_HasValue()
         {
-            var input = new TProperty();
-            var output = new TProperty();
-            input.LinkedProperty = output;
+            var first = new TProperty();
+            var second = new TProperty();
+            second.LinkedProperty = first;
 
-            Assert.IsFalse(input.HasValue);
+            Assert.IsFalse(second.HasValue);
         }
 
         [Test]
         public void Linked_NoValue_Value_Exception()
         {
-            var input = new TProperty();
-            var output = new TProperty();
-            input.LinkedProperty = output;
+            var first = new TProperty();
+            var second = new TProperty();
+            second.LinkedProperty = first;
 
             TValue value;
-            Assert.Throws<InvalidOperationException>(() => value = input.Value);
+            Assert.Throws<InvalidOperationException>(() => value = second.Value);
         }
 
         [Test]
         public void Linked_ValueBeforeLinking_HasValue()
         {
-            var input = new TProperty();
-            var output = new TProperty();
-            output.Value = ExampleNonNullValue;
-            input.LinkedProperty = output;
+            var first = new TProperty();
+            var second = new TProperty();
+            first.Value = ExampleNonNullValue;
+            second.LinkedProperty = first;
 
-            Assert.IsTrue(input.HasValue);
+            Assert.IsTrue(second.HasValue);
+        }
+        
+        [Test]
+        public void Linked_ValueBeforeLinking_GetValue()
+        {
+            var first = new TProperty();
+            var second = new TProperty();
+            first.Value = ExampleNonNullValue;
+            second.LinkedProperty = first;
+
+            Assert.AreEqual(first.Value, second.Value);
         }
 
         [Test]
         public void Linked_ValueAfterLinking_HasValue()
         {
-            var input = new TProperty();
-            var output = new TProperty();
-            input.LinkedProperty = output;
+            var first = new TProperty();
+            var second = new TProperty();
+            second.LinkedProperty = first;
 
-            output.Value = ExampleNonNullValue;
+            first.Value = ExampleNonNullValue;
 
-            Assert.IsTrue(input.HasValue);
+            Assert.IsTrue(second.HasValue);
+        }
+        
+        [Test]
+        public void Linked_ValueAfterLinking_GetValue()
+        {
+            var first = new TProperty();
+            var second = new TProperty();
+            second.LinkedProperty = first;
+
+            first.Value = ExampleNonNullValue;
+
+            Assert.AreEqual(first.Value, second.Value);
         }
 
         [Test]
@@ -374,19 +407,19 @@ namespace Narupa.Visualisation.Tests.Property
         [Test]
         public void ValueOverridesLink_DirtyNoLongerOccurs()
         {
-            var input = new TProperty();
-            var output = new TProperty()
+            var second = new TProperty();
+            var first = new TProperty()
             {
                 Value = ExampleNonNullValue
             };
-            input.LinkedProperty = output;
+            second.LinkedProperty = first;
 
-            input.Value = DifferentNonNullValue;
-            input.IsDirty = false;
+            second.Value = DifferentNonNullValue;
+            second.IsDirty = false;
 
-            output.Value = DifferentNonNullValue;
+            first.Value = DifferentNonNullValue;
 
-            Assert.IsFalse(input.IsDirty);
+            Assert.IsFalse(second.IsDirty);
         }
 
         [Test]
@@ -602,6 +635,39 @@ namespace Narupa.Visualisation.Tests.Property
             var property = new TProperty();
 
            Assert.AreEqual(typeof(TValue), property.PropertyType);
+        }
+
+        [Test]
+        public void Chain_HasValue()
+        {
+            var first = new TProperty();
+            var second = new TProperty();
+            var third = new TProperty();
+
+            first.Value = ExampleNonNullValue;
+            second.LinkedProperty = first;
+            third.LinkedProperty = second;
+            
+            Assert.AreEqual(ExampleNonNullValue, third.Value);
+        }
+        
+        [Test]
+        public void Chain_ReceivesUpdate()
+        {
+            var first = new TProperty();
+            var second = new TProperty();
+            var third = new TProperty();
+
+            second.LinkedProperty = first;
+            third.LinkedProperty = second;
+
+            var callback = Substitute.For<Action>();
+
+            third.ValueChanged += callback;
+
+            first.Value = ExampleNonNullValue;
+            
+            callback.Received(1);
         }
     }
 }
