@@ -60,7 +60,7 @@ namespace Narupa.Frontend.UI
         protected Vector2 CursorScreenPosition => camera.WorldToScreenPoint(CursorProjectedPosition);
 
         /// <summary>
-        /// Get the world position if worldPoint is projected onto the xy plane of the nearest canvas.
+        /// Get the world position of worldPoint projected onto the xy plane of the nearest canvas.
         /// </summary>
         public Vector3 ProjectOntoXyPlane(Vector3 worldPoint, IReadOnlyCollection<Canvas> canvases)
         {
