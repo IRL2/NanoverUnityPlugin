@@ -18,8 +18,11 @@ update_plugin:
     - git clone https://intangibledocs:${PERSONAL_ACCESS_TOKEN}@gitlab.com/intangiblerealities/narupa-unity-plugin.git
     - git clone https://intangibledocs:${PERSONAL_ACCESS_TOKEN}@gitlab.com/intangiblerealities/narupa-applications/narupa-imd.git
     # copy the latest version of the Narupa plugin from iMD to Narupa plugin repo
-    - rm -r narupa-unity-plugin/Narupa
-    - cp -r narupa-imd/Assets/Plugins/Narupa narupa-unity-plugin
+    - mkdir tmp
+    - mv narupa-unity-plugin/.git tmp
+    - rm -r narupa-unity-plugin/*
+    - cp -r narupa-imd/Assets/Plugins/Narupa/* narupa-unity-plugin
+    - mv tmp/.git narupa-unity-plugin/
     - cd narupa-unity-plugin
     - git add .
     - git status
