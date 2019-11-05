@@ -30,6 +30,9 @@ namespace Narupa.Visualisation.Editor
             if (PrefabStageUtility.GetCurrentPrefabStage() == null)
                 return;
 
+            if (!isValidPrefabForVisualisation)
+                return;
+
             Handles.BeginGUI();
 
             var titleWidth = EditorStyles.miniBoldLabel.CalcSize(new GUIContent(currentTitle)).x;
@@ -45,7 +48,7 @@ namespace Narupa.Visualisation.Editor
                                       structure,
                                       EditorStyles.toolbarTextField);
             structure = structure.Trim().ToUpper();
-            if (GUI.Button(new Rect(2 + 48 + 2 + 36 + 4, 0, 76+40, 32),
+            if (GUI.Button(new Rect(2 + 48 + 2 + 36 + 4, 0, 76 + 40, 32),
                            "Load Structure",
                            EditorStyles.toolbarButton))
             {
@@ -55,7 +58,7 @@ namespace Narupa.Visualisation.Editor
             var x = 2 + 48 + 2 + 36 + 4 + 72 + 4 + 40;
 
             GUI.enabled = currentMolecule != null;
-            
+
             if (GUI.Button(new Rect(x, 0, 76, 32),
                            "Show File",
                            EditorStyles.toolbarButton))
@@ -73,18 +76,35 @@ namespace Narupa.Visualisation.Editor
             Handles.EndGUI();
         }
 
-        static void OnPrefabStageOpened(PrefabStage prefabStage)
+        private static bool isValidPrefabForVisualisation = false;
+
+        private static void OnPrefabStageOpened(PrefabStage prefabStage)
         {
-            currentFile = EditorPrefs.GetString("visualiser.prefab.file");
-            if (currentFile != null && File.Exists(currentFile))
-                LoadFile(currentFile);
+            try
+            {
+                if (prefabStage.prefabContentsRoot.GetComponentInChildren<IFrameConsumer>() == null)
+                {
+                    isValidPrefabForVisualisation = false;
+                    return;
+                }
+
+                isValidPrefabForVisualisation = true;
+                currentFile = EditorPrefs.GetString("visualiser.prefab.file");
+                if (currentFile != null && File.Exists(currentFile))
+                    LoadFile(currentFile);
+            }
+            catch (Exception e)
+            {
+                // Need to catch all exceptions here, otherwise Editor can bug out.
+                Debug.LogException(e);
+            }
         }
 
         private static string currentFile = "";
 
         private static bool downloading = false;
 
-        static void LoadProtein(string id)
+        private static void LoadProtein(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return;
@@ -169,7 +189,7 @@ namespace Narupa.Visualisation.Editor
 
         private static FrameSource currentMolecule = null;
 
-        class FrameSource : ITrajectorySnapshot
+        private class FrameSource : ITrajectorySnapshot
         {
             public FrameSource(Frame.Frame frame)
             {
