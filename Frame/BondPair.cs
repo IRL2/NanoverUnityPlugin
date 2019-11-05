@@ -31,5 +31,17 @@ namespace Narupa.Frame
             A = a;
             B = b;
         }
+
+        public int this[int i]
+        {
+            get
+            {
+                if (i == 0)
+                    return A;
+                if (i == 1)
+                    return B;
+                throw new IndexOutOfRangeException();
+            }
+        }
     }
 }
