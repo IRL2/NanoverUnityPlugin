@@ -50,7 +50,7 @@ namespace Narupa.Visualisation.Editor
 
             var valueProperty = GetValueProperty(property);
 
-            if (valueProperty.isArray && valueProperty.type != "string")
+            if (valueProperty == null || (valueProperty.isArray && valueProperty.type != "string"))
             {
                 // Don't draw arrays in the editor.
                 EditorGUI.HelpBox(position, "Set array input from within code.", MessageType.None);

@@ -11,10 +11,7 @@ namespace Narupa.Visualisation.Node.Renderer
         private Mesh mesh;
 
         [SerializeField]
-        private Material materialFront;
-
-        [SerializeField]
-        private Material materialBack;
+        private Material material;
 
         [SerializeField]
         private SelectionArrayProperty cycles = new SelectionArrayProperty();
@@ -27,6 +24,9 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private ColorArrayProperty cyclesColor = new ColorArrayProperty();
+
+        [SerializeField]
+        private FloatProperty offset = new FloatProperty();
 
         public Transform Transform { get; set; }
 
@@ -41,12 +41,16 @@ namespace Narupa.Visualisation.Node.Renderer
                 {
                     GenerateCycleMeshes();
                 }
+
                 cycles.IsDirty = false;
                 particlePositions.IsDirty = false;
             }
 
-            Graphics.DrawMesh(mesh, Transform.localToWorldMatrix, materialFront, 0, camera);
-            Graphics.DrawMesh(mesh, Transform.localToWorldMatrix, materialBack, 0, camera);
+            var block = new MaterialPropertyBlock();
+            if (offset.HasValue)
+                block.SetFloat("_Offset", offset.Value);
+
+            Graphics.DrawMesh(mesh, Transform.localToWorldMatrix, material, 0, camera, 0, block);
         }
 
         private Vector3[] vertices = new Vector3[0];
@@ -92,7 +96,8 @@ namespace Narupa.Visualisation.Node.Renderer
             var positionArray = particlePositions.Value;
             var colorArray = cyclesColor.HasNonEmptyValue() ? cyclesColor.Value : null;
 
-            var particleColorArray = particleColors.HasNonEmptyValue() ? particleColors.Value : null;
+            var particleColorArray =
+                particleColors.HasNonEmptyValue() ? particleColors.Value : null;
 
             var vertexIndex = 0;
             var normalIndex = 0;
