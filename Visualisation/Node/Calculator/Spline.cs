@@ -40,7 +40,7 @@ namespace Narupa.Visualisation.Node.Calculator
 
         public void Refresh()
         {
-            if ((pointSequences.IsDirty || pointColors.IsDirty))
+            if (pointPositions.HasValue && (pointSequences.IsDirty || pointColors.IsDirty))
             {
                 SetupHermiteSplines();
                 pointSequences.IsDirty = false;

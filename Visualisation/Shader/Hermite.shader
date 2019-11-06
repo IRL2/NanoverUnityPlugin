@@ -22,8 +22,6 @@
             
             #pragma instancing_options procedural:procedural_setup
             
-            #define SPLINE_ARRAY
-            
             #include "Instancing.cginc" 
             
             

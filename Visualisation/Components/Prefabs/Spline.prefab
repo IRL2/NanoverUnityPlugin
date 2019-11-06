@@ -253,12 +253,12 @@ MonoBehaviour:
     sourceFieldName: splineSegments
     destinationFieldName: splineSegments
   node:
-    useBox: 1
+    useBox: 0
     splineSegments:
       isValueProvided: 0
       value: []
-    segments: 1
-    sides: 1
+    segments: 8
+    sides: 16
     material: {fileID: 2100000, guid: 50f24c4e50529f4439fed9e44de0bd49, type: 2}
     splineRadius:
       isValueProvided: 1
