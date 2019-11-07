@@ -197,23 +197,24 @@ namespace Narupa.Visualisation.Components
             ClearUpInvalidLinks();
         }
 
-        public IEnumerable<(string name, Type type)> GetPotentialProperties()
+        /// <inheritdoc cref="IPropertyProvider.GetPotentialProperties" />
+        public virtual IEnumerable<(string name, Type type)> GetPotentialProperties()
         {
             yield break;
         }
 
         /// <inheritdoc cref="IPropertyProvider.GetProperty" />
-        public virtual Property.Property GetProperty(string name)
+        public virtual IReadOnlyProperty GetProperty(string name)
         {
             var node = GetWrappedVisualisationNode();
             var field = GetWrappedNodeField(name);
             if (field == null)
                 return null;
-            return field.GetValue(node) as Property.Property;
+            return field.GetValue(node) as IReadOnlyProperty;
         }
 
         /// <inheritdoc cref="IPropertyProvider.GetProperties" />
-        public virtual IEnumerable<(string name, Property.Property property)> GetProperties()
+        public virtual IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
         {
             var node = GetWrappedVisualisationNode();
 
@@ -222,15 +223,16 @@ namespace Narupa.Visualisation.Components
                                         | BindingFlags.NonPublic
                                         | BindingFlags.Public);
 
-            var validFields = allFields.Where(field => typeof(Property.Property).IsAssignableFrom(
+            var validFields = allFields.Where(field => typeof(IReadOnlyProperty).IsAssignableFrom(
                                                   field.FieldType
                                               ));
 
             return validFields.Select(field => (field.Name,
                                                 field.GetValue(node) as
-                                                    Property.Property));
+                                                    IReadOnlyProperty));
         }
 
+        /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}" />
         public virtual IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
         {
             if (GetProperty(name) is IReadOnlyProperty<T> property)

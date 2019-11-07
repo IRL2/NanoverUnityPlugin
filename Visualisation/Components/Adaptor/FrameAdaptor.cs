@@ -34,7 +34,8 @@ namespace Narupa.Visualisation.Components.Adaptor
             node.Refresh();
         }
 
-        public IEnumerable<(string name, Type type)> GetPotentialProperties()
+        /// <inheritdoc cref="IPropertyProvider.GetPotentialProperties" />
+        public override IEnumerable<(string name, Type type)> GetPotentialProperties()
         {
             yield return (FrameData.BondArrayKey, typeof(BondPair[]));
             yield return (FrameData.BondOrderArrayKey, typeof(int[]));
@@ -53,7 +54,8 @@ namespace Narupa.Visualisation.Components.Adaptor
             yield return (FrameData.ResidueNameArrayKey, typeof(string[]));
         }
 
-        public override IEnumerable<(string name, Property.Property property)> GetProperties()
+        /// <inheritdoc cref="IPropertyProvider.GetProperties" />
+        public override IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
         {
             foreach (var existing in base.GetProperties())
                 yield return existing;
@@ -61,11 +63,13 @@ namespace Narupa.Visualisation.Components.Adaptor
                 yield return (key, property);
         }
 
-        public override Property.Property GetProperty(string name)
+        /// <inheritdoc cref="IPropertyProvider.GetProperty" />
+        public override IReadOnlyProperty GetProperty(string name)
         {
-            return base.GetProperty(name) ?? node.GetProperty(name);
+            return base.GetProperty(name) ?? node.GetExistingProperty(name);
         }
 
+        /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}" />
         public override IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
         {
             if (GetProperty(name) is IReadOnlyProperty<T> property)

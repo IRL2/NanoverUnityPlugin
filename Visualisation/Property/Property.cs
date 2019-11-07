@@ -12,7 +12,7 @@ namespace Narupa.Visualisation.Property
     /// value is changed.
     /// </summary>
     [Serializable]
-    public abstract class Property
+    public abstract class Property : IProperty
     {
         /// <summary>
         /// Callback for when the value is changed or undefined.
@@ -27,9 +27,7 @@ namespace Narupa.Visualisation.Property
             ValueChanged?.Invoke();
         }
 
-        /// <summary>
-        /// Undefine the value of this property.
-        /// </summary>
+        /// <inheritdoc cref="IProperty.UndefineValue"/>
         public virtual void UndefineValue()
         {
             if (isValueProvided)
@@ -46,28 +44,43 @@ namespace Narupa.Visualisation.Property
         [SerializeField]
         private bool isValueProvided;
 
-        /// <summary>
-        /// Does this property define a value
-        /// </summary>
+        /// <inheritdoc cref="IReadOnlyProperty.HasValue"/>
         public virtual bool HasValue
         {
             get => isValueProvided;
             protected set => isValueProvided = value;
         }
-
-
+        
+        /// <inheritdoc cref="IProperty.PropertyType"/>
         public abstract Type PropertyType { get; }
 
+        /// <summary>
+        /// Has the value of the property changed since the last time the <see cref="IsDirty"/> flag was cleared.
+        /// </summary>
         public bool IsDirty { get; set; } = true;
 
+        /// <summary>
+        /// Mark the value as having changed.
+        /// </summary>
         public virtual void MarkValueAsChanged()
         {
             IsDirty = true;
         }
+        
+        /// <summary>
+        /// Does this property link to another?
+        /// </summary>
+        public abstract bool HasLinkedProperty { get; }
 
+        /// <summary>
+        /// Attempt to set the value without knowing the types involved.
+        /// </summary>
         public abstract void TrySetValue(object value);
 
-        public abstract void TrySetLinkedProperty(object value);
+        /// <summary>
+        /// Attempt to set the linked property without knowing the types involved.
+        /// </summary>
+        public abstract void TrySetLinkedProperty(object property);
     }
 
     /// <summary>
@@ -98,6 +111,7 @@ namespace Narupa.Visualisation.Property
             }
         }
 
+        /// <inheritdoc cref="Property.MarkValueAsChanged" />
         public override void MarkValueAsChanged()
         {
             base.MarkValueAsChanged();
@@ -126,7 +140,7 @@ namespace Narupa.Visualisation.Property
         }
 
         /// <inheritdoc cref="IProperty{TValue}.HasLinkedProperty" />
-        public bool HasLinkedProperty => LinkedProperty != null;
+        public override bool HasLinkedProperty => LinkedProperty != null;
 
         /// <inheritdoc cref="IProperty{TValue}.LinkedProperty" />
         [CanBeNull]
@@ -176,8 +190,10 @@ namespace Narupa.Visualisation.Property
             return property.Value;
         }
 
+        /// <inheritdoc cref="Property.PropertyType" />
         public override Type PropertyType => typeof(TValue);
 
+        /// <inheritdoc cref="Property.TrySetValue" />
         public override void TrySetValue(object value)
         {
             if (value is TValue validValue)
@@ -188,6 +204,7 @@ namespace Narupa.Visualisation.Property
                 throw new ArgumentException();
         }
 
+        /// <inheritdoc cref="Property.TrySetLinkedProperty" />
         public override void TrySetLinkedProperty(object value)
         {
             if (value is IReadOnlyProperty<TValue> validValue)

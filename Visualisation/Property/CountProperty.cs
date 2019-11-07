@@ -27,5 +27,7 @@ namespace Narupa.Visualisation.Property
         public bool HasNonNullValue => property.HasNonNullValue();
 
         public event Action ValueChanged;
+
+        public Type PropertyType => typeof(int);
     }
 }
