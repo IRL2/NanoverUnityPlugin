@@ -1,24 +1,17 @@
-// Copyright (c) Intangible Realities Lab. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
+using System;
 using System.Collections.Generic;
+using Narupa.Visualisation.Property;
 
-namespace Narupa.Visualisation.Components
+namespace Narupa.Visualisation.Node.Adaptor
 {
-    /// <summary>
-    /// Indicates a class exposes raw <see cref="Property.Property" /> fields for use
-    /// with the Visualisation system.
-    /// </summary>
     public interface IPropertyProvider
     {
-        /// <summary>
-        /// Get a list of name <see cref="Property.Property" /> pairs.
-        /// </summary>
-        IEnumerable<(string name, Property.Property value)> GetProperties();
+        IEnumerable<(string name, Type type)> GetPotentialProperties();
 
-        /// <summary>
-        /// Get the property with the given name.
-        /// </summary>
         Property.Property GetProperty(string name);
+
+        IEnumerable<(string name, Property.Property property)> GetProperties();
+
+        IReadOnlyProperty<T> GetOrCreateProperty<T>(string name);
     }
 }

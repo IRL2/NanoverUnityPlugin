@@ -57,19 +57,23 @@ namespace Narupa.Visualisation.Property
 
 
         public abstract Type PropertyType { get; }
-        
+
         public bool IsDirty { get; set; } = true;
 
         public virtual void MarkValueAsChanged()
         {
             IsDirty = true;
         }
+
+        public abstract void TrySetValue(object value);
+
+        public abstract void TrySetLinkedProperty(object value);
     }
 
     /// <summary>
     /// Implementation of <see cref="IProperty{TValue}" /> for serialisation in Unity.
     /// </summary>
-    public abstract class Property<TValue> : Property, IProperty<TValue>
+    public class Property<TValue> : Property, IProperty<TValue>
     {
         /// <summary>
         /// A linked <see cref="Property" /> which can provide a value.
@@ -133,7 +137,7 @@ namespace Narupa.Visualisation.Property
             {
                 if (linkedProperty == value)
                     return;
-                
+
                 if (value == this)
                     throw new ArgumentException("Cannot link property to itself!");
 
@@ -152,7 +156,7 @@ namespace Narupa.Visualisation.Property
                 linkedProperty = value;
                 if (linkedProperty != null)
                     linkedProperty.ValueChanged += MarkValueAsChanged;
-                
+
                 MarkValueAsChanged();
             }
         }
@@ -173,5 +177,25 @@ namespace Narupa.Visualisation.Property
         }
 
         public override Type PropertyType => typeof(TValue);
+
+        public override void TrySetValue(object value)
+        {
+            if (value is TValue validValue)
+                Value = validValue;
+            else if (value == default)
+                Value = default;
+            else
+                throw new ArgumentException();
+        }
+
+        public override void TrySetLinkedProperty(object value)
+        {
+            if (value is IReadOnlyProperty<TValue> validValue)
+                LinkedProperty = validValue;
+            else if (value == null)
+                LinkedProperty = null;
+            else
+                throw new ArgumentException($"Cannot set linked property {value} for {this}");
+        }
     }
 }
