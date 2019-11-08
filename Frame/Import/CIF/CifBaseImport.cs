@@ -13,6 +13,10 @@ namespace Narupa.Frame.Import.CIF
     /// </summary>
     public abstract class CifBaseImport : LineByLineParser
     {
+        protected CifBaseImport(IProgress<string> progress = null) : base(progress)
+        {
+        }
+
         protected override void Parse()
         {
             while (HasLine)
@@ -248,6 +252,8 @@ namespace Narupa.Frame.Import.CIF
                 else
                 {
                     var dataItems = SplitWithDelimiter(CurrentLine);
+                    
+                    // Account for data items being spread across multiple lines
                     while (dataItems.Length < dataItemCount)
                     {
                         NextLine();

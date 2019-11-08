@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using Narupa.Core;
 using Narupa.Frame;
 using Narupa.Frame.Import.CIF;
+using Narupa.Frame.Import.CIF.Components;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
@@ -18,21 +20,60 @@ namespace Narupa.Visualisation.Editor
         {
             PrefabStage.prefabStageOpened += OnPrefabStageOpened;
             SceneView.duringSceneGui += SceneViewOnDuringSceneGui;
-
             EditorUtility.ClearProgressBar();
         }
 
-        private static string structure = "";
+        private static string structureId = "";
         private static string currentTitle = "";
 
+        private static string currentFile = "";
+        private static bool downloading = false;
+
+
+        /// <summary>
+        /// Show a progress message, potentially from another thread.
+        /// </summary>
+        /// <param name="threadSafe"></param>
+        private static void ShowProgressMessage(string message, bool threadSafe)
+        {
+            if (threadSafe)
+            {
+                EditorUtility.DisplayProgressBar("Import File", message, 0.5f);
+                queuedProgressMessage = null;
+            }
+            else
+            {
+                queuedProgressMessage = message;
+            }
+        }
+
+        private static void HideProgressMessage()
+        {
+            queuedProgressMessage = null;
+            EditorUtility.ClearProgressBar();
+        }
+
+        /// <summary>
+        /// Callback for drawing a GUI during a prefab view
+        /// </summary>
         private static void SceneViewOnDuringSceneGui(SceneView obj)
         {
             if (PrefabStageUtility.GetCurrentPrefabStage() == null)
                 return;
 
+            if (!string.IsNullOrEmpty(queuedProgressMessage))
+            {
+                ShowProgressMessage(queuedProgressMessage, true);
+            }
+
             if (!isValidPrefabForVisualisation)
                 return;
 
+            DrawGUI();
+        }
+
+        private static void DrawGUI()
+        {
             Handles.BeginGUI();
 
             var titleWidth = EditorStyles.miniBoldLabel.CalcSize(new GUIContent(currentTitle)).x;
@@ -44,15 +85,15 @@ namespace Narupa.Visualisation.Editor
             GUI.Label(new Rect(2, 0, 48, 28),
                       "Preview",
                       EditorStyles.miniBoldLabel);
-            structure = GUI.TextField(new Rect(2 + 48 + 2, 2, 36, 28),
-                                      structure,
-                                      EditorStyles.toolbarTextField);
-            structure = structure.Trim().ToUpper();
+            structureId = GUI.TextField(new Rect(2 + 48 + 2, 2, 36, 28),
+                                        structureId,
+                                        EditorStyles.toolbarTextField);
+            structureId = structureId.Trim().ToUpper();
             if (GUI.Button(new Rect(2 + 48 + 2 + 36 + 4, 0, 76 + 40, 32),
                            "Load Structure",
                            EditorStyles.toolbarButton))
             {
-                LoadProtein(structure);
+                LoadCifFileFromRcsb(structureId);
             }
 
             var x = 2 + 48 + 2 + 36 + 4 + 72 + 4 + 40;
@@ -94,21 +135,25 @@ namespace Narupa.Visualisation.Editor
                 isValidPrefabForVisualisation = true;
                 currentFile = EditorPrefs.GetString("visualiser.prefab.file");
                 if (currentFile != null && File.Exists(currentFile))
+                {
                     LoadFile(currentFile);
+                }
             }
             catch (Exception e)
             {
                 // Need to catch all exceptions here, otherwise Editor can bug out.
-                isValidPrefabForVisualisation = false;
-                Debug.LogException(e);
+                CancelPrefabView();
+                ShowExceptionAndLog(e);
             }
         }
 
-        private static string currentFile = "";
+        private static void CancelPrefabView()
+        {
+            isValidPrefabForVisualisation = false;
+            HideProgressMessage();
+        }
 
-        private static bool downloading = false;
-
-        private static void LoadProtein(string id)
+        private static void LoadCifFileFromRcsb(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return;
@@ -117,7 +162,15 @@ namespace Narupa.Visualisation.Editor
 
             if (File.Exists(currentFile))
             {
-                LoadFile(currentFile);
+                try
+                {
+                    LoadFile(currentFile);
+                }
+                catch (Exception e)
+                {
+                    CancelPrefabView();
+                    ShowExceptionAndThrow(e);
+                }
             }
             else
             {
@@ -126,8 +179,7 @@ namespace Narupa.Visualisation.Editor
                 client.CancelAsync();
                 client.DownloadFileAsync(new Uri($"https://files.rcsb.org/download/{id}.cif"),
                                          currentFile);
-                EditorUtility.DisplayProgressBar("Loading CIf", "Downloading file", 0.33f);
-                downloading = true;
+                ShowProgressMessage("Downloading file", true);
             }
         }
 
@@ -143,36 +195,62 @@ namespace Narupa.Visualisation.Editor
                 }
                 catch (Exception exception)
                 {
-                    ShowException(exception);
+                    CancelPrefabView();
+                    ShowExceptionAndThrow(exception);
                 }
 
                 EditorUtility.ClearProgressBar();
             }
             else
             {
-                EditorUtility.ClearProgressBar();
-                ShowException(e.Error);
+                CancelPrefabView();
+                ShowExceptionAndThrow(e.Error);
             }
         }
 
-        private static void ShowException(Exception e)
+        private static void ShowExceptionAndThrow(Exception e)
         {
             EditorUtility.DisplayDialog("Exception", e.Message, "OK");
             throw e;
         }
 
-        private static void LoadFile(string filename)
+        private static void ShowExceptionAndLog(Exception e)
         {
-            Frame.Frame frame;
+            EditorUtility.DisplayDialog("Exception", e.Message, "OK");
+            Debug.LogException(e);
+        }
 
+        private class Progress : IProgress<string>
+        {
+            public void Report(string value)
+            {
+                ShowProgressMessage(value, false);
+            }
+        }
+
+        private static string queuedProgressMessage = "";
+
+        private static async Task<Frame.Frame> ImportCifFile(
+            string filename,
+            ChemicalComponentDictionary dictionary)
+        {
             using (var file = File.OpenRead(filename))
             using (var reader = new StreamReader(file))
             {
                 if (Path.GetExtension(filename).Contains("cif"))
-                    frame = CifImport.Import(reader);
-                else
-                    return;
+                    return CifImport.Import(reader, dictionary, new Progress());
             }
+
+            return null;
+        }
+
+        private static async void LoadFile(string filename)
+        {
+            EditorUtility.DisplayProgressBar("Load File", "...", 0f);
+
+            var dictionary = ChemicalComponentDictionary.Instance;
+
+            var frame = await Task.Run(() => ImportCifFile(filename, dictionary));
 
             var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             var root = prefabStage.prefabContentsRoot;
@@ -188,7 +266,8 @@ namespace Narupa.Visualisation.Editor
 
             EditorPrefs.SetString("visualiser.prefab.file", currentFile);
 
-            structure = Path.GetFileNameWithoutExtension(currentFile);
+            structureId = Path.GetFileNameWithoutExtension(currentFile);
+            HideProgressMessage();
         }
 
         private static FrameSource currentMolecule = null;

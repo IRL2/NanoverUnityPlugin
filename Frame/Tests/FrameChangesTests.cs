@@ -57,51 +57,6 @@ namespace Narupa.Frame.Tests
         }
 
         [Test]
-        public void Initial_HaveBondsChanged()
-        {
-            var changes = new FrameChanges();
-            Assert.IsFalse(changes.HaveBondsChanged);
-        }
-
-        [Test]
-        public void Initial_HavePositionsChanged()
-        {
-            var changes = new FrameChanges();
-            Assert.IsFalse(changes.HaveParticlePositionsChanged);
-        }
-
-        [Test]
-        public void Initial_HaveElementsChanged()
-        {
-            var changes = new FrameChanges();
-            Assert.IsFalse(changes.HaveParticleElementsChanged);
-        }
-
-        [Test]
-        public void SetHaveBondsChanged()
-        {
-            var changes = new FrameChanges();
-            changes.HaveBondsChanged = true;
-            Assert.IsTrue(changes.HaveBondsChanged);
-        }
-
-        [Test]
-        public void SetHavePositionsChanged()
-        {
-            var changes = new FrameChanges();
-            changes.HaveParticlePositionsChanged = true;
-            Assert.IsTrue(changes.HaveParticlePositionsChanged);
-        }
-
-        [Test]
-        public void SetHaveElementsChanged()
-        {
-            var changes = new FrameChanges();
-            changes.HaveParticleElementsChanged = true;
-            Assert.IsTrue(changes.HaveParticleElementsChanged);
-        }
-
-        [Test]
         public void Merge_ChangesWithEmpty()
         {
             var original = new FrameChanges();

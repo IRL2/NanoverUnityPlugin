@@ -82,6 +82,22 @@ value1 ' value2 value2 ' value3");
         }
         
         [Test]
+        public void SplitOverMultipleLines()
+        {
+            var data = Import(@"loop_
+_abc.def 
+_abc.ghi
+_abc.jkl
+value1
+value2
+value3");
+
+            Assert.AreEqual(1, data[0].Values.Count);
+            CollectionAssert.AreEqual(new[] { "value1", "value2", "value3" },
+                                      data[0].Values[0]);
+        }
+          
+        [Test]
         public void TextBlock()
         {
             var data = Import(@"loop_
@@ -101,5 +117,6 @@ value3");
             CollectionAssert.AreEqual(new[] { "value1", "value 2\nand more", "value3" },
                                       data[0].Values[1]);
         }
+
     }
 }
