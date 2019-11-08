@@ -112,6 +112,24 @@ namespace Narupa.Frame
         public IDictionary<string, object> Data { get; } = new Dictionary<string, object>();
 
         /// <summary>
+        /// The number of particles.
+        /// </summary>
+        public int ParticleCount
+        {
+            get => Data.GetValueOrDefault<int>(FrameData.ParticleCountValueKey);
+            set => Data[FrameData.ParticleCountValueKey] = value;
+        }
+        
+        /// <summary>
+        /// The number of residues.
+        /// </summary>
+        public int ResidueCount
+        {
+            get => Data.GetValueOrDefault<int>(FrameData.ResidueCountValueKey);
+            set => Data[FrameData.ResidueCountValueKey] = value;
+        }
+
+        /// <summary>
         /// Obtain a copy of a frame, referencing the old arrays such that if a new array
         /// is not provided, a Frame will use the last obtained value.
         /// </summary>

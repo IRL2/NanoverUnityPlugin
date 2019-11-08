@@ -4,6 +4,7 @@
     {
         _Color ("Color", Color) = (1,1,1,1)
         _Radius ("Radius", float) = 1
+        _Diffuse ("Diffuse", float) = 0.5
     }
     SubShader
     {
@@ -119,6 +120,8 @@
                 float4 worldVertex : TEXCOORD1;
                 float4 normal : TEXCOORD2;
             };
+            
+            float _Diffuse;
 
             v2f vert (appdata v)
             {
@@ -132,14 +135,7 @@
                 v.vertex = mul(mat, v.vertex);
                 o.normal = normalize(mul(mat, float4(v.normal.xyz, 0)));
                 
-                float3 pos = GetHermitePoint(bias, spline.startPoint, spline.startTangent, spline.endPoint, spline.endTangent);
                 
-                //float4 off = v.vertex - float4(pos, 1);
-                
-                //float3 s = float3(0,1,0);
-                
-                //v.vertex += 1000 * off * dot(s, off.xyz) * dot(s, off.xyz);
-            
                 v.vertex = mul(ObjectToWorld, v.vertex);
             
                 o.color = lerp(spline.startColor, spline.endColor, bias);
@@ -151,9 +147,18 @@
                 return o;
             }
             
+            #include "Lighting.cginc"
+            
             fixed4 frag (v2f i) : SV_Target
             {
-                return fixed4(1,1,1,1);
+                fixed4 color = i.color;
+                float3 n = normalize(i.normal);
+                float3 l = normalize(_WorldSpaceLightPos0.xyz);
+                float3 c = _WorldSpaceCameraPos.xyz;
+                
+                color = DIFFUSE(color, n, l, _Diffuse);
+                
+                return color;
             }
             ENDCG
         }

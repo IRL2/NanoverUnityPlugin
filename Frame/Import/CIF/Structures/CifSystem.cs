@@ -83,7 +83,9 @@ namespace Narupa.Frame.Import.CIF.Structures
                 ParticleResidues = atoms.Select(atom => atom.Residue.AbsoluteIndex).ToArray(),
                 ResidueNames = residues.Select(residue => residue.ComponentId).ToArray(),
                 BondPairs = bonds.Select(e => new BondPair(e.A.AbsoluteIndex, e.B.AbsoluteIndex))
-                                 .ToArray()
+                                 .ToArray(),
+                ParticleCount = atoms.Count,
+                ResidueCount = residues.Count
             };
         }
 

@@ -20,7 +20,10 @@ namespace Narupa.Visualisation.Node.Calculator
         private SplineArrayProperty splineSegments = new SplineArrayProperty();
 
         [SerializeField]
-        private float scale = 1;
+        private FloatProperty scale = new FloatProperty()
+        {
+            Value = 1f
+        };
 
         protected SplineSegment[] segments;
 
@@ -30,10 +33,13 @@ namespace Narupa.Visualisation.Node.Calculator
         private bool areSplinesDirty = false;
 
         [SerializeField]
-        private float shape = 0.5f;
+        private FloatProperty shape = new FloatProperty
+        {
+            Value = 1f
+        };
 
         protected virtual bool DoSegmentsNeedGenerating =>
-            areSplinesDirty || pointPositions.IsDirty;
+            areSplinesDirty || pointPositions.IsDirty || shape.IsDirty || scale.IsDirty;
 
         protected virtual bool CanSegmentsBeGenerated =>
             pointPositions.HasValue;
@@ -51,6 +57,8 @@ namespace Narupa.Visualisation.Node.Calculator
             if (DoSegmentsNeedGenerating && CanSegmentsBeGenerated)
             {
                 GenerateSegments();
+                pointPositions.IsDirty = false;
+                shape.IsDirty = false;
             }
         }
 
@@ -218,8 +226,8 @@ namespace Narupa.Visualisation.Node.Calculator
                 segment.EndTangent = Tangents[k + 1];
                 segment.StartNormal = Normals[k];
                 segment.EndNormal = Normals[k + 1];
-                segment.StartScale = Vector2.one;
-                segment.EndScale = Vector2.one;
+                segment.StartScale = generator.scale.Value * Vector2.one;
+                segment.EndScale = generator.scale.Value * Vector2.one;
                 generator.OnUpdateSegment(ref segment, k, this);
             }
 

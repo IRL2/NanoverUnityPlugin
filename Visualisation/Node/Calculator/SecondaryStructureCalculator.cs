@@ -31,11 +31,9 @@ namespace Narupa.Visualisation.Node.Calculator
 
         private bool needRecalculate = true;
 
-        [SerializeField]
         private SecondaryStructureArrayProperty residueSecondaryStructure =
             new SecondaryStructureArrayProperty();
 
-        [SerializeField]
         private BondArrayProperty residueHydrogenBonds =
             new BondArrayProperty();
 

@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
-  - component: {fileID: 8528582866378757810}
-  - component: {fileID: 8528582866378757809}
-  - component: {fileID: 8528582866378757808}
-  - component: {fileID: 8528582866378757823}
+  - component: {fileID: 2403651013541833341}
+  - component: {fileID: 4578713722756180922}
+  - component: {fileID: 2262077134987404520}
+  - component: {fileID: 6660380353967523400}
   - component: {fileID: 984889019807945198}
   - component: {fileID: 4514838650576334071}
   m_Layer: 0
@@ -54,10 +54,7 @@ MonoBehaviour:
     parentAdaptor:
       isValueProvided: 0
       value: {fileID: 0}
-    particleFilter:
-      isValueProvided: 0
-      value: 
---- !u!114 &8528582866378757810
+--- !u!114 &2403651013541833341
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -66,21 +63,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f2b3de3cca14b4c9cfc612f0e1d254b, type: 3}
+  m_Script: {fileID: 11500000, guid: ad6c568a347b4a06a739909315cb146d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
-    destinationFieldName: elements
+    sourceFieldName: particle.names
+    destinationFieldName: atomNames
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particle.residues
+    destinationFieldName: atomResidues
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particle.positions
+    destinationFieldName: atomPositions
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: residue.count
+    destinationFieldName: residueCount
   node:
-    elements:
+    atomNames:
+      isValueProvided: 0
+      value: []
+    atomResidues:
       isValueProvided: 0
       value: 
-    mapping:
-      isValueProvided: 1
-      value: {fileID: 11400000, guid: f1a9c849f018f42adbab12e856c0da60, type: 2}
---- !u!114 &8528582866378757809
+    atomPositions:
+      isValueProvided: 0
+      value: []
+    residueCount:
+      isValueProvided: 0
+      value: 0
+--- !u!114 &4578713722756180922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,21 +101,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53e308a4d7b44dc8ae8f209b6e9ba088, type: 3}
+  m_Script: {fileID: 11500000, guid: c74cc7b907db4d2b9517bc7ce26534c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
-    destinationFieldName: elements
+    sourceFieldName: residue.names
+    destinationFieldName: residueNames
+  - sourceComponent: {fileID: 2403651013541833341}
+    sourceFieldName: residuePositions
+    destinationFieldName: residuePositions
   node:
-    elements:
+    residueNames:
       isValueProvided: 0
-      value: 
-    scale:
-      isValueProvided: 1
-      value: 0.7
---- !u!114 &8528582866378757808
+      value: []
+    residuePositions:
+      isValueProvided: 0
+      value: []
+    cutoff: 1
+--- !u!114 &2262077134987404520
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,54 +128,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1037303cc04e46cf8d744d8b25d4d244, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c098bf9bf19439ebd619219078fa4bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
-    destinationFieldName: particlePositions
+    sourceFieldName: particle.positions
+    destinationFieldName: atomPositions
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: bondPairs
-    destinationFieldName: bondPairs
-  - sourceComponent: {fileID: 8528582866378757809}
-    sourceFieldName: scales
-    destinationFieldName: particleScales
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
-    destinationFieldName: particleColors
+    sourceFieldName: particle.residues
+    destinationFieldName: atomResidues
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particle.names
+    destinationFieldName: atomNames
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: residue.count
+    destinationFieldName: residueCount
+  - sourceComponent: {fileID: 4578713722756180922}
+    sourceFieldName: peptideSequences
+    destinationFieldName: peptideChains
   node:
-    material:
-      isValueProvided: 1
-      value: {fileID: 2100000, guid: 8ab524378960e644f9a238927b43e467, type: 2}
-    mesh:
-      isValueProvided: 1
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    bondScale:
-      isValueProvided: 1
-      value: 0.06
-    bondPairs:
+    atomPositions:
       isValueProvided: 0
       value: []
-    particlePositions:
-      isValueProvided: 0
-      value: []
-    particleColors:
-      isValueProvided: 0
-      value: []
-    particleScales:
-      isValueProvided: 0
-      value: []
-    rendererColor:
-      isValueProvided: 1
-      value: {r: 1, g: 1, b: 1, a: 1}
-    particleScale:
-      isValueProvided: 1
-      value: 1
-    bondOrders:
+    atomResidues:
       isValueProvided: 0
       value: 
---- !u!114 &8528582866378757823
+    atomNames:
+      isValueProvided: 0
+      value: []
+    residueCount:
+      isValueProvided: 0
+      value: 0
+    peptideChains:
+      isValueProvided: 0
+    drawDebugLines: 1
+    DsspOptions:
+      Cutoff: -0.5
+--- !u!114 &6660380353967523400
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,44 +174,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73992ab43ebd415eb814845a706956c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 489814c4adf04f1aa179ae0d2c8a5495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
-    destinationFieldName: particlePositions
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
-    destinationFieldName: particleColors
-  - sourceComponent: {fileID: 8528582866378757809}
-    sourceFieldName: scales
-    destinationFieldName: particleScales
+  - sourceComponent: {fileID: 2262077134987404520}
+    sourceFieldName: residueSecondaryStructure
+    destinationFieldName: secondaryStructure
   node:
-    particlePositions:
-      isValueProvided: 0
-      value: []
-    particleColors:
-      isValueProvided: 0
-      value: []
-    particleScales:
-      isValueProvided: 0
-      value: []
-    rendererColor:
-      isValueProvided: 1
-      value: {r: 1, g: 1, b: 1, a: 1}
-    rendererScale:
-      isValueProvided: 1
-      value: 1
-    particleFilter:
+    secondaryStructure:
       isValueProvided: 0
       value: 
-    mesh:
-      isValueProvided: 1
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    material:
-      isValueProvided: 1
-      value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
 --- !u!114 &984889019807945198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,10 +198,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+  - sourceComponent: {fileID: 2403651013541833341}
+    sourceFieldName: residuePositions
     destinationFieldName: pointPositions
-  - sourceComponent: {fileID: 8528582866378757810}
+  - sourceComponent: {fileID: 6660380353967523400}
     sourceFieldName: colors
     destinationFieldName: pointColors
   node:
@@ -232,10 +211,14 @@ MonoBehaviour:
     pointPositions:
       isValueProvided: 0
       value: []
-    scale: 1
+    scale:
+      isValueProvided: 1
+      value: 1
     pointSequences:
       isValueProvided: 0
-    shape: 0.5
+    shape:
+      isValueProvided: 1
+      value: 1
 --- !u!114 &4514838650576334071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,9 +240,9 @@ MonoBehaviour:
     splineSegments:
       isValueProvided: 0
       value: []
-    segments: 8
+    segments: 16
     sides: 16
     material: {fileID: 2100000, guid: 50f24c4e50529f4439fed9e44de0bd49, type: 2}
     splineRadius:
       isValueProvided: 1
-      value: 0.01
+      value: 0.5
