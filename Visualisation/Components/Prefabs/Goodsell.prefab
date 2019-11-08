@@ -51,9 +51,6 @@ MonoBehaviour:
     parentAdaptor:
       isValueProvided: 0
       value: {fileID: 0}
-    particleFilter:
-      isValueProvided: 0
-      value: 
 --- !u!114 &-6296168603134018358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,10 +65,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+    sourceFieldName: particle.positions
     destinationFieldName: particlePositions
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleResidues
+    sourceFieldName: particle.residues
     destinationFieldName: particleResidues
   - sourceComponent: {fileID: 7466151666213273982}
     sourceFieldName: colors
@@ -136,16 +133,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
+    sourceFieldName: particle.elements
     destinationFieldName: elements
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleResidues
+    sourceFieldName: particle.residues
     destinationFieldName: particleResidues
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residueNames
+    sourceFieldName: residue.names
     destinationFieldName: residueNames
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residueEntities
+    sourceFieldName: residue.chains
     destinationFieldName: residueEntities
   node:
     elements:
@@ -198,13 +195,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleResidues
+    sourceFieldName: particle.residues
     destinationFieldName: particleResidues
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
+    sourceFieldName: particle.elements
     destinationFieldName: particleElements
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residueNames
+    sourceFieldName: residue.names
     destinationFieldName: residueNames
   node:
     includeHydrogens:

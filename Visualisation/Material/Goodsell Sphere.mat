@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Goodsell
+  m_Name: Goodsell Sphere
   m_Shader: {fileID: 4800000, guid: 004943b9e811f0c41ae56e5c23496282, type: 3}
   m_ShaderKeywords: LIGHTING_WRAPPED_DIFFUSE RAYTRACE_SHAPE_SPHERE
   m_LightmapFlags: 4
