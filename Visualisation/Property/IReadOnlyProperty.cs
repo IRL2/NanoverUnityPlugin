@@ -5,19 +5,11 @@ using System;
 
 namespace Narupa.Visualisation.Property
 {
-    /// <remarks>
-    /// Properties allow the linking together of inputs and outputs of various objects
-    /// in an observer pattern. Read-only properties are value providers, whilst
-    /// <see cref="Property" /> can also be linked to other properties to
-    /// obtain their values.
-    /// </remarks>
-    public interface IReadOnlyProperty<out TValue>
+    /// <summary>
+    /// Typeless version of <see cref="IReadOnlyProperty{TValue}"/>
+    /// </summary>
+    public interface IReadOnlyProperty
     {
-        /// <summary>
-        /// The current value of the property.
-        /// </summary>
-        TValue Value { get; }
-
         /// <summary>
         /// Does the property currently have a value?
         /// </summary>
@@ -27,5 +19,24 @@ namespace Narupa.Visualisation.Property
         /// Callback for when the value is changed.
         /// </summary>
         event Action ValueChanged;
+        
+        /// <summary>
+        /// The <see cref="Type"/> that this property wraps.
+        /// </summary>
+        Type PropertyType { get; }
+    }
+    
+    /// <remarks>
+    /// Properties allow the linking together of inputs and outputs of various objects
+    /// in an observer pattern. Read-only properties are value providers, whilst
+    /// <see cref="Property" /> can also be linked to other properties to
+    /// obtain their values.
+    /// </remarks>
+    public interface IReadOnlyProperty<out TValue> : IReadOnlyProperty
+    {
+        /// <summary>
+        /// The current value of the property.
+        /// </summary>
+        TValue Value { get; }
     }
 }

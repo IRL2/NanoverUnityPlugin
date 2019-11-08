@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
+  - component: {fileID: 397105478419057534}
+  - component: {fileID: 6089087228771831228}
   - component: {fileID: 8528582866378757810}
   - component: {fileID: 8528582866378757809}
   - component: {fileID: 8528582866378757808}
@@ -52,9 +54,42 @@ MonoBehaviour:
     parentAdaptor:
       isValueProvided: 0
       value: {fileID: 0}
-    particleFilter:
-      isValueProvided: 0
-      value: 
+--- !u!114 &397105478419057534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: sphere.scale
+    input:
+      isValueProvided: 1
+      value: 0.6
+--- !u!114 &6089087228771831228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: bond.scale
+    input:
+      isValueProvided: 1
+      value: 0.05
 --- !u!114 &8528582866378757810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
+    sourceFieldName: particle.elements
     destinationFieldName: elements
   node:
     elements:
@@ -92,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleElements
+    sourceFieldName: particle.elements
     destinationFieldName: elements
   node:
     elements:
@@ -100,7 +135,7 @@ MonoBehaviour:
       value: 
     scale:
       isValueProvided: 1
-      value: 0.7
+      value: 1
 --- !u!114 &8528582866378757808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,10 +150,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+    sourceFieldName: particle.positions
     destinationFieldName: particlePositions
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: bondPairs
+    sourceFieldName: bond.pairs
     destinationFieldName: bondPairs
   - sourceComponent: {fileID: 8528582866378757809}
     sourceFieldName: scales
@@ -126,6 +161,12 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757810}
     sourceFieldName: colors
     destinationFieldName: particleColors
+  - sourceComponent: {fileID: 6089087228771831228}
+    sourceFieldName: input
+    destinationFieldName: bondScale
+  - sourceComponent: {fileID: 397105478419057534}
+    sourceFieldName: input
+    destinationFieldName: particleScale
   node:
     material:
       isValueProvided: 1
@@ -134,7 +175,7 @@ MonoBehaviour:
       isValueProvided: 1
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     bondScale:
-      isValueProvided: 1
+      isValueProvided: 0
       value: 0.06
     bondPairs:
       isValueProvided: 0
@@ -152,7 +193,7 @@ MonoBehaviour:
       isValueProvided: 1
       value: {r: 1, g: 1, b: 1, a: 1}
     particleScale:
-      isValueProvided: 1
+      isValueProvided: 0
       value: 1
     bondOrders:
       isValueProvided: 0
@@ -171,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+    sourceFieldName: particle.positions
     destinationFieldName: particlePositions
   - sourceComponent: {fileID: 8528582866378757810}
     sourceFieldName: colors
@@ -179,6 +220,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757809}
     sourceFieldName: scales
     destinationFieldName: particleScales
+  - sourceComponent: {fileID: 397105478419057534}
+    sourceFieldName: input
+    destinationFieldName: rendererScale
   node:
     particlePositions:
       isValueProvided: 0
@@ -193,7 +237,7 @@ MonoBehaviour:
       isValueProvided: 1
       value: {r: 1, g: 1, b: 1, a: 1}
     rendererScale:
-      isValueProvided: 1
+      isValueProvided: 0
       value: 1
     particleFilter:
       isValueProvided: 0
