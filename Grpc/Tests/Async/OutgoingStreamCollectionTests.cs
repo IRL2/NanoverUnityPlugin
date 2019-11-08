@@ -106,7 +106,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var streamTask = streamCollection.StartStream("key");
             await streamCollection.QueueMessageAsync("key", new ParticleInteraction());
-            await Task.WhenAny(streamTask, Task.Delay(50));
+            await Task.WhenAny(streamTask, Task.Delay(250));
             callback.ReceivedWithAnyArgs(1).Invoke(default);
         }
 
