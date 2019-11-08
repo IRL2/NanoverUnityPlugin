@@ -100,6 +100,8 @@ namespace Narupa.Visualisation.Editor
             {
                 // Need to catch all exceptions here, otherwise Editor can bug out.
                 isValidPrefabForVisualisation = false;
+                currentFile = null;
+                EditorPrefs.DeleteKey("visualiser.prefab.file");
                 Debug.LogException(e);
             }
         }

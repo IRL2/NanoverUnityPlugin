@@ -55,9 +55,6 @@ MonoBehaviour:
     parentAdaptor:
       isValueProvided: 0
       value: {fileID: 0}
-    particleFilter:
-      isValueProvided: 0
-      value: 
 --- !u!114 &8547765891190733195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,10 +69,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residueNames
+    sourceFieldName: residue.names
     destinationFieldName: residueNames
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleResidues
+    sourceFieldName: particle.residues
     destinationFieldName: particleResidues
   node:
     residueNames:
@@ -99,10 +96,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: bondPairs
+    sourceFieldName: bond.pairs
     destinationFieldName: bonds
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particleResidues
+    sourceFieldName: particle.residues
     destinationFieldName: particleResidues
   node:
     bonds:
@@ -144,10 +141,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+    sourceFieldName: particle.positions
     destinationFieldName: particlePositions
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: bondPairs
+    sourceFieldName: bond.pairs
     destinationFieldName: bondPairs
   - sourceComponent: {fileID: 8547765891190733195}
     sourceFieldName: colors
@@ -197,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+    sourceFieldName: particle.positions
     destinationFieldName: particlePositions
   - sourceComponent: {fileID: 8547765891190733195}
     sourceFieldName: colors
@@ -241,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+    sourceFieldName: particle.positions
     destinationFieldName: particlePositions
   - sourceComponent: {fileID: 3146716969259985542}
     sourceFieldName: interiorBonds
@@ -297,7 +294,7 @@ MonoBehaviour:
     sourceFieldName: cycles
     destinationFieldName: cycles
   - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particlePositions
+    sourceFieldName: particle.positions
     destinationFieldName: particlePositions
   - sourceComponent: {fileID: 8547765891190733195}
     sourceFieldName: colors
