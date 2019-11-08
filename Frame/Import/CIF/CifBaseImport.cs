@@ -13,6 +13,10 @@ namespace Narupa.Frame.Import.CIF
     /// </summary>
     public abstract class CifBaseImport : LineByLineParser
     {
+        protected CifBaseImport(IProgress<string> progress = null) : base(progress)
+        {
+        }
+
         protected override void Parse()
         {
             while (HasLine)
