@@ -204,6 +204,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 6660380353967523400}
     sourceFieldName: colors
     destinationFieldName: pointColors
+  - sourceComponent: {fileID: 4578713722756180922}
+    sourceFieldName: peptideSequences
+    destinationFieldName: pointSequences
   node:
     pointColors:
       isValueProvided: 0
