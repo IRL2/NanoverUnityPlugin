@@ -76,6 +76,9 @@ namespace Narupa.Visualisation.Editor
             Handles.EndGUI();
         }
 
+        /// <summary>
+        /// Is the current prefab a valid visualiser.
+        /// </summary>
         private static bool isValidPrefabForVisualisation = false;
 
         private static void OnPrefabStageOpened(PrefabStage prefabStage)
@@ -96,6 +99,7 @@ namespace Narupa.Visualisation.Editor
             catch (Exception e)
             {
                 // Need to catch all exceptions here, otherwise Editor can bug out.
+                isValidPrefabForVisualisation = false;
                 Debug.LogException(e);
             }
         }
