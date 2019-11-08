@@ -99,6 +99,42 @@ namespace Narupa.Frame
             get => Data.GetValueOrDefault<string[]>(FrameData.ParticleNameArrayKey);
             set => Data[FrameData.ParticleNameArrayKey] = value;
         }
+        
+        /// <summary>
+        /// Array of entity indices for residues.
+        /// </summary>
+        public int[] ResidueEntities
+        {
+            get => Data.GetValueOrDefault<int[]>(FrameData.ResidueChainArrayKey);
+            set => Data[FrameData.ResidueChainArrayKey] = value;
+        }
+        
+        /// <summary>
+        /// The number of particles.
+        /// </summary>
+        public int ParticleCount
+        {
+            get => Data.GetValueOrDefault<int>(FrameData.ParticleCountValueKey);
+            set => Data[FrameData.ParticleCountValueKey] = value;
+        }
+        
+        /// <summary>
+        /// The number of residues.
+        /// </summary>
+        public int ResidueCount
+        {
+            get => Data.GetValueOrDefault<int>(FrameData.ResidueCountValueKey);
+            set => Data[FrameData.ResidueCountValueKey] = value;
+        }
+        
+        /// <summary>
+        /// The number of entities.
+        /// </summary>
+        public int EntityCount
+        {
+            get => Data.GetValueOrDefault<int>(FrameData.ChainCountValueKey);
+            set => Data[FrameData.ChainCountValueKey] = value;
+        }
 
         /// <inheritdoc />
         [NotNull]

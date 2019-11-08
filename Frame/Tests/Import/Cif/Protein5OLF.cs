@@ -3,6 +3,7 @@
 
 using System.IO;
 using Narupa.Frame.Import.CIF;
+using Narupa.Frame.Import.CIF.Components;
 using Narupa.Frame.Import.CIF.Structures;
 using NUnit.Framework;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Narupa.Trajectory.Import.Tests
         public void Setup()
         {
             var file = Resources.Load("5OLF.cif");
-            component = CifImport.ImportSystem(new StringReader(file.ToString()));
+            component = CifImport.ImportSystem(new StringReader(file.ToString()), ChemicalComponentDictionary.Instance);
         }
 
         [Test]

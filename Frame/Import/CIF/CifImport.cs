@@ -23,23 +23,23 @@ namespace Narupa.Frame.Import.CIF
         /// Import a CIF file from the given source, with an optional chemical component
         /// dictionary
         /// </summary>
-        public static Frame Import(TextReader reader)
+        public static Frame Import(TextReader reader, ChemicalComponentDictionary dictionary, IProgress<string> progress = null)
         {
-            return ImportSystem(reader).GetFrame();
+            return ImportSystem(reader, dictionary, progress).GetFrame();
         }
 
         /// <summary>
         /// Import a mmCIF file into the internal <see cref="CifSystem" /> object.
         /// </summary>
-        internal static CifSystem ImportSystem(TextReader reader)
+        internal static CifSystem ImportSystem(TextReader reader, ChemicalComponentDictionary dictionary, IProgress<string> progress = null)
         {
-            var parser = new CifImport();
+            var parser = new CifImport(progress);
             parser.Parse(reader);
 
             parser.ResolveStructuralConnections();
 
-            if (ChemicalComponentDictionary.Instance != null)
-                parser.system.GenerateIntraResidueBonds(ChemicalComponentDictionary.Instance);
+            if (dictionary != null)
+                parser.system.GenerateIntraResidueBonds(dictionary);
 
             parser.system.GeneratePeptideBackbone();
 
@@ -142,6 +142,10 @@ namespace Narupa.Frame.Import.CIF
 
         private readonly List<StructuralConnection> structuralConnections =
             new List<StructuralConnection>();
+
+        private CifImport(IProgress<string> progress = null) : base(progress)
+        {
+        }
 
         /// <summary>
         /// Resolve all of the <see cref="StructuralConnection" /> records into bonds.
