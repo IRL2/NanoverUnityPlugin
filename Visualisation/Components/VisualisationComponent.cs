@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Narupa.Core;
+using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -48,10 +49,9 @@ namespace Narupa.Visualisation.Components
         {
             SetupLinks();
         }
-        
+
         protected virtual void OnDisable()
         {
-            
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Narupa.Visualisation.Components
                                               IPropertyProvider destination,
                                               string destName)
         {
-            if (!(source.GetProperty(sourceName) is IReadOnlyProperty<T> sourceOutput))
+            if (!(source.GetOrCreateProperty<T>(sourceName) is IReadOnlyProperty<T> sourceOutput))
                 throw new InvalidOperationException();
             if (!(destination.GetProperty(destName) is IProperty<T> destInput))
                 throw new InvalidOperationException();
@@ -192,40 +192,52 @@ namespace Narupa.Visualisation.Components
                                                     BindingFlags.NonPublic);
         }
 
-        private object GetWrappedNodeValue(string fieldName)
-        {
-            var node = GetWrappedVisualisationNode();
-            return GetWrappedNodeField(fieldName).GetValue(node);
-        }
-
         public void OnAfterDeserialize()
         {
             ClearUpInvalidLinks();
         }
 
-        /// <inheritdoc cref="IPropertyProvider.GetProperty" />
-        public Property.Property GetProperty(string name)
+        /// <inheritdoc cref="IPropertyProvider.GetPotentialProperties" />
+        public virtual IEnumerable<(string name, Type type)> GetPotentialProperties()
         {
-            return GetWrappedNodeValue(name) as Property.Property;
+            yield break;
+        }
+
+        /// <inheritdoc cref="IPropertyProvider.GetProperty" />
+        public virtual IReadOnlyProperty GetProperty(string name)
+        {
+            var node = GetWrappedVisualisationNode();
+            var field = GetWrappedNodeField(name);
+            if (field == null)
+                return null;
+            return field.GetValue(node) as IReadOnlyProperty;
         }
 
         /// <inheritdoc cref="IPropertyProvider.GetProperties" />
-        public IEnumerable<(string, Property.Property)> GetProperties()
+        public virtual IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
         {
             var node = GetWrappedVisualisationNode();
 
             var allFields = GetWrappedVisualisationNodeType()
-                .GetProperties(BindingFlags.Instance
-                             | BindingFlags.Public);
+                .GetFieldsInSelfOrParents(BindingFlags.Instance
+                                        | BindingFlags.NonPublic
+                                        | BindingFlags.Public);
 
-            var validFields = allFields.Where(field => field.PropertyType.IsAssignableFrom(
-                                                  typeof(
-                                                      IProperty<>
-                                                  )));
+            var validFields = allFields.Where(field => typeof(IReadOnlyProperty).IsAssignableFrom(
+                                                  field.FieldType
+                                              ));
 
             return validFields.Select(field => (field.Name,
                                                 field.GetValue(node) as
-                                                    Property.Property));
+                                                    IReadOnlyProperty));
+        }
+
+        /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}" />
+        public virtual IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
+        {
+            if (GetProperty(name) is IReadOnlyProperty<T> property)
+                return property;
+            throw new ArgumentException($"{this} does not have property {name}");
         }
     }
 }
