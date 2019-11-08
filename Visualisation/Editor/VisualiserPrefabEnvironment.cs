@@ -27,7 +27,6 @@ namespace Narupa.Visualisation.Editor
         private static string currentTitle = "";
 
         private static string currentFile = "";
-        private static bool downloading = false;
 
 
         /// <summary>
@@ -185,7 +184,6 @@ namespace Narupa.Visualisation.Editor
 
         private static void ClientOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            downloading = false;
             if (e.Error == null)
             {
                 EditorUtility.DisplayProgressBar("Loading CIF", "Importing file", 0.66f);
