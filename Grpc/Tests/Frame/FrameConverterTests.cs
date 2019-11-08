@@ -131,7 +131,7 @@ namespace Narupa.Grpc.Tests.Frame
 
             var update = FrameConverter.ConvertFrame(data).Update;
 
-            Assert.IsTrue(update.HaveBondsChanged);
+            Assert.IsTrue(update.GetIsChanged(FrameData.BondArrayKey));
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace Narupa.Grpc.Tests.Frame
 
             var update = FrameConverter.ConvertFrame(data).Update;
 
-            Assert.IsTrue(update.HaveParticleElementsChanged);
+            Assert.IsTrue(update.GetIsChanged(FrameData.ParticleElementArrayKey));
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace Narupa.Grpc.Tests.Frame
 
             var update = FrameConverter.ConvertFrame(data).Update;
 
-            Assert.IsTrue(update.HaveParticlePositionsChanged);
+            Assert.IsTrue(update.GetIsChanged(FrameData.ParticlePositionArrayKey));
         }
 
         [Test]
