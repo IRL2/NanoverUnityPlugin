@@ -1,3 +1,4 @@
+using System;
 using Narupa.Frontend.Controllers;
 using Narupa.Frontend.Input;
 using Narupa.Frontend.XR;
@@ -51,7 +52,7 @@ namespace Narupa.Frontend.UI
             canvas = GetComponent<Canvas>();
         }
 
-        private void Start()
+        private void OnEnable()
         {
             RegisterCanvas();
         }
@@ -64,6 +65,11 @@ namespace Narupa.Frontend.UI
             WorldSpaceCursorInput.SetCanvasAndCursor(canvas,
                                                      controller.HeadPose,
                                                      inputAction.WrapAsButton(inputSource));
+        }
+
+        private void OnDisable()
+        {
+            WorldSpaceCursorInput.ReleaseCanvas(canvas);
         }
     }
 }
