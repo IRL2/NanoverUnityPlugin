@@ -212,7 +212,7 @@ MonoBehaviour:
       value: 0
     includeNonStandardResidues:
       isValueProvided: 1
-      value: 0
+      value: 1
     particleResidues:
       isValueProvided: 0
       value: 

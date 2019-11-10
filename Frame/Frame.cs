@@ -110,15 +110,6 @@ namespace Narupa.Frame
         }
         
         /// <summary>
-        /// Array of entity indices for residues.
-        /// </summary>
-        public int[] ResidueEntities
-        {
-            get => Data.GetValueOrDefault<int[]>(FrameData.ResidueChainArrayKey);
-            set => Data[FrameData.ResidueChainArrayKey] = value;
-        }
-        
-        /// <summary>
         /// The number of particles.
         /// </summary>
         public int ParticleCount
