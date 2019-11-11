@@ -119,6 +119,14 @@ namespace Narupa.Visualisation.Node.Renderer
             }
         }
 
+        /// <summary>
+        /// Update the draw command based upon the input values, by updating the mesh,
+        /// material and buffers.
+        /// </summary>
+        /// <remarks>
+        /// This does not actually render the spheres. Either call <see cref="Render" />
+        /// each frame or call <see cref="AppendToCommandBuffer" />.
+        /// </remarks>
         public bool UpdateRenderer()
         {
             if (ShouldRender)
