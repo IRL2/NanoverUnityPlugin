@@ -77,5 +77,25 @@ namespace Narupa.Grpc.Trajectory
             trajectoryClient?.Dispose();
             frameStream?.Dispose();
         }
+
+        public void Play()
+        {
+            trajectoryClient?.RunCommandAsync("playback/play");
+        }
+        
+        public void Pause()
+        {
+            trajectoryClient?.RunCommandAsync("playback/pause");
+        }
+        
+        public void Reset()
+        {
+            trajectoryClient?.RunCommandAsync("playback/reset");
+        }
+        
+        public void Step()
+        {
+            trajectoryClient?.RunCommandAsync("playback/step");
+        }
     }
 }

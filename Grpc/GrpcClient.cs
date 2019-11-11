@@ -2,12 +2,14 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using JetBrains.Annotations;
 using Narupa.Core.Async;
 using Narupa.Grpc.Stream;
+using Narupa.Protocol.Command;
 
 namespace Narupa.Grpc
 {
@@ -22,6 +24,8 @@ namespace Narupa.Grpc
         /// </summary>
         protected TClient Client { get; }
 
+        protected Command.CommandClient CommandClient { get; }
+
         /// <summary>
         /// Create a client to a server described by the provided
         /// <see cref="GrpcConnection" />.
@@ -33,6 +37,20 @@ namespace Narupa.Grpc
                 throw new ArgumentException("Connection has already been shutdown.");
 
             Client = (TClient) Activator.CreateInstance(typeof(TClient), connection.Channel);
+
+            //CommandClient = new Command.CommandClient(connection.Channel);
+        }
+
+        public async Task<Dictionary<string, object>> RunCommandAsync(string command,
+                                                                         Dictionary<string, object>
+                                                                             dict = null)
+        {
+            var message = new CommandMessage
+            {
+                Name = command,
+                Arguments = dict?.ToProtobufStruct()
+            };
+            return (await CommandClient.RunCommandAsync(message)).Result.ToDictionary();
         }
 
         /// <summary>
