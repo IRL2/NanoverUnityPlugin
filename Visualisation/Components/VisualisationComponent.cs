@@ -239,5 +239,10 @@ namespace Narupa.Visualisation.Components
                 return property;
             throw new ArgumentException($"{this} does not have property {name}");
         }
+
+        public virtual bool CanProvideProperty<T>(string name)
+        {
+            return false;
+        }
     }
 }

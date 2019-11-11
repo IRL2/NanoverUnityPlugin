@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Narupa.Visualisation.Components;
 using Narupa.Visualisation.Node.Adaptor;
+using Plugins.Narupa.Visualisation.Components;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -24,31 +25,40 @@ namespace Narupa.Visualisation.Editor
             VisualisationPropertyDrawer.AddOverride(OnGUI);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>True if this should override the default property GUI, false if it shouldn't.</returns>
         private static bool OnGUI(ref Rect rect, SerializedProperty property, GUIContent label)
         {
             var collection = property.serializedObject.FindProperty("inputLinkCollection");
-
             if (collection == null) return false;
 
+            // Get link which is stored in the VisualisationComponent, which
+            // describes if this property is linked to anything
             var link = FindVisualisationLink(collection, property.name);
 
-            var removeRect = new Rect(rect);
-            removeRect.width = 40;
-            removeRect.x = rect.xMax - removeRect.width;
-
+            var linkToggleRect = new Rect(rect)
+            {
+                width = 40
+            };
+            linkToggleRect.x = rect.xMax - linkToggleRect.width;
             rect.width -= 44;
 
+            // Is this property linked
             var isLinked = link.HasValue;
 
-            if (GUI.Button(removeRect, isLinked ? "Unlink" : "Link", EditorStyles.miniButton))
+            if (GUI.Button(linkToggleRect, isLinked ? "Unlink" : "Link", EditorStyles.miniButton))
             {
                 if (isLinked)
                 {
+                    // Unlink by destroying the link in the VisualisationComponent
                     collection.DeleteArrayElementAtIndex(link.Value.Index);
                     isLinked = false;
                 }
                 else
                 {
+                    // Create a link in the VisualisationComponent
                     var index = collection.arraySize;
                     collection.InsertArrayElementAtIndex(index);
                     var linkProperty = collection.GetArrayElementAtIndex(index);
@@ -167,7 +177,7 @@ namespace Narupa.Visualisation.Editor
 
         private static void DrawSourceForLinkedProperty(Rect rect, SerializedInputLink link)
         {
-            var sourceFieldWidth = 96;
+            var sourceFieldWidth = 144;
 
             var sourceDropdownRect = new Rect(rect.x - 16, rect.y, 16, rect.height);
 
@@ -181,13 +191,14 @@ namespace Narupa.Visualisation.Editor
                     link.DestinationProperty.serializedObject.targetObject as MonoBehaviour,
                     destinationType).ToArray();
 
-            var i = EditorGUI.Popup(sourceDropdownRect, -1, shortcuts
-                                                            .Select(shortcut => shortcut.Label)
-                                                            .ToArray());
+            var shortcutIndex = EditorGUI.Popup(sourceDropdownRect, -1, shortcuts
+                                                                        .Select(shortcut =>
+                                                                                    shortcut.Label)
+                                                                        .ToArray());
 
-            if (i >= 0)
+            if (shortcutIndex >= 0)
             {
-                var shortcut = shortcuts[i];
+                var shortcut = shortcuts[shortcutIndex];
                 link.SourceComponent.objectReferenceValue = shortcut.Source;
                 link.SourceProperty.stringValue = shortcut.Name;
             }
@@ -208,35 +219,17 @@ namespace Narupa.Visualisation.Editor
             {
                 var fields = GetPropertiesOfType(sourceProvider, destinationType).ToArray();
 
-
-                if (fields.Length > 0)
-                {
-                    var fieldNames = fields.Select(ObjectNames.NicifyVariableName).ToArray();
-
-                    if (fields.Length == 1)
-                    {
-                        EditorGUI.LabelField(sourceFieldRect,
-                                             fieldNames[0]);
-                        if (link.SourceProperty.stringValue != fields[0])
-                            link.SourceProperty.stringValue = fields[0];
-                    }
-                    else
-                    {
-                        var currentIndex = Array.IndexOf(fields, link.SourceProperty.stringValue);
-
-                        var newIndex = EditorGUI.Popup(sourceFieldRect,
-                                                       currentIndex,
-                                                       fieldNames);
-
-                        if (newIndex != currentIndex)
-                            link.SourceProperty.stringValue = fields[newIndex];
-                    }
-                }
+                if (fields.Contains(link.SourceProperty.stringValue))
+                    GUI.color = Color.green;
+                else if (sourceProvider.CanProvideProperty(link.SourceProperty.stringValue,
+                                                           destinationType))
+                    GUI.color = Color.yellow;
                 else
-                {
-                    if (!string.IsNullOrEmpty(link.SourceProperty.stringValue))
-                        link.SourceProperty.stringValue = "";
-                }
+                    GUI.color = Color.red;
+
+                EditorGUI.PropertyField(sourceFieldRect, link.SourceProperty, GUIContent.none);
+
+                GUI.color = Color.white;
             }
         }
     }
