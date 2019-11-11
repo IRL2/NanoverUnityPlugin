@@ -8,7 +8,7 @@ namespace Narupa.Visualisation.Node.Renderer
 {
     /// <summary>
     /// Renderer which draws spheres using a command buffer, allowing them to be
-    /// outlined depending on their relative residue indices.
+    /// outlined depending on their relative residue indices, reminiscent of the Goodsell style.
     /// </summary>
     [ExecuteAlways]
     [Serializable]
