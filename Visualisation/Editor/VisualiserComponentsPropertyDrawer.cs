@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Narupa.Visualisation.Components;
 using Narupa.Visualisation.Node.Adaptor;
+using Plugins.Narupa.Visualisation.Components;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -220,8 +221,11 @@ namespace Narupa.Visualisation.Editor
 
                 if (fields.Contains(link.SourceProperty.stringValue))
                     GUI.color = Color.green;
+                else if (sourceProvider.CanProvideProperty(link.SourceProperty.stringValue,
+                                                           destinationType))
+                    GUI.color = Color.yellow;
                 else
-                    GUI.color = 0.5f * (Color.red + Color.yellow);
+                    GUI.color = Color.red;
 
                 EditorGUI.PropertyField(sourceFieldRect, link.SourceProperty, GUIContent.none);
 

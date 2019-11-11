@@ -76,5 +76,11 @@ namespace Narupa.Visualisation.Components.Adaptor
                 return property;
             return node.GetOrCreateProperty<T>(name);
         }
+
+        /// <inheritdoc cref="IPropertyProvider.CanProvideProperty{T}" />
+        public override bool CanProvideProperty<T>(string name)
+        {
+            return true;
+        }
     }
 }
