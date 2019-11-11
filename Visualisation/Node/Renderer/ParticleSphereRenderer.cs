@@ -12,6 +12,12 @@ namespace Narupa.Visualisation.Node.Renderer
     /// <summary>
     /// Visualisation node for rendering particles using spheres.
     /// </summary>
+    /// <remarks>
+    /// A call to <see cref="UpdateRenderer" /> should be made every frame. Depending
+    /// on use case, either call <see cref="Render" /> to draw for a single frame, or
+    /// add to a <see cref="CommandBuffer" /> using
+    /// <see cref="AppendToCommandBuffer" />.
+    /// </remarks>
     [Serializable]
     public class ParticleSphereRenderer : IDisposable
     {
@@ -129,7 +135,7 @@ namespace Narupa.Visualisation.Node.Renderer
 
                     UpdateBuffers();
                 }
-                
+
                 InstancingUtility.SetTransform(drawCommand, Transform);
 
                 return true;
@@ -204,7 +210,8 @@ namespace Narupa.Visualisation.Node.Renderer
         }
 
         /// <summary>
-        /// Indicate that a deserialisation or other event which resets buffers has occured.
+        /// Indicate that a deserialisation or other event which resets buffers has
+        /// occured.
         /// </summary>
         public virtual void ResetBuffers()
         {
@@ -214,11 +221,11 @@ namespace Narupa.Visualisation.Node.Renderer
             particleScales.IsDirty = true;
             particleFilter.IsDirty = true;
         }
-        
-        public void AddToCommandBuffer(CommandBuffer buffer)
+
+        public void AppendToCommandBuffer(CommandBuffer buffer)
         {
             UpdateRenderer();
-            drawCommand.AddToCommandBuffer(buffer);
+            drawCommand.AppendToCommandBuffer(buffer);
         }
     }
 }

@@ -119,7 +119,7 @@ namespace Narupa.Visualisation.Node.Renderer
 
             buffer.ClearRenderTarget(true, true, UnityEngine.Color.clear);
 
-            renderer.AddToCommandBuffer(buffer);
+            renderer.AppendToCommandBuffer(buffer);
 
             buffer.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
 

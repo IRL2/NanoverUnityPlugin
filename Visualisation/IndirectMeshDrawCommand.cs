@@ -15,6 +15,12 @@ namespace Narupa.Visualisation
     /// to add state management
     /// for mesh, material, and computer buffers.
     /// </summary>
+    /// <remarks>
+    /// To actually execute the draw command, two approaches are possible. The first is
+    /// to call <see cref="MarkForRenderingThisFrame" />, which will draw just for this
+    /// frame. The other is to append it to a <see cref="CommandBuffer" /> using
+    /// <see cref="AppendToCommandBuffer" />.
+    /// </remarks>
     public class IndirectMeshDrawCommand : IDisposable
     {
         /// <summary>
@@ -150,22 +156,25 @@ namespace Narupa.Visualisation
                                                renderMaterial,
                                                ArbitraryBounds,
                                                drawArgumentsBuffer,
-                                               0, 
-                                               (MaterialPropertyBlock) null, 
-                                               ShadowCastingMode.On, 
-                                               true, 
-                                               0, 
-                                                camera);
+                                               0,
+                                               (MaterialPropertyBlock) null,
+                                               ShadowCastingMode.On,
+                                               true,
+                                               0,
+                                               camera);
         }
-        
-        public void AddToCommandBuffer(CommandBuffer buffer)
+
+        /// <summary>
+        /// Add a command to the provided buffer that would execute this draw command.
+        /// </summary>
+        public void AppendToCommandBuffer(CommandBuffer buffer)
         {
             if (!IsRenderable)
                 return;
 
             UpdateDrawArgumentsBuffer();
             UpdateDataBuffers();
-            
+
             buffer.DrawMeshInstancedIndirect(mesh,
                                              submeshIndex,
                                              renderMaterial,
@@ -179,13 +188,13 @@ namespace Narupa.Visualisation
             dataBuffers.ApplyDirtyBuffersToShader(shaderProgram);
             dataBuffers.ClearDirtyBuffers();
         }
-        
+
         /// <summary>
         /// Clear all buffers
         /// </summary>
         public void ResetCommand()
         {
-            foreach(var buffer in dataBuffers.Values)
+            foreach (var buffer in dataBuffers.Values)
                 buffer?.Dispose();
             drawArgumentsBuffer?.Dispose();
             dataBuffers.Clear();
@@ -198,8 +207,8 @@ namespace Narupa.Visualisation
         private void UpdateDrawArgumentsBuffer()
         {
             if (!IsRenderable || !areDrawArgumentsDirty)
-            if (!IsRenderable || (drawArgumentsBuffer != null && !areDrawArgumentsDirty))
-                return;
+                if (!IsRenderable || (drawArgumentsBuffer != null && !areDrawArgumentsDirty))
+                    return;
 
             if (drawArgumentsBuffer == null)
                 drawArgumentsBuffer =
@@ -214,10 +223,7 @@ namespace Narupa.Visualisation
 
             drawArgumentsBuffer.SetData(new[]
             {
-                vertexCountPerInstance,
-                instanceCount,
-                startVertexCount,
-                baseVertexCount,
+                vertexCountPerInstance, instanceCount, startVertexCount, baseVertexCount,
                 startInstanceLocation
             });
 
