@@ -19,7 +19,7 @@ namespace Narupa.Visualisation.Node.Calculator
     {
         protected bool Equals(Cycle other)
         {
-            if (other.Length != this.Length)
+            if (other.Length != Length)
                 return false;
             return Indices.SequenceEqual(other.Indices);
         }
@@ -36,6 +36,11 @@ namespace Narupa.Visualisation.Node.Calculator
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
             return Equals((Cycle) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (indices != null ? indices.GetHashCode() : 0);
         }
 
         [SerializeField]
@@ -81,7 +86,7 @@ namespace Narupa.Visualisation.Node.Calculator
                 indices = newIndices;
             }
 
-            // Ensure the cycle is numbered in th
+            // Ensure the cycle is ordered so the second index is the next highest
             if (indices[1] > indices[indices.Length - 1])
             {
                 var newIndices = new int[indices.Length];
@@ -102,6 +107,9 @@ namespace Narupa.Visualisation.Node.Calculator
         /// </summary>
         public int Count => Indices.Length;
 
+        /// <summary>
+        /// Length of the cycle.
+        /// </summary>
         public int Length => Indices.Length;
 
         public int this[int i] => Indices[i];

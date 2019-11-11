@@ -32,6 +32,9 @@ namespace Narupa.Frame
             B = b;
         }
 
+        /// <summary>
+        /// Get the first and second particles involved in this bond.
+        /// </summary>
         public int this[int i]
         {
             get
