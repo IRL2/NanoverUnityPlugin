@@ -134,8 +134,7 @@ namespace Narupa.Frontend.UI
 
         public static void ReleaseCanvas(Canvas canvas)
         {
-            Assert.IsNotNull(Instance);
-            if (Instance.canvas == canvas)
+            if (Instance != null && Instance.canvas == canvas)
             {
                 Instance.canvas = null;
                 Instance.cursor = null;
