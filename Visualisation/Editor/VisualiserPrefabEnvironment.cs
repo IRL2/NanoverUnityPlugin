@@ -60,6 +60,9 @@ namespace Narupa.Visualisation.Editor
         {
             if (PrefabStageUtility.GetCurrentPrefabStage() == null)
                 return;
+            
+            if(!hasInitialised)
+                OnPrefabStageOpened(PrefabStageUtility.GetCurrentPrefabStage());
 
             if (!string.IsNullOrEmpty(queuedProgressMessage))
             {
@@ -122,8 +125,14 @@ namespace Narupa.Visualisation.Editor
         /// </summary>
         private static bool isValidPrefabForVisualisation = false;
 
+        /// <summary>
+        /// <see cref="OnPrefabStageOpened"/> is not called on recompile
+        /// </summary>
+        private static bool hasInitialised = false;
+        
         private static void OnPrefabStageOpened(PrefabStage prefabStage)
         {
+            hasInitialised = true;
             try
             {
                 if (prefabStage.prefabContentsRoot.GetComponentInChildren<IFrameConsumer>() == null)
