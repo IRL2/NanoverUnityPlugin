@@ -1,3 +1,6 @@
+// Copyright (c) Intangible Realities Lab. All rights reserved.
+// Licensed under the GPL. See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using Narupa.Visualisation.Property;
@@ -35,5 +38,10 @@ namespace Narupa.Visualisation.Node.Adaptor
         /// type.
         /// </summary>
         IReadOnlyProperty<T> GetOrCreateProperty<T>(string name);
+
+        /// <summary>
+        /// Could this provider give a property on a call to <see cref="GetOrCreateProperty{T}"/>?.
+        /// </summary>
+        bool CanProvideProperty<T>(string name);
     }
 }
