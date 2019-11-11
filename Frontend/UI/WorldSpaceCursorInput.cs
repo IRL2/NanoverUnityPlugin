@@ -34,6 +34,7 @@ namespace Narupa.Frontend.UI
         protected override void Awake()
         {
             base.Awake();
+            Assert.IsNull(Instance);
             Instance = this;
         }
 
