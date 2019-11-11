@@ -91,6 +91,17 @@ namespace Narupa.Grpc.Frame
         /// Builtin value converters for <see cref="FrameData" />
         /// </summary>
         private static readonly Dictionary<string, Converter<Value, object>> valueConverters =
-            new Dictionary<string, Converter<Value, object>>();
+            new Dictionary<string, Converter<Value, object>>
+            {
+                {
+                    FrameData.ParticleCountValueKey, Conversions.ToInt
+                },
+                {
+                    FrameData.ResidueCountValueKey, Conversions.ToInt
+                },
+                {
+                    FrameData.ChainCountValueKey, Conversions.ToInt
+                }
+            };
     }
 }

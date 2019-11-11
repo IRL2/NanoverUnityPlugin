@@ -137,8 +137,10 @@
                 
                 
                 v.vertex = mul(ObjectToWorld, v.vertex);
+                
+                float t = smoothstep(0, 1, bias);
             
-                o.color = lerp(spline.startColor, spline.endColor, bias);
+                o.color = lerp(spline.startColor, spline.endColor, t);
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 

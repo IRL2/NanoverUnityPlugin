@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2262077134987404520}
   - component: {fileID: 6660380353967523400}
   - component: {fileID: 984889019807945198}
+  - component: {fileID: 128135161575052017}
   - component: {fileID: 4514838650576334071}
   m_Layer: 0
   m_Name: Spline
@@ -222,6 +223,35 @@ MonoBehaviour:
     shape:
       isValueProvided: 1
       value: 1
+--- !u!114 &128135161575052017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6aabe9a3ae74eb7b13d59f864c4b9a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 984889019807945198}
+    sourceFieldName: splineSegments
+    destinationFieldName: inputSplines
+  node:
+    inputSplines:
+      isValueProvided: 0
+      value: []
+    colorSpeed:
+      isValueProvided: 1
+      value: 0.02
+    scaleSpeed:
+      isValueProvided: 1
+      value: 0.02
+    normalSpeed:
+      isValueProvided: 1
+      value: 0.1
 --- !u!114 &4514838650576334071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,16 +265,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 984889019807945198}
-    sourceFieldName: splineSegments
+  - sourceComponent: {fileID: 128135161575052017}
+    sourceFieldName: outputSplines
     destinationFieldName: splineSegments
   node:
     useBox: 0
     splineSegments:
       isValueProvided: 0
       value: []
-    segments: 16
-    sides: 16
+    segments: 32
+    sides: 32
     material: {fileID: 2100000, guid: 50f24c4e50529f4439fed9e44de0bd49, type: 2}
     splineRadius:
       isValueProvided: 1

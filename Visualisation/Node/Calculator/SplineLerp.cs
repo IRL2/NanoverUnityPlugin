@@ -10,7 +10,6 @@ namespace Narupa.Visualisation.Node.Calculator
         [SerializeField]
         private SplineArrayProperty inputSplines = new SplineArrayProperty();
 
-        [SerializeField]
         private SplineArrayProperty outputSplines = new SplineArrayProperty();
 
         private SplineSegment[] cachedSplines = new SplineSegment[0];

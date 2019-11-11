@@ -201,7 +201,7 @@ namespace Narupa.Visualisation.Property
             else if (value == default)
                 Value = default;
             else
-                throw new ArgumentException();
+                throw new ArgumentException($"Tried to set property of type {PropertyType} to {value}.");
         }
 
         /// <inheritdoc cref="Property.TrySetLinkedProperty" />

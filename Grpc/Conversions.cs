@@ -215,5 +215,15 @@ namespace Narupa.Grpc
             values.Add(quaternion.z);
             values.Add(quaternion.w);
         }
+        
+        /// <summary>
+        /// Convert a protobuf <see cref="Value" /> to an integer.
+        /// </summary>
+        public static object ToInt(this Value value)
+        {
+            if(value.KindCase != Value.KindOneofCase.NumberValue)
+                throw new ArgumentException("Value is not of type int");
+            return (int) value.NumberValue;
+        }
     }
 }
