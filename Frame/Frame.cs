@@ -95,7 +95,7 @@ namespace Narupa.Frame
         /// Array of entity indices for each residue.
         /// </summary>
         /// <remarks>
-        /// Entities are groupings of residues, such as polypeptides or strands of DNA.
+        /// Entities are groupings of residues, such as polypeptide chains or strands of DNA.
         /// </remarks>
         public int[] ResidueEntities
         {
