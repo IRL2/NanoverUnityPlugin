@@ -92,8 +92,11 @@ namespace Narupa.Frame
         }
         
         /// <summary>
-        /// Array of residue entities.
+        /// Array of entity indices for each residue.
         /// </summary>
+        /// <remarks>
+        /// Entities are groupings of residues, such as polypeptides or strands of DNA.
+        /// </remarks>
         public int[] ResidueEntities
         {
             get => Data.GetValueOrDefault<int[]>(FrameData.ResidueChainArrayKey);
