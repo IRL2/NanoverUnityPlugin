@@ -77,22 +77,34 @@ namespace Narupa.Grpc.Trajectory
             trajectoryClient?.Dispose();
             frameStream?.Dispose();
         }
-
+        
+        /// <summary>
+        /// Command the server to play the simulation if it is paused.
+        /// </summary>
         public void Play()
         {
             trajectoryClient?.RunCommandAsync("playback/play");
         }
         
+        /// <summary>
+        /// Command the server to pause the simulation if it is playing.
+        /// </summary>
         public void Pause()
         {
             trajectoryClient?.RunCommandAsync("playback/pause");
         }
         
+        /// <summary>
+        /// Command the server to reset the simulation to its initial state.
+        /// </summary>
         public void Reset()
         {
             trajectoryClient?.RunCommandAsync("playback/reset");
         }
         
+        /// <summary>
+        /// Command the server to advance by one simulation step.
+        /// </summary>
         public void Step()
         {
             trajectoryClient?.RunCommandAsync("playback/step");
