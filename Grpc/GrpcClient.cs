@@ -38,7 +38,7 @@ namespace Narupa.Grpc
 
             Client = (TClient) Activator.CreateInstance(typeof(TClient), connection.Channel);
 
-            //CommandClient = new Command.CommandClient(connection.Channel);
+            CommandClient = new Command.CommandClient(connection.Channel);
         }
 
         public async Task<Dictionary<string, object>> RunCommandAsync(string command,
