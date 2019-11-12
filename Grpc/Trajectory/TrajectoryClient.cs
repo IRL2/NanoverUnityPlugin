@@ -20,6 +20,26 @@ namespace Narupa.Grpc.Trajectory
     /// </summary>
     public sealed class TrajectoryClient : GrpcClient<TrajectoryService.TrajectoryServiceClient>
     {
+        /// <summary>
+        /// Command the server to play the simulation if it is paused.
+        /// </summary>
+        public const string CommandPlay = "playback/play";
+        
+        /// <summary>
+        /// Command the server to pause the simulation if it is playing.
+        /// </summary>
+        public const string CommandPause = "playback/pause";
+        
+        /// <summary>
+        /// Command the server to advance by one simulation step.
+        /// </summary>
+        public const string CommandStep = "playback/step";
+        
+        /// <summary>
+        /// Command the server to reset the simulation to its initial state.
+        /// </summary>
+        public const string CommandReset = "playback/reset";
+
         // Chosen as an acceptable minimum rate that should ideally be 
         // explicitly increased.
         private const float DefaultUpdateInterval = 1f / 30f;
