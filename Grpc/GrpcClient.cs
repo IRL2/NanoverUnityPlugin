@@ -24,6 +24,9 @@ namespace Narupa.Grpc
         /// </summary>
         protected TClient Client { get; }
 
+        /// <summary>
+        /// The client used to access the Command service on the same port as this client.
+        /// </summary>
         protected Command.CommandClient CommandClient { get; }
 
         /// <summary>
@@ -41,14 +44,17 @@ namespace Narupa.Grpc
             CommandClient = new Command.CommandClient(connection.Channel);
         }
 
+        /// <summary>
+        /// Run a command on a gRPC service that uses the command service.
+        /// </summary>
         public async Task<Dictionary<string, object>> RunCommandAsync(string command,
                                                                          Dictionary<string, object>
-                                                                             dict = null)
+                                                                             arguments = null)
         {
             var message = new CommandMessage
             {
                 Name = command,
-                Arguments = dict?.ToProtobufStruct()
+                Arguments = arguments?.ToProtobufStruct()
             };
             return (await CommandClient.RunCommandAsync(message)).Result.ToDictionary();
         }
