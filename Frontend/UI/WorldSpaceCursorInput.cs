@@ -69,7 +69,7 @@ namespace Narupa.Frontend.UI
                                               IPosedObject cursor,
                                               IButton click)
         {
-            Assert.IsNotNull(Instance);
+            Assert.IsNotNull(Instance, $"There is no instance of {nameof(WorldSpaceCursorInput)} in the scene.");
             Instance.canvas = canvas;
             Instance.cursor = cursor;
             Instance.clickButton = click;
