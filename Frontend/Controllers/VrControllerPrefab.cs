@@ -46,9 +46,9 @@ namespace Narupa.Frontend.Controllers
 
         private void Awake()
         {
-            Assert.IsNotNull(grip);
-            Assert.IsNotNull(head);
-            Assert.IsNotNull(cursor);
+            Assert.IsNotNull(grip, $"VR Controller Prefab is missing {nameof(grip)} pivot.");
+            Assert.IsNotNull(head, $"VR Controller Prefab is missing {nameof(head)} pivot.");
+            Assert.IsNotNull(cursor, $"VR Controller Prefab is missing {nameof(cursor)} pivot.");
         }
     }
 }

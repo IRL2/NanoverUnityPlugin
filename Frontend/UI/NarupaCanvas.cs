@@ -50,7 +50,7 @@ namespace Narupa.Frontend.UI
 
         private void Awake()
         {
-            Assert.IsNotNull(controller);
+            Assert.IsNotNull(controller, $"{nameof(NarupaCanvas)} must have a pointer to the {nameof(VrController)} that will control it.");
             canvas = GetComponent<Canvas>();
         }
 
