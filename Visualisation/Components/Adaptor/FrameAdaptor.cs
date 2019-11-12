@@ -4,13 +4,9 @@
 using System;
 using System.Collections.Generic;
 using Narupa.Core;
-using Narupa.Core.Science;
 using Narupa.Frame;
-using Narupa.Protocol.Trajectory;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Property;
-using UnityEngine;
-
 namespace Narupa.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="Narupa.Visualisation.Node.Adaptor.FrameAdaptor" />
@@ -37,21 +33,7 @@ namespace Narupa.Visualisation.Components.Adaptor
         /// <inheritdoc cref="IPropertyProvider.GetPotentialProperties" />
         public override IEnumerable<(string name, Type type)> GetPotentialProperties()
         {
-            yield return (FrameData.BondArrayKey, typeof(BondPair[]));
-            yield return (FrameData.BondOrderArrayKey, typeof(int[]));
-            yield return (FrameData.ChainCountValueKey, typeof(int));
-            yield return (FrameData.ChainNameArrayKey, typeof(string[]));
-            yield return (FrameData.KineticEnergyValueKey, typeof(float));
-            yield return (FrameData.ParticleCountValueKey, typeof(int));
-            yield return (FrameData.ParticleElementArrayKey, typeof(Element[]));
-            yield return (FrameData.ParticleNameArrayKey, typeof(string[]));
-            yield return (FrameData.ParticlePositionArrayKey, typeof(Vector3[]));
-            yield return (FrameData.ParticleResidueArrayKey, typeof(int[]));
-            yield return (FrameData.ParticleTypeArrayKey, typeof(string[]));
-            yield return (FrameData.PotentialEnergyValueKey, typeof(float));
-            yield return (FrameData.ResidueChainArrayKey, typeof(int[]));
-            yield return (FrameData.ResidueCountValueKey, typeof(int));
-            yield return (FrameData.ResidueNameArrayKey, typeof(string[]));
+            return StandardFrameProperties.All;
         }
 
         /// <inheritdoc cref="IPropertyProvider.GetProperties" />
