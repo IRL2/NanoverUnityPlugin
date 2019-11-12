@@ -7,60 +7,70 @@ using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Calculator
 {
+    /// <summary>
+    /// Find protein sequences of standard amino acids.
+    /// </summary>
     [Serializable]
-    public class ProteinSequence
+    public class ProteinSequence : GenericOutputNode
     {
         [SerializeField]
         private StringArrayProperty residueNames = new StringArrayProperty();
         
         [SerializeField]
-        private Vector3ArrayProperty residuePositions = new Vector3ArrayProperty();
+        private IntArrayProperty residueEntities = new IntArrayProperty();
 
         private SelectionArrayProperty peptideSequences = new SelectionArrayProperty();
 
-        [SerializeField]
-        private float cutoff = 1f;
+        protected override bool IsInputDirty => residueNames.IsDirty 
+                                             || residueEntities.IsDirty;
 
-        public void Refresh()
+        protected override bool IsInputValid => residueNames.HasNonEmptyValue()
+                                             && residueEntities.HasNonEmptyValue();
+
+        protected override void ClearDirty()
         {
-            if ((residueNames.IsDirty || residuePositions.IsDirty) 
-                && residueNames.HasNonEmptyValue() 
-                && residuePositions.HasNonEmptyValue())
+            residueNames.IsDirty = false;
+            residueEntities.IsDirty = false;
+        }
+
+        protected override void ClearOutput()
+        {
+            peptideSequences.UndefineValue();
+        }
+
+        protected override void UpdateOutput()
+        {
+            var all = new List<List<int>>();
+            var current = new List<int>();
+            for (var i = 0; i < residueNames.Value.Length; i++)
             {
-                var all = new List<List<int>>();
-                var current = new List<int>();
-                for (var i = 0; i < residueNames.Value.Length; i++)
+                if (AminoAcid.IsStandardAminoAcid(residueNames.Value[i]))
                 {
-                    if (AminoAcid.IsStandardAminoAcid(residueNames.Value[i]))
+                    if (current.Any())
                     {
-                        if (current.Any())
-                        {
-                            var p1 = residuePositions.Value[i];
-                            var p2 = residuePositions.Value[current.Last()];
-                            if (Vector3.Distance(p1, p2) < cutoff)
-                            {
-                                current.Add(i);
-                            }
-                            else
-                            {
-                                all.Add(current);
-                                current = new List<int>();
-                            }
-                        }
-                        else
+                        var p1 = residueEntities.Value[i];
+                        var p2 = residueEntities.Value[current.Last()];
+                        if (p1 == p2)
                         {
                             current.Add(i);
                         }
-                        
+                        else
+                        {
+                            all.Add(current);
+                            current = new List<int>();
+                        }
+                    }
+                    else
+                    {
+                        current.Add(i);
                     }
                         
                 }
-                all.Add(current);
-
-                peptideSequences.Value = all.ToArray();
-                residueNames.IsDirty = false;
-                residuePositions.IsDirty = false;
+                        
             }
+            all.Add(current);
+
+            peptideSequences.Value = all.ToArray();
         }
     }
 }
