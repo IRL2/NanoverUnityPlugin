@@ -143,6 +143,8 @@ namespace Narupa.Visualisation.Node.Renderer
 
                 ci++;
             }
+            
+            mesh.Clear();
 
             mesh.vertices = vertices;
             mesh.normals = normals;
