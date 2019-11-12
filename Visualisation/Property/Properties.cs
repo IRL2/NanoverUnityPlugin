@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Visualisation.Components.Adaptor;
@@ -158,6 +159,14 @@ namespace Narupa.Visualisation.Property
     /// </summary>
     [Serializable]
     public class BondArrayProperty : ArrayProperty<BondPair>
+    {
+    }
+    
+    /// <summary>
+    /// Serializable <see cref="Property" /> for an array of <see cref="int" /> values.
+    /// </summary>
+    [Serializable]
+    public class SelectionArrayProperty : ArrayProperty<IReadOnlyList<int>>
     {
     }
 

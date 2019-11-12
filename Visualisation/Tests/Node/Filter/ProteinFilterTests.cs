@@ -32,6 +32,8 @@ namespace Narupa.Visualisation.Tests.Node.Filter
             };
             var node = new ProteinFilter();
             node.IncludeHydrogens.Value = true;
+            node.IncludeNonStandardResidues.Value = false;
+            node.IncludeWater.Value = true;
             node.ParticleResidues.Value = particleResidues;
             node.ResidueNames.Value = residueNames;
             node.ParticleElements.Value = elements;
@@ -70,6 +72,8 @@ namespace Narupa.Visualisation.Tests.Node.Filter
             };
             var node = new ProteinFilter();
             node.IncludeHydrogens.Value = false;
+            node.IncludeWater.Value = true;
+            node.IncludeNonStandardResidues.Value = false;
             node.ParticleResidues.Value = particleResidues;
             node.ResidueNames.Value = residueNames;
             node.ParticleElements.Value = elements;

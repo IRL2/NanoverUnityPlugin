@@ -17,7 +17,7 @@ namespace Narupa.Frame.Import.CIF.Components
     /// A global <see cref="ScriptableObject" /> which holds the mmCIF component
     /// dictionary.
     /// </summary>
-    internal class ChemicalComponentDictionary : ScriptableObject,
+    public class ChemicalComponentDictionary : ScriptableObject,
                                                  ISerializationCallbackReceiver
     {
         private static ChemicalComponentDictionary _instance = null;

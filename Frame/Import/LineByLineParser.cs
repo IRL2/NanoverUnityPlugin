@@ -49,6 +49,7 @@ namespace Narupa.Frame.Import
             {
                 CurrentLine = CurrentReader.ReadLine();
                 LineNumber++;
+                LogProgress($"Line {LineNumber}");
             }
             else
             {
@@ -133,6 +134,21 @@ namespace Narupa.Frame.Import
                         }), element);
                 }
             }
+        }
+
+        private readonly IProgress<string> progress = null;
+
+        /// <summary>
+        /// Log a message to a progress reporter if present.
+        /// </summary>
+        protected void LogProgress(string message)
+        {
+            progress?.Report(message);
+        }
+
+        protected LineByLineParser(IProgress<string> progress = null)
+        {
+            this.progress = progress;
         }
 
         protected Element? ParseElementSymbol(string symbol)

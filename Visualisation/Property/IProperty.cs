@@ -4,24 +4,10 @@
 namespace Narupa.Visualisation.Property
 {
     /// <summary>
-    /// Extension of an <see cref="IReadOnlyProperty{TValue}" /> which can have its
-    /// value altered.
+    /// Typeless version of <see cref="IProperty{TValue}"/>
     /// </summary>
-    public interface IProperty<TValue> : IReadOnlyProperty<TValue>
+    public interface IProperty : IReadOnlyProperty
     {
-        /// <inheritdoc cref="IReadOnlyProperty{TValue}.Value" />
-        new TValue Value { get; set; }
-
-        /// <summary>
-        /// Linked property that will override this value.
-        /// </summary>
-        IReadOnlyProperty<TValue> LinkedProperty { get; set; }
-
-        /// <summary>
-        /// Is this property linked to another?
-        /// </summary>
-        bool HasLinkedProperty { get; }
-
         /// <summary>
         /// Remove the value from this property.
         /// </summary>
@@ -31,5 +17,25 @@ namespace Narupa.Visualisation.Property
         /// Is this property dirty?
         /// </summary>
         bool IsDirty { get; set; }
+        
+        /// <summary>
+        /// Is this property linked to another?
+        /// </summary>
+        bool HasLinkedProperty { get; }
+    }
+    
+    /// <summary>
+    /// Extension of an <see cref="IReadOnlyProperty{TValue}" /> which can have its
+    /// value altered.
+    /// </summary>
+    public interface IProperty<TValue> : IReadOnlyProperty<TValue>, IProperty
+    {
+        /// <inheritdoc cref="IReadOnlyProperty{TValue}.Value" />
+        new TValue Value { get; set; }
+
+        /// <summary>
+        /// Linked property that will override this value.
+        /// </summary>
+        IReadOnlyProperty<TValue> LinkedProperty { get; set; }
     }
 }

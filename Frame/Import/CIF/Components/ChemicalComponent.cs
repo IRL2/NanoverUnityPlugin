@@ -11,7 +11,7 @@ namespace Narupa.Frame.Import.CIF.Components
     /// Serializable representation of a chemical component
     /// </summary>
     [Serializable]
-    internal class ChemicalComponent
+    public class ChemicalComponent
     {
         [SerializeField]
         private string resId;
