@@ -4,10 +4,9 @@
         "Narupa.Visualisation",
         "Narupa.Testing",
         "Narupa.Frame",
-        "Narupa.Core"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Narupa.Core",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
@@ -17,9 +16,13 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "NSubstitute.dll",
-        "System.Threading.Tasks.Extensions.dll"
+        "System.Threading.Tasks.Extensions.dll",
+        "nunit.framework.dll",
+        "Narupa.Protocol.dll"
     ],
     "autoReferenced": false,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }

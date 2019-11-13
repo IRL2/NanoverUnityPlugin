@@ -21,76 +21,6 @@ namespace Narupa.Frame.Event
         public bool HasAnythingChanged => changed.Count > 0;
 
         /// <summary>
-        /// Indicates whether the bonds have been changed in comparison to a
-        /// previous frame.
-        /// </summary>
-        public bool HaveBondsChanged
-        {
-            get => GetIsChanged(FrameData.BondArrayKey);
-            set => SetIsChanged(FrameData.BondArrayKey, value);
-        }
-
-        /// <summary>
-        /// Indicates whether the particle elements have been changed in
-        /// comparison to a previous frame.
-        /// </summary>
-        public bool HaveParticleElementsChanged
-        {
-            get => GetIsChanged(FrameData.ParticleElementArrayKey);
-            set => SetIsChanged(FrameData.ParticleElementArrayKey, value);
-        }
-
-        /// <summary>
-        /// Indicates whether the particle positions have been changed in
-        /// comparison to a previous frame.
-        /// </summary>
-        public bool HaveParticlePositionsChanged
-        {
-            get => GetIsChanged(FrameData.ParticlePositionArrayKey);
-            set => SetIsChanged(FrameData.ParticlePositionArrayKey, value);
-        }
-
-        /// <summary>
-        /// Indicates whether the bond orders have been changed in
-        /// comparison to a previous frame.
-        /// </summary>
-        public bool HaveBondOrdersChanged
-        {
-            get => GetIsChanged(FrameData.BondOrderArrayKey);
-            set => SetIsChanged(FrameData.BondOrderArrayKey, value);
-        }
-        
-        /// <summary>
-        /// Indicates whether the particle residues have been changed in
-        /// comparison to a previous frame.
-        /// </summary>
-        public bool HaveParticleResiduesChanged
-        {
-            get => GetIsChanged(FrameData.ParticleResidueArrayKey);
-            set => SetIsChanged(FrameData.ParticleResidueArrayKey, value);
-        }
-        
-        /// <summary>
-        /// Indicates whether the particle names have been changed in
-        /// comparison to a previous frame.
-        /// </summary>
-        public bool HaveParticleNamesChanged
-        {
-            get => GetIsChanged(FrameData.ParticleNameArrayKey);
-            set => SetIsChanged(FrameData.ParticleNameArrayKey, value);
-        }
-        
-        /// <summary>
-        /// Indicates whether the residue names have been changed in
-        /// comparison to a previous frame.
-        /// </summary>
-        public bool HaveResidueNamesChanged
-        {
-            get => GetIsChanged(FrameData.ResidueNameArrayKey);
-            set => SetIsChanged(FrameData.ResidueNameArrayKey, value);
-        }
-
-        /// <summary>
         /// Merge another <see cref="FrameChanges" />, such that the update
         /// state reflects the combination of the two.
         /// </summary>
@@ -106,6 +36,12 @@ namespace Narupa.Frame.Event
         public bool GetIsChanged(string id)
         {
             return changed.Contains(id);
+        }
+
+        public bool this[string id]
+        {
+            get => GetIsChanged(id);
+            set => SetIsChanged(id, value);
         }
 
         /// <summary>

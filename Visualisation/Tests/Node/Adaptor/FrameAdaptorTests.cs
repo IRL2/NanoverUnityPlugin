@@ -2,6 +2,7 @@ using System;
 using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Frame.Event;
+using Narupa.Protocol.Trajectory;
 using Narupa.Visualisation.Node.Adaptor;
 using NSubstitute;
 using NUnit.Framework;
@@ -54,7 +55,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                           },
                           new FrameChanges
                           {
-                              HaveParticlePositionsChanged = true
+                              [FrameData.ParticlePositionArrayKey] = true
                           });
 
             positionsChangedHandler.ReceivedWithAnyArgs(1).Invoke();
@@ -74,7 +75,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                           },
                           new FrameChanges
                           {
-                              HaveParticleElementsChanged = true
+                              [FrameData.ParticleElementArrayKey] = true
                           });
 
             positionsChangedHandler.ReceivedWithAnyArgs(0).Invoke();
@@ -94,7 +95,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                           },
                           new FrameChanges
                           {
-                              HaveBondsChanged = true
+                              [FrameData.BondArrayKey] = true
                           });
 
             positionsChangedHandler.ReceivedWithAnyArgs(0).Invoke();

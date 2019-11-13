@@ -36,8 +36,7 @@ namespace Narupa.Frontend.Controllers
         private void SetupController(VrController controller)
         {
             if (controller.IsControllerActive)
-                controller.Cursor.SetGizmo(Instantiate(interactionGizmo,
-                                                       controller.Cursor.transform));
+                controller.InstantiateCursorGizmo(interactionGizmo);
         }
     }
 }

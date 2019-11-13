@@ -17,7 +17,7 @@ namespace Narupa.Frame.Import.CIF.Components
     /// A global <see cref="ScriptableObject" /> which holds the mmCIF component
     /// dictionary.
     /// </summary>
-    internal class ChemicalComponentDictionary : ScriptableObject,
+    public class ChemicalComponentDictionary : ScriptableObject,
                                                  ISerializationCallbackReceiver
     {
         private static ChemicalComponentDictionary _instance = null;
@@ -52,11 +52,9 @@ namespace Narupa.Frame.Import.CIF.Components
                     throw new InvalidOperationException(
                         $"Cannot find mmCIF chemical component dictionary at {InstanceFile}");
             }
-
-            if (_instance.chemicalComponents.Count == 0)
-                _instance.DeserializeDictionary();
         }
 
+        
 
 #if UNITY_EDITOR
         [MenuItem("Narupa/Load mmCIF Chemical Component Dictionary")]
