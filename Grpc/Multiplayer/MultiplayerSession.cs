@@ -95,6 +95,8 @@ namespace Narupa.Session
 
         private Task avatarFlushingTask, valueFlushingTask;
 
+        public event Action<string, object> SharedStateDictionaryKeyChanged;
+
         /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
         /// Closes any existing client.
@@ -279,7 +281,9 @@ namespace Narupa.Session
         {
             foreach (var pair in update.ResourceValueChanges)
             {
-                SharedStateDictionary[pair.Key] = pair.Value.ToObject();
+                var value = pair.Value.ToObject();
+                SharedStateDictionary[pair.Key] = value;
+                SharedStateDictionaryKeyChanged?.Invoke(pair.Key, value);
             }
 
             if (update.ResourceValueChanges.ContainsKey(SimulationPoseKey))
