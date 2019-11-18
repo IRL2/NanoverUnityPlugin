@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
+  - component: {fileID: 3337455360039578810}
   - component: {fileID: 397105478419057534}
   - component: {fileID: 6089087228771831228}
   - component: {fileID: 8528582866378757810}
@@ -54,6 +55,24 @@ MonoBehaviour:
     parentAdaptor:
       isValueProvided: 0
       value: {fileID: 0}
+--- !u!114 &3337455360039578810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: filter
+    input:
+      isValueProvided: 0
+      value: 
 --- !u!114 &397105478419057534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +242,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 397105478419057534}
     sourceFieldName: input
     destinationFieldName: rendererScale
+  - sourceComponent: {fileID: 3337455360039578810}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
   node:
     particlePositions:
       isValueProvided: 0
