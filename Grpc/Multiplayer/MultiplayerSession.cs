@@ -156,7 +156,8 @@ namespace Narupa.Session
             PlayerId = response.PlayerId;
 
             OutgoingAvatar = client.PublishAvatar(PlayerId);
-            IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f);
+            IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f,
+                                                      ignorePlayerId: PlayerId);
 
             IncomingAvatars.MessageReceived += OnAvatarReceived;
 
