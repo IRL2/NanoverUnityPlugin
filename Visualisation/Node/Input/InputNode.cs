@@ -18,5 +18,9 @@ namespace Narupa.Visualisation.Node.Input
 
         [SerializeField]
         private TProperty input = new TProperty();
+
+        public string Name => name;
+
+        public TProperty Input => input;
     }
 }

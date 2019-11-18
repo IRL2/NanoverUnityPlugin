@@ -186,6 +186,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 397105478419057534}
     sourceFieldName: input
     destinationFieldName: particleScale
+  - sourceComponent: {fileID: 3337455360039578810}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
   node:
     material:
       isValueProvided: 1
@@ -193,6 +196,9 @@ MonoBehaviour:
     mesh:
       isValueProvided: 1
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    particleFilter:
+      isValueProvided: 0
+      value: 
     bondScale:
       isValueProvided: 0
       value: 0.06

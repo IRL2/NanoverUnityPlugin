@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
   - component: {fileID: 7734931667758117960}
+  - component: {fileID: 5667666357768622087}
   - component: {fileID: 8528582866378757810}
   - component: {fileID: 8528582866378757808}
   - component: {fileID: 8528582866378757823}
@@ -70,6 +71,24 @@ MonoBehaviour:
     input:
       isValueProvided: 1
       value: 0.05
+--- !u!114 &5667666357768622087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: filter
+    input:
+      isValueProvided: 0
+      value: 
 --- !u!114 &8528582866378757810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +140,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 7734931667758117960}
     sourceFieldName: input
     destinationFieldName: particleScale
+  - sourceComponent: {fileID: 5667666357768622087}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
   node:
     material:
       isValueProvided: 1
@@ -128,6 +150,9 @@ MonoBehaviour:
     mesh:
       isValueProvided: 1
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    particleFilter:
+      isValueProvided: 0
+      value: 
     bondScale:
       isValueProvided: 0
       value: 0.05
@@ -174,6 +199,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 7734931667758117960}
     sourceFieldName: input
     destinationFieldName: rendererScale
+  - sourceComponent: {fileID: 5667666357768622087}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
   node:
     particlePositions:
       isValueProvided: 0

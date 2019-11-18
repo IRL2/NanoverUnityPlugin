@@ -33,6 +33,8 @@ namespace Narupa.Visualisation.Components
         {
             return node;
         }
+
+        public TNode Node => node;
     }
 
     /// <summary>

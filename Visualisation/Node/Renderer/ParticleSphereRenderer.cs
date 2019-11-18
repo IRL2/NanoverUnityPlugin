@@ -4,6 +4,7 @@
 using System;
 using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
+using Plugins.Narupa.Visualisation.Node.Renderer;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -19,7 +20,7 @@ namespace Narupa.Visualisation.Node.Renderer
     /// <see cref="AppendToCommandBuffer" />.
     /// </remarks>
     [Serializable]
-    public class ParticleSphereRenderer : IDisposable
+    public class ParticleSphereRenderer : IndirectMeshRenderer, IDisposable
     {
         private readonly IndirectMeshDrawCommand drawCommand = new IndirectMeshDrawCommand();
 
@@ -85,72 +86,39 @@ namespace Narupa.Visualisation.Node.Renderer
         private MaterialProperty material = new MaterialProperty();
 #pragma warning restore 0649
 
-        public Transform Transform { get; set; }
-
-        public bool ShouldRender => mesh.HasNonNullValue()
-                                 && material.HasNonNullValue()
-                                 && particlePositions.HasNonEmptyValue()
-                                 && rendererColor.HasValue
-                                 && rendererScale.HasValue
-                                 && Transform != null
-                                 && InstanceCount > 0;
+        public override bool ShouldRender => mesh.HasNonNullValue()
+                                          && material.HasNonNullValue()
+                                          && particlePositions.HasNonEmptyValue()
+                                          && rendererColor.HasValue
+                                          && rendererScale.HasValue
+                                          && Transform != null
+                                          && InstanceCount > 0;
 
         private int InstanceCount => particleFilter.HasNonNullValue()
                                          ? particleFilter.Value.Length
                                          : particlePositions.Value.Length;
 
-        public virtual bool IsInputDirty => mesh.IsDirty
-                                         || material.IsDirty
-                                         || rendererColor.IsDirty
-                                         || rendererScale.IsDirty
-                                         || particlePositions.IsDirty
-                                         || particleColors.IsDirty
-                                         || particleScales.IsDirty
-                                         || particleFilter.IsDirty;
+        public override bool IsInputDirty => mesh.IsDirty
+                                          || material.IsDirty
+                                          || rendererColor.IsDirty
+                                          || rendererScale.IsDirty
+                                          || particlePositions.IsDirty
+                                          || particleColors.IsDirty
+                                          || particleScales.IsDirty
+                                          || particleFilter.IsDirty;
 
-        /// <summary>
-        /// Render the provided bonds
-        /// </summary>
-        public void Render(Camera camera = null)
+
+        public override void UpdateInput()
         {
-            if (UpdateRenderer())
-            {
-                drawCommand.MarkForRenderingThisFrame(camera);
-            }
-        }
+            UpdateMeshAndMaterials();
 
-        /// <summary>
-        /// Update the draw command based upon the input values, by updating the mesh,
-        /// material and buffers.
-        /// </summary>
-        /// <remarks>
-        /// This does not actually render the spheres. Either call <see cref="Render" />
-        /// each frame or call <see cref="AppendToCommandBuffer" />.
-        /// </remarks>
-        public bool UpdateRenderer()
-        {
-            if (ShouldRender)
-            {
-                if (IsInputDirty)
-                {
-                    UpdateMeshAndMaterials();
+            drawCommand.SetInstanceCount(InstanceCount);
+            drawCommand.SetFloat("_Scale", rendererScale.Value);
+            drawCommand.SetColor("_Color", rendererColor.Value);
+            rendererScale.IsDirty = false;
+            rendererColor.IsDirty = false;
 
-                    drawCommand.SetInstanceCount(InstanceCount);
-                    drawCommand.SetFloat("_Scale", rendererScale.Value);
-                    drawCommand.SetColor("_Color", rendererColor.Value);
-                    rendererScale.IsDirty = false;
-                    rendererColor.IsDirty = false;
-
-                    UpdateBuffers();
-                }
-
-                InstancingUtility.SetTransform(drawCommand, Transform);
-
-                return true;
-            }
-
-            drawCommand.SetInstanceCount(0);
-            return false;
+            UpdateBuffers();
         }
 
         protected virtual void UpdateBuffers()
@@ -159,14 +127,6 @@ namespace Narupa.Visualisation.Node.Renderer
             UpdateColorsIfDirty();
             UpdateScalesIfDirty();
             UpdateFilterIfDirty();
-        }
-
-        protected IndirectMeshDrawCommand DrawCommand => drawCommand;
-
-        /// <inheritdoc cref="IDisposable.Dispose" />
-        public void Dispose()
-        {
-            drawCommand.Dispose();
         }
 
         private void UpdatePositionsIfDirty()
@@ -217,23 +177,15 @@ namespace Narupa.Visualisation.Node.Renderer
             material.IsDirty = false;
         }
 
-        /// <summary>
-        /// Indicate that a deserialisation or other event which resets buffers has
-        /// occured.
-        /// </summary>
-        public virtual void ResetBuffers()
+        protected override IndirectMeshDrawCommand DrawCommand => drawCommand;
+
+        public override void ResetBuffers()
         {
-            drawCommand.ResetCommand();
+            base.ResetBuffers();
             particleColors.IsDirty = true;
             particlePositions.IsDirty = true;
             particleScales.IsDirty = true;
             particleFilter.IsDirty = true;
-        }
-
-        public void AppendToCommandBuffer(CommandBuffer buffer)
-        {
-            UpdateRenderer();
-            drawCommand.AppendToCommandBuffer(buffer);
         }
     }
 }

@@ -2,9 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using Narupa.Frame;
 using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
+using Plugins.Narupa.Visualisation.Node.Renderer;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Renderer
@@ -13,7 +15,7 @@ namespace Narupa.Visualisation.Node.Renderer
     /// Visualisation node for rendering bonds between particles.
     /// </summary>
     [Serializable]
-    public class ParticleBondRenderer : IDisposable
+    public class ParticleBondRenderer : IndirectMeshRenderer, IDisposable
     {
         private readonly IndirectMeshDrawCommand drawCommand = new IndirectMeshDrawCommand();
 
@@ -23,9 +25,10 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private MeshProperty mesh = new MeshProperty();
-#pragma warning restore 0649
 
-        public Transform Transform { get; set; }
+        [SerializeField]
+        private IntArrayProperty particleFilter = new IntArrayProperty();
+#pragma warning restore 0649
 
         #region Input Properties
 
@@ -98,45 +101,53 @@ namespace Narupa.Visualisation.Node.Renderer
 
         #endregion
 
-        private bool ShouldRender => mesh.HasNonNullValue()
-                                  && material.HasNonNullValue()
-                                  && bondPairs.HasNonEmptyValue()
-                                  && particlePositions.HasNonEmptyValue()
-                                  && bondScale.HasValue
-                                  && rendererColor.HasValue
-                                  && particleScale.HasValue;
+        public override bool ShouldRender => mesh.HasNonNullValue()
+                                          && material.HasNonNullValue()
+                                          && bondPairs.HasNonEmptyValue()
+                                          && particlePositions.HasNonEmptyValue()
+                                          && bondScale.HasValue
+                                          && rendererColor.HasValue
+                                          && particleScale.HasValue;
 
-        /// <summary>
-        /// Render the provided bonds
-        /// </summary>
-        public void Render(Camera camera = null)
+        private int InstanceCount => particleFilter.HasNonNullValue()
+                                         ? filter.Length
+                                         : bondPairs.Value.Length;
+
+        public override bool IsInputDirty => mesh.IsDirty
+                                          || material.IsDirty
+                                          || rendererColor.IsDirty
+                                          || bondScale.IsDirty
+                                          || particleScale.IsDirty
+                                          || particlePositions.IsDirty
+                                          || particleColors.IsDirty
+                                          || particleScales.IsDirty
+                                          || particleFilter.IsDirty;
+
+        public override void UpdateInput()
         {
-            if (ShouldRender)
-            {
-                UpdateMeshAndMaterials();
+            UpdateMeshAndMaterials();
 
-                InstancingUtility.SetTransform(drawCommand, Transform);
+            drawCommand.SetFloat("_EdgeScale", bondScale.Value);
+            drawCommand.SetFloat("_ParticleScale", particleScale.Value);
+            drawCommand.SetFloat("_Scale", particleScale.Value);
+            drawCommand.SetColor("_Color", rendererColor.Value);
 
-                drawCommand.SetInstanceCount(bondPairs.Value.Length);
+            bondScale.IsDirty = false;
+            particleScale.IsDirty = false;
+            rendererColor.IsDirty = false;
 
-                drawCommand.SetFloat("_EdgeScale", bondScale.Value);
-                drawCommand.SetFloat("_ParticleScale", particleScale.Value);
-                drawCommand.SetFloat("_Scale", particleScale.Value);
-                drawCommand.SetColor("_Color", rendererColor.Value);
-
-                UpdatePositionsIfDirty();
-                UpdateColorsIfDirty();
-                UpdateScalesIfDirty();
-                UpdateBondsIfDirty();
-
-                drawCommand.MarkForRenderingThisFrame(camera);
-            }
+            UpdateBuffers();
+            
+            drawCommand.SetInstanceCount(InstanceCount);
         }
 
-        /// <inheritdoc cref="IDisposable.Dispose" />
-        public void Dispose()
+        protected void UpdateBuffers()
         {
-            drawCommand.Dispose();
+            UpdatePositionsIfDirty();
+            UpdateColorsIfDirty();
+            UpdateScalesIfDirty();
+            UpdateBondsIfDirty();
+            UpdateFilterIfDirty();
         }
 
         private void UpdatePositionsIfDirty()
@@ -186,23 +197,51 @@ namespace Narupa.Visualisation.Node.Renderer
             }
         }
 
+        private int[] filter = new int[0];
+
+        private void UpdateFilterIfDirty()
+        {
+            if (particleFilter.IsDirty && particleFilter.HasNonEmptyValue())
+            {
+                var maxBondCount = Mathf.Min(particleFilter.Value.Length * 2,
+                                             bondPairs.Value.Length);
+                Array.Resize(ref filter, maxBondCount);
+                var i = 0;
+                var j = 0;
+                foreach (var bond in bondPairs.Value)
+                {
+                    if (particleFilter.Value.Contains(bond.A)
+                     && particleFilter.Value.Contains(bond.B))
+                        filter[i++] = j;
+                    j++;
+                }
+
+                Array.Resize(ref filter, i);
+
+                InstancingUtility.SetFilter(drawCommand, filter);
+
+                particleFilter.IsDirty = false;
+            }
+        }
+
         private void UpdateMeshAndMaterials()
         {
             drawCommand.SetMesh(mesh);
             drawCommand.SetMaterial(material);
         }
-        
+
+        protected override IndirectMeshDrawCommand DrawCommand => drawCommand;
+
         /// <summary>
         /// Indicate that a deserialisation or other event which resets buffers has occured.
         /// </summary>
-        public void ResetBuffers()
+        public override void ResetBuffers()
         {
-            drawCommand.ResetCommand();
+            base.ResetBuffers();
             particleColors.IsDirty = true;
             particlePositions.IsDirty = true;
             particleScales.IsDirty = true;
             bondPairs.IsDirty = true;
         }
-
     }
 }
