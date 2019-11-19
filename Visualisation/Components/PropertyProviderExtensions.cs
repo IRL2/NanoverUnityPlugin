@@ -2,7 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Reflection;
 using Narupa.Visualisation.Node.Adaptor;
+using Narupa.Visualisation.Property;
 
 namespace Plugins.Narupa.Visualisation.Components
 {
@@ -22,6 +24,25 @@ namespace Plugins.Narupa.Visualisation.Components
                           {
                               name
                           });
+        }
+
+        public static IReadOnlyProperty GetOrCreateProperty(this IPropertyProvider provider,
+                                                            string name,
+                                                            Type type)
+        {
+            var method = typeof(IPropertyProvider).GetMethod(nameof(GetOrCreateProperty),
+                                                             BindingFlags.Public
+                                                           | BindingFlags.NonPublic
+                                                           | BindingFlags.Instance);
+            method = method?.MakeGenericMethod(type);
+
+            if (method == null)
+                throw new InvalidOperationException(
+                    $"Failed to get method IPropertyProvider.GetOrCreateProperty with generic type {type}");
+            return method.Invoke(provider, new object[]
+            {
+                name
+            }) as IReadOnlyProperty;
         }
     }
 }

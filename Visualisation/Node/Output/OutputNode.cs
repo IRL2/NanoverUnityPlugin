@@ -8,29 +8,36 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Input
 {
     /// <summary>
-    /// Generic input for the visualisation system that provides some value with a
+    /// Generic output for the visualisation system that provides some value with a
     /// given key.
     /// </summary>
     [Serializable]
-    public abstract class InputNode<TProperty> : IInputNode where TProperty : Property.Property, new()
+    public abstract class OutputNode<TProperty> : IOutputNode where TProperty : Property.Property, new()
     {
-        IProperty IInputNode.Input => input;
-
+        IReadOnlyProperty IOutputNode.Output => output;
+        
         [SerializeField]
         private string name;
-        
+
+        private TProperty output = new TProperty();
+
         [SerializeField]
         private TProperty input = new TProperty();
 
-        public TProperty Input => input;
-
+        public OutputNode()
+        {
+            output.TrySetLinkedProperty(input);
+        }
+        
         public string Name => name;
-    }
 
-    public interface IInputNode
+        public TProperty Output => output;
+    }
+    
+    public interface IOutputNode
     { 
         string Name { get; }
         
-        IProperty Input { get; }
+        IReadOnlyProperty Output { get; }
     }
 }

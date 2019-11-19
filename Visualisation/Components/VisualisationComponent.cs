@@ -111,7 +111,7 @@ namespace Narupa.Visualisation.Components
         /// <summary>
         /// Setup a link between two property providers
         /// </summary>
-        private static void LinkProperties<T>(IPropertyProvider source,
+        public static void LinkProperties<T>(IPropertyProvider source,
                                               string sourceName,
                                               IPropertyProvider destination,
                                               string destName)
@@ -123,7 +123,8 @@ namespace Narupa.Visualisation.Components
 
             destInput.LinkedProperty = sourceOutput;
         }
-
+        
+        
         /// <summary>
         /// Setup a link between two properties without knowing the type
         /// </summary>
