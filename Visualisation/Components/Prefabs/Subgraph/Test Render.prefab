@@ -101,6 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adaptor: {fileID: 2328836869028133637}
   prefabs:
-  - {fileID: 8528582866378757822, guid: 657af42ceba840c4299427c9a70925e8, type: 3}
   - {fileID: 8528582866378757822, guid: dba7d887fa6333e4ab9f6fafc84a3863, type: 3}
+  - {fileID: 8528582866378757822, guid: d2b9c24c729c2914dae65603e337a6ca, type: 3}
   - {fileID: 1900448658886156695, guid: 9572ecae4cb8fc14698248ffb1dc72c3, type: 3}
