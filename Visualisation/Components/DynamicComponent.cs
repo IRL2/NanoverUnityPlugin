@@ -16,11 +16,22 @@ namespace Narupa.Visualisation.Components
         private FrameAdaptor adaptor;
 
         [SerializeField]
-        private GameObject[] prefabs;
+        private GameObject[] prefabs = new GameObject[0];
 
         private List<GameObject> current = new List<GameObject>();
 
+        public FrameAdaptor FrameAdaptor
+        {
+            get => adaptor;
+            set => adaptor = value;
+        }
+
         private void OnEnable()
+        {
+            SetupSubgraphs();
+        }
+
+        private void SetupSubgraphs()
         {
             if (current.Count == 0)
             {
@@ -80,7 +91,7 @@ namespace Narupa.Visualisation.Components
 
             if (input.Input.HasValue)
                 return;
-            
+        
             input.Input.TrySetLinkedProperty(
                 adaptor.GetOrCreateProperty(input.Name,
                                             input.Input.PropertyType));
@@ -99,6 +110,12 @@ namespace Narupa.Visualisation.Components
                            c => c.GetWrappedVisualisationNode() is IOutputNode node &&
                                 node.Name == name)?
                        .GetWrappedVisualisationNode() as IOutputNode;
+        }
+
+        public void SetSubgraphs(params GameObject[] subgraphs)
+        {
+            prefabs = subgraphs ?? new GameObject[0];
+            SetupSubgraphs();
         }
     }
 }

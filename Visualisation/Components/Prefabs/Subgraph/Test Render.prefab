@@ -86,7 +86,7 @@ MonoBehaviour:
     name: particle.scale
     input:
       isValueProvided: 1
-      value: 0.6
+      value: 0.1
 --- !u!114 &7698190664551895981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +101,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adaptor: {fileID: 2328836869028133637}
   prefabs:
-  - {fileID: 8528582866378757822, guid: dba7d887fa6333e4ab9f6fafc84a3863, type: 3}
-  - {fileID: 8528582866378757822, guid: d2f5fbc8cb179854db29178992a5202a, type: 3}
-  - {fileID: 6914795531129879088, guid: 4d8702b24a6b0424cbb5fc18ab856197, type: 3}
+  - {fileID: 1900448658886156695, guid: 9572ecae4cb8fc14698248ffb1dc72c3, type: 3}

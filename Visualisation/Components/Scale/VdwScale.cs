@@ -6,6 +6,12 @@ namespace Narupa.Visualisation.Components.Scale
     /// <inheritdoc cref="Node.Scale.VdwScale" />
     public sealed class VdwScale : VisualisationComponent<Node.Scale.VdwScale>
     {
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            node.Refresh();
+        }
+
         private void Update()
         {
             node.Refresh();

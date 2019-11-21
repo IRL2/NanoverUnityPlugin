@@ -25,6 +25,12 @@ namespace Narupa.Visualisation.Components.Adaptor
         /// </summary>
         public Node.Adaptor.FrameAdaptor Adaptor => node;
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            node.Refresh();
+        }
+
         private void Update()
         {
             node.Refresh();

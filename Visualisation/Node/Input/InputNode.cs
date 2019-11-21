@@ -24,7 +24,11 @@ namespace Narupa.Visualisation.Node.Input
 
         public TProperty Input => input;
 
-        public string Name => name;
+        public string Name
+        {
+            get => name;
+            set => name = value;
+        }
     }
 
     public interface IInputNode

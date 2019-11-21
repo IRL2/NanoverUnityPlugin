@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
+  - component: {fileID: 6944931922468433248}
   - component: {fileID: -6296168603134018358}
   - component: {fileID: 7466151666213273982}
-  - component: {fileID: 3130336651086379168}
   m_Layer: 0
   m_Name: Goodsell
   m_TagString: Untagged
@@ -51,6 +51,24 @@ MonoBehaviour:
     parentAdaptor:
       isValueProvided: 0
       value: {fileID: 0}
+--- !u!114 &6944931922468433248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: filter
+    input:
+      isValueProvided: 0
+      value: 
 --- !u!114 &-6296168603134018358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,8 +91,8 @@ MonoBehaviour:
   - sourceComponent: {fileID: 7466151666213273982}
     sourceFieldName: colors
     destinationFieldName: particleColors
-  - sourceComponent: {fileID: 3130336651086379168}
-    sourceFieldName: particleFilter
+  - sourceComponent: {fileID: 6944931922468433248}
+    sourceFieldName: input
     destinationFieldName: particleFilter
   node:
     particlePositions:
@@ -181,44 +199,3 @@ MonoBehaviour:
       HeteroColor: {r: 1, g: 0.6, b: 0.40000004, a: 1}
     - NonHeteroColor: {r: 1, g: 0.49803925, b: 1, a: 1}
       HeteroColor: {r: 1, g: 0.40000004, b: 1, a: 1}
---- !u!114 &3130336651086379168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c435587a717749d5a8d39c7e63224679, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.residues
-    destinationFieldName: particleResidues
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.elements
-    destinationFieldName: particleElements
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residue.names
-    destinationFieldName: residueNames
-  node:
-    includeHydrogens:
-      isValueProvided: 1
-      value: 0
-    includeWater:
-      isValueProvided: 1
-      value: 0
-    includeNonStandardResidues:
-      isValueProvided: 1
-      value: 1
-    particleResidues:
-      isValueProvided: 0
-      value: 
-    particleElements:
-      isValueProvided: 0
-      value: 
-    residueNames:
-      isValueProvided: 0
-      value: []

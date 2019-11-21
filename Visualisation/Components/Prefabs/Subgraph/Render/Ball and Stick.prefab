@@ -93,7 +93,7 @@ MonoBehaviour:
     name: particle.scale
     input:
       isValueProvided: 1
-      value: 1
+      value: 0.1
 --- !u!114 &3421694816922696361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
     name: bond.scale
     input:
       isValueProvided: 1
-      value: 1
+      value: 0.05
 --- !u!114 &1900448658886156697
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8379820703431466785}
   - component: {fileID: 5176173228503488438}
   - component: {fileID: 2187803143233138763}
-  - component: {fileID: 4072638902273047189}
+  - component: {fileID: 7006988713503493199}
   - component: {fileID: 4453204307093244066}
   m_Layer: 0
   m_Name: Goodsell
@@ -165,7 +165,7 @@ MonoBehaviour:
     input:
       isValueProvided: 0
       value: []
---- !u!114 &4072638902273047189
+--- !u!114 &7006988713503493199
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,15 +174,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: bond.scale
+    name: particle.filter
     input:
-      isValueProvided: 1
-      value: 1
+      isValueProvided: 0
+      value: 
 --- !u!114 &4453204307093244066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +205,12 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4779769348369292179}
     sourceFieldName: input
     destinationFieldName: particleResidues
+  - sourceComponent: {fileID: 6529192864124320622}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
+  - sourceComponent: {fileID: 7006988713503493199}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
   node:
     particlePositions:
       isValueProvided: 0
@@ -218,6 +224,9 @@ MonoBehaviour:
     particleFilter:
       isValueProvided: 0
       value: 
+    rendererColor:
+      isValueProvided: 0
+      value: {r: 0, g: 0, b: 0, a: 0}
     cameraEvent: 11
     shader: {fileID: 4800000, guid: 450c17dddf234aa5bd210a808a8c316b, type: 3}
     renderer:
@@ -231,7 +240,7 @@ MonoBehaviour:
         isValueProvided: 0
         value: []
       rendererColor:
-        isValueProvided: 1
+        isValueProvided: 0
         value: {r: 1, g: 1, b: 1, a: 1}
       rendererScale:
         isValueProvided: 1

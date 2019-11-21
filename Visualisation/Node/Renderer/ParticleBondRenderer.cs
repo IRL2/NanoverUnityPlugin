@@ -2,7 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
+using Narupa.Core.Math;
 using Narupa.Frame;
 using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
@@ -137,7 +137,7 @@ namespace Narupa.Visualisation.Node.Renderer
             rendererColor.IsDirty = false;
 
             UpdateBuffers();
-            
+
             drawCommand.SetInstanceCount(InstanceCount);
         }
 
@@ -197,28 +197,63 @@ namespace Narupa.Visualisation.Node.Renderer
             }
         }
 
+        [SerializeField]
+        private bool bondToNonFiltered = false;
+
+        /// <summary>
+        /// Should this renderer draw bonds between particles that are filtered and those which are not.
+        /// </summary>
+        public bool BondToNonFiltered
+        {
+            get => bondToNonFiltered;
+            set => bondToNonFiltered = value;
+        }
+
         private int[] filter = new int[0];
 
         private void UpdateFilterIfDirty()
         {
-            if (particleFilter.IsDirty && particleFilter.HasNonEmptyValue())
+            if (particleFilter.IsDirty)
             {
-                var maxBondCount = Mathf.Min(particleFilter.Value.Length * 2,
-                                             bondPairs.Value.Length);
-                Array.Resize(ref filter, maxBondCount);
-                var i = 0;
-                var j = 0;
-                foreach (var bond in bondPairs.Value)
+                if (particleFilter.HasNonEmptyValue())
                 {
-                    if (particleFilter.Value.Contains(bond.A)
-                     && particleFilter.Value.Contains(bond.B))
-                        filter[i++] = j;
-                    j++;
+                    var partFilter = particleFilter.Value;
+
+                    var maxBondCount = bondPairs.Value.Length;
+                    Array.Resize(ref filter, maxBondCount);
+                    var i = 0;
+                    var j = 0;
+                    foreach (var bond in bondPairs.Value)
+                    {
+                        if (bondToNonFiltered)
+                        {
+                            if (SearchAlgorithms.BinarySearch(bond.A, partFilter)
+                             || SearchAlgorithms.BinarySearch(bond.B, partFilter))
+                                filter[i++] = j;
+                        }
+                        else
+                        {
+                            if (SearchAlgorithms.BinarySearch(bond.A, partFilter)
+                             && SearchAlgorithms.BinarySearch(bond.B, partFilter))
+                                filter[i++] = j;
+                        }
+
+                        j++;
+                    }
+
+                    Array.Resize(ref filter, i);
+
+                    InstancingUtility.SetFilter(drawCommand, filter);
                 }
-
-                Array.Resize(ref filter, i);
-
-                InstancingUtility.SetFilter(drawCommand, filter);
+                else if (particleFilter.HasNonNullValue())
+                {
+                    Array.Resize(ref filter, 0);
+                    InstancingUtility.SetFilter(drawCommand, filter);
+                }
+                else
+                {
+                    InstancingUtility.SetFilter(drawCommand, null);
+                }
 
                 particleFilter.IsDirty = false;
             }

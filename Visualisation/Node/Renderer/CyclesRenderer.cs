@@ -27,6 +27,9 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private FloatProperty offset = new FloatProperty();
+        
+        [SerializeField]
+        private ColorProperty color = new ColorProperty();
 
         public Transform Transform { get; set; }
 
@@ -49,6 +52,8 @@ namespace Narupa.Visualisation.Node.Renderer
             var block = new MaterialPropertyBlock();
             if (offset.HasValue)
                 block.SetFloat("_Offset", offset.Value);
+            if(color.HasValue)
+                block.SetColor("_Color", color.Value);
 
             Graphics.DrawMesh(mesh, Transform.localToWorldMatrix, material, 0, camera, 0, block);
         }

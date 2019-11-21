@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6914795531129879098}
+  - component: {fileID: 5214239840595827744}
+  - component: {fileID: 5856870839696454166}
   - component: {fileID: 8780840651017874724}
   - component: {fileID: 1302462309606565754}
   - component: {fileID: 5276900905653429674}
@@ -20,7 +22,7 @@ GameObject:
   - component: {fileID: 2054158667743431333}
   - component: {fileID: 423097259195395586}
   m_Layer: 0
-  m_Name: Cycle Renderer
+  m_Name: Cycles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,6 +42,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5214239840595827744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914795531129879088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d35f42ae2141f29ec4578f172eb678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: color
+    input:
+      isValueProvided: 0
+      value: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &5856870839696454166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914795531129879088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: particle.filter
+    input:
+      isValueProvided: 0
+      value: 
 --- !u!114 &8780840651017874724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +169,13 @@ MonoBehaviour:
   - sourceComponent: {fileID: 5276900905653429674}
     sourceFieldName: input
     destinationFieldName: particleResidues
+  - sourceComponent: {fileID: 5856870839696454166}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
   node:
+    particleFilter:
+      isValueProvided: 0
+      value: 
     bonds:
       isValueProvided: 0
       value: []
@@ -179,6 +223,12 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4567862862104944956}
     sourceFieldName: input
     destinationFieldName: particleColors
+  - sourceComponent: {fileID: 5856870839696454166}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
+  - sourceComponent: {fileID: 5214239840595827744}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
   node:
     material:
       isValueProvided: 1
@@ -213,6 +263,7 @@ MonoBehaviour:
     bondOrders:
       isValueProvided: 0
       value: 
+    bondToNonFiltered: 0
 --- !u!114 &6914795531129879089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +283,12 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4567862862104944956}
     sourceFieldName: input
     destinationFieldName: particleColors
+  - sourceComponent: {fileID: 5856870839696454166}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
+  - sourceComponent: {fileID: 5214239840595827744}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
   node:
     particlePositions:
       isValueProvided: 0
@@ -279,6 +336,12 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4567862862104944956}
     sourceFieldName: input
     destinationFieldName: particleColors
+  - sourceComponent: {fileID: 5856870839696454166}
+    sourceFieldName: input
+    destinationFieldName: particleFilter
+  - sourceComponent: {fileID: 5214239840595827744}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
   node:
     material:
       isValueProvided: 1
@@ -313,6 +376,7 @@ MonoBehaviour:
     bondOrders:
       isValueProvided: 0
       value: 
+    bondToNonFiltered: 0
 --- !u!114 &423097259195395586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,6 +399,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4567862862104944956}
     sourceFieldName: input
     destinationFieldName: particleColors
+  - sourceComponent: {fileID: 5214239840595827744}
+    sourceFieldName: input
+    destinationFieldName: color
   node:
     material: {fileID: 2100000, guid: 7d7a84740d4ee8043ac397e5833cc828, type: 2}
     cycles:
@@ -351,3 +418,6 @@ MonoBehaviour:
     offset:
       isValueProvided: 1
       value: 0.05
+    color:
+      isValueProvided: 0
+      value: {r: 0, g: 0, b: 0, a: 0}

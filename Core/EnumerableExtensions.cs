@@ -25,5 +25,18 @@ namespace Narupa.Utility
                 }
             }
         }
+
+        public static int IndexOf<T>(this IEnumerable<T> list, T item)
+        {
+            var i = 0;
+            foreach (var thing in list)
+            {
+                if (thing.Equals(item))
+                    return i;
+                i++;
+            }
+
+            return -1;
+        }
     }
 }

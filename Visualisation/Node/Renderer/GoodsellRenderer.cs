@@ -26,6 +26,9 @@ namespace Narupa.Visualisation.Node.Renderer
         [SerializeField]
         private IntArrayProperty particleFilter = new IntArrayProperty();
 
+        [SerializeField]
+        private ColorProperty rendererColor = new ColorProperty();
+
         /// <summary>
         /// The transform to center this renderer on.
         /// </summary>
@@ -47,7 +50,8 @@ namespace Narupa.Visualisation.Node.Renderer
             renderer.ParticleColors.LinkedProperty = particleColors;
             renderer.ParticleResidues.LinkedProperty = particleResidues;
             renderer.ParticleFilter.LinkedProperty = particleFilter;
-            
+            renderer.RendererColor.LinkedProperty = rendererColor;
+
             renderer.Transform = Transform;
         }
 

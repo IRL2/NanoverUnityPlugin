@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Narupa.Core.Math;
 using Narupa.Frame;
+using Narupa.Visualisation.Components.Input;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
@@ -14,6 +16,9 @@ namespace Narupa.Visualisation.Node.Calculator
     [Serializable]
     public class CyclesCalculator
     {
+        [SerializeField]
+        private IntArrayProperty particleFilter = new IntArrayProperty();
+        
         [SerializeField]
         private BondArrayProperty bonds = new BondArrayProperty();
 
@@ -48,11 +53,24 @@ namespace Narupa.Visualisation.Node.Calculator
                     FindRings();
                 }
 
-                cycles.Value = cachedCycles.Select(cycle => cycle.ToList()).ToArray();
+                cycles.Value = cachedCycles.Where(IsNotFiltered).Select(cycle => cycle.ToList()).ToArray();
                 cyclesCount.Value = cachedCycles.Count;
 
                 ClearDirty();
             }
+        }
+
+        private bool IsNotFiltered(Cycle cycle)
+        {
+            if (particleFilter.HasNonNullValue())
+            {
+                var array = particleFilter.Value;
+                foreach(var i in cycle)
+                    if (!SearchAlgorithms.BinarySearch(i, array))
+                        return false;
+            }
+
+            return true;
         }
 
         protected virtual void ClearDirty()

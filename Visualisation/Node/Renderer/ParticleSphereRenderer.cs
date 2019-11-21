@@ -161,10 +161,9 @@ namespace Narupa.Visualisation.Node.Renderer
 
         private void UpdateFilterIfDirty()
         {
-            if (particleFilter.IsDirty && particleFilter.HasNonEmptyValue())
+            if (particleFilter.IsDirty)
             {
-                InstancingUtility.SetFilter(drawCommand, particleFilter.Value);
-
+                InstancingUtility.SetFilter(drawCommand, particleFilter.HasValue ? particleFilter.Value : null);
                 particleFilter.IsDirty = false;
             }
         }
