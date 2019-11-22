@@ -75,8 +75,8 @@ namespace Narupa.Visualisation.Node.Renderer
                 isRendering = renderer.ShouldRender;
             }
 
-            renderer.UpdateRenderer();
             base.Render(cam);
+            renderer.UpdateRenderer();
         }
 
         /// <inheritdoc cref="CommandBufferRenderer.GetBuffers"/>
