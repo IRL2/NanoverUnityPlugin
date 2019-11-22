@@ -7,11 +7,14 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Calculator
 {
     /// <summary>
-    /// List of indices representing a closed cycle, stored in canonical order (first index is the
-    /// lowest, with the rest sorted such that the second index is lower than the last index.
+    /// List of indices representing a closed cycle, stored in canonical order (first
+    /// index is the
+    /// lowest, with the rest sorted such that the second index is lower than the last
+    /// index.
     /// </summary>
     /// <remarks>
-    /// For example, the indices (0, 1, 2, 3),  (0, 3, 2, 1) and (2, 3, 0, 1) are all converted
+    /// For example, the indices (0, 1, 2, 3),  (0, 3, 2, 1) and (2, 3, 0, 1) are all
+    /// converted
     /// to the canonical (0, 1, 2, 3).
     /// </remarks>
     [Serializable]
@@ -40,27 +43,25 @@ namespace Narupa.Visualisation.Node.Calculator
 
         public override int GetHashCode()
         {
-            return (indices != null ? indices.GetHashCode() : 0);
+            return Indices != null ? Indices.GetHashCode() : 0;
         }
-
-        [SerializeField]
-        private int[] indices = new int[0];
 
         /// <summary>
         /// Indices stored in the cycle.
         /// </summary>
-        public int[] Indices => indices;
+        [field: SerializeField]
+        public int[] Indices { get; } = new int[0];
 
         public Cycle(params int[] indices)
         {
-            this.indices = ConvertToCanonicalIndices(indices);
+            Indices = ConvertToCanonicalIndices(indices);
         }
 
         private static int[] ConvertToCanonicalIndices(int[] indices)
         {
             if (indices.Length < 2)
                 return indices;
-            
+
             var min = int.MaxValue;
             var minIndex = int.MaxValue;
             for (var i = 0; i < indices.Length; i++)
@@ -79,9 +80,7 @@ namespace Narupa.Visualisation.Node.Calculator
                 var newIndices = new int[indices.Length];
 
                 for (var i = 0; i < indices.Length; i++)
-                {
                     newIndices[i] = indices[(i + minIndex) % indices.Length];
-                }
 
                 indices = newIndices;
             }
@@ -92,9 +91,7 @@ namespace Narupa.Visualisation.Node.Calculator
                 var newIndices = new int[indices.Length];
                 newIndices[0] = indices[0];
                 for (var i = 1; i < indices.Length; i++)
-                {
                     newIndices[i] = indices[indices.Length - i];
-                }
 
                 indices = newIndices;
             }

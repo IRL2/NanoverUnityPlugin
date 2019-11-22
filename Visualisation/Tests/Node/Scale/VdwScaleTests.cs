@@ -12,7 +12,7 @@ namespace Narupa.Visualisation.Tests.Node.Scale
         [Test]
         public void NullScale()
         {
-            var node = new VdwScale();
+            var node = new VdwScaleNode();
 
             node.Elements.Value = ValidElements;
             node.Scale.UndefineValue();
@@ -25,7 +25,7 @@ namespace Narupa.Visualisation.Tests.Node.Scale
         [Test]
         public void NullElements()
         {
-            var node = new VdwScale();
+            var node = new VdwScaleNode();
 
             node.Scale.Value = 1f;
             node.Elements.UndefineValue();
@@ -38,7 +38,7 @@ namespace Narupa.Visualisation.Tests.Node.Scale
         [Test]
         public void EmptyElements()
         {
-            var node = new VdwScale();
+            var node = new VdwScaleNode();
 
             node.Elements.Value = new Element[0];
             node.Scale.Value = 1f;
@@ -51,7 +51,7 @@ namespace Narupa.Visualisation.Tests.Node.Scale
         [Test]
         public void ValidInput()
         {
-            var node = new VdwScale();
+            var node = new VdwScaleNode();
 
             node.Elements.Value = ValidElements;
             node.Scale.Value = 1f;
@@ -64,7 +64,7 @@ namespace Narupa.Visualisation.Tests.Node.Scale
         [Test]
         public void OnlyRefreshOnce()
         {
-            var node = new VdwScale();
+            var node = new VdwScaleNode();
             var linked = new FloatArrayProperty
             {
                 LinkedProperty = node.Scales, 

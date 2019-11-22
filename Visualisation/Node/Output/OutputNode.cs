@@ -5,7 +5,7 @@ using System;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Input
+namespace Narupa.Visualisation.Node.Output
 {
     /// <summary>
     /// Generic output for the visualisation system that provides some value with a

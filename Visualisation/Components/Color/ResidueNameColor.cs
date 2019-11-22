@@ -1,8 +1,10 @@
+using Narupa.Visualisation.Node.Color;
+
 namespace Narupa.Visualisation.Components.Color
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Color.ResidueNameColor" />
+    /// <inheritdoc cref="ResidueNameColorNode" />
     public class ResidueNameColor :
-        VisualisationComponent<Node.Color.ResidueNameColor>
+        VisualisationComponent<ResidueNameColorNode>
     {
         private void Update()
         {

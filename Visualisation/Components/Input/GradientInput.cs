@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Input;
+
 namespace Narupa.Visualisation.Components.Input
 {
-    /// <inheritdoc cref="Node.Input.GradientInput"/>
-    public class GradientInput : VisualisationComponent<Node.Input.GradientInput>
+    /// <inheritdoc cref="GradientInputNode" />
+    public class GradientInput : VisualisationComponent<GradientInputNode>
     {
     }
 }

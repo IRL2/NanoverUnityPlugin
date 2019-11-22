@@ -1,8 +1,9 @@
+using Narupa.Visualisation.Node.Renderer;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Components.Renderer
 {
-    public class CyclesRenderer : VisualisationComponentRenderer<Node.Renderer.CyclesRenderer>
+    public class CyclesRenderer : VisualisationComponentRenderer<CyclesRendererNode>
     {
         private void Start()
         {

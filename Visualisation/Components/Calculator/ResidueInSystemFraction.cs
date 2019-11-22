@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Calculator;
+
 namespace Narupa.Visualisation.Components.Calculator
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Calculator.ResidueInSystemFraction" />
-    public class ResidueInSystemFraction : VisualisationComponent<Node.Calculator.ResidueInSystemFraction>
+    /// <inheritdoc cref="ResidueInSystemFractionNode" />
+    public class ResidueInSystemFraction : VisualisationComponent<ResidueInSystemFractionNode>
     {
         private void Update()
         {

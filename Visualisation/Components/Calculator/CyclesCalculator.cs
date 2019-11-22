@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Calculator;
+
 namespace Narupa.Visualisation.Components.Calculator
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Calculator.CyclesCalculator" />
-    public class CyclesCalculator : VisualisationComponent<Node.Calculator.CyclesCalculator>
+    /// <inheritdoc cref="CyclesCalculatorNode" />
+    public class CyclesCalculator : VisualisationComponent<CyclesCalculatorNode>
     {
         private void Update()
         {

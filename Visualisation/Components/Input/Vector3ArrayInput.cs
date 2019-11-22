@@ -1,10 +1,9 @@
-using System;
-using UnityEngine;
+using Narupa.Visualisation.Node.Input;
 
 namespace Narupa.Visualisation.Components.Input
 {
-    /// <inheritdoc cref="Node.Input.Vector3ArrayInput"/>
-    public class Vector3ArrayInput : VisualisationComponent<Node.Input.Vector3ArrayInput>
+    /// <inheritdoc cref="Vector3ArrayInputNode" />
+    public class Vector3ArrayInput : VisualisationComponent<Vector3ArrayInputNode>
     {
     }
 }

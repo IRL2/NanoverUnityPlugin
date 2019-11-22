@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Output;
+
 namespace Narupa.Visualisation.Components.Output
 {
-    /// <inheritdoc cref="Node.Output.ColorArrayOutput"/>
-    public class ColorOutput : VisualisationComponent<Node.Output.ColorOutput>
+    /// <inheritdoc cref="ColorArrayOutputNode" />
+    public class ColorOutput : VisualisationComponent<ColorOutputNode>
     {
     }
 }

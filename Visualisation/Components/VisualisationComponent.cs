@@ -45,7 +45,7 @@ namespace Narupa.Visualisation.Components
     /// graph in the Editor.
     /// </summary>
     public abstract class VisualisationComponent : MonoBehaviour, ISerializationCallbackReceiver,
-                                                   IPropertyProvider
+        IPropertyProvider
     {
         protected virtual void OnEnable()
         {
@@ -124,7 +124,6 @@ namespace Narupa.Visualisation.Components
             destInput.LinkedProperty = sourceOutput;
         }
 
-
         /// <summary>
         /// Setup a link between two properties without knowing the type
         /// </summary>
@@ -145,9 +144,9 @@ namespace Narupa.Visualisation.Components
             // Get the correct generic method
             var method = typeof(VisualisationComponent).GetMethod(nameof(LinkProperties),
                                                                   BindingFlags.Public
-                                                                | BindingFlags.NonPublic
-                                                                | BindingFlags.Static)
-                                                       ?.MakeGenericMethod(type);
+                                                                  | BindingFlags.NonPublic
+                                                                  | BindingFlags.Static)
+                ?.MakeGenericMethod(type);
 
             if (method == null)
                 throw new InvalidOperationException(
@@ -223,8 +222,8 @@ namespace Narupa.Visualisation.Components
 
             var allFields = GetWrappedVisualisationNodeType()
                 .GetFieldsInSelfOrParents(BindingFlags.Instance
-                                        | BindingFlags.NonPublic
-                                        | BindingFlags.Public);
+                                          | BindingFlags.NonPublic
+                                          | BindingFlags.Public);
 
             var validFields = allFields.Where(field => typeof(IReadOnlyProperty).IsAssignableFrom(
                                                   field.FieldType

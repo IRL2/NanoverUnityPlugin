@@ -7,12 +7,13 @@ using Narupa.Core;
 using Narupa.Frame;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Property;
+
 namespace Narupa.Visualisation.Components.Adaptor
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Adaptor.FrameAdaptor" />
-    public sealed class FrameAdaptor : VisualisationComponent<Node.Adaptor.FrameAdaptor>,
-                                       IFrameConsumer,
-                                       IPropertyProvider
+    /// <inheritdoc cref="FrameAdaptorNode" />
+    public sealed class FrameAdaptor : VisualisationComponent<FrameAdaptorNode>,
+        IFrameConsumer,
+        IPropertyProvider
     {
         /// <inheritdoc cref="IFrameConsumer.FrameSource" />
         public ITrajectorySnapshot FrameSource
@@ -21,9 +22,9 @@ namespace Narupa.Visualisation.Components.Adaptor
         }
 
         /// <summary>
-        /// The wrapped <see cref="FrameAdaptor"/>.
+        /// The wrapped <see cref="FrameAdaptor" />.
         /// </summary>
-        public Node.Adaptor.FrameAdaptor Adaptor => node;
+        public FrameAdaptorNode Adaptor => node;
 
         protected override void OnEnable()
         {

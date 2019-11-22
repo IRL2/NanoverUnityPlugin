@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Input;
+
 namespace Narupa.Visualisation.Components.Input
 {
-    /// <inheritdoc cref="Node.Input.BondArrayInput"/>
-    public class BondArrayInput : VisualisationComponent<Node.Input.BondArrayInput>
+    /// <inheritdoc cref="BondArrayInputNode" />
+    public class BondArrayInput : VisualisationComponent<BondArrayInputNode>
     {
     }
 }

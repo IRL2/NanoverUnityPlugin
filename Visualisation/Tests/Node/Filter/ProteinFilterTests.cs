@@ -30,7 +30,7 @@ namespace Narupa.Visualisation.Tests.Node.Filter
                 Element.Hydrogen,
                 Element.Oxygen
             };
-            var node = new ProteinFilter();
+            var node = new ProteinFilterNode();
             node.IncludeHydrogens.Value = true;
             node.IncludeNonStandardResidues.Value = false;
             node.IncludeWater.Value = true;
@@ -70,7 +70,7 @@ namespace Narupa.Visualisation.Tests.Node.Filter
                 Element.Hydrogen,
                 Element.Oxygen
             };
-            var node = new ProteinFilter();
+            var node = new ProteinFilterNode();
             node.IncludeHydrogens.Value = false;
             node.IncludeWater.Value = true;
             node.IncludeNonStandardResidues.Value = false;

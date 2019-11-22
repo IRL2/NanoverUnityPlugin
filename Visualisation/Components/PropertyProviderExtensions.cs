@@ -11,19 +11,19 @@ namespace Plugins.Narupa.Visualisation.Components
     public static class PropertyProviderExtensions
     {
         /// <summary>
-        /// Non-generic version of <see cref="IPropertyProvider.CanProvideProperty{T}"/>
+        /// Non-generic version of <see cref="IPropertyProvider.CanProvideProperty{T}" />
         /// </summary>
         public static bool CanProvideProperty(this IPropertyProvider provider,
                                               string name,
                                               Type type)
         {
             return (bool) typeof(IPropertyProvider)
-                          .GetMethod(nameof(provider.CanProvideProperty))
-                          .MakeGenericMethod(type)
-                          .Invoke(provider, new object[]
-                          {
-                              name
-                          });
+                .GetMethod(nameof(provider.CanProvideProperty))
+                .MakeGenericMethod(type)
+                .Invoke(provider, new object[]
+                {
+                    name
+                });
         }
 
         public static IReadOnlyProperty GetOrCreateProperty(this IPropertyProvider provider,
@@ -32,8 +32,8 @@ namespace Plugins.Narupa.Visualisation.Components
         {
             var method = typeof(IPropertyProvider).GetMethod(nameof(GetOrCreateProperty),
                                                              BindingFlags.Public
-                                                           | BindingFlags.NonPublic
-                                                           | BindingFlags.Instance);
+                                                             | BindingFlags.NonPublic
+                                                             | BindingFlags.Instance);
             method = method?.MakeGenericMethod(type);
 
             if (method == null)

@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Calculator;
+
 namespace Narupa.Visualisation.Components.Calculator
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Calculator.ParticleInSystemFraction" />
-    public class ParticleInSystemFraction : VisualisationComponent<Node.Calculator.ParticleInSystemFraction>
+    /// <inheritdoc cref="ParticleInSystemFractionNode" />
+    public class ParticleInSystemFraction : VisualisationComponent<ParticleInSystemFractionNode>
     {
         private void Update()
         {

@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Input;
+
 namespace Narupa.Visualisation.Components.Input
 {
-    /// <inheritdoc cref="Node.Input.ColorArrayInput"/>
-    public class ColorArrayInput : VisualisationComponent<Node.Input.ColorArrayInput>
+    /// <inheritdoc cref="ColorArrayInputNode" />
+    public class ColorArrayInput : VisualisationComponent<ColorArrayInputNode>
     {
     }
 }

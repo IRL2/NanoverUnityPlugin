@@ -26,7 +26,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
 
         private FrameSnapshot source;
 
-        private FrameAdaptor adaptor;
+        private FrameAdaptorNode adaptor;
 
         private Action positionsChangedHandler;
         private Action elementsChangedHandler;
@@ -36,7 +36,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
         public void Setup()
         {
             source = new FrameSnapshot();
-            adaptor = new FrameAdaptor { FrameSource = source };
+            adaptor = new FrameAdaptorNode { FrameSource = source };
             positionsChangedHandler = Substitute.For<Action>();
             adaptor.ParticlePositions.ValueChanged += positionsChangedHandler;
             elementsChangedHandler = Substitute.For<Action>();

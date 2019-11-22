@@ -18,7 +18,7 @@ namespace Narupa.Visualisation.Tests.Node.Filter
             };
             var pattern = "AAA";
             
-            var node = new ResidueNameFilter();
+            var node = new ResidueNameFilterNode();
             node.Pattern.Value = pattern;
             node.ParticleResidues.Value = particleResidues;
             node.ResidueNames.Value = residueNames;
