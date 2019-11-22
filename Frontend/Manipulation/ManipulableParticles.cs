@@ -21,9 +21,6 @@ namespace Narupa.Frontend.Manipulation
         /// </summary>
         public float ForceScale { get; set; } = 100f;
 
-        // TODO: this should be exposed in a cleaner way
-        public IEnumerable<ActiveParticleGrab> ActiveGrabs => activeGrabs;
-
         private readonly Transform transform;
         private readonly TrajectorySession trajectorySession;
         private readonly ImdSession imdSession;

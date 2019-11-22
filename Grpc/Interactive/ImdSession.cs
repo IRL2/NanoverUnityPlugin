@@ -19,14 +19,21 @@ namespace Narupa.Session
     /// </summary>
     public class ImdSession : IDisposable
     {
+        public struct InteractionData
+        {
+            public string InteractionId { get; set; }
+            public Vector3 Position { get; set; }
+            public int[] ParticleIds { get; set; }
+        }
+
         public OutgoingStreamCollection<ParticleInteraction, InteractionEndReply> 
             InteractionStreams { get; private set; }
 
         /// <summary>
         /// Dictionary of all currently known interactions.
         /// </summary>
-        public Dictionary<string, ParticleInteraction> Interactions { get; } 
-            = new Dictionary<string, ParticleInteraction>();
+        public Dictionary<string, InteractionData> Interactions { get; } 
+            = new Dictionary<string, InteractionData>();
 
         private ImdClient client;
 
@@ -101,7 +108,8 @@ namespace Narupa.Session
         /// </summary>
         public void UnsetInteraction(string id)
         {
-            SetInteraction(id, null);
+            pendingInteractions[id] = null;
+            Interactions.Remove(id);
         }
 
         /// <summary>
@@ -112,6 +120,7 @@ namespace Narupa.Session
         public void SetInteraction(string id, ParticleInteraction interaction)
         {
             pendingInteractions[id] = interaction;
+            Interactions[interaction.InteractionId] = ParticleInteractionToData(interaction);
         }
 
         /// <summary>
@@ -173,8 +182,23 @@ namespace Narupa.Session
 
             foreach (var interaction in update.UpdatedInteractions)
             {
-                Interactions[interaction.InteractionId] = interaction;
+                Interactions[interaction.InteractionId] = ParticleInteractionToData(interaction);
             }
+        }
+
+        private static InteractionData ParticleInteractionToData(ParticleInteraction interaction)
+        {
+            var data = new InteractionData
+            {
+                InteractionId = interaction.InteractionId,
+                Position = interaction.Position.GetVector3(),
+                ParticleIds = new int[interaction.Particles.Count],
+            };
+
+            for (int i = 0; i < data.ParticleIds.Length; ++i)
+                data.ParticleIds[i] = (int) interaction.Particles[i];
+
+            return data;
         }
     }
 }
