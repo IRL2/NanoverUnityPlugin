@@ -78,6 +78,8 @@ namespace Narupa.Session
 
             InteractionStreams?.Dispose();
             InteractionStreams = null;
+            IncomingInteractionsUpdates?.Dispose();
+            IncomingInteractionsUpdates = null;
         }
 
         /// <summary>
