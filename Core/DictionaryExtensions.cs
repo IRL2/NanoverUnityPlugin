@@ -30,19 +30,19 @@ namespace Narupa.Core
         /// there is a value for the given key, but the type is incompatible.
         /// </summary>
         public static T GetValueOrDefault<T>(this IDictionary<string, object> dictionary,
-                                             string id)
+                                             string id, T defaultValue = default)
         {
             if (dictionary.TryGetValue(id, out var value))
             {
                 if (value is T cast)
                     return cast;
                 if (value is null)
-                    return default;
+                    return defaultValue;
                 throw new InvalidOperationException(
                     $"Value with id {id} is of incompatible type {value?.GetType()}");
             }
 
-            return default;
+            return defaultValue;
         }
 
         /// <summary>
