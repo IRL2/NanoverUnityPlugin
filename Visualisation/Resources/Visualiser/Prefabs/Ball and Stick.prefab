@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8528582866378757808}
   - component: {fileID: 8528582866378757823}
   m_Layer: 0
-  m_Name: Flat
+  m_Name: Ball and Stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,8 +53,8 @@ MonoBehaviour:
   inputLinkCollection: []
   node:
     parentAdaptor:
-      isValueProvided: 0
       value: {fileID: 0}
+      isValueProvided: 0
 --- !u!114 &3337455360039578810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,8 +71,8 @@ MonoBehaviour:
   node:
     name: filter
     input:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
 --- !u!114 &397105478419057534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,8 +89,8 @@ MonoBehaviour:
   node:
     name: sphere.scale
     input:
-      isValueProvided: 1
       value: 0.6
+      isValueProvided: 1
 --- !u!114 &6089087228771831228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,8 +107,8 @@ MonoBehaviour:
   node:
     name: bond.scale
     input:
-      isValueProvided: 1
       value: 0.05
+      isValueProvided: 1
 --- !u!114 &8528582866378757810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,11 +127,11 @@ MonoBehaviour:
     destinationFieldName: elements
   node:
     elements:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
     mapping:
+      unityObject: {fileID: 11400000, guid: f1a9c849f018f42adbab12e856c0da60, type: 2}
       isValueProvided: 1
-      value: {fileID: 11400000, guid: f1a9c849f018f42adbab12e856c0da60, type: 2}
 --- !u!114 &8528582866378757809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,11 +150,11 @@ MonoBehaviour:
     destinationFieldName: elements
   node:
     elements:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
     scale:
-      isValueProvided: 1
       value: 1
+      isValueProvided: 1
 --- !u!114 &8528582866378757808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,38 +191,39 @@ MonoBehaviour:
     destinationFieldName: particleFilter
   node:
     material:
+      value: {fileID: 2100000, guid: 8ab524378960e644f9a238927b43e467, type: 2}
       isValueProvided: 1
-      value: {fileID: 2100000, guid: 83c9cf4769ff3f945b306bb6168a22ab, type: 2}
     mesh:
+      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
       isValueProvided: 1
-      value: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     particleFilter:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
     bondScale:
-      isValueProvided: 0
       value: 0.06
+      isValueProvided: 0
     bondPairs:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particlePositions:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleColors:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleScales:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     rendererColor:
-      isValueProvided: 1
       value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 1
     particleScale:
-      isValueProvided: 0
       value: 1
-    bondOrders:
       isValueProvided: 0
+    bondOrders:
       value: 
+      isValueProvided: 0
+    bondToNonFiltered: 0
 --- !u!114 &8528582866378757823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,26 +254,26 @@ MonoBehaviour:
     destinationFieldName: particleFilter
   node:
     particlePositions:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleColors:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleScales:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     rendererColor:
-      isValueProvided: 1
       value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 1
     rendererScale:
-      isValueProvided: 0
       value: 1
-    particleFilter:
       isValueProvided: 0
+    particleFilter:
       value: 
+      isValueProvided: 0
     mesh:
+      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
       isValueProvided: 1
-      value: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     material:
+      value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
       isValueProvided: 1
-      value: {fileID: 2100000, guid: bc819f6f12ed6794fa7beb2ac4014658, type: 2}

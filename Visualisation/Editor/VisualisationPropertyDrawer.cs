@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Narupa.Core;
+using Narupa.Core.Science;
 using Narupa.Visualisation.Components;
 using Narupa.Visualisation.Property;
 using UnityEditor;
@@ -49,8 +50,11 @@ namespace Narupa.Visualisation.Editor
             }
 
             var valueProperty = GetValueProperty(property);
+            var objectProperty = GetUnityObjectProperty(property);
 
-            if (valueProperty == null || (valueProperty.isArray && valueProperty.type != "string"))
+            if (objectProperty == null && (valueProperty == null ||
+                                           (valueProperty.isArray &&
+                                            valueProperty.type != "string")))
             {
                 // Don't draw arrays in the editor.
                 EditorGUI.HelpBox(position, "Set array input from within code.", MessageType.None);
@@ -104,12 +108,17 @@ namespace Narupa.Visualisation.Editor
         private void DrawValueGui(SerializedProperty property, Rect rect)
         {
             var valueSerializedProperty = GetValueProperty(property);
-            
+            var objectSerializedProperty = GetUnityObjectProperty(property);
+
             // Draw a property field, wrapping in a ChangeCheck to 
             // check if its been changed, and dirty the underlying
             // field if so
             EditorGUI.BeginChangeCheck();
-            EditorGUI.PropertyField(rect, valueSerializedProperty, GUIContent.none, true);
+            if (valueSerializedProperty != null)
+                EditorGUI.PropertyField(rect, valueSerializedProperty, GUIContent.none, true);
+            else if (objectSerializedProperty != null)
+                EditorGUI.PropertyField(rect, objectSerializedProperty, GUIContent.none, true);
+
             if (EditorGUI.EndChangeCheck())
             {
                 // Get the underlying field as a Property
@@ -120,11 +129,10 @@ namespace Narupa.Visualisation.Editor
                                                                      | BindingFlags.NonPublic)
                                ?.GetValue(obj) as Property.Property;
 
-                if (field != null)
-                    field.MarkValueAsChanged();
+                field?.MarkValueAsChanged();
             }
         }
-        
+
         private static object GetVisualisationBaseObject(Object src)
         {
             if (src is VisualisationComponent component)
@@ -157,6 +165,11 @@ namespace Narupa.Visualisation.Editor
             return inputProperty.FindPropertyRelative("value");
         }
 
+        private SerializedProperty GetUnityObjectProperty(SerializedProperty inputProperty)
+        {
+            return inputProperty.FindPropertyRelative("unityObject");
+        }
+
         /// <summary>
         /// Get the <see cref="SerializedProperty" /> representing the internal input
         /// value.
@@ -171,12 +184,15 @@ namespace Narupa.Visualisation.Editor
             var provided = GetIsProvidedProperty(property);
             if (provided.boolValue)
             {
-                return EditorGUI.GetPropertyHeight(GetValueProperty(property));
+                var valueProperty = GetValueProperty(property);
+                if (valueProperty != null)
+                    return EditorGUI.GetPropertyHeight(valueProperty);
+                var objectProperty = GetUnityObjectProperty(property);
+                if (objectProperty != null)
+                    return EditorGUI.GetPropertyHeight(objectProperty);
             }
-            else
-            {
-                return base.GetPropertyHeight(property, label);
-            }
+
+            return base.GetPropertyHeight(property, label);
         }
     }
 }

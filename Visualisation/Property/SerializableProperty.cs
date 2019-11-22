@@ -4,6 +4,7 @@
 using System;
 using JetBrains.Annotations;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Narupa.Visualisation.Property
 {
@@ -27,30 +28,12 @@ namespace Narupa.Visualisation.Property
             ValueChanged?.Invoke();
         }
 
-        /// <inheritdoc cref="IProperty.UndefineValue"/>
-        public virtual void UndefineValue()
-        {
-            if (isValueProvided)
-            {
-                isValueProvided = false;
-                MarkValueAsChanged();
-            }
-        }
-
-        /// <summary>
-        /// Override for indicating that the value is null. Unity does not serialize
-        /// nullable types, so this is required.
-        /// </summary>
-        [SerializeField]
-        private bool isValueProvided;
-
         /// <inheritdoc cref="IReadOnlyProperty.HasValue"/>
-        public virtual bool HasValue
-        {
-            get => isValueProvided;
-            protected set => isValueProvided = value;
-        }
-        
+        public abstract bool HasValue { get; }
+
+        /// <inheritdoc cref="IProperty.UndefineValue"/>
+        public abstract void UndefineValue();
+
         /// <inheritdoc cref="IProperty.PropertyType"/>
         public abstract Type PropertyType { get; }
 
@@ -66,7 +49,7 @@ namespace Narupa.Visualisation.Property
         {
             IsDirty = true;
         }
-        
+
         /// <summary>
         /// Does this property link to another?
         /// </summary>
@@ -84,21 +67,122 @@ namespace Narupa.Visualisation.Property
     }
 
     /// <summary>
-    /// Implementation of <see cref="IProperty{TValue}" /> for serialisation in Unity.
+    /// A property who's value and its presence are both serialized.
     /// </summary>
-    public class Property<TValue> : Property, IProperty<TValue>
+    public class SerializableProperty<TValue> : LinkableProperty<TValue>
+    {
+        /// <summary>
+        /// Value serialized by Unity.
+        /// </summary>
+        [SerializeField]
+        private TValue value;
+
+        /// <summary>
+        /// Override for indicating that the value is null. Unity does not serialize
+        /// nullable types, so this is required.
+        /// </summary>
+        [SerializeField]
+        private bool isValueProvided;
+
+        protected override TValue ProvidedValue
+        {
+            get => value;
+            set
+
+            {
+                this.value = value;
+                isValueProvided = true;
+            }
+        }
+
+        protected override bool HasProvidedValue => isValueProvided;
+
+        public override void UndefineValue()
+        {
+            if (HasProvidedValue)
+            {
+                isValueProvided = false;
+                MarkValueAsChanged();
+            }
+
+            base.UndefineValue();
+        }
+    }
+
+    /// <summary>
+    /// A interface-based property which is serialised as a Unity Object.
+    /// </summary>
+    public class InterfaceProperty<TValue> : LinkableProperty<TValue>,
+                                             ISerializationCallbackReceiver
+    {
+        /// <summary>
+        /// Unity object which could implement the interface.
+        /// </summary>
+        [SerializeField]
+        private Object unityObject;
+
+        private TValue value;
+
+        /// <summary>
+        /// Override for indicating that the value is null. Unity does not serialize
+        /// nullable types, so this is required.
+        /// </summary>
+        [SerializeField]
+        private bool isValueProvided;
+
+        protected override TValue ProvidedValue
+        {
+            get => value;
+            set
+
+            {
+                this.value = value;
+                if (value is Object obj)
+                    unityObject = obj;
+                else
+                    unityObject = null;
+                isValueProvided = true;
+            }
+        }
+
+        protected override bool HasProvidedValue => isValueProvided;
+
+        public override void UndefineValue()
+        {
+            if (HasProvidedValue)
+            {
+                isValueProvided = false;
+                unityObject = null;
+                MarkValueAsChanged();
+            }
+
+            base.UndefineValue();
+        }
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+            if (unityObject is TValue val)
+            {
+                this.value = val;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Implementation of a property which does not define if it itself provides a value, but allows linking to other properties.
+    /// </summary>
+    public abstract class LinkableProperty<TValue> : Property, IProperty<TValue>
     {
         /// <summary>
         /// A linked <see cref="Property" /> which can provide a value.
         /// </summary>
         [CanBeNull]
         private IReadOnlyProperty<TValue> linkedProperty;
-
-        /// <summary>
-        /// Value serialized by Unity.
-        /// </summary>
-        [SerializeField]
-        private TValue value;
 
         /// <inheritdoc cref="IProperty{TValue}.HasValue" />
         public override bool HasValue
@@ -107,7 +191,9 @@ namespace Narupa.Visualisation.Property
             {
                 if (HasLinkedProperty)
                     return LinkedProperty.HasValue;
-                return base.HasValue;
+                if (HasProvidedValue)
+                    return true;
+                return false;
             }
         }
 
@@ -118,6 +204,10 @@ namespace Narupa.Visualisation.Property
             OnValueChanged();
         }
 
+        protected abstract TValue ProvidedValue { get; set; }
+
+        protected abstract bool HasProvidedValue { get; }
+
         /// <inheritdoc cref="IProperty{TValue}.Value" />
         public virtual TValue Value
         {
@@ -125,16 +215,15 @@ namespace Narupa.Visualisation.Property
             {
                 if (HasLinkedProperty)
                     return LinkedProperty.Value;
-                if (HasValue)
-                    return value;
+                if (HasProvidedValue)
+                    return ProvidedValue;
                 throw new InvalidOperationException(
                     "Tried accessing value of property when it is not defined");
             }
             set
             {
                 LinkedProperty = null;
-                HasValue = true;
-                this.value = value;
+                ProvidedValue = value;
                 MarkValueAsChanged();
             }
         }
@@ -156,12 +245,16 @@ namespace Narupa.Visualisation.Property
                     throw new ArgumentException("Cannot link property to itself!");
 
                 // Check no cyclic linked properties will occur
-                var linked = value is Property<TValue> linkable ? linkable.LinkedProperty : null;
+                var linked = value is SerializableProperty<TValue> linkable
+                                 ? linkable.LinkedProperty
+                                 : null;
                 while (linked != null)
                 {
                     if (linked == this)
                         throw new ArgumentException("Cyclic link detected!");
-                    linked = linked is Property<TValue> linkable2 ? linkable2.LinkedProperty : null;
+                    linked = linked is SerializableProperty<TValue> linkable2
+                                 ? linkable2.LinkedProperty
+                                 : null;
                 }
 
 
@@ -179,13 +272,13 @@ namespace Narupa.Visualisation.Property
         public override void UndefineValue()
         {
             LinkedProperty = null;
-            base.UndefineValue();
+            MarkValueAsChanged();
         }
 
         /// <summary>
         /// Implicit conversion of the property to its value
         /// </summary>
-        public static implicit operator TValue(Property<TValue> property)
+        public static implicit operator TValue(LinkableProperty<TValue> property)
         {
             return property.Value;
         }
@@ -201,7 +294,8 @@ namespace Narupa.Visualisation.Property
             else if (value == default)
                 Value = default;
             else
-                throw new ArgumentException();
+                throw new ArgumentException(
+                    $"Cannot set property of type {PropertyType} to {value}");
         }
 
         /// <inheritdoc cref="Property.TrySetLinkedProperty" />

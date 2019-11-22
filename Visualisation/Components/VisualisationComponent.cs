@@ -112,9 +112,9 @@ namespace Narupa.Visualisation.Components
         /// Setup a link between two property providers
         /// </summary>
         public static void LinkProperties<T>(IPropertyProvider source,
-                                              string sourceName,
-                                              IPropertyProvider destination,
-                                              string destName)
+                                             string sourceName,
+                                             IPropertyProvider destination,
+                                             string destName)
         {
             if (!(source.GetOrCreateProperty<T>(sourceName) is IReadOnlyProperty<T> sourceOutput))
                 throw new InvalidOperationException();
@@ -123,8 +123,8 @@ namespace Narupa.Visualisation.Components
 
             destInput.LinkedProperty = sourceOutput;
         }
-        
-        
+
+
         /// <summary>
         /// Setup a link between two properties without knowing the type
         /// </summary>
@@ -138,7 +138,7 @@ namespace Narupa.Visualisation.Components
                     $"{this} is missing a destination property with name {destName}");
             var type = inputProperty.FieldType;
             while (!type.IsGenericType ||
-                   type.GetGenericTypeDefinition() != typeof(Property<>))
+                   type.GetGenericTypeDefinition() != typeof(LinkableProperty<>))
                 type = type.BaseType;
             type = type.GetGenericArguments()[0];
 

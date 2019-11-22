@@ -53,7 +53,7 @@ namespace Narupa.Visualisation.Node.Adaptor
         {
             if (properties.TryGetValue(name, out var existing))
                 return existing as IReadOnlyProperty<T>;
-            var property = new Property<T>();
+            var property = new SerializableProperty<T>();
             properties[name] = property;
             OnCreateProperty<T>(name, property);
             return property;
@@ -104,7 +104,7 @@ namespace Narupa.Visualisation.Node.Adaptor
         [SerializeField]
         private FrameAdaptorProperty parentAdaptor = new FrameAdaptorProperty();
 
-        private void OnCreateProperty<T>(string key, Property<T> property)
+        private void OnCreateProperty<T>(string key, SerializableProperty<T> property)
         {
             // Link to the parent adaptor
             if (parentAdaptor.HasNonNullValue())

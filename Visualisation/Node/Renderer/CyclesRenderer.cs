@@ -51,7 +51,7 @@ namespace Narupa.Visualisation.Node.Renderer
 
             var block = new MaterialPropertyBlock();
             if (offset.HasValue)
-                block.SetFloat("_Offset", offset.Value);
+                block.SetFloat("_Offset", offset.Value / 2f);
             if(color.HasValue)
                 block.SetColor("_Color", color.Value);
 

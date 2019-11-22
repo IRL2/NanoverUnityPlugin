@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Narupa.Visualisation.Tests.Property
 {
     public abstract class ArrayPropertyTests<TProperty, TElement> : PropertyTests<TProperty, TElement[]>
-        where TProperty : Property<TElement[]>, new()
+        where TProperty : SerializableProperty<TElement[]>, new()
     {
         protected TElement[] EmptyArray => new TElement[0];
 

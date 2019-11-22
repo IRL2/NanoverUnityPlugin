@@ -1,6 +1,9 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using Narupa.Core;
+using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Node.Color;
@@ -85,7 +88,7 @@ namespace Narupa.Visualisation.Visualiser
         /// <summary>
         /// Per-element color scheme for coloring atoms.
         /// </summary>
-        public IProperty<ElementColorMapping> ColorScheme => colorScheme;
+        public IProperty<IMapping<Element, Color>> ColorScheme => colorScheme;
 
         [Header("Scale")]
         [SerializeField]

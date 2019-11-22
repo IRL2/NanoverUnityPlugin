@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8528582866378757822
+--- !u!1 &1900448658886156695
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,29 +8,29 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8528582866378757812}
-  - component: {fileID: 8528582866378757811}
-  - component: {fileID: 3337455360039578810}
-  - component: {fileID: 397105478419057534}
-  - component: {fileID: 6089087228771831228}
-  - component: {fileID: 8528582866378757810}
-  - component: {fileID: 8528582866378757809}
-  - component: {fileID: 8528582866378757808}
-  - component: {fileID: 8528582866378757823}
+  - component: {fileID: 1900448658886156701}
+  - component: {fileID: 6529192864124320622}
+  - component: {fileID: 4779769348369292179}
+  - component: {fileID: 7604027006933302359}
+  - component: {fileID: 3421694816922696361}
+  - component: {fileID: 8379820703431466785}
+  - component: {fileID: 2187803143233138763}
+  - component: {fileID: 1900448658886156697}
+  - component: {fileID: 1900448658886156694}
   m_Layer: 0
-  m_Name: Ball and Stick
+  m_Name: liquorice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8528582866378757812
+--- !u!4 &1900448658886156701
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -38,30 +38,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8528582866378757811
+--- !u!114 &6529192864124320622
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3debffbae2948ccb8f413f906e7e8a7, type: 3}
+  m_Script: {fileID: 11500000, guid: d1d35f42ae2141f29ec4578f172eb678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    parentAdaptor:
-      isValueProvided: 0
-      value: {fileID: 0}
---- !u!114 &3337455360039578810
+    name: color
+    input:
+      value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 1
+--- !u!114 &4779769348369292179
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
@@ -69,17 +70,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: filter
+    name: particle.filter
     input:
-      isValueProvided: 0
       value: 
---- !u!114 &397105478419057534
+      isValueProvided: 0
+--- !u!114 &7604027006933302359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
@@ -87,192 +88,180 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: sphere.scale
+    name: scale
     input:
-      isValueProvided: 1
-      value: 0.6
---- !u!114 &6089087228771831228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: bond.scale
-    input:
-      isValueProvided: 1
       value: 0.05
---- !u!114 &8528582866378757810
+      isValueProvided: 1
+--- !u!114 &3421694816922696361
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f2b3de3cca14b4c9cfc612f0e1d254b, type: 3}
+  m_Script: {fileID: 11500000, guid: 831672a59bd54ad4ad628e4871b2c716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.elements
-    destinationFieldName: elements
+  inputLinkCollection: []
   node:
-    elements:
+    name: particle.colors
+    input:
+      value: []
       isValueProvided: 0
-      value: 
-    mapping:
-      isValueProvided: 1
-      value: {fileID: 11400000, guid: f1a9c849f018f42adbab12e856c0da60, type: 2}
---- !u!114 &8528582866378757809
+--- !u!114 &8379820703431466785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53e308a4d7b44dc8ae8f209b6e9ba088, type: 3}
+  m_Script: {fileID: 11500000, guid: ce2fb5c07e2342ccbb595cf3169989ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.elements
-    destinationFieldName: elements
+  inputLinkCollection: []
   node:
-    elements:
+    name: bond.pairs
+    input:
+      value: []
       isValueProvided: 0
-      value: 
-    scale:
-      isValueProvided: 1
-      value: 1
---- !u!114 &8528582866378757808
+--- !u!114 &2187803143233138763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af33a56fb6746d3bbd35f089152781c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: particle.positions
+    input:
+      value: []
+      isValueProvided: 0
+--- !u!114 &1900448658886156697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1037303cc04e46cf8d744d8b25d4d244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.positions
-    destinationFieldName: particlePositions
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: bond.pairs
-    destinationFieldName: bondPairs
-  - sourceComponent: {fileID: 8528582866378757809}
-    sourceFieldName: scales
-    destinationFieldName: particleScales
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
-    destinationFieldName: particleColors
-  - sourceComponent: {fileID: 6089087228771831228}
+  - sourceComponent: {fileID: 2187803143233138763}
     sourceFieldName: input
-    destinationFieldName: bondScale
-  - sourceComponent: {fileID: 397105478419057534}
+    destinationFieldName: particlePositions
+  - sourceComponent: {fileID: 8379820703431466785}
+    sourceFieldName: input
+    destinationFieldName: bondPairs
+  - sourceComponent: {fileID: 3421694816922696361}
+    sourceFieldName: input
+    destinationFieldName: particleColors
+  - sourceComponent: {fileID: 7604027006933302359}
     sourceFieldName: input
     destinationFieldName: particleScale
-  - sourceComponent: {fileID: 3337455360039578810}
+  - sourceComponent: {fileID: 4779769348369292179}
     sourceFieldName: input
     destinationFieldName: particleFilter
+  - sourceComponent: {fileID: 6529192864124320622}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
   node:
     material:
-      isValueProvided: 1
       value: {fileID: 2100000, guid: 8ab524378960e644f9a238927b43e467, type: 2}
+      isValueProvided: 1
     mesh:
-      isValueProvided: 1
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    particleFilter:
-      isValueProvided: 0
-      value: 
-    bondScale:
-      isValueProvided: 0
-      value: 0.06
-    bondPairs:
-      isValueProvided: 0
-      value: []
-    particlePositions:
-      isValueProvided: 0
-      value: []
-    particleColors:
-      isValueProvided: 0
-      value: []
-    particleScales:
-      isValueProvided: 0
-      value: []
-    rendererColor:
       isValueProvided: 1
-      value: {r: 1, g: 1, b: 1, a: 1}
-    particleScale:
-      isValueProvided: 0
-      value: 1
-    bondOrders:
-      isValueProvided: 0
+    particleFilter:
       value: 
---- !u!114 &8528582866378757823
+      isValueProvided: 0
+    bondScale:
+      value: 1
+      isValueProvided: 1
+    bondPairs:
+      value: []
+      isValueProvided: 0
+    particlePositions:
+      value: []
+      isValueProvided: 0
+    particleColors:
+      value: []
+      isValueProvided: 0
+    particleScales:
+      value: []
+      isValueProvided: 0
+    rendererColor:
+      value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 0
+    particleScale:
+      value: 1
+      isValueProvided: 0
+    bondOrders:
+      value: 
+      isValueProvided: 0
+    bondToNonFiltered: 0
+--- !u!114 &1900448658886156694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73992ab43ebd415eb814845a706956c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.positions
-    destinationFieldName: particlePositions
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
+  - sourceComponent: {fileID: 3421694816922696361}
+    sourceFieldName: input
     destinationFieldName: particleColors
-  - sourceComponent: {fileID: 8528582866378757809}
-    sourceFieldName: scales
-    destinationFieldName: particleScales
-  - sourceComponent: {fileID: 397105478419057534}
+  - sourceComponent: {fileID: 7604027006933302359}
     sourceFieldName: input
     destinationFieldName: rendererScale
-  - sourceComponent: {fileID: 3337455360039578810}
+  - sourceComponent: {fileID: 4779769348369292179}
     sourceFieldName: input
     destinationFieldName: particleFilter
+  - sourceComponent: {fileID: 2187803143233138763}
+    sourceFieldName: input
+    destinationFieldName: particlePositions
+  - sourceComponent: {fileID: 6529192864124320622}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
   node:
     particlePositions:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleColors:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleScales:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     rendererColor:
-      isValueProvided: 1
       value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 0
     rendererScale:
-      isValueProvided: 0
       value: 1
-    particleFilter:
       isValueProvided: 0
+    particleFilter:
       value: 
+      isValueProvided: 0
     mesh:
-      isValueProvided: 1
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    material:
       isValueProvided: 1
+    material:
       value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
+      isValueProvided: 1
