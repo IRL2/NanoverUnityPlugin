@@ -22,10 +22,18 @@ namespace Narupa.Session
         public OutgoingStreamCollection<ParticleInteraction, InteractionEndReply> 
             InteractionStreams { get; private set; }
 
+        /// <summary>
+        /// Dictionary of all currently known interactions.
+        /// </summary>
+        public Dictionary<string, ParticleInteraction> Interactions { get; } 
+            = new Dictionary<string, ParticleInteraction>();
+
         private ImdClient client;
 
         private Dictionary<string, ParticleInteraction> pendingInteractions
             = new Dictionary<string, ParticleInteraction>();
+
+        private IncomingStream<InteractionsUpdate> IncomingInteractionsUpdates { get; set; }
 
         private Task flushingTask;
 
@@ -42,6 +50,9 @@ namespace Narupa.Session
                 new OutgoingStreamCollection<ParticleInteraction, InteractionEndReply>(
                     client.PublishInteractions);
 
+            IncomingInteractionsUpdates = client.SubscribeAllInteractions(1 / 30f);
+            IncomingInteractionsUpdates.MessageReceived += OnInteractionsUpdateReceived;
+            IncomingInteractionsUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
 
             if (flushingTask == null)
             {
@@ -151,6 +162,19 @@ namespace Narupa.Session
             }
 
             flushingTask = null;
+        }
+
+        private void OnInteractionsUpdateReceived(InteractionsUpdate update)
+        {
+            foreach (var interactionId in update.Removals)
+            {
+                Interactions.Remove(interactionId);
+            }
+
+            foreach (var interaction in update.UpdatedInteractions)
+            {
+                Interactions[interaction.InteractionId] = interaction;
+            }
         }
     }
 }
