@@ -3,6 +3,7 @@
 
 using System;
 using System.Reflection;
+using Narupa.Visualisation.Components;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Property;
 

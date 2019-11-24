@@ -25,6 +25,22 @@ namespace Narupa.Core
         }
 
         /// <summary>
+        /// Try to get a value out of a dictionary of type T, returning false if the key is not present or the present value is of the wrong type.
+        /// </summary>
+        public static bool TryGetValue<T>(this IDictionary<string, object> dictionary, string key, out T value)
+        {
+            if (dictionary.TryGetValue(key, out var potentialValue) 
+                && potentialValue is T valueOfCorrectType)
+            {
+                value = valueOfCorrectType;
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
+
+        /// <summary>
         /// Get an item of the dictionary of the given type <typeparamref name="T" />,
         /// returning the default if the key is not present and throwing an exception if
         /// there is a value for the given key, but the type is incompatible.

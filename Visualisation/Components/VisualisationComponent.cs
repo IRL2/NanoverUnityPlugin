@@ -18,7 +18,7 @@ namespace Narupa.Visualisation.Components
     /// storing the node has a serialized parameter.
     /// </summary>
     [ExecuteAlways]
-    public abstract class VisualisationComponent<TNode> : VisualisationComponent
+    public abstract class VisualisationComponent<TNode> : VisualisationComponent, IVisualisationComponent<TNode>
         where TNode : new()
     {
         [SerializeField]

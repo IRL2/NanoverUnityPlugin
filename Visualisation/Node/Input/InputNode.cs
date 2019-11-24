@@ -33,8 +33,8 @@ namespace Narupa.Visualisation.Node.Input
 
     public interface IInputNode
     { 
-        string Name { get; }
-        
+        string Name { get; set; }
+
         IProperty Input { get; }
     }
 }

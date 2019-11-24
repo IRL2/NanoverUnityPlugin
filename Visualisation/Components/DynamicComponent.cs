@@ -31,7 +31,7 @@ namespace Narupa.Visualisation.Components
                 {
                     var node = Instantiate(prefab, transform);
                     node.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
-                    SetupInputs(node);
+                    SetupAllInputNodes(node);
                     current.Add(node);
                 }
         }
@@ -46,27 +46,31 @@ namespace Narupa.Visualisation.Components
             }
         }
 
-        private void SetupInputs(GameObject o)
+        private void SetupAllInputNodes(GameObject o)
         {
-            foreach (var component in o.GetComponentsInChildren<VisualisationComponent>())
-                if (component.GetWrappedVisualisationNode() is IInputNode input)
-                    FindInput(input);
+            foreach (var node in o.GetVisualisationNodesInChildren<IInputNode>())
+                    SetupInputNode(node);
         }
 
         /// <summary>
-        /// Try to find either a previous component that has an output node with a matching
-        /// name, or link to the frame adaptor.
+        /// For a given input node, find an appropriate output port to bind to.
         /// </summary>
-        private void FindInput(IInputNode input)
+        /// <remarks>
+        /// The order in which an appropriate property to link to is:
+        /// 1) Search each of the subgraphs for an <see cref="IOutputNode"/> of the same name.
+        /// 2) Search the root object for an <see cref="IInputNode"/> with the same name.
+        /// 3) If there is no default value, bind to the frame adaptor.
+        /// </remarks>
+        private void SetupInputNode(IInputNode input)
         {
             foreach (var existing in current)
-                if (GetOutput(existing, input.Name)?.Output is IReadOnlyProperty output)
+                if (GetOutputNodeWithName(existing, input.Name)?.Output is IReadOnlyProperty output)
                 {
                     input.Input.TrySetLinkedProperty(output);
                     return;
                 }
 
-            foreach (var mainInput in GetInputs(gameObject))
+            foreach (var mainInput in GetInputNodes(gameObject))
                 if (input.Name == mainInput.Name)
                 {
                     input.Input.TrySetLinkedProperty(mainInput.Input);
@@ -81,19 +85,15 @@ namespace Narupa.Visualisation.Components
                                                  input.Input.PropertyType));
         }
 
-        private static IEnumerable<IInputNode> GetInputs(GameObject obj)
+        private static IEnumerable<IInputNode> GetInputNodes(GameObject obj)
         {
-            return obj.GetComponents<VisualisationComponent>()
-                .Where(c => c.GetWrappedVisualisationNode() is IInputNode)
-                .Select(c => c.GetWrappedVisualisationNode() as IInputNode);
+            return obj.GetVisualisationNodes<IInputNode>();
         }
 
-        private static IOutputNode GetOutput(GameObject existing, string name)
+        private static IOutputNode GetOutputNodeWithName(GameObject existing, string name)
         {
-            return existing.GetComponentsInChildren<VisualisationComponent>().FirstOrDefault(
-                    c => c.GetWrappedVisualisationNode() is IOutputNode node &&
-                         node.Name == name)?
-                .GetWrappedVisualisationNode() as IOutputNode;
+            return existing.GetVisualisationNodes<IOutputNode>().FirstOrDefault(
+                    c => c.Name == name);
         }
 
         public void SetSubgraphs(params GameObject[] subgraphs)

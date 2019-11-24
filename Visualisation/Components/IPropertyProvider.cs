@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Narupa.Visualisation.Property;
 
-namespace Narupa.Visualisation.Node.Adaptor
+namespace Narupa.Visualisation.Components
 {
     /// <summary>
     /// An object which can provide visualisation properties.
