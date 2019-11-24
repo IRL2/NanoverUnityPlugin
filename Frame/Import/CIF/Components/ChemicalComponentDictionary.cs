@@ -52,11 +52,9 @@ namespace Narupa.Frame.Import.CIF.Components
                     throw new InvalidOperationException(
                         $"Cannot find mmCIF chemical component dictionary at {InstanceFile}");
             }
-
-            if (_instance.chemicalComponents.Count == 0)
-                _instance.DeserializeDictionary();
         }
 
+        
 
 #if UNITY_EDITOR
         [MenuItem("Narupa/Load mmCIF Chemical Component Dictionary")]

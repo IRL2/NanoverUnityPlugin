@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Narupa.Core.Science;
 using Narupa.Visualisation.Property;
 using UnityEngine;
@@ -17,11 +16,26 @@ namespace Narupa.Visualisation.Node.Filter
     public class ProteinFilter : VisualiserFilter
     {
         [SerializeField]
-        private BoolProperty includeHydrogens = new BoolProperty();
-        
+        private BoolProperty includeHydrogens = new BoolProperty()
+        {
+            Value = true
+        };
+
+        [SerializeField]
+        private BoolProperty includeWater = new BoolProperty()
+        {
+            Value = true
+        };
+
+        [SerializeField]
+        private BoolProperty includeNonStandardResidues = new BoolProperty()
+        {
+            Value = true
+        };
+
         [SerializeField]
         private IntArrayProperty particleResidues = new IntArrayProperty();
-        
+
         [SerializeField]
         private ElementArrayProperty particleElements = new ElementArrayProperty();
 
@@ -34,6 +48,16 @@ namespace Narupa.Visualisation.Node.Filter
         public IProperty<bool> IncludeHydrogens => includeHydrogens;
 
         /// <summary>
+        /// Should water be included?
+        /// </summary>
+        public IProperty<bool> IncludeWater => includeWater;
+
+        /// <summary>
+        /// Should non standard residues be included?
+        /// </summary>
+        public IProperty<bool> IncludeNonStandardResidues => includeNonStandardResidues;
+
+        /// <summary>
         /// The indices of the residue for each particle.
         /// </summary>
         public IProperty<int[]> ParticleResidues => particleResidues;
@@ -42,7 +66,7 @@ namespace Narupa.Visualisation.Node.Filter
         /// The residue names.
         /// </summary>
         public IProperty<string[]> ResidueNames => residueNames;
-        
+
         /// <summary>
         /// The particle elements.
         /// </summary>
@@ -51,14 +75,18 @@ namespace Narupa.Visualisation.Node.Filter
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => particleResidues.HasNonEmptyValue()
                                              && residueNames.HasNonEmptyValue()
-                                                && particleElements.HasNonEmptyValue()
-        && includeHydrogens.HasNonNullValue();
+                                             && particleElements.HasNonEmptyValue()
+                                             && includeHydrogens.HasNonNullValue()
+                                             && includeWater.HasNonNullValue()
+                                             && includeNonStandardResidues.HasNonNullValue();
 
         /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => particleResidues.IsDirty
-                                                || particleElements.IsDirty
+                                             || particleElements.IsDirty
                                              || residueNames.IsDirty
-        || includeHydrogens.IsDirty;
+                                             || includeHydrogens.IsDirty
+                                             || includeWater.IsDirty
+                                             || includeNonStandardResidues.IsDirty;
 
         /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
@@ -67,6 +95,8 @@ namespace Narupa.Visualisation.Node.Filter
             residueNames.IsDirty = false;
             includeHydrogens.IsDirty = false;
             particleElements.IsDirty = false;
+            includeWater.IsDirty = false;
+            includeNonStandardResidues.IsDirty = false;
         }
 
         /// <inheritdoc cref="VisualiserFilter.MaximumFilterCount"/>
@@ -75,12 +105,32 @@ namespace Narupa.Visualisation.Node.Filter
         /// <inheritdoc cref="VisualiserFilter.GetFilteredIndices"/>
         protected override IEnumerable<int> GetFilteredIndices()
         {
-            for (var i = 0; i < particleResidues.Value.Length; i++)
+            // Cache properties for performance
+            var includeHydrogens = this.includeHydrogens.Value;
+            var includeWater = this.includeWater.Value;
+            var includeNonStandardResidues = this.includeNonStandardResidues.Value;
+            var residueNames = this.residueNames.Value;
+            var particleResidues = this.particleResidues.Value;
+            var particleElements = this.particleElements.Value;
+            
+            var isResOkay = new bool[residueNames.Length];
+            for (var j = 0; j < residueNames.Length; j++)
             {
-                if (!includeHydrogens.Value && particleElements.Value[i] == Element.Hydrogen)
+                var resname = residueNames[j];
+                if (resname == "HOH")
+                    isResOkay[j] = includeWater;
+                else
+                    isResOkay[j] = includeNonStandardResidues
+                                || AminoAcid.IsStandardAminoAcid(resname);
+            }
+
+            for (var i = 0; i < particleResidues.Length; i++)
+            {
+                if (!includeHydrogens && particleElements[i] == Element.Hydrogen)
                     continue;
-                if (AminoAcid.IsStandardAminoAcid(residueNames.Value[particleResidues.Value[i]]))
-                    yield return i;
+                if(!isResOkay[particleResidues[i]])
+                    continue;
+                yield return i;
             }
         }
     }

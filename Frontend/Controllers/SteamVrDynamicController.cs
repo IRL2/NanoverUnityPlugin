@@ -70,8 +70,7 @@ namespace Narupa.Frontend.Controllers
 
             controller.ResetController(currentPrefab);
         }
-
-
+        
         private static string GetOpenVrProperty(SteamVR_TrackedObject.EIndex index,
                                                 ETrackedDeviceProperty property)
         {

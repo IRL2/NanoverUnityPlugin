@@ -34,5 +34,25 @@ namespace Narupa.Grpc.Interactive
             return GetOutgoingStream(Client.PublishInteraction,
                                      externalToken);
         }
+
+        /// <summary>
+        /// Starts an <see cref="IncomingStream{InteractionsUpdate}" /> on 
+        /// which the server provides updates to all published interactions
+        /// at requested time interval (in seconds).
+        /// </summary>
+        /// <remarks>
+        /// Corresponds to the SubscribeAllResourceValues gRPC call.
+        /// </remarks>
+        public IncomingStream<InteractionsUpdate> SubscribeAllInteractions(
+            float updateInterval = 0,
+            CancellationToken externalToken = default)
+        {
+            var request = new SubscribeInteractionsRequest
+            {
+                UpdateInterval = updateInterval,
+            };
+
+            return GetIncomingStream(Client.SubscribeInteractions, request, externalToken);
+        }
     }
 }

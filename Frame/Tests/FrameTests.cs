@@ -1,4 +1,6 @@
-using System.Collections;
+// Copyright (c) Intangible Realities Lab. All rights reserved.
+// Licensed under the GPL. See License.txt in the project root for license information.
+
 using Narupa.Core.Science;
 using NUnit.Framework;
 using UnityEngine;
@@ -15,12 +17,14 @@ namespace Narupa.Frame.Tests
                 ParticlePositions = new[] { Vector3.one, Vector3.left },
                 ParticleElements = new[] { Element.Hydrogen, Element.Oxygen }
             };
+            originalFrame.Data["customdata"] = 1.4f;
 
             var clonedFrame = Frame.ShallowCopy(originalFrame);
 
             CollectionAssert.AreEqual(originalFrame.ParticlePositions,
                                       clonedFrame.ParticlePositions);
             CollectionAssert.AreEqual(originalFrame.ParticleElements, clonedFrame.ParticleElements);
+            Assert.AreEqual(originalFrame.Data["customdata"], clonedFrame.Data["customdata"]);
         }
 
         [Test]

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2019 Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using System;
 using Narupa.Frame;
 using Narupa.Frame.Event;
 using UnityEngine;

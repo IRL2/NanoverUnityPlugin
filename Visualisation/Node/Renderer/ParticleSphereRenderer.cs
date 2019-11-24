@@ -5,12 +5,19 @@ using System;
 using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Narupa.Visualisation.Node.Renderer
 {
     /// <summary>
     /// Visualisation node for rendering particles using spheres.
     /// </summary>
+    /// <remarks>
+    /// A call to <see cref="UpdateRenderer" /> should be made every frame. Depending
+    /// on use case, either call <see cref="Render" /> to draw for a single frame, or
+    /// add to a <see cref="CommandBuffer" /> using
+    /// <see cref="AppendToCommandBuffer" />.
+    /// </remarks>
     [Serializable]
     public class ParticleSphereRenderer : IDisposable
     {
@@ -43,6 +50,11 @@ namespace Narupa.Visualisation.Node.Renderer
         /// </summary>
         public IProperty<float> RendererScale => rendererScale;
 
+        /// <summary>
+        /// Filtered indices for particles.
+        /// </summary>
+        public IProperty<int[]> ParticleFilter => particleFilter;
+
         public IProperty<Mesh> Mesh => mesh;
 
         public IProperty<Material> Material => material;
@@ -62,7 +74,7 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private FloatProperty rendererScale = new FloatProperty();
-        
+
         [SerializeField]
         private IntArrayProperty particleFilter = new IntArrayProperty();
 
@@ -75,41 +87,81 @@ namespace Narupa.Visualisation.Node.Renderer
 
         public Transform Transform { get; set; }
 
-        private bool ShouldRender => mesh.HasNonNullValue()
-                                  && material.HasNonNullValue()
-                                  && particlePositions.HasNonEmptyValue()
-                                  && rendererColor.HasValue
-                                  && rendererScale.HasValue
-                                  && Transform != null 
-                                  && InstanceCount > 0;
+        public bool ShouldRender => mesh.HasNonNullValue()
+                                 && material.HasNonNullValue()
+                                 && particlePositions.HasNonEmptyValue()
+                                 && rendererColor.HasValue
+                                 && rendererScale.HasValue
+                                 && Transform != null
+                                 && InstanceCount > 0;
 
         private int InstanceCount => particleFilter.HasNonNullValue()
                                          ? particleFilter.Value.Length
                                          : particlePositions.Value.Length;
+
+        public virtual bool IsInputDirty => mesh.IsDirty
+                                         || material.IsDirty
+                                         || rendererColor.IsDirty
+                                         || rendererScale.IsDirty
+                                         || particlePositions.IsDirty
+                                         || particleColors.IsDirty
+                                         || particleScales.IsDirty
+                                         || particleFilter.IsDirty;
 
         /// <summary>
         /// Render the provided bonds
         /// </summary>
         public void Render(Camera camera = null)
         {
-            if (ShouldRender)
+            if (UpdateRenderer())
             {
-                UpdateMeshAndMaterials();
-
-                InstancingUtility.SetTransform(drawCommand, Transform);
-
-                drawCommand.SetInstanceCount(InstanceCount);
-                drawCommand.SetFloat("_Scale", rendererScale.Value);
-                drawCommand.SetColor("_Color", rendererColor.Value);
-
-                UpdatePositionsIfDirty();
-                UpdateColorsIfDirty();
-                UpdateScalesIfDirty();
-                UpdateFilterIfDirty();
-                
                 drawCommand.MarkForRenderingThisFrame(camera);
             }
         }
+
+        /// <summary>
+        /// Update the draw command based upon the input values, by updating the mesh,
+        /// material and buffers.
+        /// </summary>
+        /// <remarks>
+        /// This does not actually render the spheres. Either call <see cref="Render" />
+        /// each frame or call <see cref="AppendToCommandBuffer" />.
+        /// </remarks>
+        public bool UpdateRenderer()
+        {
+            if (ShouldRender)
+            {
+                if (IsInputDirty)
+                {
+                    UpdateMeshAndMaterials();
+
+                    drawCommand.SetInstanceCount(InstanceCount);
+                    drawCommand.SetFloat("_Scale", rendererScale.Value);
+                    drawCommand.SetColor("_Color", rendererColor.Value);
+                    rendererScale.IsDirty = false;
+                    rendererColor.IsDirty = false;
+
+                    UpdateBuffers();
+                }
+
+                InstancingUtility.SetTransform(drawCommand, Transform);
+
+                return true;
+            }
+
+            drawCommand.SetInstanceCount(0);
+            return false;
+        }
+
+        protected virtual void UpdateBuffers()
+        {
+            UpdatePositionsIfDirty();
+            UpdateColorsIfDirty();
+            UpdateScalesIfDirty();
+            UpdateFilterIfDirty();
+        }
+
+        protected IndirectMeshDrawCommand DrawCommand => drawCommand;
 
         /// <inheritdoc cref="IDisposable.Dispose" />
         public void Dispose()
@@ -146,7 +198,7 @@ namespace Narupa.Visualisation.Node.Renderer
                 particleScales.IsDirty = false;
             }
         }
-        
+
         private void UpdateFilterIfDirty()
         {
             if (particleFilter.IsDirty && particleFilter.HasNonEmptyValue())
@@ -161,12 +213,15 @@ namespace Narupa.Visualisation.Node.Renderer
         {
             drawCommand.SetMesh(mesh);
             drawCommand.SetMaterial(material);
+            mesh.IsDirty = false;
+            material.IsDirty = false;
         }
-        
+
         /// <summary>
-        /// Indicate that a deserialisation or other event which resets buffers has occured.
+        /// Indicate that a deserialisation or other event which resets buffers has
+        /// occured.
         /// </summary>
-        public void ResetBuffers()
+        public virtual void ResetBuffers()
         {
             drawCommand.ResetCommand();
             particleColors.IsDirty = true;
@@ -175,5 +230,10 @@ namespace Narupa.Visualisation.Node.Renderer
             particleFilter.IsDirty = true;
         }
 
+        public void AppendToCommandBuffer(CommandBuffer buffer)
+        {
+            UpdateRenderer();
+            drawCommand.AppendToCommandBuffer(buffer);
+        }
     }
 }

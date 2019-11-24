@@ -31,5 +31,20 @@ namespace Narupa.Frame
             A = a;
             B = b;
         }
+
+        /// <summary>
+        /// Get the first and second particles involved in this bond.
+        /// </summary>
+        public int this[int i]
+        {
+            get
+            {
+                if (i == 0)
+                    return A;
+                if (i == 1)
+                    return B;
+                throw new IndexOutOfRangeException();
+            }
+        }
     }
 }

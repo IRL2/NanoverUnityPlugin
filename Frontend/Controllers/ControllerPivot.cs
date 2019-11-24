@@ -13,11 +13,16 @@ namespace Narupa.Frontend.Controllers
     /// </summary>
     public class ControllerPivot : MonoBehaviour, IPosedObject
     {
+        [SerializeField]
+        private float radius;
+
+        public float Radius => radius;
+        
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(transform.position, 0.05f);
-            Gizmos.DrawSphere(transform.position, 0.01f);
+            Gizmos.DrawWireSphere(transform.position, radius);
+            Gizmos.DrawSphere(transform.position, 0.2f * radius);
         }
 
         private void Update()
@@ -30,7 +35,15 @@ namespace Narupa.Frontend.Controllers
         }
 
         /// <inheritdoc cref="IPosedObject.Pose" />
-        public Transformation? Pose => Transformation.FromTransform(transform);
+        public Transformation? Pose
+        {
+            get
+            {
+                var transformation = Transformation.FromTransform(transform);
+                transformation.Scale = Vector3.one * radius;
+                return transformation;
+            }
+        }
 
         /// <inheritdoc cref="IPosedObject.PoseChanged" />
         public event Action PoseChanged;

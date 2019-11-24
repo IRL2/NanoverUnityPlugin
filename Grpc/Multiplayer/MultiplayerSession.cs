@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
+// Licensed under the GPL. See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Narupa.Multiplayer;
@@ -151,7 +154,8 @@ namespace Narupa.Session
             PlayerId = response.PlayerId;
 
             OutgoingAvatar = client.PublishAvatar(PlayerId);
-            IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f);
+            IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f,
+                                                      ignorePlayerId: PlayerId);
 
             IncomingAvatars.MessageReceived += OnAvatarReceived;
 
