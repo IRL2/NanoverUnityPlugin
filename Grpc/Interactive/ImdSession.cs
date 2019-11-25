@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
+using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Grpc;
 using Narupa.Grpc.Interactive;
@@ -101,9 +102,14 @@ namespace Narupa.Session
                 Particles = { particles?.Select(i => (uint) i) ?? new uint[0] },
                 Position = { position.x, position.y, position.z },
                 Scale = forceScale,
-                Type = forceModel,
-                Properties = properties?.ToProtobufStruct() ?? new Struct()
+                Type = forceModel
             };
+
+            if (properties != null)
+            {
+                foreach (var (key, value) in properties)
+                    interaction.Properties.Fields[key] = value.ToProtobufValue();
+            }
 
             SetInteraction(id, interaction);
         }
