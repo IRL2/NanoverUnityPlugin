@@ -20,7 +20,7 @@ namespace Narupa.Frontend.Manipulation
 
         private readonly List<int> particleIndices = new List<int>();
         public Vector3 GrabPosition { get; private set; }
-        
+
         public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 
         public event Action ParticleGrabUpdated;
@@ -42,6 +42,13 @@ namespace Narupa.Frontend.Manipulation
         public void EndManipulation()
         {
             ManipulationEnded?.Invoke();
+        }
+
+        private const string KeyResetVelocities = "reset_velocities";
+
+        public bool ResetVelocities
+        {
+            set => Properties[KeyResetVelocities] = value;
         }
     }
 }
