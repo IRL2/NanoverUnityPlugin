@@ -12,23 +12,23 @@ namespace Narupa.Visualisation.Node.Calculator
         /// <param name="atomResidues"></param>
         /// <param name="atomNames"></param>
         /// <returns></returns>
-        public static ResidueData[] GetResidueData(IReadOnlyCollection<int> aminoAcidResidues,
+        public static ProteinResidueData[] GetResidueData(IReadOnlyCollection<int> aminoAcidResidues,
                                                    int[] atomResidues,
                                                    string[] atomNames)
         {
-            var list = new ResidueData[aminoAcidResidues.Count];
+            var list = new ProteinResidueData[aminoAcidResidues.Count];
             var residueIndexToOrdinal = new Dictionary<int, int>();
             var resDataIndex = 0;
             foreach (var resIndex in aminoAcidResidues)
             {
-                var data = new ResidueData
+                var data = new ProteinResidueData
                 {
                     ResidueIndex = resIndex,
-                    AlphaCarbon = -1,
-                    Nitrogen = -1,
-                    Carbon = -1,
-                    Oxygen = -1,
-                    Hydrogen = -1
+                    AlphaCarbonIndex = -1,
+                    NitrogenIndex = -1,
+                    CarbonIndex = -1,
+                    OxygenIndex = -1,
+                    HydrogenIndex = -1
                 };
                 data.ordinal = resDataIndex++;
                 list[data.ordinal] = data;
@@ -45,19 +45,19 @@ namespace Narupa.Visualisation.Node.Calculator
                 switch (name)
                 {
                     case "CA":
-                        list[residueIndexToOrdinal[residueIndex]].AlphaCarbon = i;
+                        list[residueIndexToOrdinal[residueIndex]].AlphaCarbonIndex = i;
                         break;
                     case "N":
-                        list[residueIndexToOrdinal[residueIndex]].Nitrogen = i;
+                        list[residueIndexToOrdinal[residueIndex]].NitrogenIndex = i;
                         break;
                     case "C":
-                        list[residueIndexToOrdinal[residueIndex]].Carbon = i;
+                        list[residueIndexToOrdinal[residueIndex]].CarbonIndex = i;
                         break;
                     case "O":
-                        list[residueIndexToOrdinal[residueIndex]].Oxygen = i;
+                        list[residueIndexToOrdinal[residueIndex]].OxygenIndex = i;
                         break;
                     case "H":
-                        list[residueIndexToOrdinal[residueIndex]].Hydrogen = i;
+                        list[residueIndexToOrdinal[residueIndex]].HydrogenIndex = i;
                         break;
                 }
             }
@@ -66,17 +66,17 @@ namespace Narupa.Visualisation.Node.Calculator
         }
 
         public static void UpdateResidueAtomPositions(Vector3[] atomPositions,
-                                                      IList<ResidueData> residues)
+                                                      IList<ProteinResidueData> residues)
         {
             foreach (var residue in residues)
             {
-                residue.AlphaCarbonPosition = atomPositions[residue.AlphaCarbon];
-                residue.NitrogenPosition = atomPositions[residue.Nitrogen];
-                residue.OxygenPosition = atomPositions[residue.Oxygen];
-                residue.CarbonPosition = atomPositions[residue.Carbon];
-                if (residue.Hydrogen >= 0)
+                residue.AlphaCarbonPosition = atomPositions[residue.AlphaCarbonIndex];
+                residue.NitrogenPosition = atomPositions[residue.NitrogenIndex];
+                residue.OxygenPosition = atomPositions[residue.OxygenIndex];
+                residue.CarbonPosition = atomPositions[residue.CarbonIndex];
+                if (residue.HydrogenIndex >= 0)
                 {
-                    residue.HydrogenPosition = atomPositions[residue.Hydrogen];
+                    residue.HydrogenPosition = atomPositions[residue.HydrogenIndex];
                 }
                 else if (residue.ordinal > 0)
                 {
@@ -100,7 +100,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void Initialise(IEnumerable<ResidueData> residues)
+        private static void Initialise(IEnumerable<ProteinResidueData> residues)
         {
             foreach (var residue in residues)
             {
@@ -113,8 +113,8 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static bool IsBonded(ResidueData res1,
-                                     ResidueData res2,
+        private static bool IsBonded(ProteinResidueData res1,
+                                     ProteinResidueData res2,
                                      float cutoff,
                                      out float energy)
         {
@@ -127,7 +127,7 @@ namespace Narupa.Visualisation.Node.Calculator
         }
 
 
-        public static void CalculateSecondaryStructure(IReadOnlyList<ResidueData> residues,
+        public static void CalculateSecondaryStructure(IReadOnlyList<ProteinResidueData> residues,
                                                        DsspOptions options)
         {
             Initialise(residues);
@@ -195,7 +195,7 @@ namespace Narupa.Visualisation.Node.Calculator
             */
         }
 
-        private static void ExpandSheets(IReadOnlyList<ResidueData> residues)
+        private static void ExpandSheets(IReadOnlyList<ProteinResidueData> residues)
         {
             var ids = new List<int>();
             for (var i = 0; i < residues.Count; i++)
@@ -215,7 +215,7 @@ namespace Narupa.Visualisation.Node.Calculator
                 residues[i].SecondaryStructure = SecondaryStructureAssignment.Sheet;
         }
 
-        private static void AssignBetaSheets(IReadOnlyList<ResidueData> residues)
+        private static void AssignBetaSheets(IReadOnlyList<ProteinResidueData> residues)
         {
             foreach (var residue in residues)
             {
@@ -227,7 +227,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void IdentifyParallelBridges(IReadOnlyList<ResidueData> residues)
+        private static void IdentifyParallelBridges(IReadOnlyList<ProteinResidueData> residues)
         {
 // Parallel Bridge
             // n---c   n---c   res-1   n---c   n---c   ---->
@@ -270,7 +270,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void IdentifyAntiparallelBridges(IReadOnlyList<ResidueData> residues)
+        private static void IdentifyAntiparallelBridges(IReadOnlyList<ProteinResidueData> residues)
         {
             // Antiparrallel Bridge
             // c---n   c---n   res-1   c---n
@@ -316,7 +316,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void IdentifyTurns(IReadOnlyList<ResidueData> residues)
+        private static void IdentifyTurns(IReadOnlyList<ProteinResidueData> residues)
         {
             foreach (var residue in residues)
             {
@@ -340,7 +340,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void CalculateHydrogenBonds(IReadOnlyList<ResidueData> residues,
+        private static void CalculateHydrogenBonds(IReadOnlyList<ProteinResidueData> residues,
                                                    DsspOptions options)
         {
             for (var i = 0; i < residues.Count - 3; i++)
@@ -379,7 +379,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void AssignHelix(IReadOnlyList<ResidueData> residues,
+        private static void AssignHelix(IReadOnlyList<ProteinResidueData> residues,
                                         SecondaryStructurePattern pattern,
                                         int length,
                                         SecondaryStructureAssignment assignment)
@@ -398,7 +398,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void CheckSingleTurn(IReadOnlyList<ResidueData> residues,
+        private static void CheckSingleTurn(IReadOnlyList<ProteinResidueData> residues,
                                             int turnLength,
                                             SecondaryStructurePattern pattern)
         {
@@ -425,30 +425,6 @@ namespace Narupa.Visualisation.Node.Calculator
                     }
                 }
             }
-        }
-
-        public class ResidueData
-        {
-            public int AlphaCarbon;
-            public int Carbon;
-            public Vector3 CarbonPosition;
-            public int Hydrogen;
-
-            public Vector3 HydrogenPosition;
-            public int Nitrogen;
-            public Vector3 NitrogenPosition;
-            public int Oxygen;
-            public Vector3 OxygenPosition;
-
-            public SecondaryStructurePattern Pattern = SecondaryStructurePattern.None;
-            public SecondaryStructureAssignment SecondaryStructure { get; set; }
-            public double AcceptorHydrogenBondEnergy { get; set; } = 1e10;
-            public double DonorHydrogenBondEnergy { get; set; } = 1e10;
-            public ResidueData AcceptorHydrogenBondResidue { get; set; }
-            public ResidueData DonorHydrogenBondResidue { get; set; }
-            public Vector3 AlphaCarbonPosition { get; set; }
-            public int ordinal { get; set; }
-            public int ResidueIndex { get; set; }
         }
     }
 }

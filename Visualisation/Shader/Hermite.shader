@@ -135,6 +135,7 @@
                 v.vertex = mul(mat, v.vertex);
                 o.normal = normalize(mul(mat, float4(v.normal.xyz, 0)));
                 
+                float3 curveNormal = lerp(spline.startNormal, spline.endNormal, bias);
                 
                 v.vertex = mul(ObjectToWorld, v.vertex);
                 

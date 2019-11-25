@@ -24,10 +24,8 @@ namespace Narupa.Visualisation.Node.Calculator
         [SerializeField]
         private SelectionArrayProperty peptideChains;
 
-        [SerializeField] private bool drawDebugLines;
-
         [SerializeField]
-        private DsspOptions DsspOptions = new DsspOptions();
+        private DsspOptions dsspOptions = new DsspOptions();
 
         private bool needRecalculate = true;
 
@@ -37,8 +35,8 @@ namespace Narupa.Visualisation.Node.Calculator
         private BondArrayProperty residueHydrogenBonds =
             new BondArrayProperty();
 
-        public List<DsspAlgorithm.ResidueData[]> sequenceResidueData =
-            new List<DsspAlgorithm.ResidueData[]>();
+        public List<ProteinResidueData[]> sequenceResidueData =
+            new List<ProteinResidueData[]>();
 
         public bool IsInputValid => residueCount.HasNonNullValue();
 
@@ -81,7 +79,7 @@ namespace Narupa.Visualisation.Node.Calculator
         private void CalculateSecondaryStructure()
         {
             foreach (var peptideSequence in sequenceResidueData)
-                DsspAlgorithm.CalculateSecondaryStructure(peptideSequence, DsspOptions);
+                DsspAlgorithm.CalculateSecondaryStructure(peptideSequence, dsspOptions);
 
             var secondaryStruct = new SecondaryStructureAssignment[residueCount.Value];
             foreach (var sequence in sequenceResidueData)

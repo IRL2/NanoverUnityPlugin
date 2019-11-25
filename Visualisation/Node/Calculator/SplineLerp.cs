@@ -1,5 +1,6 @@
 using System;
 using Narupa.Visualisation.Property;
+using UnityEditor;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Calculator
@@ -55,27 +56,36 @@ namespace Narupa.Visualisation.Node.Calculator
         }
 
         [SerializeField]
-        private FloatProperty colorSpeed = new FloatProperty() { Value = 0.1f };
+        private FloatProperty colorSpeed = new FloatProperty() {Value = 0.1f};
 
         [SerializeField]
-        private FloatProperty scaleSpeed = new FloatProperty() { Value = 0.1f };
+        private FloatProperty scaleSpeed = new FloatProperty() {Value = 0.1f};
 
         [SerializeField]
-        private FloatProperty normalSpeed = new FloatProperty() { Value = 0.1f };
+        private FloatProperty normalSpeed = new FloatProperty() {Value = 0.1f};
 
         private UnityEngine.Color SmoothColor(UnityEngine.Color current, UnityEngine.Color next)
         {
-            return Vector4.MoveTowards(current, next, colorSpeed.Value);
+            if (Application.isEditor)
+                return next;
+            else
+                return Vector4.MoveTowards(current, next, colorSpeed.Value);
         }
 
         private Vector2 SmoothScale(Vector2 current, Vector2 next)
         {
-            return Vector2.MoveTowards(current, next, scaleSpeed.Value);
+            if (Application.isEditor)
+                return next;
+            else
+                return Vector2.MoveTowards(current, next, scaleSpeed.Value);
         }
 
         private Vector3 SmoothNormal(Vector3 current, Vector3 next)
         {
-            return Vector3.MoveTowards(current, next, normalSpeed.Value);
+            if (Application.isEditor)
+                return next;
+            else
+                return Vector3.MoveTowards(current, next, normalSpeed.Value);
         }
     }
 }

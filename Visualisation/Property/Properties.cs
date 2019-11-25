@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Visualisation.Components.Adaptor;
+using Narupa.Visualisation.Node.Calculator;
 using Narupa.Visualisation.Node.Color;
 using UnityEngine;
 
@@ -167,6 +168,22 @@ namespace Narupa.Visualisation.Property
     /// </summary>
     [Serializable]
     public class SelectionArrayProperty : ArrayProperty<IReadOnlyList<int>>
+    {
+    }
+    
+    /// <summary>
+    /// Serializable <see cref="Property" /> for an array of <see cref="SecondaryStructureAssignment" /> values.
+    /// </summary>
+    [Serializable]
+    public class SecondaryStructureArrayProperty : ArrayProperty<SecondaryStructureAssignment>
+    {
+    }
+    
+    /// <summary>
+    /// Serializable <see cref="Property" /> for an array of <see cref="SplineSegment" /> values.
+    /// </summary>
+    [Serializable]
+    public class SplineArrayProperty : ArrayProperty<SplineSegment>
     {
     }
 

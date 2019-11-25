@@ -109,17 +109,16 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: residue.names
     destinationFieldName: residueNames
-  - sourceComponent: {fileID: 2403651013541833341}
-    sourceFieldName: residuePositions
-    destinationFieldName: residuePositions
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: residue.chains
+    destinationFieldName: residueEntities
   node:
     residueNames:
       isValueProvided: 0
       value: []
-    residuePositions:
+    residueEntities:
       isValueProvided: 0
-      value: []
-    cutoff: 1
+      value: 
 --- !u!114 &2262077134987404520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,7 +216,7 @@ MonoBehaviour:
       value: []
     scale:
       isValueProvided: 1
-      value: 1
+      value: 0.5
     pointSequences:
       isValueProvided: 0
     shape:
