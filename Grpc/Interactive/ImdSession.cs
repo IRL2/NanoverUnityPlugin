@@ -3,7 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Narupa.Core.Async;
 using Narupa.Grpc;
 using Narupa.Grpc.Interactive;
@@ -90,15 +92,17 @@ namespace Narupa.Session
                                    Vector3 position,
                                    float forceScale = 100,
                                    string forceModel = "spring",
-                                   params uint[] particles)
+                                   IEnumerable<int> particles = null,
+                                   Dictionary<string, object> properties = null)
         {
             var interaction = new ParticleInteraction
             {
                 InteractionId = id,
-                Particles = { particles },
+                Particles = { particles?.Select(i => (uint) i) ?? new uint[0] },
                 Position = { position.x, position.y, position.z },
                 Scale = forceScale,
                 Type = forceModel,
+                Properties = properties?.ToProtobufStruct() ?? new Struct()
             };
 
             SetInteraction(id, interaction);

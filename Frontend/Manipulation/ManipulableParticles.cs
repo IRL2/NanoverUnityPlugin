@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2019 Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using Narupa.Core.Math;
 using Narupa.Grpc.Trajectory;
@@ -22,19 +21,20 @@ namespace Narupa.Frontend.Manipulation
         public float ForceScale { get; set; } = 100f;
 
         private readonly Transform transform;
-        private readonly TrajectorySession trajectorySession;
         private readonly ImdSession imdSession;
+        
+        public IInteractableParticles InteractableParticles { get; set; }
 
         private readonly HashSet<ActiveParticleGrab> activeGrabs
             = new HashSet<ActiveParticleGrab>();
 
         public ManipulableParticles(Transform transform,
-                                    TrajectorySession trajectorySession,
-                                    ImdSession imdSession)
+                                    ImdSession imdSession,
+                                    IInteractableParticles interactableParticles)
         {
             this.transform = transform;
-            this.trajectorySession = trajectorySession;
             this.imdSession = imdSession;
+            this.InteractableParticles = interactableParticles;
         }
 
         /// <summary>
@@ -44,28 +44,18 @@ namespace Narupa.Frontend.Manipulation
         /// </summary>
         public IActiveManipulation StartParticleGrab(Transformation grabberPose)
         {
-            if (trajectorySession.CurrentFrame == null
-             || trajectorySession.CurrentFrame.ParticlePositions.Length == 0)
-                return null;
-
-            uint particleIndex = GetNearestParticle(grabberPose.Position);
-
-            return StartParticleGrab(grabberPose, particleIndex);
+            if (InteractableParticles.GetParticleGrab(grabberPose) is ActiveParticleGrab grab)
+                return StartParticleGrab(grabberPose, grab);
+            return null;
         }
 
-        /// <summary>
-        /// Start a particle grab on a particular particle. Return either the
-        /// manipulation or null if it could not be grabbed.
-        /// </summary>
-        public IActiveManipulation StartParticleGrab(Transformation grabberPose,
-                                                     uint particleIndex)
+        private ActiveParticleGrab StartParticleGrab(Transformation grabberPose, ActiveParticleGrab grab)
         {
-            var grab = new ActiveParticleGrab(this, particleIndex);
             grab.UpdateManipulatorPose(grabberPose);
+            grab.ParticleGrabUpdated += () => OnParticleGrabUpdated(grab);
+            grab.ManipulationEnded += () => EndParticleGrab(grab);
             OnParticleGrabUpdated(grab);
-
             activeGrabs.Add(grab);
-
             return grab;
         }
 
@@ -76,77 +66,14 @@ namespace Narupa.Frontend.Manipulation
             imdSession.SetInteraction(grab.Id,
                                       position,
                                       forceScale: ForceScale,
-                                      particles: grab.ParticleIndex);
+                                      particles: grab.ParticleIndices,
+                                      properties: grab.Properties);
         }
 
         private void EndParticleGrab(ActiveParticleGrab grab)
         {
             activeGrabs.Remove(grab);
-
             imdSession.UnsetInteraction(grab.Id);
-        }
-
-        private uint GetNearestParticle(Vector3 position)
-        {
-            position = transform.InverseTransformPoint(position);
-
-            var frame = trajectorySession.CurrentFrame;
-
-            var bestSqrDistance = Mathf.Infinity;
-            var bestParticleIndex = 0;
-
-            for (var i = 0; i < frame.ParticlePositions.Length; ++i)
-            {
-                var particlePosition = frame.ParticlePositions[i];
-                var sqrDistance = Vector3.SqrMagnitude(position - particlePosition);
-
-                if (sqrDistance < bestSqrDistance)
-                {
-                    bestSqrDistance = sqrDistance;
-                    bestParticleIndex = i;
-                }
-            }
-
-            return (uint) bestParticleIndex;
-        }
-
-        /// <summary>
-        /// Represents a grab between a particle and world-space position
-        /// </summary>
-        // TODO: this was exposed last minute and should be refactored into 
-        // something cleaner, and not expose EndManipulation publically. See
-        // issue #74
-        public class ActiveParticleGrab : IActiveManipulation
-        {
-            public event Action ManipulationEnded;
-
-            public string Id { get; }
-            public uint ParticleIndex { get; }
-            public Vector3 GrabPosition { get; private set; }
-
-            private readonly ManipulableParticles imdSimulator;
-
-            public ActiveParticleGrab(ManipulableParticles imdSimulator,
-                                      uint particleIndex)
-            {
-                Id = Guid.NewGuid().ToString();
-                this.imdSimulator = imdSimulator;
-                ParticleIndex = particleIndex;
-            }
-
-            /// <inheritdoc />
-            public void UpdateManipulatorPose(Transformation manipulatorPose)
-            {
-                GrabPosition = manipulatorPose.Position;
-                imdSimulator.OnParticleGrabUpdated(this);
-            }
-
-            /// <inheritdoc />
-            public void EndManipulation()
-            {
-                imdSimulator.EndParticleGrab(this);
-                ManipulationEnded?.Invoke();
-            }
         }
     }
 }
