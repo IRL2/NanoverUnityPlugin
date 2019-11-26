@@ -13,6 +13,7 @@ using System.Linq;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
 using Narupa.Grpc;
+using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
 
 namespace Narupa.Session
@@ -29,6 +30,16 @@ namespace Narupa.Session
         public const string RightHandName = "hand.right";
         public const string SimulationPoseKey = "scene";
 
+        public MultiplayerSession()
+        {
+            SimulationPose = new LockableResource<Transformation>(this, SimulationPoseKey, PoseFromObject, PoseToObject);
+        }
+
+
+        public readonly LockableResource<Transformation> SimulationPose;
+
+        public Action<string> SharedStateDictionaryKeyUpdated;
+
         /// <summary>
         /// Dictionary of player ids to their last known avatar.
         /// </summary>
@@ -41,11 +52,6 @@ namespace Narupa.Session
         public Dictionary<string, object> SharedStateDictionary { get; } = new Dictionary<string, object>();
 
         /// <summary>
-        /// Currently known pose of the simulation space.
-        /// </summary>
-        public Transformation SimulationPose { get; private set; } = Transformation.Identity;
-
-        /// <summary>
         /// Is there an open client on this session?
         /// </summary>
         public bool IsOpen => client != null;
@@ -54,12 +60,6 @@ namespace Narupa.Session
         /// Has this session created a user?
         /// </summary>
         public bool HasPlayer => PlayerId != null;
-
-        /// <summary>
-        /// Do we know we have a lock on the simulation pose key in the shared
-        /// state dictionary?
-        /// </summary>
-        public bool HasSimulationPoseLock { get; private set; }
 
         /// <summary>
         /// Username of the current player, if any.
@@ -133,7 +133,6 @@ namespace Narupa.Session
 
             PlayerName = null;
             PlayerId = null;
-            HasSimulationPoseLock = false;
 
             Avatars.Clear();
             pendingAvatars.Clear();
@@ -217,42 +216,29 @@ namespace Narupa.Session
         {
             pendingValues[key] = value.ToProtobufValue();
         }
-
+        
         /// <summary>
-        /// Attempt to gain exclusive write access to the shared "scene" value, 
-        /// which controls the pose of the simulation scene.
+        /// Get a key in the shared state dictionary.
         /// </summary>
-        public async Task<bool> LockSimulationPose()
+        public object GetSharedState(string key)
         {
-            bool success = await client.LockResource(PlayerId, SimulationPoseKey);
-
-            HasSimulationPoseLock = success;
-
-            return success;
+            return SharedStateDictionary.TryGetValue(key, out var value) ? value : null;
         }
 
         /// <summary>
-        /// Attempt to release our lock on the shared "scene" value.
+        /// Attempt to gain exclusive write access to the shared value of the given key.
         /// </summary>
-        public async Task<bool> ReleaseSimulationPose()
+        public async Task<bool> LockResource(string id)
         {
-            bool success = await client.ReleaseResource(PlayerId, SimulationPoseKey);
-
-            HasSimulationPoseLock = false;
-
-            return success;
+            return await client.LockResource(PlayerId, id);
         }
-
+        
         /// <summary>
-        /// Set the simulation pose to a given value.
+        /// Release the lock on the given object of a given key.
         /// </summary>
-        public void SetSimulationPose(Transformation pose)
+        public async Task<bool> ReleaseResource(string id)
         {
-            if (!HasSimulationPoseLock)
-                throw new InvalidOperationException(
-                    "You must lock the simulation pose before setting it!");
-
-            SetSharedState(SimulationPoseKey, PoseToObject(pose));
+            return await client.ReleaseResource(PlayerId, id);
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
@@ -281,11 +267,7 @@ namespace Narupa.Session
             foreach (var pair in update.ResourceValueChanges)
             {
                 SharedStateDictionary[pair.Key] = pair.Value.ToObject();
-            }
-
-            if (update.ResourceValueChanges.ContainsKey(SimulationPoseKey))
-            {
-                SimulationPose = PoseFromObject(SharedStateDictionary[SimulationPoseKey]);
+                SharedStateDictionaryKeyUpdated?.Invoke(pair.Key);
             }
         }
 
