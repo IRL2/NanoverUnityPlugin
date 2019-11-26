@@ -25,11 +25,14 @@ namespace Narupa.Grpc.Multiplayer
 
         private Converter<T, object> valueToObject;
 
+        public Action MultiplayerKeyChanged;
+
         private void SharedStateDictionaryKeyUpdated(string key)
         {
             if (key == ResourceKey)
             {
                 value = GetValueFromMultiplayer();
+                MultiplayerKeyChanged?.Invoke();
             }
         }
 
