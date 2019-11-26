@@ -32,12 +32,17 @@ namespace Narupa.Session
 
         public MultiplayerSession()
         {
-            SimulationPose = new LockableResource<Transformation>(this, SimulationPoseKey, PoseFromObject, PoseToObject);
+            SimulationPose = new MultiplayerResource<Transformation>(this, SimulationPoseKey, PoseFromObject, PoseToObject);
         }
 
+        /// <summary>
+        /// The transformation of the simulation box.
+        /// </summary>
+        public readonly MultiplayerResource<Transformation> SimulationPose;
 
-        public readonly LockableResource<Transformation> SimulationPose;
-
+        /// <summary>
+        /// Callback for when a multiplayer resource is updated.
+        /// </summary>
         public Action<string> SharedStateDictionaryKeyUpdated;
 
         /// <summary>

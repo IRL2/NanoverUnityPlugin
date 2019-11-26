@@ -1,11 +1,14 @@
 namespace Narupa.Grpc.Multiplayer
 {
-    public enum ResourceLockState
+    /// <summary>
+    /// The state of a lock on a multiplayer resource.
+    /// </summary>
+    public enum MultiplayerResourceLockState
     {
         /// <summary>
         /// The state of the resource is not known, and shouldn't be altered.
         /// </summary>
-        Unknown,
+        Unlocked,
         /// <summary>
         /// A request to obtain a lock has been sent, and we are awaiting the result.
         /// </summary>
@@ -13,10 +16,6 @@ namespace Narupa.Grpc.Multiplayer
         /// <summary>
         /// The lock has been accepted and we have a lock on the object.
         /// </summary>
-        Accepted,
-        /// <summary>
-        /// The lock has been rejected.
-        /// </summary>
-        Rejected
+        Locked
     }
 }
