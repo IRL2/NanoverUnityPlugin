@@ -85,12 +85,15 @@ namespace Narupa.Visualisation.Components
         private void SetupInputNode(IInputNode input)
         {
             // Search for an output node of a subgraph
-            foreach (var subgraph in currentSubgraphs)
+            for (var i = currentSubgraphs.Count - 1; i >= 0; i--)
+            {
+                var subgraph = currentSubgraphs[i];
                 if (GetOutputNodeWithName(subgraph, input.Name)?.Output is IReadOnlyProperty output)
                 {
                     input.Input.TrySetLinkedProperty(output);
                     return;
                 }
+            }
 
             // Look for an input node on the main object
             foreach (var mainInput in GetInputNodes(gameObject))

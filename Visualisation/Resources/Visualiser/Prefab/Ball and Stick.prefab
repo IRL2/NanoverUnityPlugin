@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8528582866378757822
+--- !u!1 &75182077779563847
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,15 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8528582866378757812}
-  - component: {fileID: 8528582866378757811}
-  - component: {fileID: 3337455360039578810}
-  - component: {fileID: 397105478419057534}
-  - component: {fileID: 6089087228771831228}
-  - component: {fileID: 8528582866378757810}
-  - component: {fileID: 8528582866378757809}
-  - component: {fileID: 8528582866378757808}
-  - component: {fileID: 8528582866378757823}
+  - component: {fileID: 8675595082771297215}
+  - component: {fileID: 2328836869028133637}
+  - component: {fileID: 8611370669276084789}
+  - component: {fileID: 8069557243759028456}
+  - component: {fileID: 7698190664551895981}
   m_Layer: 0
   m_Name: Ball and Stick
   m_TagString: Untagged
@@ -24,13 +20,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8528582866378757812
+--- !u!4 &8675595082771297215
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 75182077779563847}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -38,13 +34,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8528582866378757811
+--- !u!114 &2328836869028133637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 75182077779563847}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3debffbae2948ccb8f413f906e7e8a7, type: 3}
@@ -55,49 +51,13 @@ MonoBehaviour:
     parentAdaptor:
       value: {fileID: 0}
       isValueProvided: 0
---- !u!114 &3337455360039578810
+--- !u!114 &8611370669276084789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: filter
-    input:
-      value: 
-      isValueProvided: 0
---- !u!114 &397105478419057534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: sphere.scale
-    input:
-      value: 0.6
-      isValueProvided: 1
---- !u!114 &6089087228771831228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 75182077779563847}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
@@ -109,171 +69,37 @@ MonoBehaviour:
     input:
       value: 0.05
       isValueProvided: 1
---- !u!114 &8528582866378757810
+--- !u!114 &8069557243759028456
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 75182077779563847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f2b3de3cca14b4c9cfc612f0e1d254b, type: 3}
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.elements
-    destinationFieldName: elements
+  inputLinkCollection: []
   node:
-    elements:
-      value: 
-      isValueProvided: 0
-    mapping:
-      unityObject: {fileID: 11400000, guid: f1a9c849f018f42adbab12e856c0da60, type: 2}
+    name: particle.scale
+    input:
+      value: 0.1
       isValueProvided: 1
---- !u!114 &8528582866378757809
+--- !u!114 &7698190664551895981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
+  m_GameObject: {fileID: 75182077779563847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53e308a4d7b44dc8ae8f209b6e9ba088, type: 3}
+  m_Script: {fileID: 11500000, guid: 274be437113845cabf24f8e2b4e3093d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.elements
-    destinationFieldName: elements
-  node:
-    elements:
-      value: 
-      isValueProvided: 0
-    scale:
-      value: 1
-      isValueProvided: 1
---- !u!114 &8528582866378757808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1037303cc04e46cf8d744d8b25d4d244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.positions
-    destinationFieldName: particlePositions
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: bond.pairs
-    destinationFieldName: bondPairs
-  - sourceComponent: {fileID: 8528582866378757809}
-    sourceFieldName: scales
-    destinationFieldName: particleScales
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
-    destinationFieldName: particleColors
-  - sourceComponent: {fileID: 6089087228771831228}
-    sourceFieldName: input
-    destinationFieldName: bondScale
-  - sourceComponent: {fileID: 397105478419057534}
-    sourceFieldName: input
-    destinationFieldName: particleScale
-  - sourceComponent: {fileID: 3337455360039578810}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
-  node:
-    material:
-      value: {fileID: 2100000, guid: 8ab524378960e644f9a238927b43e467, type: 2}
-      isValueProvided: 1
-    mesh:
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-      isValueProvided: 1
-    particleFilter:
-      value: 
-      isValueProvided: 0
-    bondScale:
-      value: 0.06
-      isValueProvided: 0
-    bondPairs:
-      value: []
-      isValueProvided: 0
-    particlePositions:
-      value: []
-      isValueProvided: 0
-    particleColors:
-      value: []
-      isValueProvided: 0
-    particleScales:
-      value: []
-      isValueProvided: 0
-    rendererColor:
-      value: {r: 1, g: 1, b: 1, a: 1}
-      isValueProvided: 1
-    particleScale:
-      value: 1
-      isValueProvided: 0
-    bondOrders:
-      value: 
-      isValueProvided: 0
-    bondToNonFiltered: 0
---- !u!114 &8528582866378757823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73992ab43ebd415eb814845a706956c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.positions
-    destinationFieldName: particlePositions
-  - sourceComponent: {fileID: 8528582866378757810}
-    sourceFieldName: colors
-    destinationFieldName: particleColors
-  - sourceComponent: {fileID: 8528582866378757809}
-    sourceFieldName: scales
-    destinationFieldName: particleScales
-  - sourceComponent: {fileID: 397105478419057534}
-    sourceFieldName: input
-    destinationFieldName: rendererScale
-  - sourceComponent: {fileID: 3337455360039578810}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
-  node:
-    particlePositions:
-      value: []
-      isValueProvided: 0
-    particleColors:
-      value: []
-      isValueProvided: 0
-    particleScales:
-      value: []
-      isValueProvided: 0
-    rendererColor:
-      value: {r: 1, g: 1, b: 1, a: 1}
-      isValueProvided: 1
-    rendererScale:
-      value: 1
-      isValueProvided: 0
-    particleFilter:
-      value: 
-      isValueProvided: 0
-    mesh:
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-      isValueProvided: 1
-    material:
-      value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
-      isValueProvided: 1
+  prefabs:
+  - {fileID: 8528582866378757822, guid: 657af42ceba840c4299427c9a70925e8, type: 3}
+  - {fileID: 1900448658886156695, guid: 9572ecae4cb8fc14698248ffb1dc72c3, type: 3}
+  frameAdaptor: {fileID: 2328836869028133637}
