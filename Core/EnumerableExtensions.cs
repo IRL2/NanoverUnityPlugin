@@ -7,10 +7,15 @@ namespace Narupa.Utility
 {
     public static class EnumerableExtensions
     {
-        public static IEnumerable<(T First, T Second)> GetPairs<T>(this IEnumerable<T> enumerable)
+        /// <summary>
+        /// Enumerate over all pairs of adjacent items in a list, such that the set [A, B,
+        /// C, D] yields the pairs (A, B), (B, C) and (C, D).
+        /// </summary>
+        public static IEnumerable<(TElement First, TElement Second)> GetPairs<TElement>(
+            this IEnumerable<TElement> enumerable)
         {
             var started = false;
-            var prev = default(T);
+            var prev = default(TElement);
             foreach (var e in enumerable)
             {
                 if (!started)
@@ -26,7 +31,11 @@ namespace Narupa.Utility
             }
         }
 
-        public static int IndexOf<T>(this IEnumerable<T> list, T item)
+        /// <summary>
+        /// Find the index of an item in an enumerable, returning -1 if the item is not
+        /// present.
+        /// </summary>
+        public static int IndexOf<TElement>(this IEnumerable<TElement> list, TElement item)
         {
             var i = 0;
             foreach (var thing in list)
