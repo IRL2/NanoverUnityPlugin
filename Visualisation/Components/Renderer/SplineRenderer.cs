@@ -1,3 +1,4 @@
+using System;
 using Narupa.Visualisation.Node.Calculator;
 using UnityEngine;
 
@@ -16,6 +17,11 @@ namespace Narupa.Visualisation.Components.Renderer
             if (camera.name == "Preview Scene Camera")
                 return;
             node.Render(camera);
+        }
+
+        private void OnDrawGizmos()
+        {
+            node.OnDrawGizmos();
         }
     }
 }

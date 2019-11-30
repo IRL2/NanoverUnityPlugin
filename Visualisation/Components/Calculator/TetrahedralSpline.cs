@@ -2,10 +2,8 @@ using Narupa.Visualisation.Node.Calculator;
 
 namespace Narupa.Visualisation.Components.Calculator
 {
-    /// <inheritdoc cref="SecondaryStructureNode" />
-    public class
-        SecondaryStructureCalculator : VisualisationComponent<
-            Node.Calculator.SecondaryStructureNode>
+    /// <inheritdoc cref="Narupa.Visualisation.Node.Calculator.TetrahedralSplineNode" />
+    public class TetrahedralSpline : VisualisationComponent<TetrahedralSplineNode>
     {
         private void Update()
         {

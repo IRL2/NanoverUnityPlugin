@@ -168,5 +168,25 @@ namespace Narupa.Visualisation.Node.Renderer
                 });
             }
         }
+
+        public void OnDrawGizmos()
+        {
+            foreach (var segment in splineSegments.Value)
+            {
+                Gizmos.color = UnityEngine.Color.white;
+
+                for (var t = 0f; t < 1f; t += 0.1f)
+                {
+                    var pt1 = segment.GetPoint(t);
+                    var pt2 = segment.GetPoint(t + 0.1f);
+                    Gizmos.DrawLine(pt1, pt2);
+                }
+                Gizmos.DrawSphere(segment.StartPoint, 0.01f);
+                
+                Gizmos.color = UnityEngine.Color.blue;
+                Gizmos.DrawLine(segment.StartPoint, segment.StartPoint + 0.2f * segment.StartTangent);
+
+            }
+        }
     }
 }

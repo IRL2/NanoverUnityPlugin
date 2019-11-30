@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Narupa.Core.Science;
 using Narupa.Frame;
@@ -136,7 +137,7 @@ namespace Narupa.Visualisation.Property
     public class GradientProperty : Property<Gradient>
     {
     }
-    
+
     /// <summary>
     /// Serializable <see cref="Property" /> for a <see cref="FrameAdaptor" /> value.
     /// </summary>
@@ -162,7 +163,7 @@ namespace Narupa.Visualisation.Property
     public class BondArrayProperty : ArrayProperty<BondPair>
     {
     }
-    
+
     /// <summary>
     /// Serializable <see cref="Property" /> for an array of <see cref="int" /> values.
     /// </summary>
@@ -170,7 +171,7 @@ namespace Narupa.Visualisation.Property
     public class SelectionArrayProperty : ArrayProperty<IReadOnlyList<int>>
     {
     }
-    
+
     /// <summary>
     /// Serializable <see cref="Property" /> for an array of <see cref="SecondaryStructureAssignment" /> values.
     /// </summary>
@@ -178,7 +179,7 @@ namespace Narupa.Visualisation.Property
     public class SecondaryStructureArrayProperty : ArrayProperty<SecondaryStructureAssignment>
     {
     }
-    
+
     /// <summary>
     /// Serializable <see cref="Property" /> for an array of <see cref="SplineSegment" /> values.
     /// </summary>
@@ -192,7 +193,34 @@ namespace Narupa.Visualisation.Property
     /// values;
     /// </summary>
     [Serializable]
-    public abstract class ArrayProperty<TValue> : Property<TValue[]>
+    public abstract class ArrayProperty<TValue> : Property<TValue[]>, IEnumerable<TValue>
     {
+        /// <summary>
+        /// Resize the array in this property, creating an array if not possible.
+        /// </summary>
+        public TValue[] Resize(int size)
+        {
+            var value = HasValue ? Value : new TValue[0];
+            Array.Resize(ref value, size);
+            Value = value;
+            return Value;
+        }
+
+        public IEnumerator<TValue> GetEnumerator()
+        {
+            return (Value as IEnumerable<TValue>).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+
+        public TValue this[int i]
+        {
+            get => Value[i];
+            set => Value[i] = value;
+        }
     }
 }

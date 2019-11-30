@@ -39,7 +39,7 @@
             
             v.vertex += v.normal * abs(_Offset);
             o.vertex = UnityObjectToClipPos(v.vertex);
-            o.color = v.color;
+            o.color = pow(v.color, 2.2);
             return o;
         }
 
@@ -66,7 +66,7 @@
                 fixed4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-                return pow(color, 2.2) * saturate(lerp(1, dot(n, l), _Diffuse));;
+                return color * saturate(lerp(1, dot(n, l), _Diffuse));;
             }
 
             ENDCG
@@ -91,7 +91,7 @@
                 fixed4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-                return pow(color, 2.2) * saturate(lerp(1, dot(n, l), _Diffuse));;
+                return color * saturate(lerp(1, dot(n, l), _Diffuse));;
             }
 
             ENDCG

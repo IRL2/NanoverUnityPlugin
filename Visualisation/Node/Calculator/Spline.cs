@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Narupa.Visualisation.Property;
 using UnityEngine;
@@ -7,243 +6,117 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Calculator
 {
     [Serializable]
-    public class Spline
+    public class SplineNode : GenericOutputNode
     {
         [SerializeField]
-        private ColorArrayProperty pointColors = new ColorArrayProperty();
+        private SelectionArrayProperty sequences = new SelectionArrayProperty();
 
         [SerializeField]
-        private Vector3ArrayProperty pointPositions = new Vector3ArrayProperty();
+        private Vector3ArrayProperty positions = new Vector3ArrayProperty();
 
-        private HermiteCurve[] curves;
+        [SerializeField]
+        private Vector3ArrayProperty normals = new Vector3ArrayProperty();
+
+        [SerializeField]
+        private Vector3ArrayProperty tangents = new Vector3ArrayProperty();
+
+        [SerializeField]
+        private ColorArrayProperty colors = new ColorArrayProperty();
+
+        [SerializeField]
+        private ColorProperty color;
+
+        [SerializeField]
+        private FloatProperty radius;
 
         private SplineArrayProperty splineSegments = new SplineArrayProperty();
 
-        [SerializeField]
-        private FloatProperty scale = new FloatProperty()
+        protected override bool IsInputValid => sequences.HasNonNullValue()
+                                             && positions.HasNonNullValue()
+                                             && normals.HasNonNullValue()
+                                             && tangents.HasNonNullValue()
+                                             && color.HasNonNullValue()
+                                             && radius.HasNonNullValue();
+
+        protected override bool IsInputDirty => sequences.IsDirty
+                                             || positions.IsDirty
+                                             || normals.IsDirty
+                                             || tangents.IsDirty
+                                             || colors.IsDirty
+                                             || color.IsDirty
+                                             || radius.IsDirty;
+
+        protected override void ClearDirty()
         {
-            Value = 1f
-        };
-
-        protected SplineSegment[] segments;
-
-        [SerializeField]
-        private SelectionArrayProperty pointSequences = new SelectionArrayProperty();
-
-        private bool areSplinesDirty = false;
-
-        [SerializeField]
-        private FloatProperty shape = new FloatProperty
-        {
-            Value = 1f
-        };
-
-        protected virtual bool DoSegmentsNeedGenerating =>
-            areSplinesDirty || pointPositions.IsDirty || shape.IsDirty || scale.IsDirty;
-
-        protected virtual bool CanSegmentsBeGenerated =>
-            pointPositions.HasValue;
-
-        public void Refresh()
-        {
-            if (pointPositions.HasValue && (pointSequences.IsDirty || pointColors.IsDirty))
-            {
-                SetupHermiteSplines();
-                pointSequences.IsDirty = false;
-                areSplinesDirty = true;
-                pointColors.IsDirty = false;
-            }
-
-            if (DoSegmentsNeedGenerating && CanSegmentsBeGenerated)
-            {
-                GenerateSegments();
-                pointPositions.IsDirty = false;
-                shape.IsDirty = false;
-            }
+            sequences.IsDirty = false;
+            positions.IsDirty = false;
+            normals.IsDirty = false;
+            tangents.IsDirty = false;
+            colors.IsDirty = false;
+            color.IsDirty = false;
+            radius.IsDirty = false;
         }
 
-        protected virtual void GenerateSegments()
+        protected override void UpdateOutput()
         {
-            PreUpdateCurves();
-
-            foreach (var curve in curves)
-                curve.Update(this);
-
-            GenerateSegmentsFromSplines();
-
-            splineSegments.Value = segments;
-            pointPositions.IsDirty = false;
-            areSplinesDirty = false;
-        }
-
-        private void GenerateSegmentsFromSplines()
-        {
+            var segmentCount = sequences.Value.Sum(s => s.Count - 1);
+            var splineSegments = this.splineSegments.HasValue
+                                     ? this.splineSegments.Value
+                                     : new SplineSegment[0];
+            Array.Resize(ref splineSegments, segmentCount);
             var offset = 0;
-            foreach (var curve in curves)
+            var color = this.color.HasValue ? this.color.Value : UnityEngine.Color.white;
+            foreach (var sequence in sequences.Value)
             {
-                curve.UpdateSegments(ref segments, offset, this);
-                offset += curve.PointCount - 1;
-            }
-        }
+                if (sequence.Count == 0)
+                    continue;
+                var sequenceLength = sequence.Count;
 
-        protected virtual void PreUpdateCurves()
-        {
-        }
+                var startPosition = positions.Value[sequence[0]];
+                var startNormal = normals.Value[offset];
+                var startTangent = tangents.Value[offset];
+                var startColor = color * (colors.HasValue ? colors.Value[sequence[0]] : UnityEngine.Color.white);
+                var startSize = radius;
 
-        protected virtual void ModifyGeometry(HermiteCurve curve)
-        {
-        }
 
-        private void SetupHermiteSplines()
-        {
-            var segmentCount = pointSequences.HasNonNullValue()
-                                   ? pointSequences.Value.Sum(sequence => sequence.Count - 1)
-                                   : pointPositions.Value.Length - 1;
-
-            var curveCount = pointSequences.HasNonNullValue()
-                                 ? pointSequences.Value.Length
-                                 : 1;
-
-            var sequences = pointSequences.HasNonNullValue()
-                                ? pointSequences.Value
-                                : new[]
-                                {
-                                    Enumerable.Range(0, segmentCount + 1).ToList()
-                                };
-
-            Array.Resize(ref segments, segmentCount);
-            Array.Resize(ref curves, curveCount);
-            var i = 0;
-            foreach (var sequence in sequences)
-            {
-                var count = sequence.Count;
-
-                // Setup initial HermiteCurve
-                curves[i] = new HermiteCurve
+                for (var i = 0; i < sequenceLength - 1; i++)
                 {
-                    Positions = new Vector3[count],
-                    Normals = new Vector3[count],
-                    Tangents = new Vector3[count],
-                    Sequence = sequence,
-                    Colors = new UnityEngine.Color[count],
-                    PointCount = count,
-                    SequenceIndex = i
-                };
-                i++;
-            }
-        }
+                    var endPosition = positions.Value[sequence[i + 1]];
+                    var endNormal = normals.Value[offset + i + 1];
+                    var endTangent = tangents.Value[offset + i + 1];
+                    var endColor = color * (colors.HasValue ? colors.Value[sequence[i + 1]] : UnityEngine.Color.white);
+                    var endSize = radius;
 
-        /// <summary>
-        /// Represents a continuous curve.
-        /// </summary>
-        protected class HermiteCurve
-        {
-            public IReadOnlyList<int> Sequence;
-            public int PointCount;
-            public Vector3[] Normals;
-            public Vector3[] Positions;
-            public Vector3[] Tangents;
-            public UnityEngine.Color[] Colors;
-            public int SequenceIndex;
-
-            public void Update(Spline generator)
-            {
-                // Get positions from a generator, using indices from PointIndices.
-                // Also initialise normals to zero.
-                for (var j = 0; j < PointCount; j++)
-                {
-                    Positions[j] = generator.pointPositions.Value[Sequence[j]];
-                    Colors[j] = generator.pointColors.HasValue
-                                    ? generator.pointColors.Value[Sequence[j]]
-                                    : UnityEngine.Color.white;
-                    Normals[j] = Vector3.zero;
-                }
-
-                // Allow the generator to modify the positions before calculating the spline.
-                generator.ModifyGeometry(this);
-
-                // Calculate tangents based offsets between positions.
-                for (var j = 1; j < PointCount - 1; j++)
-                    Tangents[j] = generator.shape * (Positions[j + 1] - Positions[j - 1]);
-
-                // Compute normals by rejection of second derivative of curve from tangent
-                for (var i = 1; i < PointCount - 2; i++)
-                {
-                    var p1 = Positions[i];
-                    var p2 = Positions[i + 1];
-
-                    var m1 = Tangents[i];
-                    var m2 = Tangents[i + 1];
-
-                    var n0 = -6 * p1 - 4 * m1 + 6 * p2 - 2 * m2;
-                    var n1 = 6 * p1 + 2 * m1 - 6 * p2 + 4 * m2;
-
-                    n0 -= Vector3.Project(n0, m1);
-                    n1 -= Vector3.Project(n1, m2);
-
-                    Normals[i] += n0;
-                    Normals[i + 1] += n1;
-                }
-
-                // Normalise each normal
-                Normals[0] = Normals[0].normalized;
-
-                // Flip the normals
-                for (var j = 1; j < Positions.Length; j++)
-                {
-                    var a = Normals[j] - Vector3.Project(Normals[j], Tangents[j]);
-                    var b = Vector3.Cross(Tangents[j], Normals[j]);
-                    a = a.normalized;
-                    b = b.normalized;
-                    var dot1 = Vector3.Dot(Normals[j - 1], a);
-                    var dot2 = Vector3.Dot(Normals[j - 1], b);
-
-                    if (dot1 * dot1 > dot2 * dot2)
+                    splineSegments[offset + i] = new SplineSegment
                     {
-                        Normals[j] = a * Mathf.Sign(dot1);
-                    }
-                    else
-                    {
-                        Normals[j] = b * Mathf.Sign(dot2);
-                    }
+                        StartPoint = startPosition,
+                        StartNormal = startNormal,
+                        StartTangent = startTangent,
+                        StartColor = startColor,
+                        StartScale = Vector3.one * startSize,
+                        EndPoint = endPosition,
+                        EndNormal = endNormal,
+                        EndTangent = endTangent,
+                        EndColor = endColor,
+                        EndScale = Vector3.one * endSize
+                    };
+
+                    startPosition = endPosition;
+                    startNormal = endNormal;
+                    startTangent = endTangent;
+                    startColor = endColor;
+                    startSize = endSize;
                 }
 
-                // Set the first and last tangents
-                Tangents[0] = 2 * Vector3.Dot(Tangents[1], Tangents[2]) * Tangents[1] - Tangents[2];
-                Tangents[PointCount - 1] = 2 * Tangents[PointCount - 2] - Tangents[PointCount - 3];
-
-                // Set the first normal
-                Normals[0] = (2 * Normals[1] - Normals[2]).normalized;
+                offset += sequenceLength - 1;
             }
 
-            public void UpdateSegment(ref SplineSegment segment, int k, Spline generator)
-            {
-                segment.StartColor = Colors[k];
-                segment.EndColor = Colors[k + 1];
-                segment.StartPoint = Positions[k];
-                segment.EndPoint = Positions[k + 1];
-                segment.StartTangent = Tangents[k];
-                segment.EndTangent = Tangents[k + 1];
-                segment.StartNormal = Normals[k];
-                segment.EndNormal = Normals[k + 1];
-                segment.StartScale = generator.scale.Value * Vector2.one;
-                segment.EndScale = generator.scale.Value * Vector2.one;
-                generator.OnUpdateSegment(ref segment, k, this);
-            }
-
-            public void UpdateSegments(ref SplineSegment[] segment, int offset, Spline generator)
-            {
-                for (var i = 0; i < PointCount - 1; i++)
-                {
-                    UpdateSegment(ref segment[offset + i], i, generator);
-                }
-            }
+            this.splineSegments.Value = splineSegments;
         }
 
-        protected virtual void OnUpdateSegment(ref SplineSegment segment,
-                                               int index,
-                                               HermiteCurve curve)
+        protected override void ClearOutput()
         {
+            splineSegments.UndefineValue();
         }
     }
 }

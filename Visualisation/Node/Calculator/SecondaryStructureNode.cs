@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Narupa.Frame;
 using Narupa.Visualisation.Property;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Calculator
 {
     [Serializable]
-    public class SecondaryStructureCalculator
+    public class SecondaryStructureNode
     {
         [SerializeField]
         private Vector3ArrayProperty atomPositions;
@@ -17,9 +18,6 @@ namespace Narupa.Visualisation.Node.Calculator
 
         [SerializeField]
         private StringArrayProperty atomNames;
-
-        [SerializeField]
-        private IntProperty residueCount;
 
         [SerializeField]
         private SelectionArrayProperty peptideChains;
@@ -32,13 +30,13 @@ namespace Narupa.Visualisation.Node.Calculator
         private SecondaryStructureArrayProperty residueSecondaryStructure =
             new SecondaryStructureArrayProperty();
 
-        private BondArrayProperty residueHydrogenBonds =
+        private BondArrayProperty hydrogenBonds =
             new BondArrayProperty();
 
         public List<ProteinResidueData[]> sequenceResidueData =
             new List<ProteinResidueData[]>();
 
-        public bool IsInputValid => residueCount.HasNonNullValue();
+        public bool IsInputValid => peptideChains.HasNonNullValue();
 
         public bool AreResiduesDirty
             => atomResidues.IsDirty || peptideChains.IsDirty || atomNames.IsDirty;
@@ -81,23 +79,31 @@ namespace Narupa.Visualisation.Node.Calculator
             foreach (var peptideSequence in sequenceResidueData)
                 DsspAlgorithm.CalculateSecondaryStructure(peptideSequence, dsspOptions);
 
-            var secondaryStruct = new SecondaryStructureAssignment[residueCount.Value];
+            var peptideCount = peptideChains.Value.Sum(s => s.Count);
+
+            var secondaryStruct = new SecondaryStructureAssignment[peptideCount];
+
+            var index = 0;
             foreach (var sequence in sequenceResidueData)
             foreach (var data in sequence)
-                secondaryStruct[data.ResidueIndex] = data.SecondaryStructure;
+                secondaryStruct[index++] = data.SecondaryStructure;
 
             residueSecondaryStructure.Value = secondaryStruct;
 
             needRecalculate = false;
 
             var bonds = new List<BondPair>();
+            var seqOffset = 0;
             foreach (var sequence in sequenceResidueData)
-            foreach (var data in sequence)
-                if (data.DonorHydrogenBondResidue != null)
-                    bonds.Add(new BondPair(data.ResidueIndex,
-                                           data.DonorHydrogenBondResidue.ResidueIndex));
+            {
+                foreach (var data in sequence)
+                    if (data.DonorHydrogenBondResidue != null)
+                        bonds.Add(new BondPair(seqOffset + data.ordinal,
+                                               seqOffset + data.DonorHydrogenBondResidue.ordinal));
+                seqOffset += sequence.Length;
+            }
 
-            residueHydrogenBonds.Value = bonds.ToArray();
+            hydrogenBonds.Value = bonds.ToArray();
         }
 
         private void UpdatePositions()

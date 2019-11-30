@@ -17,5 +17,13 @@ namespace Narupa.Visualisation.Node.Calculator
         public UnityEngine.Color EndColor;
         public Vector3 StartScale;
         public Vector3 EndScale;
+
+        public Vector3 GetPoint(float t)
+        {
+            return (2 * t * t * t - 3 * t * t + 1) * StartPoint
+                 + (t * t * t - 2 * t * t + t) * StartTangent
+                 + (-2 * t * t * t + 3 * t * t) * EndPoint
+                 + (t * t * t - t * t) * EndTangent;
+        }
     }
 }

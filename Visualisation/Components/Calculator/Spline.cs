@@ -1,8 +1,9 @@
 namespace Narupa.Visualisation.Components.Calculator
 {
-    public class Spline : VisualisationComponent<Node.Calculator.Spline>
+    /// <inheritdoc cref="Narupa.Visualisation.Node.Calculator.SplineNode" />
+    public class Spline : VisualisationComponent<Node.Calculator.SplineNode>
     {
-        public void Update()
+        private void Update()
         {
             node.Refresh();
         }
