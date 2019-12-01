@@ -43,6 +43,17 @@ namespace Narupa.Visualisation.Node.Calculator
                 tangents[offset + j] =
                     shape * (positions[sequence[j + 1]] - positions[sequence[j - 1]]);
 
+            tangents[offset] = tangents[offset + 1];
+            tangents[offset + count - 1] = tangents[offset + count - 2];
+/*
+            // Set the first and last tangents
+            tangents[offset] =
+                2 * Vector3.Dot(tangents[offset + 1], tangents[offset + 2]) * tangents[offset + 1] -
+                tangents[offset + 2];
+            tangents[offset + count - 1] =
+                2 * tangents[offset + count - 2] - tangents[offset + count - 3];
+                */
+
             // Compute normals by rejection of second derivative of curve from tangent
             for (var i = 1; i < count - 2; i++)
             {
@@ -64,15 +75,8 @@ namespace Narupa.Visualisation.Node.Calculator
 
             for (var i = 1; i < count - 1; i++)
             {
-                normals[i] = normals[i].normalized;
+                normals[offset + i] = normals[offset + i].normalized;
             }
-
-            // Set the first and last tangents
-            tangents[offset] =
-                2 * Vector3.Dot(tangents[offset + 1], tangents[offset + 2]) * tangents[offset + 1] -
-                tangents[offset + 2];
-            tangents[offset + count - 1] =
-                2 * tangents[offset + count - 2] - tangents[offset + count - 3];
 
             // Set the first normal
             normals[offset] = (2 * normals[offset + 1] - normals[offset + 2]).normalized;
@@ -112,7 +116,7 @@ namespace Narupa.Visualisation.Node.Calculator
                 var offset = 0;
                 var normals = this.normals.Value;
                 var tangents = this.tangents.Value;
-                foreach (var sequence in this.sequences.Value)
+                foreach (var sequence in sequences.Value)
                 {
                     CalculatePositions(sequence,
                                        positions.Value,
@@ -120,7 +124,7 @@ namespace Narupa.Visualisation.Node.Calculator
                                        ref normals,
                                        ref tangents,
                                        shape);
-                    offset += sequence.Count;
+                    offset += sequence.Count - 1;
                 }
             }
         }

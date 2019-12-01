@@ -10,15 +10,15 @@ GameObject:
   m_Component:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
-  - component: {fileID: 2403651013541833341}
-  - component: {fileID: 4578713722756180922}
-  - component: {fileID: 2262077134987404520}
-  - component: {fileID: 6660380353967523400}
-  - component: {fileID: 984889019807945198}
-  - component: {fileID: 128135161575052017}
-  - component: {fileID: 4514838650576334071}
+  - component: {fileID: 2897208762533532538}
+  - component: {fileID: 6196488865804266995}
+  - component: {fileID: 4908190071600149755}
+  - component: {fileID: 6356434826202734204}
+  - component: {fileID: 9042797035715697833}
+  - component: {fileID: 7135926777135089143}
+  - component: {fileID: 1554647365045676840}
   m_Layer: 0
-  m_Name: Spline
+  m_Name: New Spline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
     parentAdaptor:
       isValueProvided: 0
       value: {fileID: 0}
---- !u!114 &2403651013541833341
+--- !u!114 &2897208762533532538
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad6c568a347b4a06a739909315cb146d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7af20ce70c19474cb0cabc1f8e7c5d12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
@@ -74,38 +74,6 @@ MonoBehaviour:
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: particle.residues
     destinationFieldName: atomResidues
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.positions
-    destinationFieldName: atomPositions
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residue.count
-    destinationFieldName: residueCount
-  node:
-    atomNames:
-      isValueProvided: 0
-      value: []
-    atomResidues:
-      isValueProvided: 0
-      value: 
-    atomPositions:
-      isValueProvided: 0
-      value: []
-    residueCount:
-      isValueProvided: 0
-      value: 0
---- !u!114 &4578713722756180922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c74cc7b907db4d2b9517bc7ce26534c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: residue.names
     destinationFieldName: residueNames
@@ -113,13 +81,19 @@ MonoBehaviour:
     sourceFieldName: residue.chains
     destinationFieldName: residueEntities
   node:
+    atomNames:
+      isValueProvided: 0
+      value: []
+    atomResidues:
+      isValueProvided: 0
+      value: 
     residueNames:
       isValueProvided: 0
       value: []
     residueEntities:
       isValueProvided: 0
       value: 
---- !u!114 &2262077134987404520
+--- !u!114 &6196488865804266995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,101 +102,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c098bf9bf19439ebd619219078fa4bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 08252f6767724dc9b9e53b5debd36295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: particle.positions
-    destinationFieldName: atomPositions
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.residues
-    destinationFieldName: atomResidues
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: particle.names
-    destinationFieldName: atomNames
-  - sourceComponent: {fileID: 8528582866378757811}
-    sourceFieldName: residue.count
-    destinationFieldName: residueCount
-  - sourceComponent: {fileID: 4578713722756180922}
-    sourceFieldName: peptideSequences
-    destinationFieldName: peptideChains
+    destinationFieldName: positions
+  - sourceComponent: {fileID: 2897208762533532538}
+    sourceFieldName: alphaCarbonSequences
+    destinationFieldName: sequences
   node:
-    atomPositions:
+    positions:
       isValueProvided: 0
       value: []
-    atomResidues:
-      isValueProvided: 0
-      value: 
-    atomNames:
-      isValueProvided: 0
-      value: []
-    residueCount:
-      isValueProvided: 0
-      value: 0
-    peptideChains:
-      isValueProvided: 0
-    drawDebugLines: 1
-    DsspOptions:
-      Cutoff: -0.5
---- !u!114 &6660380353967523400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 489814c4adf04f1aa179ae0d2c8a5495, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 2262077134987404520}
-    sourceFieldName: residueSecondaryStructure
-    destinationFieldName: secondaryStructure
-  node:
-    secondaryStructure:
-      isValueProvided: 0
-      value: 
---- !u!114 &984889019807945198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6a2a85d8c2f4f2bb7ad9c79488964a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 2403651013541833341}
-    sourceFieldName: residuePositions
-    destinationFieldName: pointPositions
-  - sourceComponent: {fileID: 6660380353967523400}
-    sourceFieldName: colors
-    destinationFieldName: pointColors
-  - sourceComponent: {fileID: 4578713722756180922}
-    sourceFieldName: peptideSequences
-    destinationFieldName: pointSequences
-  node:
-    pointColors:
-      isValueProvided: 0
-      value: []
-    pointPositions:
-      isValueProvided: 0
-      value: []
-    scale:
-      isValueProvided: 1
-      value: 0.5
-    pointSequences:
+    sequences:
       isValueProvided: 0
     shape:
       isValueProvided: 1
-      value: 1
---- !u!114 &128135161575052017
+      value: 0.5
+--- !u!114 &4908190071600149755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,27 +130,70 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6aabe9a3ae74eb7b13d59f864c4b9a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 80bd9557e3c64d81ad6bbaa9f8de8809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 984889019807945198}
-    sourceFieldName: splineSegments
-    destinationFieldName: inputSplines
+  - sourceComponent: {fileID: 6196488865804266995}
+    sourceFieldName: normals
+    destinationFieldName: inputNormals
+  - sourceComponent: {fileID: 6196488865804266995}
+    sourceFieldName: tangents
+    destinationFieldName: inputTangents
   node:
-    inputSplines:
+    inputNormals:
       isValueProvided: 0
       value: []
-    colorSpeed:
+    inputTangents:
+      isValueProvided: 0
+      value: []
+--- !u!114 &6356434826202734204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd0b12b1dbc43f0b09739fae78b0cc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 2897208762533532538}
+    sourceFieldName: alphaCarbonSequences
+    destinationFieldName: sequences
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particle.positions
+    destinationFieldName: positions
+  - sourceComponent: {fileID: 4908190071600149755}
+    sourceFieldName: outputNormals
+    destinationFieldName: normals
+  - sourceComponent: {fileID: 6196488865804266995}
+    sourceFieldName: tangents
+    destinationFieldName: tangents
+  node:
+    sequences:
+      isValueProvided: 0
+    positions:
+      isValueProvided: 0
+      value: []
+    normals:
+      isValueProvided: 0
+      value: []
+    tangents:
+      isValueProvided: 0
+      value: []
+    colors:
+      isValueProvided: 0
+      value: []
+    color:
       isValueProvided: 1
-      value: 0.02
-    scaleSpeed:
+      value: {r: 1, g: 1, b: 1, a: 1}
+    radius:
       isValueProvided: 1
-      value: 0.02
-    normalSpeed:
-      isValueProvided: 1
-      value: 0.1
---- !u!114 &4514838650576334071
+      value: 0.2
+--- !u!114 &9042797035715697833
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,17 +206,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 128135161575052017}
-    sourceFieldName: outputSplines
+  - sourceComponent: {fileID: 6356434826202734204}
+    sourceFieldName: splineSegments
     destinationFieldName: splineSegments
   node:
     useBox: 0
     splineSegments:
       isValueProvided: 0
       value: []
-    segments: 32
+    segments: 16
     sides: 32
     material: {fileID: 2100000, guid: 50f24c4e50529f4439fed9e44de0bd49, type: 2}
     splineRadius:
       isValueProvided: 1
-      value: 0.5
+      value: 1
+--- !u!114 &7135926777135089143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7104b9ed173f4218a36470e668d3cb97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 2897208762533532538}
+    sourceFieldName: alphaCarbonSequences
+    destinationFieldName: sequences
+  node:
+    sequences:
+      isValueProvided: 0
+--- !u!114 &1554647365045676840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73992ab43ebd415eb814845a706956c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particle.positions
+    destinationFieldName: particlePositions
+  - sourceComponent: {fileID: 7135926777135089143}
+    sourceFieldName: filters
+    destinationFieldName: particleFilter
+  node:
+    particlePositions:
+      isValueProvided: 0
+      value: []
+    particleColors:
+      isValueProvided: 0
+      value: []
+    particleScales:
+      isValueProvided: 0
+      value: []
+    rendererColor:
+      isValueProvided: 1
+      value: {r: 1, g: 1, b: 1, a: 1}
+    rendererScale:
+      isValueProvided: 1
+      value: 0.2
+    particleFilter:
+      isValueProvided: 0
+      value: 
+    mesh:
+      isValueProvided: 1
+      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    material:
+      isValueProvided: 1
+      value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
