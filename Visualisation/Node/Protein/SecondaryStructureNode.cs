@@ -5,8 +5,11 @@ using Narupa.Frame;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Protein
 {
+    /// <summary>
+    /// Calculates secondary structure using the DSSP Algorithm.
+    /// </summary>
     [Serializable]
     public class SecondaryStructureNode
     {
@@ -33,8 +36,8 @@ namespace Narupa.Visualisation.Node.Calculator
         private BondArrayProperty hydrogenBonds =
             new BondArrayProperty();
 
-        public List<ProteinResidueData[]> sequenceResidueData =
-            new List<ProteinResidueData[]>();
+        public List<SecondaryStructureResidueData[]> sequenceResidueData =
+            new List<SecondaryStructureResidueData[]>();
 
         public bool IsInputValid => peptideChains.HasNonNullValue();
 

@@ -7,34 +7,57 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Calculator
 {
     /// <summary>
-    /// Calculates normals and tangents for splines going through a set of points.
+    /// Calculates normals and tangents for splines going through a set of points, assuming each segment is a hermite spline.
     /// </summary>
     [Serializable]
     public class HermiteCurveNode : GenericOutputNode
     {
+        /// <summary>
+        /// Positions to sample curve vertex positions.
+        /// </summary>
         [SerializeField]
         private Vector3ArrayProperty positions = new Vector3ArrayProperty();
 
+        /// <summary>
+        /// Groups of indices of the Positions array which form sequences.
+        /// </summary>
         [SerializeField]
         private SelectionArrayProperty sequences = new SelectionArrayProperty();
 
-
+        /// <summary>
+        /// Set of normals, for each vertex for each sequence.
+        /// </summary>
         private Vector3ArrayProperty normals = new Vector3ArrayProperty();
 
+        /// <summary>
+        /// Set of tangents, for each vertex for each sequence.
+        /// </summary>
         private Vector3ArrayProperty tangents = new Vector3ArrayProperty();
 
+        /// <summary>
+        /// Factor which decides the weighting of the tangents.
+        /// </summary>
         [SerializeField]
         private FloatProperty shape = new FloatProperty
         {
             Value = 1f
         };
 
-        public void CalculatePositions(IReadOnlyList<int> sequence,
-                                       IReadOnlyList<Vector3> positions,
-                                       int offset,
-                                       ref Vector3[] normals,
-                                       ref Vector3[] tangents,
-                                       float shape)
+        /// <summary>
+        /// Calculate the normals and tangents for a certain sequence.
+        /// </summary>
+        /// <param name="sequence">A sequence of indices for the position arrays.</param>
+        /// <param name="positions">A set of positions.</param>
+        /// <param name="offset">The offset of this sequence in the total vertex array.</param>
+        /// <param name="normals">The array of normals to be partially filled for this sequence.</param>
+        /// <param name="tangents">The array of tangents to be partially filled for this sequence.</param>
+        /// <param name="shape">A factor to distort the tangents by.</param>
+        private static void CalculateNormalsAndTangents(IReadOnlyList<int> sequence,
+                                                        IReadOnlyList<Vector3> positions,
+                                                        int offset,
+                                                        ref Vector3[] normals,
+                                                        ref Vector3[] tangents,
+                                                        float shape)
         {
             var count = sequence.Count;
 
@@ -43,16 +66,9 @@ namespace Narupa.Visualisation.Node.Calculator
                 tangents[offset + j] =
                     shape * (positions[sequence[j + 1]] - positions[sequence[j - 1]]);
 
+            // Initial and final tangents
             tangents[offset] = tangents[offset + 1];
             tangents[offset + count - 1] = tangents[offset + count - 2];
-/*
-            // Set the first and last tangents
-            tangents[offset] =
-                2 * Vector3.Dot(tangents[offset + 1], tangents[offset + 2]) * tangents[offset + 1] -
-                tangents[offset + 2];
-            tangents[offset + count - 1] =
-                2 * tangents[offset + count - 2] - tangents[offset + count - 3];
-                */
 
             // Compute normals by rejection of second derivative of curve from tangent
             for (var i = 1; i < count - 2; i++)
@@ -82,14 +98,17 @@ namespace Narupa.Visualisation.Node.Calculator
             normals[offset] = (2 * normals[offset + 1] - normals[offset + 2]).normalized;
         }
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => sequences.HasNonNullValue()
                                              && positions.HasNonNullValue()
                                              && shape.HasNonNullValue();
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => sequences.IsDirty
                                              || positions.IsDirty
                                              || shape.IsDirty;
 
+        /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
             sequences.IsDirty = false;
@@ -97,17 +116,14 @@ namespace Narupa.Visualisation.Node.Calculator
             shape.IsDirty = false;
         }
 
+        /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
             if (sequences.IsDirty)
             {
-                var totalCount = sequences.Value.Sum(a => a.Count);
-                var normals = this.normals.HasValue ? this.normals.Value : new Vector3[0];
-                var tangents = this.tangents.HasValue ? this.tangents.Value : new Vector3[0];
-                Array.Resize(ref normals, totalCount);
-                Array.Resize(ref tangents, totalCount);
-                this.normals.Value = normals;
-                this.tangents.Value = tangents;
+                var vertexCount = sequences.Value.Sum(a => a.Count);
+                normals.Resize(vertexCount);
+                tangents.Resize(vertexCount);
                 positions.IsDirty = true;
             }
 
@@ -118,17 +134,21 @@ namespace Narupa.Visualisation.Node.Calculator
                 var tangents = this.tangents.Value;
                 foreach (var sequence in sequences.Value)
                 {
-                    CalculatePositions(sequence,
-                                       positions.Value,
-                                       offset,
-                                       ref normals,
-                                       ref tangents,
-                                       shape);
+                    CalculateNormalsAndTangents(sequence,
+                                                positions.Value,
+                                                offset,
+                                                ref normals,
+                                                ref tangents,
+                                                shape);
                     offset += sequence.Count - 1;
                 }
+
+                this.normals.Value = normals;
+                this.tangents.Value = tangents;
             }
         }
 
+        /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
         protected override void ClearOutput()
         {
             normals.UndefineValue();

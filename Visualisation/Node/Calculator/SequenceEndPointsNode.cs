@@ -5,23 +5,36 @@ using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Calculator
 {
+    /// <summary>
+    /// Get the indices of the end points of a set of sequences.
+    /// </summary>
     [Serializable]
     public class SequenceEndPointsNode : GenericOutputNode
     {
+        /// <summary>
+        /// A set of sequences.
+        /// </summary>
         [SerializeField]
         private SelectionArrayProperty sequences = new SelectionArrayProperty();
 
-        private IntArrayProperty filters = new IntArrayProperty();
+        /// <summary>
+        /// The indices of the start and end of each sequence.
+        /// </summary>
+        private readonly IntArrayProperty filters = new IntArrayProperty();
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => sequences.HasValue;
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => sequences.IsDirty;
 
+        /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
             sequences.IsDirty = false;
         }
 
+        /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
             var list = new List<int>();
@@ -35,6 +48,7 @@ namespace Narupa.Visualisation.Node.Calculator
             filters.Value = list.ToArray();
         }
 
+        /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
         protected override void ClearOutput()
         {
             filters.UndefineValue();

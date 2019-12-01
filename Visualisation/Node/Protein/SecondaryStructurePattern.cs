@@ -1,7 +1,10 @@
 using System;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Protein
 {
+    /// <summary>
+    /// Patterns that occur in protein secondary structure.
+    /// </summary>
     [Flags]
     public enum SecondaryStructurePattern
     {

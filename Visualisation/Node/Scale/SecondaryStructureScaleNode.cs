@@ -1,5 +1,6 @@
 using System;
 using Narupa.Visualisation.Node.Calculator;
+using Narupa.Visualisation.Node.Protein;
 using Narupa.Visualisation.Node.Scale;
 using Narupa.Visualisation.Property;
 using UnityEngine;

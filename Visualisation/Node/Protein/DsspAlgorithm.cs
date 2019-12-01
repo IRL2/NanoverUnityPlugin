@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Protein
 {
     public class DsspAlgorithm
     {
@@ -12,16 +12,16 @@ namespace Narupa.Visualisation.Node.Calculator
         /// <param name="atomResidues"></param>
         /// <param name="atomNames"></param>
         /// <returns></returns>
-        public static ProteinResidueData[] GetResidueData(IReadOnlyCollection<int> aminoAcidResidues,
+        public static SecondaryStructureResidueData[] GetResidueData(IReadOnlyCollection<int> aminoAcidResidues,
                                                    int[] atomResidues,
                                                    string[] atomNames)
         {
-            var list = new ProteinResidueData[aminoAcidResidues.Count];
+            var list = new SecondaryStructureResidueData[aminoAcidResidues.Count];
             var residueIndexToOrdinal = new Dictionary<int, int>();
             var resDataIndex = 0;
             foreach (var resIndex in aminoAcidResidues)
             {
-                var data = new ProteinResidueData
+                var data = new SecondaryStructureResidueData
                 {
                     ResidueIndex = resIndex,
                     AlphaCarbonIndex = -1,
@@ -66,7 +66,7 @@ namespace Narupa.Visualisation.Node.Calculator
         }
 
         public static void UpdateResidueAtomPositions(Vector3[] atomPositions,
-                                                      IList<ProteinResidueData> residues)
+                                                      IList<SecondaryStructureResidueData> residues)
         {
             foreach (var residue in residues)
             {
@@ -100,7 +100,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void Initialise(IEnumerable<ProteinResidueData> residues)
+        private static void Initialise(IEnumerable<SecondaryStructureResidueData> residues)
         {
             foreach (var residue in residues)
             {
@@ -113,8 +113,8 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static bool IsBonded(ProteinResidueData res1,
-                                     ProteinResidueData res2,
+        private static bool IsBonded(SecondaryStructureResidueData res1,
+                                     SecondaryStructureResidueData res2,
                                      float cutoff,
                                      out float energy)
         {
@@ -127,7 +127,7 @@ namespace Narupa.Visualisation.Node.Calculator
         }
 
 
-        public static void CalculateSecondaryStructure(IReadOnlyList<ProteinResidueData> residues,
+        public static void CalculateSecondaryStructure(IReadOnlyList<SecondaryStructureResidueData> residues,
                                                        DsspOptions options)
         {
             Initialise(residues);
@@ -195,7 +195,7 @@ namespace Narupa.Visualisation.Node.Calculator
             */
         }
 
-        private static void ExpandSheets(IReadOnlyList<ProteinResidueData> residues)
+        private static void ExpandSheets(IReadOnlyList<SecondaryStructureResidueData> residues)
         {
             var ids = new List<int>();
             for (var i = 0; i < residues.Count; i++)
@@ -215,7 +215,7 @@ namespace Narupa.Visualisation.Node.Calculator
                 residues[i].SecondaryStructure = SecondaryStructureAssignment.Sheet;
         }
 
-        private static void AssignBetaSheets(IReadOnlyList<ProteinResidueData> residues)
+        private static void AssignBetaSheets(IReadOnlyList<SecondaryStructureResidueData> residues)
         {
             foreach (var residue in residues)
             {
@@ -227,7 +227,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void IdentifyParallelBridges(IReadOnlyList<ProteinResidueData> residues)
+        private static void IdentifyParallelBridges(IReadOnlyList<SecondaryStructureResidueData> residues)
         {
 // Parallel Bridge
             // n---c   n---c   res-1   n---c   n---c   ---->
@@ -270,7 +270,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void IdentifyAntiparallelBridges(IReadOnlyList<ProteinResidueData> residues)
+        private static void IdentifyAntiparallelBridges(IReadOnlyList<SecondaryStructureResidueData> residues)
         {
             // Antiparrallel Bridge
             // c---n   c---n   res-1   c---n
@@ -316,7 +316,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void IdentifyTurns(IReadOnlyList<ProteinResidueData> residues)
+        private static void IdentifyTurns(IReadOnlyList<SecondaryStructureResidueData> residues)
         {
             foreach (var residue in residues)
             {
@@ -340,7 +340,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void CalculateHydrogenBonds(IReadOnlyList<ProteinResidueData> residues,
+        private static void CalculateHydrogenBonds(IReadOnlyList<SecondaryStructureResidueData> residues,
                                                    DsspOptions options)
         {
             for (var i = 0; i < residues.Count - 3; i++)
@@ -379,7 +379,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void AssignHelix(IReadOnlyList<ProteinResidueData> residues,
+        private static void AssignHelix(IReadOnlyList<SecondaryStructureResidueData> residues,
                                         SecondaryStructurePattern pattern,
                                         int length,
                                         SecondaryStructureAssignment assignment)
@@ -398,7 +398,7 @@ namespace Narupa.Visualisation.Node.Calculator
             }
         }
 
-        private static void CheckSingleTurn(IReadOnlyList<ProteinResidueData> residues,
+        private static void CheckSingleTurn(IReadOnlyList<SecondaryStructureResidueData> residues,
                                             int turnLength,
                                             SecondaryStructurePattern pattern)
         {

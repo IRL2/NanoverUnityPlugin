@@ -1,11 +1,10 @@
-using Narupa.Visualisation.Node.Calculator;
+using Narupa.Visualisation.Node.Protein;
 
 namespace Narupa.Visualisation.Components.Calculator
 {
     /// <inheritdoc cref="SecondaryStructureNode" />
     public class
-        SecondaryStructureCalculator : VisualisationComponent<
-            Node.Calculator.SecondaryStructureNode>
+        SecondaryStructureCalculator : VisualisationComponent<SecondaryStructureNode>
     {
         private void Update()
         {

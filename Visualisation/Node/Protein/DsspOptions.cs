@@ -1,6 +1,6 @@
 using System;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Protein
 {
     [Serializable]
     public class DsspOptions

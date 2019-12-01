@@ -5,40 +5,62 @@ using Narupa.Core.Science;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Protein
 {
     /// <summary>
-    /// Calculate sequences of polypeptides.
+    /// Calculates sequences of subsequent residues in entities which are standard
+    /// amino acids, hence forming polypeptide chains.
     /// </summary>
     [Serializable]
     public class PolypeptideSequenceNode : GenericOutputNode
     {
+        /// <summary>
+        /// The name of each atom.
+        /// </summary>
         [SerializeField]
         private StringArrayProperty atomNames = new StringArrayProperty();
 
+        /// <summary>
+        /// The residue index for each atom.
+        /// </summary>
         [SerializeField]
         private IntArrayProperty atomResidues = new IntArrayProperty();
 
+        /// <summary>
+        /// The name of each residue.
+        /// </summary>
         [SerializeField]
         private StringArrayProperty residueNames = new StringArrayProperty();
 
+        /// <summary>
+        /// The entity (chain) index for each residue.
+        /// </summary>
         [SerializeField]
         private IntArrayProperty residueEntities = new IntArrayProperty();
 
-        private SelectionArrayProperty residueSequences = new SelectionArrayProperty();
+        /// <summary>
+        /// A set of sequences of residue indices that form polypeptide chains.
+        /// </summary>
+        private readonly SelectionArrayProperty residueSequences = new SelectionArrayProperty();
 
-        private SelectionArrayProperty alphaCarbonSequences = new SelectionArrayProperty();
+        /// <summary>
+        /// A set of sequences of alpha carbon atom indices that form polypeptide chains.
+        /// </summary>
+        private readonly SelectionArrayProperty alphaCarbonSequences = new SelectionArrayProperty();
 
+        /// <inheritdoc cref="IsInputValid" />
         protected override bool IsInputValid => atomNames.HasNonNullValue()
                                              && atomResidues.HasNonNullValue()
                                              && residueNames.HasNonNullValue()
                                              && residueEntities.HasNonNullValue();
 
+        /// <inheritdoc cref="IsInputDirty" />
         protected override bool IsInputDirty => atomNames.IsDirty
                                              || atomResidues.IsDirty
                                              || residueNames.IsDirty
                                              || residueEntities.IsDirty;
 
+        /// <inheritdoc cref="ClearDirty" />
         protected override void ClearDirty()
         {
             atomNames.IsDirty = false;
@@ -47,6 +69,7 @@ namespace Narupa.Visualisation.Node.Calculator
             residueEntities.IsDirty = false;
         }
 
+        /// <inheritdoc cref="UpdateOutput" />
         protected override void UpdateOutput()
         {
             var residueSequences = new List<List<int>>();
@@ -90,6 +113,7 @@ namespace Narupa.Visualisation.Node.Calculator
             this.alphaCarbonSequences.Value = alphaCarbonSequences.ToArray();
         }
 
+        /// <inheritdoc cref="ClearOutput" />
         protected override void ClearOutput()
         {
             residueSequences.UndefineValue();

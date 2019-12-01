@@ -1,5 +1,5 @@
 using System;
-using Narupa.Visualisation.Node.Calculator;
+using Narupa.Visualisation.Node.Protein;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
@@ -30,7 +30,6 @@ namespace Narupa.Visualisation.Node.Color
             }
         }
 
-        
         protected override bool IsInputValid => secondaryStructure.HasNonEmptyValue();
 
         protected override bool IsInputDirty => secondaryStructure.IsDirty;
