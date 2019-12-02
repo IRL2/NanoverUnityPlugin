@@ -13,7 +13,7 @@ namespace Narupa.Visualisation.Node.Calculator
             Value = 1f
         };
 
-        private float Delta => speed * Time.deltaTime;
+        private float Delta =>  Application.isPlaying ? speed * Time.deltaTime : 999f;
 
         protected override float MoveTowards(float current, float target)
         {

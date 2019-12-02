@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: 8528582866378757811}
   - component: {fileID: 2897208762533532538}
-  - component: {fileID: 6196488865804266995}
+  - component: {fileID: 9208646084436513632}
   - component: {fileID: -6565323684484814944}
   - component: {fileID: 6145737467505705525}
   - component: {fileID: 8577228073649322336}
@@ -98,7 +98,7 @@ MonoBehaviour:
     residueEntities:
       isValueProvided: 0
       value: 
---- !u!114 &6196488865804266995
+--- !u!114 &9208646084436513632
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08252f6767724dc9b9e53b5debd36295, type: 3}
+  m_Script: {fileID: 11500000, guid: 608a31812ce24b748a8ee9a1bd3099ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
@@ -115,14 +115,26 @@ MonoBehaviour:
     sourceFieldName: particle.positions
     destinationFieldName: positions
   - sourceComponent: {fileID: 2897208762533532538}
-    sourceFieldName: alphaCarbonSequences
-    destinationFieldName: sequences
+    sourceFieldName: residueSequences
+    destinationFieldName: residueSequences
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particle.names
+    destinationFieldName: atomNames
+  - sourceComponent: {fileID: 8528582866378757811}
+    sourceFieldName: particle.residues
+    destinationFieldName: atomResidues
   node:
     positions:
       isValueProvided: 0
       value: []
-    sequences:
+    residueSequences:
       isValueProvided: 0
+    atomNames:
+      isValueProvided: 0
+      value: []
+    atomResidues:
+      isValueProvided: 0
+      value: 
     shape:
       isValueProvided: 1
       value: 0.5
@@ -139,10 +151,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 6196488865804266995}
+  - sourceComponent: {fileID: 9208646084436513632}
     sourceFieldName: tangents
     destinationFieldName: tangents
-  - sourceComponent: {fileID: 6196488865804266995}
+  - sourceComponent: {fileID: 9208646084436513632}
     sourceFieldName: normals
     destinationFieldName: normals
   - sourceComponent: {fileID: 8528582866378757811}
