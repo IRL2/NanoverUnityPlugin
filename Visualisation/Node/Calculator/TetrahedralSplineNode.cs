@@ -78,7 +78,7 @@ namespace Narupa.Visualisation.Node.Calculator
 
         protected override void UpdateOutput()
         {
-            if (sequences.IsDirty)
+            if (sequences.IsDirty || !outputPositions.HasValue)
             {
                 var pointCount = sequences.Value.Sum(i => i.Count);
                 var segmentCount = sequences.Value.Sum(i => i.Count - 1);
