@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 8104062346923893133}
   - component: {fileID: 3436708010093099819}
   - component: {fileID: 1509662758732999331}
+  - component: {fileID: 7098531608051604538}
+  - component: {fileID: 1580624187319160679}
   m_Layer: 0
   m_Name: Tetrahedral Spline
   m_TagString: Untagged
@@ -149,11 +151,11 @@ MonoBehaviour:
   - sourceComponent: {fileID: 2897208762533532538}
     sourceFieldName: alphaCarbonSequences
     destinationFieldName: sequences
-  - sourceComponent: {fileID: 8104062346923893133}
-    sourceFieldName: colors
+  - sourceComponent: {fileID: 1580624187319160679}
+    sourceFieldName: output
     destinationFieldName: colors
-  - sourceComponent: {fileID: 1509662758732999331}
-    sourceFieldName: scales
+  - sourceComponent: {fileID: 7098531608051604538}
+    sourceFieldName: output
     destinationFieldName: scales
   node:
     sequences:
@@ -453,3 +455,49 @@ MonoBehaviour:
     helixRadius: 0.5
     turnRadius: 0.5
     sheetRadius: 0.5
+--- !u!114 &7098531608051604538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c39c5466bf374574ba65cdd14d56567f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 1509662758732999331}
+    sourceFieldName: scales
+    destinationFieldName: input
+  node:
+    input:
+      isValueProvided: 0
+      value: []
+    speed:
+      isValueProvided: 1
+      value: 0.2
+--- !u!114 &1580624187319160679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6aabe9a3ae74eb7b13d59f864c4b9a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 8104062346923893133}
+    sourceFieldName: colors
+    destinationFieldName: input
+  node:
+    input:
+      isValueProvided: 0
+      value: []
+    speed:
+      isValueProvided: 1
+      value: 0.2
