@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Spline
 {
     /// <summary>
     /// Get the indices of the end points of a set of sequences.

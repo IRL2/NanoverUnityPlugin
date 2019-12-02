@@ -10,6 +10,7 @@ using Narupa.Visualisation.Components.Adaptor;
 using Narupa.Visualisation.Node.Calculator;
 using Narupa.Visualisation.Node.Color;
 using Narupa.Visualisation.Node.Protein;
+using Narupa.Visualisation.Node.Spline;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Property

@@ -4,7 +4,7 @@ using Narupa.Frame;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Spline
 {
     [Serializable]
     public class TetrahedralSplineNode : GenericOutputNode

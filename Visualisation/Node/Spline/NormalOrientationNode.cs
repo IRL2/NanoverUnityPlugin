@@ -2,7 +2,7 @@ using System;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Narupa.Visualisation.Node.Spline
 {
     /// <summary>
     /// Rotates normals so within each sequence, the normals only rotate by up to 90 degrees.
