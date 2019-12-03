@@ -54,6 +54,8 @@ namespace Narupa.Grpc
         public static Dictionary<string, object> ToDictionary(this Struct value)
         {
             var list = new Dictionary<string, object>();
+            if (value == null)
+                return list;
             foreach (var item in value.Fields)
             {
                 list.Add(item.Key, item.Value.ToObject());

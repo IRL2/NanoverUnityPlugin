@@ -104,5 +104,7 @@ namespace Narupa.Grpc.Trajectory
         {
             trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandStep);
         }
+
+        public TrajectoryClient Client => trajectoryClient;
     }
 }

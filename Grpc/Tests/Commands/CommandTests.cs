@@ -72,7 +72,7 @@ namespace Narupa.Grpc.Tests.Commands
             callback.Received(1)
                     .Invoke(TrajectoryClient.CommandPlay, Arg.Any<Struct>());
         }
-        
+
         [AsyncTest]
         public async Task CommandPause()
         {
@@ -87,7 +87,7 @@ namespace Narupa.Grpc.Tests.Commands
             callback.Received(1)
                     .Invoke(TrajectoryClient.CommandPause, Arg.Any<Struct>());
         }
-        
+
         [AsyncTest]
         public async Task CommandReset()
         {
@@ -102,7 +102,7 @@ namespace Narupa.Grpc.Tests.Commands
             callback.Received(1)
                     .Invoke(TrajectoryClient.CommandReset, Arg.Any<Struct>());
         }
-        
+
         [AsyncTest]
         public async Task CommandStep()
         {
@@ -116,6 +116,26 @@ namespace Narupa.Grpc.Tests.Commands
 
             callback.Received(1)
                     .Invoke(TrajectoryClient.CommandStep, Arg.Any<Struct>());
+        }
+
+        [AsyncTest]
+        public async Task ArbitraryCommand()
+        {
+            var callback = Substitute.For<Action<string, Struct>>();
+
+            server.Commands.RecievedCommand += callback;
+
+            await session.Client.RunCommandAsync("some_command",
+                                                 new Dictionary<string, object>()
+                                                 {
+                                                     ["abc"] = 1.23,
+                                                     ["xyz"] = "string"
+                                                 });
+
+            callback.Received(1)
+                    .Invoke("some_command",
+                            Arg.Is<Struct>(s => s.Fields["abc"].NumberValue == 1.23
+                                             && s.Fields["xyz"].StringValue == "string"));
         }
     }
 }
