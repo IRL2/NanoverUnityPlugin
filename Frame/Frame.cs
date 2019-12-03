@@ -156,13 +156,9 @@ namespace Narupa.Frame
         /// </summary>
         public static Frame ShallowCopy([NotNull] Frame originalFrame)
         {
-            var copiedFrame = new Frame
-            {
-                ParticlePositions = originalFrame.ParticlePositions,
-                ParticleTypes = originalFrame.ParticleTypes,
-                ParticleElements = originalFrame.ParticleElements,
-                BondPairs = originalFrame.BondPairs
-            };
+            var copiedFrame = new Frame();
+            foreach(var (key, value) in originalFrame.Data)
+                copiedFrame.Data[key] = value;
             return copiedFrame;
         }
     }
