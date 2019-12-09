@@ -20,6 +20,8 @@ namespace Narupa.Grpc.Tests.Multiplayer
         private MultiplayerSession session2;
         private GrpcConnection connection2;
 
+        private const int DelayMilliseconds = 100;
+
         [SetUp]
         public void AsyncSetup()
         {
@@ -75,7 +77,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
         public async Task ValueChanged_ClientGetsUpdate()
         {
             service.Resources["abc"] = 1.2;
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
             CollectionAssert.Contains(session.SharedStateDictionary.Keys, "abc");
         }
 
@@ -86,7 +88,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             session.SharedStateDictionaryKeyUpdated += callback;
 
             service.Resources["abc"] = 1.2;
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
             callback.Received(1).Invoke(Arg.Is("abc"));
         }
 
@@ -96,7 +98,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var value = session.GetSharedResource("abc");
             service.Resources["abc"] = 1.2;
 
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
 
             Assert.AreEqual(1.2, value.Value);
         }
@@ -109,7 +111,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             value.ValueChanged += callback;
             service.Resources["abc"] = 1.2;
 
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
 
             Assert.AreEqual(1.2, value.Value);
 
@@ -123,7 +125,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             value.ObtainLock();
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value.LockState);
 
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
 
             Assert.AreEqual(MultiplayerResourceLockState.Locked, value.LockState);
             Assert.IsTrue(service.Locks.TryGetValue("abc", out var v)
@@ -136,7 +138,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var value2 = session2.GetSharedResource("abc");
             value2.ObtainLock();
             
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
             
             Assert.IsTrue(service.Locks.TryGetValue("abc", out var v1)
                        && v1.Equals(session2.PlayerId));
@@ -146,7 +148,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value1.LockState);
 
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
 
             Assert.AreEqual(MultiplayerResourceLockState.Unlocked, value1.LockState);
             Assert.IsTrue(service.Locks.TryGetValue("abc", out var v2)
@@ -159,7 +161,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var value2 = session2.GetSharedResource("abc");
             value2.ObtainLock();
             
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
             
             Assert.IsTrue(service.Locks.TryGetValue("abc", out var v1)
                        && v1.Equals(session2.PlayerId));
@@ -169,7 +171,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value1.LockState);
 
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
 
             Assert.AreEqual(MultiplayerResourceLockState.Unlocked, value1.LockState);
             Assert.IsTrue(service.Locks.TryGetValue("abc", out var v2)
@@ -177,14 +179,14 @@ namespace Narupa.Grpc.Tests.Multiplayer
             
             value2.ReleaseLock();
             
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
             
             CollectionAssert.IsEmpty(service.Locks);
             
             value1.ObtainLock();
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value1.LockState);
 
-            await Task.Delay(10);
+            await Task.Delay(DelayMilliseconds);
 
             Assert.AreEqual(MultiplayerResourceLockState.Locked, value1.LockState);
             Assert.IsTrue(service.Locks.TryGetValue("abc", out var v3)
