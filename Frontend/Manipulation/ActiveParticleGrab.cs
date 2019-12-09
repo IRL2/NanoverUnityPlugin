@@ -13,16 +13,34 @@ namespace Narupa.Frontend.Manipulation
     // issue #74
     public class ActiveParticleGrab : IActiveManipulation
     {
+        /// <inheritdoc cref="IActiveManipulation.ManipulationEnded"/>
         public event Action ManipulationEnded;
 
+        /// <summary>
+        /// A unique identifier for this interaction.
+        /// </summary>
         public string Id { get; }
+        
+        /// <summary>
+        /// The set of particle indices involved in this interaction.
+        /// </summary>
         public IReadOnlyList<int> ParticleIndices => particleIndices;
 
         private readonly List<int> particleIndices = new List<int>();
+        
+        /// <summary>
+        /// The position of the manipulator.
+        /// </summary>
         public Vector3 GrabPosition { get; private set; }
 
+        /// <summary>
+        /// A set of properties associated with this manipulation.
+        /// </summary>
         public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 
+        /// <summary>
+        /// Callback for when the grab position is updated.
+        /// </summary>
         public event Action ParticleGrabUpdated;
 
         public ActiveParticleGrab(IEnumerable<int> particleIndices)
