@@ -13,6 +13,11 @@ namespace Narupa.Grpc.Multiplayer
     public class MultiplayerResource<TValue>
     {
         /// <summary>
+        /// Is the current value a local value that is pending being sent to the server.
+        /// </summary>
+        private bool localValuePending = false;
+        
+        /// <summary>
         /// Create a multiplayer resource.
         /// </summary>
         /// <param name="session">The multiplayer session that will provide this value.</param>
@@ -65,64 +70,50 @@ namespace Narupa.Grpc.Multiplayer
         /// <summary>
         /// Callback for when the shared value is changed.
         /// </summary>
-        public Action SharedValueChanged;
+        public event Action RemoteValueChanged;
 
         /// <summary>
         /// Callback for when the value is changed, either remotely or locally.
         /// </summary>
-        public Action ValueChanged;
+        public event Action ValueChanged;
 
         /// <summary>
         /// Callback for when a lock request is accepted.
         /// </summary>
-        public Action LockAccepted;
+        public event Action LockAccepted;
 
         /// <summary>
         /// Callback for when a lock request is rejected.
         /// </summary>
-        public Action LockRejected;
+        public event Action LockRejected;
 
         /// <summary>
         /// Callback for when a lock is released.
         /// </summary>
-        public Action LockReleased;
+        public event Action LockReleased;
 
         private void SharedStateDictionaryKeyUpdated(string key)
         {
             if (key == ResourceKey)
             {
-                UpdateValueFromMultiplayer();
-                SharedValueChanged?.Invoke();
+                CopyRemoteValueToLocal();
+                RemoteValueChanged?.Invoke();
             }
         }
 
-        private TValue GetValueFromMultiplayer()
+        private TValue GetRemoteValue()
         {
-            var obj = session.GetSharedState(ResourceKey);
-            if (objectToValue != null)
-                return objectToValue(obj);
-            if (obj is TValue v)
-                return v;
-            return default;
+            return ObjectToValue(session.GetSharedState(ResourceKey));
         }
 
         /// <summary>
         /// Copy the locally set version of this value to the multiplayer service.
         /// </summary>
-        private void UpdateMultiplayerValue()
+        private void CopyLocalValueToRemote()
         {
             session.SetSharedState(ResourceKey, ValueToObject(value));
         }
-
-        /// <summary>
-        /// Copy the remote value to this value.
-        /// </summary>
-        private void UpdateValueFromMultiplayer()
-        {
-            value = GetValueFromMultiplayer();
-            ValueChanged?.Invoke();
-        }
-
+        
         private TValue value;
 
         /// <summary>
@@ -156,7 +147,7 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         public void ReleaseLock()
         {
-            UpdateValueFromMultiplayer();
+            CopyRemoteValueToLocal();
             ReleaseLockAsync().AwaitInBackground();
         }
 
@@ -168,23 +159,35 @@ namespace Narupa.Grpc.Multiplayer
                             ? MultiplayerResourceLockState.Locked
                             : MultiplayerResourceLockState.Unlocked;
             if (success)
-            {
-                LockAccepted?.Invoke();
-            }
+                OnLockAccepted();
             else
+                OnLockRejected();
+        }
+
+        private void OnLockAccepted()
+        {
+            if (localValuePending)
             {
-                // Revert to remote value.
-                UpdateValueFromMultiplayer();
-                LockRejected?.Invoke();
+                localValuePending = false;
+                CopyLocalValueToRemote();
             }
+            LockAccepted?.Invoke();
+        }
+
+        private void OnLockRejected()
+        {
+            localValuePending = false;
+            CopyRemoteValueToLocal();
+            LockRejected?.Invoke();
         }
 
         private async Task ReleaseLockAsync()
         {
             if (LockState != MultiplayerResourceLockState.Unlocked)
             {
+                localValuePending = false;
                 LockState = MultiplayerResourceLockState.Unlocked;
-                UpdateValueFromMultiplayer();
+                CopyRemoteValueToLocal();
                 LockReleased?.Invoke();
                 await session.ReleaseResource(ResourceKey);
             }
@@ -197,8 +200,7 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         public void UpdateValueWithLock(TValue value)
         {
-            this.value = value;
-            ValueChanged?.Invoke();
+            SetLocalValue(value);
             switch (LockState)
             {
                 case MultiplayerResourceLockState.Unlocked:
@@ -207,19 +209,29 @@ namespace Narupa.Grpc.Multiplayer
                 case MultiplayerResourceLockState.Pending:
                     return;
                 case MultiplayerResourceLockState.Locked:
-                    UpdateMultiplayerValue();
+                    CopyLocalValueToRemote();
                     return;
             }
         }
 
-        /// <summary>
-        /// Set the value of this resource, disregarding the state of any lock.
-        /// </summary>
-        public void UpdateValueWithoutLock(TValue value)
+        private void SetLocalValue(TValue value)
         {
             this.value = value;
+            localValuePending = true;
             ValueChanged?.Invoke();
-            UpdateMultiplayerValue();
         }
+        
+        /// <summary>
+        /// Copy the remote value to this value.
+        /// </summary>
+        private void CopyRemoteValueToLocal()
+        {
+            if (!localValuePending)
+            {
+                value = GetRemoteValue();
+                ValueChanged?.Invoke();
+            }
+        }
+
     }
 }
