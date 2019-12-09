@@ -10,6 +10,7 @@ using UnityEngine;
 
 using Avatar = Narupa.Multiplayer.Avatar;
 using System.Linq;
+using Grpc.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
 using Narupa.Grpc;
@@ -156,19 +157,33 @@ namespace Narupa.Session
 
             PlayerName = playerName;
             PlayerId = response.PlayerId;
-
-            OutgoingAvatar = client.PublishAvatar(PlayerId);
-            IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f,
-                                                      ignorePlayerId: PlayerId);
-
-            IncomingAvatars.MessageReceived += OnAvatarReceived;
-
-            OutgoingAvatar.StartSending().AwaitInBackgroundIgnoreCancellation();
-            IncomingAvatars.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+            
+            StartAvatars();
 
             IncomingValueUpdates = client.SubscribeAllResourceValues();
             IncomingValueUpdates.MessageReceived += OnResourceValuesUpdateReceived;
             IncomingValueUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+        }
+
+        public void StartAvatars()
+        {
+            try
+            {
+
+                OutgoingAvatar = client.PublishAvatar(PlayerId);
+                IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f,
+                                                          ignorePlayerId: PlayerId);
+
+                IncomingAvatars.MessageReceived += OnAvatarReceived;
+
+                OutgoingAvatar.StartSending().AwaitInBackgroundIgnoreCancellation();
+                IncomingAvatars.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+
+            }
+            catch (RpcException e)
+            {
+                
+            }
         }
 
         /// <summary>
@@ -391,6 +406,11 @@ namespace Narupa.Session
             }
 
             throw new ArgumentOutOfRangeException();
+        }
+
+        public MultiplayerResource<object> GetSharedResource(string key)
+        {
+            return new MultiplayerResource<object>(this, key);
         }
     }
 

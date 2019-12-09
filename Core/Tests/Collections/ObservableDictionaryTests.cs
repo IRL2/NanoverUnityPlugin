@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using Narupa.Core.Collections;
 using Narupa.Testing;
-using Narupa.Visualisation.Utility;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Narupa.Visualisation.Tests
+namespace Narupa.Core.Tests.Collections
 {
-    public class ObservableDictionaryTests
+    internal class ObservableDictionaryTests
     {
         [Test]
         public void DefaultConstructor_IsEmptyDictionary()
@@ -118,7 +118,7 @@ namespace Narupa.Visualisation.Tests
 
             dictionary.Clear();
 
-            HasHandlerReceived(handler, NotifyCollectionChangedAction.Reset);
+            HasHandlerReceived(handler, NotifyCollectionChangedAction.Remove);
         }
 
         [TestFixture]

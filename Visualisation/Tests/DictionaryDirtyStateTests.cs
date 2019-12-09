@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using Narupa.Visualisation.Utility;
 using NUnit.Framework;
+using Narupa.Core.Collections;
 
 namespace Narupa.Visualisation.Tests
 {
