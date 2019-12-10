@@ -14,7 +14,7 @@ namespace Narupa.Visualisation.Node.Color
     /// coloring.
     /// </summary>
     [CreateAssetMenu(menuName = "Definition/Element Color Mapping")]
-    public class ElementColorMapping : ScriptableObject, IMapping<Element, UnityEngine.Color>
+    public class ElementColorMapping : ScriptableObject, IConverter<Element, UnityEngine.Color>
     {
 #pragma warning disable 0649
         /// <summary>
@@ -36,7 +36,7 @@ namespace Narupa.Visualisation.Node.Color
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public UnityEngine.Color Map(Element element)
+        public UnityEngine.Color Convert(Element element)
         {
             var atomicNumber = (int) element;
             foreach (var item in dictionary)
