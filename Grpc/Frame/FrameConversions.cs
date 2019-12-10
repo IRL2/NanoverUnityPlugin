@@ -6,6 +6,7 @@ using Narupa.Core.Math;
 using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Protocol;
+using UnityEngine;
 
 namespace Narupa.Grpc.Frame
 {
@@ -75,9 +76,10 @@ namespace Narupa.Grpc.Frame
                 throw new ArgumentException(
                     "Incorrect number of floats to specify a linear transformation");
 
-            return new LinearTransformation(floatArray[0], floatArray[1], floatArray[2],
-                                            floatArray[3], floatArray[4], floatArray[5],
-                                            floatArray[6], floatArray[7], floatArray[8]);
+            return new LinearTransformation(
+                new Vector3(floatArray[0], floatArray[1], floatArray[2]),
+                new Vector3(floatArray[3], floatArray[4], floatArray[5]),
+                new Vector3(floatArray[6], floatArray[7], floatArray[8]));
         }
     }
 }
