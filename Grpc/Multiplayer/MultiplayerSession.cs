@@ -88,6 +88,11 @@ namespace Narupa.Session
         /// </summary>
         public int ValuePublishInterval { get; set; } = 1000 / 30;
 
+        /// <summary>
+        /// The interval at which avatar updates should be sent to this client.
+        /// </summary>
+        public const float AvatarUpdateInterval = 1f / 30f;
+
         private MultiplayerClient client;
 
         private OutgoingStream<Avatar, StreamEndedResponse> OutgoingAvatar { get; set; }
@@ -171,7 +176,7 @@ namespace Narupa.Session
             {
 
                 OutgoingAvatar = client.PublishAvatar(PlayerId);
-                IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f,
+                IncomingAvatars = client.SubscribeAvatars(updateInterval: AvatarUpdateInterval,
                                                           ignorePlayerId: PlayerId);
 
                 IncomingAvatars.MessageReceived += OnAvatarReceived;
