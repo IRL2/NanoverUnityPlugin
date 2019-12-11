@@ -22,7 +22,7 @@ namespace Narupa.Frontend.Tests
             var transform = new GameObject("Test Transform").transform;
             var manipulable = new ManipulableTransform(transform);
 
-            Assert.IsNotNull(manipulable.StartGrabManipulation(Transformation.Identity));
+            Assert.IsNotNull(manipulable.StartGrabManipulation(UnitScaleTransformation.identity));
         }
 
         [Test]
@@ -31,9 +31,9 @@ namespace Narupa.Frontend.Tests
             var transform = new GameObject("Test Transform").transform;
             var manipulable = new ManipulableTransform(transform);
 
-            var pose1 = Transformation.Identity;
-            var pose2 = Transformation.Identity;
-            pose2.Position += Vector3.right;
+            var pose1 = UnitScaleTransformation.identity;
+            var pose2 = UnitScaleTransformation.identity;
+            pose2.position += Vector3.right;
 
             manipulable.StartGrabManipulation(pose1);
 
@@ -46,11 +46,11 @@ namespace Narupa.Frontend.Tests
             var transform = new GameObject("Test Transform").transform;
             var manipulable = new ManipulableTransform(transform);
 
-            var pose1 = Transformation.Identity;
-            var pose2 = Transformation.Identity;
-            var pose3 = Transformation.Identity;
-            pose2.Position += Vector3.right;
-            pose3.Position += Vector3.up;
+            var pose1 = UnitScaleTransformation.identity;
+            var pose2 = UnitScaleTransformation.identity;
+            var pose3 = UnitScaleTransformation.identity;
+            pose2.position += Vector3.right;
+            pose3.position += Vector3.up;
 
             manipulable.StartGrabManipulation(pose1);
             manipulable.StartGrabManipulation(pose2);
@@ -64,11 +64,11 @@ namespace Narupa.Frontend.Tests
             var transform = new GameObject("Test Transform").transform;
             var manipulable = new ManipulableTransform(transform);
 
-            var pose1 = Transformation.Identity;
-            var pose2 = Transformation.Identity;
-            var pose3 = Transformation.Identity;
-            pose2.Position += Vector3.right;
-            pose3.Position += Vector3.up;
+            var pose1 = UnitScaleTransformation.identity;
+            var pose2 = UnitScaleTransformation.identity;
+            var pose3 = UnitScaleTransformation.identity;
+            pose2.position += Vector3.right;
+            pose3.position += Vector3.up;
 
             manipulable.StartGrabManipulation(pose1);
             var grab = manipulable.StartGrabManipulation(pose2);
@@ -90,7 +90,7 @@ namespace Narupa.Frontend.Tests
                 if (grabMore)
                 {
                     var pose = SpatialTestData.GetRandomTransformation();
-                    var grab = manipulable.StartGrabManipulation(pose);
+                    var grab = manipulable.StartGrabManipulation(pose.AsUnitTransformWithoutScale());
 
                     if (grab != null)
                     {

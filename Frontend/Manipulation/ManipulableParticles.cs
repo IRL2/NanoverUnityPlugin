@@ -42,13 +42,13 @@ namespace Narupa.Frontend.Manipulation
         /// of the given grabber. Return either the manipulation or null if there was
         /// nothing grabbable.
         /// </summary>
-        public IActiveManipulation StartParticleGrab(Transformation grabberPose)
+        public IActiveManipulation StartParticleGrab(UnitScaleTransformation grabberPose)
         {
             if (trajectorySession.CurrentFrame == null
              || trajectorySession.CurrentFrame.ParticlePositions.Length == 0)
                 return null;
 
-            uint particleIndex = GetNearestParticle(grabberPose.Position);
+            uint particleIndex = GetNearestParticle(grabberPose.position);
 
             return StartParticleGrab(grabberPose, particleIndex);
         }
@@ -57,7 +57,7 @@ namespace Narupa.Frontend.Manipulation
         /// Start a particle grab on a particular particle. Return either the
         /// manipulation or null if it could not be grabbed.
         /// </summary>
-        public IActiveManipulation StartParticleGrab(Transformation grabberPose,
+        public IActiveManipulation StartParticleGrab(UnitScaleTransformation grabberPose,
                                                      uint particleIndex)
         {
             var grab = new ActiveParticleGrab(this, particleIndex);
@@ -135,9 +135,9 @@ namespace Narupa.Frontend.Manipulation
             }
 
             /// <inheritdoc />
-            public void UpdateManipulatorPose(Transformation manipulatorPose)
+            public void UpdateManipulatorPose(UnitScaleTransformation manipulatorPose)
             {
-                GrabPosition = manipulatorPose.Position;
+                GrabPosition = manipulatorPose.position;
                 imdSimulator.OnParticleGrabUpdated(this);
             }
 

@@ -3,13 +3,14 @@ using UnityEngine;
 namespace Narupa.Core.Math
 {
     /// <summary>
-    /// A transformation consisting of a rotation followed by a translation.
+    /// A transformation consisting of a scaling by a uniform factor, a rotation and
+    /// then a translation.
     /// </summary>
     /// <remarks>
-    /// Also known as a Rigid Motion or a Proper Rigid Transformation. These
-    /// transformations preserve orientation, distances and angles.
+    /// <see cref="UniformScaleTransformation" />s are closed under composition
+    /// (combining two of them yields a third). These transformations preserve angles.
     /// </remarks>
-    public struct UnitScaleTransformation
+    public struct UniformScaleTransformation
     {
         #region Fields
 
@@ -27,20 +28,29 @@ namespace Narupa.Core.Math
         /// </summary>
         public Quaternion rotation;
 
+        /// <summary>
+        /// The uniform scaling this transformation applies. When considered as a
+        /// transformation from an object's local space to world space, describes the scale
+        /// of the object.
+        /// </summary>
+        public float scale;
+
         #endregion
 
 
         #region Constructors
 
         /// <summary>
-        /// Create a transformation from its two actions.
+        /// Create a transformation from its three actions.
         /// </summary>
         /// <param name="position">The translation this transformation applies.</param>
         /// <param name="rotation">The rotation this transformation applies.</param>
-        public UnitScaleTransformation(Vector3 position, Quaternion rotation)
+        /// <param name="scale">The scale this transformation applies.</param>
+        public UniformScaleTransformation(Vector3 position, Quaternion rotation, float scale)
         {
             this.position = position;
             this.rotation = rotation;
+            this.scale = scale;
         }
 
         #endregion
@@ -51,8 +61,8 @@ namespace Narupa.Core.Math
         /// <summary>
         /// The identity transformation.
         /// </summary>
-        public static UnitScaleTransformation identity =>
-            new UnitScaleTransformation(Vector3.zero, Quaternion.identity);
+        public static UniformScaleTransformation identity =>
+            new UniformScaleTransformation(Vector3.zero, Quaternion.identity, 1);
 
         #endregion
 
@@ -62,14 +72,15 @@ namespace Narupa.Core.Math
         /// <summary>
         /// The inverse of this transformation, which undoes this transformation.
         /// </summary>
-        public UnitScaleTransformation inverse
+        public UniformScaleTransformation inverse
         {
             get
             {
                 var inverseRotation = Quaternion.Inverse(rotation);
-                return new UnitScaleTransformation(
-                    inverseRotation * -position,
-                    inverseRotation);
+                return new UniformScaleTransformation(
+                    inverseRotation * (-(1f / scale) * position),
+                    inverseRotation,
+                    1 / scale);
             }
         }
 
@@ -82,7 +93,7 @@ namespace Narupa.Core.Math
         /// The 4x4 augmented matrix representing this transformation as it acts upon
         /// vectors and directions in homogeneous coordinates.
         /// </summary>
-        public Matrix4x4 matrix => Matrix4x4.TRS(position, rotation, Vector3.one);
+        public Matrix4x4 matrix => Matrix4x4.TRS(position, rotation, Vector3.one * scale);
 
         /// <summary>
         /// The 4x4 augmented matrix representing the inverse of this transformation as it
@@ -95,24 +106,16 @@ namespace Narupa.Core.Math
 
         #region Conversions
 
-        public static implicit operator Matrix4x4(UnitScaleTransformation transformation)
+        public static implicit operator Matrix4x4(UniformScaleTransformation transformation)
         {
             return transformation.matrix;
         }
 
-        public static implicit operator Transformation(UnitScaleTransformation transformation)
+        public static implicit operator Transformation(UniformScaleTransformation transformation)
         {
             return new Transformation(transformation.position,
                                       transformation.rotation,
-                                      Vector3.one);
-        }
-
-        public static implicit operator UniformScaleTransformation(
-            UnitScaleTransformation transformation)
-        {
-            return new UniformScaleTransformation(transformation.position,
-                                                  transformation.rotation,
-                                                  1);
+                                      transformation.scale * Vector3.one);
         }
 
         #endregion
@@ -120,19 +123,20 @@ namespace Narupa.Core.Math
 
         #region Multiplication
 
-        public static UnitScaleTransformation operator *(UnitScaleTransformation a,
-                                                         UnitScaleTransformation b)
+        public static UniformScaleTransformation operator *(UniformScaleTransformation a,
+                                                            UniformScaleTransformation b)
         {
-            return new UnitScaleTransformation(a.position + (a.rotation * b.position),
-                                               a.rotation * b.rotation);
+            return new UniformScaleTransformation(a.position + a.scale * (a.rotation * b.position),
+                                                  a.rotation * b.rotation,
+                                                  a.scale * b.scale);
         }
-
-        public static Transformation operator *(UnitScaleTransformation a,
-                                                         Transformation b)
+        
+        public static Transformation operator *(UniformScaleTransformation a,
+                                                Transformation b)
         {
-            return new Transformation(a.position + (a.rotation * b.Position),
-                                               a.rotation * b.Rotation,
-                                               b.Scale);
+            return new Transformation(a.position + a.scale * (a.rotation * b.Position),
+                                      a.rotation * b.Rotation,
+                                      a.scale * b.Scale);
         }
 
         #endregion
@@ -147,7 +151,7 @@ namespace Narupa.Core.Math
         /// </summary>
         public Vector3 TransformPoint(Vector3 pt)
         {
-            return rotation * pt + position;
+            return rotation * (scale * pt) + position;
         }
 
         /// <summary>
@@ -172,7 +176,7 @@ namespace Narupa.Core.Math
         /// </summary>
         public Vector3 TransformDirection(Vector3 direction)
         {
-            return rotation * direction;
+            return rotation * (scale * direction);
         }
 
         /// <summary>
@@ -183,6 +187,37 @@ namespace Narupa.Core.Math
         public Vector3 InverseTransformDirection(Vector3 pt)
         {
             return inverse.TransformDirection(pt);
+        }
+
+        #endregion
+        
+        
+        #region TransformPose
+
+        /// <summary>
+        /// Get the transformation matrix that takes this transformation to the one provided.
+        /// </summary>
+        public Transformation TransformationTo(Transformation to)
+        {
+            var inverseRotation = Quaternion.Inverse(rotation);
+            return new Transformation(inverseRotation * (to.Position - position) / scale,
+                                      inverseRotation * to.Rotation,
+                                      to.Scale / scale);
+        }
+
+        /// <summary>
+        /// Right multiply by the provided transformation matrix to give another.
+        /// </summary>
+        public Transformation TransformBy(Transformation trans)
+        {
+            return this * trans;
+        }
+        
+        public override string ToString()
+        {
+            var pos = position;
+            var rot = rotation.eulerAngles;
+            return $"UniformTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale})";
         }
 
         #endregion

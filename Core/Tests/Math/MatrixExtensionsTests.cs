@@ -76,8 +76,8 @@ namespace Narupa.Core.Tests.Math
             var child = new GameObject("Child").transform;
             child.SetParent(parent);
 
-            pair.Item1.CopyTrsToTransform(parent);
-            pair.Item2.CopyTrsToTransform(child);
+            pair.Item1.CopyTrsToTransformRelativeToWorld(parent);
+            pair.Item2.CopyTrsToTransformRelativeToWorld(child);
 
             Assert.That(child.localToWorldMatrix,
                         Is.EqualTo(pair.Item2)

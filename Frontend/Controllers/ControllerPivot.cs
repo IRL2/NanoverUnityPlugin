@@ -39,7 +39,7 @@ namespace Narupa.Frontend.Controllers
         {
             get
             {
-                var transformation = Transformation.FromTransform(transform);
+                var transformation = Transformation.FromTransformRelativeToWorld(transform);
                 transformation.Scale = Vector3.one * radius;
                 return transformation;
             }
