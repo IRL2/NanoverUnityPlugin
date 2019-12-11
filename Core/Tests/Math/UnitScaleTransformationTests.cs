@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Narupa.Core.Math;
+using Narupa.Testing;
 using NUnit.Framework;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
@@ -8,61 +10,52 @@ namespace Narupa.Core.Tests.Math
 {
     public class UnitScaleTransformationTests
     {
-        public static Quaternion GetRandomRotation()
-        {
-            return Random.rotationUniform;
-        }
-
-        public static Vector3 GetRandomPosition()
-        {
-            return Random.insideUnitSphere * 100f;
-        }
-
-        public static float GetRandomNonZeroScale()
-        {
-            return Random.value * 100f + 1e-6f * (Random.value > 0.5f ? 1f : -1f);
-        }
-
-        public static UnitScaleTransformation GetRandomTransformation()
-        {
-            return new UnitScaleTransformation(GetRandomPosition(),
-                                               GetRandomRotation());
-        }
+        private static readonly int TestCount = 128;
 
         public static IEnumerable<UnitScaleTransformation> GetTransformations()
         {
-            for (var i = 0; i < 128; i++)
-            {
-                yield return GetRandomTransformation();
-            }
+            return SpatialTestData.GetRandomTransformationsUnitScale(TestCount, 912487);
         }
 
         public static IEnumerable<(UnitScaleTransformation, UnitScaleTransformation)>
             GetTransformationPairs()
         {
-            for (var i = 0; i < 128; i++)
-            {
-                yield return (GetRandomTransformation(), GetRandomTransformation());
-            }
+            return Enumerable.Zip(
+                SpatialTestData.GetRandomTransformationsUnitScale(TestCount, 32523),
+                SpatialTestData.GetRandomTransformationsUnitScale(TestCount, 8643),
+                (a, b) => (a, b)
+            );
         }
 
         public static IEnumerable<(UnitScaleTransformation, Vector3)>
             GetTransformationAndVectors()
         {
-            for (var i = 0; i < 128; i++)
-            {
-                yield return (GetRandomTransformation(), GetRandomPosition());
-            }
+            return Enumerable.Zip(
+                SpatialTestData.GetRandomTransformationsUnitScale(TestCount, 62324),
+                SpatialTestData.GetRandomPositions(TestCount, 14892),
+                (a, b) => (a, b)
+            );
+        }
+
+        public static IEnumerable<(UnitScaleTransformation, Quaternion)>
+            GetTransformationAndRotations()
+        {
+            return Enumerable.Zip(
+                SpatialTestData.GetRandomTransformationsUnitScale(TestCount, 12574),
+                SpatialTestData.GetRandomRotations(TestCount, 845),
+                (a, b) => (a, b)
+            );
         }
 
         public static IEnumerable<(Vector3, Quaternion)> GetTranslationAndRotations()
         {
-            for (var i = 0; i < 128; i++)
-            {
-                yield return (GetRandomPosition(), GetRandomRotation());
-            }
+            return Enumerable.Zip(
+                SpatialTestData.GetRandomPositions(TestCount, 3523),
+                SpatialTestData.GetRandomRotations(TestCount, 75472),
+                (a, b) => (a, b)
+            );
         }
-        
+
         #region Constructors
 
         [Test]
@@ -100,22 +93,6 @@ namespace Narupa.Core.Tests.Math
             MathAssert.AreEqual(matrix.inverse, transformation.inverse.matrix);
         }
 
-        [Test]
-        public void LeftInverseMultiplication(
-            [ValueSource(nameof(GetTransformations))] UnitScaleTransformation transformation)
-        {
-            var identity = transformation.inverse * transformation;
-            MathAssert.AreEqual(Matrix4x4.identity, identity.matrix);
-        }
-
-        [Test]
-        public void RightInverseMultiplication(
-            [ValueSource(nameof(GetTransformations))] UnitScaleTransformation transformation)
-        {
-            var identity = transformation * transformation.inverse;
-            MathAssert.AreEqual(Matrix4x4.identity, identity.matrix);
-        }
-
         #endregion
 
 
@@ -123,18 +100,20 @@ namespace Narupa.Core.Tests.Math
 
         [Test]
         public void PositionFromMatrix(
-            [ValueSource(nameof(GetTransformations))] UnitScaleTransformation transformation)
+            [ValueSource(nameof(GetTransformationAndVectors))]
+            (UnitScaleTransformation, Vector3) input)
         {
-            var position = GetRandomPosition();
+            var (transformation, position) = input;
             transformation.position = position;
             MathAssert.AreEqual(position, transformation.matrix.GetTranslation());
         }
 
         [Test]
         public void RotationFromMatrix(
-            [ValueSource(nameof(GetTransformations))] UnitScaleTransformation transformation)
+            [ValueSource(nameof(GetTransformationAndRotations))]
+            (UnitScaleTransformation, Quaternion) input)
         {
-            var rotation = GetRandomRotation();
+            var (transformation, rotation) = input;
             transformation.rotation = rotation;
             MathAssert.AreEqual(rotation, transformation.matrix.GetRotation());
         }

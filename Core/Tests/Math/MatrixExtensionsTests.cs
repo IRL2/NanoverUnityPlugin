@@ -22,8 +22,8 @@ namespace Narupa.Core.Tests.Math
 
         private static MatrixPair GenerateRandomMatrixPairUniformScale()
         {
-            return new MatrixPair(SpatialTestData.GetRandomTransformationUniformScale().Matrix,
-                                  SpatialTestData.GetRandomTransformationUniformScale().Matrix);
+            return new MatrixPair(SpatialTestData.GetRandomTransformationPositiveUniformScale().Matrix,
+                                  SpatialTestData.GetRandomTransformationPositiveUniformScale().Matrix);
         }
 
         private static IEnumerable<Transformation> RandomTransformation =>

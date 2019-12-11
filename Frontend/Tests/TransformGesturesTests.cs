@@ -35,7 +35,7 @@ namespace Narupa.Frontend.Tests
         {
             return new ObjectTransformTestSequence
             {
-                InitialObjectTransformation = SpatialTestData.GetRandomTransformationUniformScale(),
+                InitialObjectTransformation = SpatialTestData.GetRandomTransformationPositiveUniformScale(),
                 Sequence = Enumerable.Range(0, 8)
                                      .Select(_ => GenerateRandomMatrixPair())
                                      .ToList(),

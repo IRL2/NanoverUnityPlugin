@@ -68,7 +68,7 @@ namespace Narupa.Core.Math
             {
                 var inverseRotation = Quaternion.Inverse(rotation);
                 return new UnitScaleTransformation(
-                    inverseRotation * -position,
+                    -(inverseRotation * position),
                     inverseRotation);
             }
         }
