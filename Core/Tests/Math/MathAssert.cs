@@ -7,6 +7,9 @@ namespace Narupa.Core.Tests.Math
 {
     public class MathAssert
     {
+        /// <summary>
+        /// Assert that two matrices are equal.
+        /// </summary>
         public static void AreEqual(Matrix4x4 expected, Matrix4x4 actual)
         {
             Assert.That(actual,
@@ -14,6 +17,9 @@ namespace Narupa.Core.Tests.Math
                           .Using(Matrix4x4RowEqualityComparer.Instance));
         }
 
+        /// <summary>
+        /// Assert that two quaternions are equal.
+        /// </summary>
         public static void AreEqual(Quaternion expected, Quaternion actual)
         {
             Assert.That(actual,
@@ -21,6 +27,9 @@ namespace Narupa.Core.Tests.Math
                           .Using(QuaternionEqualityComparer.Instance));
         }
         
+        /// <summary>
+        /// Assert that two vectors are equal.
+        /// </summary>
         public static void AreEqual(Vector3 expected, Vector3 actual)
         {
             Assert.That(actual,
@@ -28,6 +37,9 @@ namespace Narupa.Core.Tests.Math
                           .Using(Vector3EqualityComparer.Instance));
         }
         
+        /// <summary>
+        /// Assert that two floats are equal.
+        /// </summary>
         public static void AreEqual(float expected, float actual)
         {
             Assert.That(actual,

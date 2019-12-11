@@ -68,23 +68,6 @@ namespace Narupa.Core.Tests.Math
         }
 
         [Test]
-        public void CopyTrsToTransform_WithRandomTRSAndNestedTransforms_HasSameMatrix(
-            [ValueSource(nameof(RandomMatrixPairsUniformScale))]
-            MatrixPair pair)
-        {
-            var parent = new GameObject("Parent").transform;
-            var child = new GameObject("Child").transform;
-            child.SetParent(parent);
-
-            pair.Item1.CopyTrsToTransformRelativeToWorld(parent);
-            pair.Item2.CopyTrsToTransformRelativeToWorld(child);
-
-            Assert.That(child.localToWorldMatrix,
-                        Is.EqualTo(pair.Item2)
-                          .Using(Matrix4x4TRSEqualityComparer.Instance));
-        }
-
-        [Test]
         public void GetRelativeTransformationTo_WithRandomTRS_TransformsAToB(
             [ValueSource(nameof(RandomMatrixPairs))] MatrixPair pair)
         {

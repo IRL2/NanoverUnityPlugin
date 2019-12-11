@@ -88,7 +88,9 @@ namespace Narupa.Core.Math
         /// </summary>
         public void CopyToTransformRelativeToParent(Transform transform)
         {
-            Matrix.CopyTrsToTransformRelativeToParent(transform);
+            transform.localPosition = Position;
+            transform.localRotation = Rotation;
+            transform.localScale = Scale;
         }
         
         /// <summary>
@@ -114,9 +116,12 @@ namespace Narupa.Core.Math
             var pos = Position;
             var rot = Rotation.eulerAngles;
             var scale = Scale;
-            return $"Transformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale.x}, {scale.y}, {scale.z})";
+            return $"Transformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale.x}, {scale.y}, {scale.z}))";
         }
 
+        /// <summary>
+        /// Convert to a transformation with unit scale, discarding any scaling associated with this transformation.
+        /// </summary>
         public UnitScaleTransformation AsUnitTransformWithoutScale()
         {
             return new UnitScaleTransformation(Position, Rotation);

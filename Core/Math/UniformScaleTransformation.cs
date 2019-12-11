@@ -217,7 +217,7 @@ namespace Narupa.Core.Math
         {
             var pos = position;
             var rot = rotation.eulerAngles;
-            return $"UniformTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale})";
+            return $"UniformTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale}))";
         }
 
         #endregion

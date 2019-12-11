@@ -184,6 +184,13 @@ namespace Narupa.Core.Math
         {
             return inverse.TransformDirection(pt);
         }
+        
+        public override string ToString()
+        {
+            var pos = position;
+            var rot = rotation.eulerAngles;
+            return $"UnitTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}))";
+        }
 
         #endregion
     }
