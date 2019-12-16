@@ -25,6 +25,7 @@ namespace Narupa.Frontend.UI
     [RequireComponent(typeof(Canvas))]
     public class NarupaCanvas : MonoBehaviour
     {
+#pragma warning disable 0649
         /// <summary>
         /// The controller that can interact with this canvas.
         /// </summary>
@@ -45,6 +46,7 @@ namespace Narupa.Frontend.UI
         /// </summary>
         [SerializeField]
         private SteamVR_Input_Sources inputSource;
+#pragma warning restore 0649
 
         private Canvas canvas;
 

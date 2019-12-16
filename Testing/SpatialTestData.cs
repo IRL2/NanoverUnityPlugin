@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using Narupa.Core.Math;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace Narupa.Testing
         /// Get a random position within the supported range of coordinates.
         /// Coordinates outside this range are too imprecise to be worth supporting.
         /// </summary>
-        public static Vector3 GetRandomPosition()
+        private static Vector3 GetRandomPosition()
         {
             return new Vector3(Random.Range(-MaximumCoordinate, MaximumCoordinate),
                                Random.Range(-MaximumCoordinate, MaximumCoordinate),
@@ -36,7 +37,7 @@ namespace Narupa.Testing
         /// <summary>
         /// Get a uniformly random rotation.
         /// </summary>
-        public static Quaternion GetRandomRotation()
+        private static Quaternion GetRandomRotation()
         {
             return Random.rotation;
         }
@@ -46,14 +47,14 @@ namespace Narupa.Testing
         /// outside this range are too imprecise to be worth supporting, and not
         /// practically useful anyway.
         /// </summary>
-        public static Vector3 GetRandomPositiveScale()
+        private static Vector3 GetRandomPositiveScale()
         {
             return new Vector3(GetRandomPositiveScaleFactor(),
                                GetRandomPositiveScaleFactor(),
                                GetRandomPositiveScaleFactor());
         }
 
-        public static Vector3 GetRandomPositiveUniformScale()
+        private static Vector3 GetRandomPositiveUniformScale()
         {
             return Vector3.one * GetRandomPositiveScaleFactor();
         }
@@ -61,11 +62,21 @@ namespace Narupa.Testing
         /// <summary>
         /// Get a random scale factor, scaled evenly between above 1 and below 1
         /// </summary>
-        public static float GetRandomPositiveScaleFactor()
+        private static float GetRandomPositiveScaleFactor()
         {
             var range = Mathf.Log(MaximumScaleFactor, 2);
 
             return Mathf.Pow(2, Random.Range(-range, range));
+        }
+
+        private static float GetRandomNonZeroScaleFactor()
+        {
+            return GetRandomPositiveScaleFactor() * (GetRandomBool() ? 1f : -1f);
+        }
+
+        private static bool GetRandomBool()
+        {
+            return Random.value > 0.5f;
         }
 
         public static Transformation GetRandomTransformation()
@@ -80,7 +91,7 @@ namespace Narupa.Testing
             return components;
         }
 
-        public static Transformation GetRandomTransformationUniformScale()
+        public static Transformation GetRandomTransformationPositiveUniformScale()
         {
             var transformation = new Transformation
             {
@@ -92,7 +103,56 @@ namespace Narupa.Testing
             return transformation;
         }
 
-        public static IEnumerable<Transformation> RandomTransformation
-            => RandomTestData.SeededRandom(GetRandomTransformation);
+        private static UnitScaleTransformation GetRandomTransformationUnitScale()
+        {
+            return new UnitScaleTransformation(GetRandomPosition(),
+                                               GetRandomRotation());
+        }
+
+        private static UniformScaleTransformation GetRandomTransformationUniformScale()
+        {
+            return new UniformScaleTransformation(GetRandomPosition(),
+                                                  GetRandomRotation(),
+                                                  GetRandomNonZeroScaleFactor());
+        }
+
+        public static IEnumerable<UnitScaleTransformation> GetRandomTransformationsUnitScale(
+            int n,
+            int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomTransformationUnitScale, seed).Take(n);
+        }
+
+        public static IEnumerable<UniformScaleTransformation> GetRandomTransformationsUniformScale(
+            int n,
+            int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomTransformationUniformScale, seed).Take(n);
+        }
+        
+        public static IEnumerable<Transformation> GetRandomTransformations(
+            int n,
+            int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomTransformation, seed).Take(n);
+        }
+
+        public static IEnumerable<Vector3> GetRandomPositions(int n, int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomPosition, seed).Take(n);
+        }
+
+        public static IEnumerable<Quaternion> GetRandomRotations(int n, int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomRotation, seed).Take(n);
+        }
+
+        public static IEnumerable<float> GetRandomNonZeroScaleFactors(int n, int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomNonZeroScaleFactor, seed).Take(n);
+        }
+
+        public static IEnumerable<Transformation> RandomTransformation =>
+            RandomTestData.SeededRandom(GetRandomTransformation);
     }
 }

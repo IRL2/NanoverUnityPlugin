@@ -60,24 +60,5 @@ namespace Narupa.Core.Math
         {
             return matrix * transformation;
         }
-
-        /// <summary>
-        /// Set the transform's position, rotation, scale from this TRS matrix.
-        /// Invalid for compositions of rotation and non-uniform scales.
-        /// </summary>
-        public static void CopyTrsToTransform(this Matrix4x4 trs, Transform transform)
-        {
-            // we are not allowed to set global scale directly in Unity, so
-            // instead we unparent the object, make local changes, then reparent
-            var parent = transform.parent;
-
-            transform.parent = null;
-
-            transform.localPosition = trs.GetTranslation();
-            transform.localRotation = trs.GetRotation();
-            transform.localScale = trs.GetScale();
-
-            transform.parent = parent;
-        }
     }
 }

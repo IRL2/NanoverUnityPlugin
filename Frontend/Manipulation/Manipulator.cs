@@ -10,7 +10,7 @@ namespace Narupa.Frontend.Manipulation
     /// <summary>
     /// A function that attempts to start a manipulation given an manipulator pose.
     /// </summary>
-    public delegate IActiveManipulation ManipulationAttemptHandler(Transformation manipulatorPose);
+    public delegate IActiveManipulation ManipulationAttemptHandler(UnitScaleTransformation manipulatorPose);
 
     /// <summary>
     /// Represents an input device posed in 3D space (e.g a VR controller) that can
@@ -66,7 +66,7 @@ namespace Narupa.Frontend.Manipulation
         {
             if (posedObject.Pose is Transformation pose)
             {
-                activeManipulation?.UpdateManipulatorPose(pose);
+                activeManipulation?.UpdateManipulatorPose(pose.AsUnitTransformWithoutScale());
             }
             else
             {
@@ -79,7 +79,7 @@ namespace Narupa.Frontend.Manipulation
         private void AttemptManipulation(ManipulationAttemptHandler manipulationAttempt)
         {
             if (Pose is Transformation pose
-             && manipulationAttempt(pose) is IActiveManipulation manipulation)
+             && manipulationAttempt(pose.AsUnitTransformWithoutScale()) is IActiveManipulation manipulation)
             {
                 SetActiveManipulation(manipulation);
             }

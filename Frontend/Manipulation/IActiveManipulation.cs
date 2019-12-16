@@ -20,7 +20,7 @@ namespace Narupa.Frontend.Manipulation
         /// <summary>
         /// Provide an updated pose transformation for the manipulator.
         /// </summary>
-        void UpdateManipulatorPose(Transformation manipulatorPose);
+        void UpdateManipulatorPose(UnitScaleTransformation manipulatorPose);
 
         /// <summary>
         /// End the manipulation, and expect no further relationship between the
