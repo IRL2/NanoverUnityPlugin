@@ -14,16 +14,18 @@ namespace Narupa.Frontend.Controllers
     /// </summary>
     public class SteamVrDynamicController : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField]
         private SteamVR_Behaviour_Pose steamVrComponent;
 
         [SerializeField]
         private Transform prefabRoot;
 
-        private VrControllerPrefab currentPrefab;
-
         [SerializeField]
         private VrController controller;
+#pragma warning restore 0649
+
+        private VrControllerPrefab currentPrefab;
 
         private void Awake()
         {

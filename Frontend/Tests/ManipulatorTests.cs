@@ -122,7 +122,7 @@ namespace Narupa.Frontend.Tests
             public bool Ended = false;
             public Transformation? LastPose;
 
-            public void UpdateManipulatorPose(Transformation manipulatorPose)
+            public void UpdateManipulatorPose(UnitScaleTransformation manipulatorPose)
             {
                 LastPose = manipulatorPose;
             }

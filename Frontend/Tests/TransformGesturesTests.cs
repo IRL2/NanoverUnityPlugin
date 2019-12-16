@@ -35,7 +35,7 @@ namespace Narupa.Frontend.Tests
         {
             return new ObjectTransformTestSequence
             {
-                InitialObjectTransformation = SpatialTestData.GetRandomTransformationUniformScale(),
+                InitialObjectTransformation = SpatialTestData.GetRandomTransformationPositiveUniformScale(),
                 Sequence = Enumerable.Range(0, 8)
                                      .Select(_ => GenerateRandomMatrixPair())
                                      .ToList(),
@@ -57,11 +57,11 @@ namespace Narupa.Frontend.Tests
             var referenceScale = sequence.InitialObjectTransformation.Scale;
 
             gesture.BeginGesture(sequence.InitialObjectTransformation,
-                                 sequence.Sequence.First().Item1);
+                                 sequence.Sequence.First().Item1.AsUnitTransformWithoutScale());
 
             foreach (var pair in sequence.Sequence.Skip(1))
             {
-                var transformation = gesture.UpdateControlPoint(pair.Item1);
+                var transformation = gesture.UpdateControlPoint(pair.Item1.AsUnitTransformWithoutScale());
 
                 Assert.That(transformation.Scale,
                             Is.EqualTo(referenceScale)
@@ -84,8 +84,8 @@ namespace Narupa.Frontend.Tests
             var referenceScale = initialObjectTransformation.Scale.x;
 
             gesture.BeginGesture(initialObjectTransformation,
-                                 initialControlPoint1,
-                                 initialControlPoint2);
+                                 initialControlPoint1.AsUnitTransformWithoutScale(),
+                                 initialControlPoint2.AsUnitTransformWithoutScale());
 
             foreach (var pair in sequence.Sequence.Skip(1))
             {
@@ -95,8 +95,8 @@ namespace Narupa.Frontend.Tests
                                                          updatedControlPoint2.Position);
                 var expectedScale = referenceScale * (updatedSeparation / initialSeparation);
 
-                var transformation = gesture.UpdateControlPoints(updatedControlPoint1,
-                                                                 updatedControlPoint2);
+                var transformation = gesture.UpdateControlPoints(updatedControlPoint1.AsUnitTransformWithoutScale(),
+                                                                 updatedControlPoint2.AsUnitTransformWithoutScale());
 
                 Assert.That(transformation.Scale,
                             Is.EqualTo(Vector3.one * expectedScale)
@@ -120,8 +120,8 @@ namespace Narupa.Frontend.Tests
             var objectControlPoint2 = worldToObject.MultiplyPoint3x4(initialControlPoint2.Position);
 
             gesture.BeginGesture(initialObjectTransformation,
-                                 initialControlPoint1,
-                                 initialControlPoint2);
+                                 initialControlPoint1.AsUnitTransformWithoutScale(),
+                                 initialControlPoint2.AsUnitTransformWithoutScale());
 
             foreach (var pair in sequence.Sequence.Skip(1))
             {
@@ -129,7 +129,7 @@ namespace Narupa.Frontend.Tests
                 var updatedControlPoint2 = pair.Item2;
 
                 var updatedObjectTransformation =
-                    gesture.UpdateControlPoints(updatedControlPoint1, updatedControlPoint2);
+                    gesture.UpdateControlPoints(updatedControlPoint1.AsUnitTransformWithoutScale(), updatedControlPoint2.AsUnitTransformWithoutScale());
                 var updatedWorldToObject = updatedObjectTransformation.Matrix.inverse;
 
                 var updatedObjectControlPoint1 =

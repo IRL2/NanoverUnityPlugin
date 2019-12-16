@@ -20,6 +20,7 @@ namespace Narupa.Frontend.Controllers
     /// </remarks>
     public class VrControllerPrefab : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField]
         private ControllerPivot cursor;
 
@@ -28,6 +29,7 @@ namespace Narupa.Frontend.Controllers
 
         [SerializeField]
         private ControllerPivot head;
+#pragma warning restore 0649
 
         /// <summary>
         /// The cursor point where tools should be centered.

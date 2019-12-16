@@ -14,6 +14,9 @@ namespace Narupa.Core.Math
         /// Construct a transformation from the translation, rotation, and
         /// scale of a TRS matrix.
         /// </summary>
+        /// <remarks>
+        /// This is only works if the matrix involves uniform scaling. 
+        /// </remarks>
         public static Transformation FromMatrix(Matrix4x4 matrix)
         {
             return new Transformation(matrix.GetTranslation(),
@@ -23,13 +26,28 @@ namespace Narupa.Core.Math
 
         /// <summary>
         /// Construct a transformation from the translation, rotation, and
-        /// scale of a Unity Transform.
+        /// scale of a Unity <see cref="Transform"/> relative to world space.
         /// </summary>
-        public static Transformation FromTransform(Transform transform)
+        /// <remarks>
+        /// The scale is inherently lossy, as the composition of multiple
+        /// transforms is not necessarily a transform. 
+        /// </remarks>
+        public static Transformation FromTransformRelativeToWorld(Transform transform)
         {
             return new Transformation(transform.position,
                                       transform.rotation,
                                       transform.lossyScale);
+        }
+        
+        /// <summary>
+        /// Construct a transformation from the translation, rotation, and
+        /// scale of a Unity <see cref="Transform"/> relative to world space.
+        /// </summary>
+        public static Transformation FromTransformRelativeToParent(Transform transform)
+        {
+            return new Transformation(transform.localPosition,
+                                      transform.localRotation,
+                                      transform.localScale);
         }
 
         /// <summary>
@@ -66,11 +84,47 @@ namespace Narupa.Core.Math
         }
 
         /// <summary>
-        /// Set the transform's position, rotation, scale from this transformation.
+        /// Set the transform's position, rotation and scale relative to its parent from this transformation.
         /// </summary>
-        public void CopyToTransform(Transform transform)
+        public void CopyToTransformRelativeToParent(Transform transform)
         {
-            Matrix.CopyTrsToTransform(transform);
+            transform.localPosition = Position;
+            transform.localRotation = Rotation;
+            transform.localScale = Scale;
+        }
+        
+        /// <summary>
+        /// Set the transform's position, rotation and scale relative to the world space from this transformation.
+        /// </summary>
+        public void CopyToTransformRelativeToWorld(Transform transform)
+        {
+            // we are not allowed to set global scale directly in Unity, so
+            // instead we unparent the object, make local changes, then reparent
+            var parent = transform.parent;
+
+            transform.parent = null;
+
+            transform.localPosition = Position;
+            transform.localRotation = Rotation;
+            transform.localScale = Scale;
+
+            transform.parent = parent;
+        }
+
+        public override string ToString()
+        {
+            var pos = Position;
+            var rot = Rotation.eulerAngles;
+            var scale = Scale;
+            return $"Transformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale.x}, {scale.y}, {scale.z}))";
+        }
+
+        /// <summary>
+        /// Convert to a transformation with unit scale, discarding any scaling associated with this transformation.
+        /// </summary>
+        public UnitScaleTransformation AsUnitTransformWithoutScale()
+        {
+            return new UnitScaleTransformation(Position, Rotation);
         }
     }
 }
