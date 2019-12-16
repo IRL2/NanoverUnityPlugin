@@ -109,6 +109,21 @@ namespace Narupa.Testing
                                                GetRandomRotation());
         }
 
+        private static AffineTransformation GetRandomAffineTransformation()
+        {
+            return new AffineTransformation(GetRandomPositiveScaleFactor() * Random.onUnitSphere,
+                                            GetRandomPositiveScaleFactor() * Random.onUnitSphere,
+                                            GetRandomPositiveScaleFactor() * Random.onUnitSphere,
+                                            GetRandomPosition());
+        }
+
+        private static LinearTransformation GetRandomLinearTransformation()
+        {
+            return new LinearTransformation(GetRandomPositiveScaleFactor() * Random.onUnitSphere,
+                                            GetRandomPositiveScaleFactor() * Random.onUnitSphere,
+                                            GetRandomPositiveScaleFactor() * Random.onUnitSphere);
+        }
+
         private static UniformScaleTransformation GetRandomTransformationUniformScale()
         {
             return new UniformScaleTransformation(GetRandomPosition(),
@@ -123,13 +138,27 @@ namespace Narupa.Testing
             return RandomTestData.SeededRandom(GetRandomTransformationUnitScale, seed).Take(n);
         }
 
+        public static IEnumerable<AffineTransformation> GetRandomAffineTransformations(
+            int n,
+            int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomAffineTransformation, seed).Take(n);
+        }
+
+        public static IEnumerable<LinearTransformation> GetRandomLinearTransformations(
+            int n,
+            int? seed = null)
+        {
+            return RandomTestData.SeededRandom(GetRandomLinearTransformation, seed).Take(n);
+        }
+
         public static IEnumerable<UniformScaleTransformation> GetRandomTransformationsUniformScale(
             int n,
             int? seed = null)
         {
             return RandomTestData.SeededRandom(GetRandomTransformationUniformScale, seed).Take(n);
         }
-        
+
         public static IEnumerable<Transformation> GetRandomTransformations(
             int n,
             int? seed = null)

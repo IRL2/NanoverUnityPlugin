@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Narupa.Core.Math
 {
     /// <summary>
-    /// An affine transformation between two 3D spaces, defined by where it maps the
+    /// An transformation between two 3D spaces, defined by where it maps the
     /// three axes of cartesian space and an offset. This can represent any combination
     /// of rotations,
     /// reflections, translations, scaling and shears.
@@ -15,8 +15,13 @@ namespace Narupa.Core.Math
     /// component 1) representing the three columns of the matrix.
     /// </remarks>
     [Serializable]
-    public struct AffineTransformation
+    public struct AffineTransformation : ITransformation
     {
+        /// <inheritdoc cref="ITransformation.inverse"/>
+        ITransformation ITransformation.inverse => inverse;
+
+        #region Fields
+
         /// <summary>
         /// The vector to which this transformation maps the direction (1, 0, 0).
         /// </summary>
@@ -37,13 +42,10 @@ namespace Narupa.Core.Math
         /// </summary>
         public Vector3 origin;
 
-        /// <summary>
-        /// The identity affine transformation.
-        /// </summary>
-        public static AffineTransformation identity => new AffineTransformation(Vector3.right,
-                                                                                Vector3.up,
-                                                                                Vector3.forward,
-                                                                                Vector3.zero);
+        #endregion
+
+
+        #region Constructors
 
         /// <summary>
         /// Create an affine transformation which maps the x, y and z directions to new
@@ -52,14 +54,37 @@ namespace Narupa.Core.Math
         public AffineTransformation(Vector3 xAxis,
                                     Vector3 yAxis,
                                     Vector3 zAxis,
-                                    Vector3 origin)
-
+                                    Vector3 position)
         {
             this.xAxis = xAxis;
             this.yAxis = yAxis;
             this.zAxis = zAxis;
-            this.origin = origin;
+            this.origin = position;
         }
+        
+        /// <summary>
+        /// Create an affine transformation from the upper 3x4 matrix.
+        /// </summary>
+        public AffineTransformation(Matrix4x4 matrix)
+        {
+            xAxis = matrix.GetColumn(0);
+            yAxis = matrix.GetColumn(1);
+            zAxis = matrix.GetColumn(2);
+            origin = matrix.GetColumn(3);
+        }
+
+        #endregion
+
+
+        #region Constants
+
+        /// <summary>
+        /// The identity transformation.
+        /// </summary>
+        public static AffineTransformation identity => new AffineTransformation(Vector3.right,
+                                                                                Vector3.up,
+                                                                                Vector3.forward,
+                                                                                Vector3.zero);
 
         /// <summary>
         /// The magnitudes of the three axes that define this linear transformation.
@@ -67,34 +92,87 @@ namespace Narupa.Core.Math
         public Vector3 axesMagnitudes => new Vector3(xAxis.magnitude,
                                                      yAxis.magnitude,
                                                      zAxis.magnitude);
+        
+        #endregion
 
-        /// <summary>
-        /// Get this transformation as a <see cref="Matrix4x4" />.
-        /// </summary>
-        public Matrix4x4 AsMatrix()
+
+        #region Inverse
+
+        /// <inheritdoc cref="ITransformation.inverse"/>
+        public AffineTransformation inverse => new AffineTransformation(matrix.inverse);
+
+        #endregion
+
+
+        #region Matrices
+
+        /// <inheritdoc cref="ITransformation.matrix"/>
+        public Matrix4x4 matrix => 
+            new Matrix4x4(xAxis, yAxis, zAxis, new Vector4(origin.x, origin.y, origin.z, 1));
+
+        /// <inheritdoc cref="ITransformation.inverseMatrix"/>
+        public Matrix4x4 inverseMatrix => inverse.matrix;
+
+        #endregion
+
+
+        #region Conversions
+
+        public static implicit operator Matrix4x4(AffineTransformation transformation)
         {
-            return new Matrix4x4(xAxis, yAxis, zAxis, new Vector4(origin.x, origin.y, origin.z, 1));
+            return transformation.matrix;
         }
 
-        /// <summary>
-        /// Transform a direction using this transformation.
-        /// </summary>
-        public Vector3 TransformDirection(Vector3 vec)
+        #endregion
+
+
+        #region Multiplication
+
+        public static AffineTransformation operator *(AffineTransformation a,
+                                                      AffineTransformation b)
         {
-            return vec.x * xAxis
-                 + vec.y * yAxis
-                 + vec.z * zAxis;
+            return new AffineTransformation(a.matrix * b.matrix);
         }
 
-        /// <summary>
-        /// Transform a point using this transformation.
-        /// </summary>
-        public Vector3 TransformPoint(Vector3 vec)
+        #endregion
+
+
+        #region Transformation of Points
+
+        /// <inheritdoc cref="ITransformation.TransformPoint"/>
+        public Vector3 TransformPoint(Vector3 point)
         {
-            return vec.x * xAxis
-                 + vec.y * yAxis
-                 + vec.z * zAxis
+            return point.x * xAxis
+                 + point.y * yAxis
+                 + point.z * zAxis
                  + origin;
         }
+
+        /// <inheritdoc cref="ITransformation.InverseTransformPoint"/>
+        public Vector3 InverseTransformPoint(Vector3 point)
+        {
+            return inverse.TransformPoint(point);
+        }
+
+        #endregion
+
+
+        #region Transformation of Directions
+
+        /// <inheritdoc cref="ITransformation.TransformDirection"/>
+        public Vector3 TransformDirection(Vector3 direction)
+        {
+            return direction.x * xAxis
+                 + direction.y * yAxis
+                 + direction.z * zAxis;
+        }
+
+        /// <inheritdoc cref="ITransformation.InverseTransformDirection"/>
+        public Vector3 InverseTransformDirection(Vector3 direction)
+        {
+            return inverse.TransformDirection(direction);
+        }
+
+        #endregion
     }
 }

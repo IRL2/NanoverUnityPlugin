@@ -68,7 +68,7 @@ namespace Narupa.Visualisation
                                                               y * (size.y + width),
                                                               z * (size.z + width),
                                                               offset);
-                var matrix = transformation.AsMatrix();
+                var matrix = transformation.matrix;
                 Graphics.DrawMesh(mesh, transform.localToWorldMatrix * matrix, material, 0);
             }
         }

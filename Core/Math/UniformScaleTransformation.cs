@@ -10,8 +10,11 @@ namespace Narupa.Core.Math
     /// <see cref="UniformScaleTransformation" />s are closed under composition
     /// (combining two of them yields a third). These transformations preserve angles.
     /// </remarks>
-    public struct UniformScaleTransformation
+    public struct UniformScaleTransformation : ITransformation
     {
+        /// <inheritdoc cref="ITransformation.inverse"/>
+        ITransformation ITransformation.inverse => inverse;
+
         #region Fields
 
         /// <summary>
@@ -69,9 +72,7 @@ namespace Narupa.Core.Math
 
         #region Inverse
 
-        /// <summary>
-        /// The inverse of this transformation, which undoes this transformation.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.inverse"/>
         public UniformScaleTransformation inverse
         {
             get
@@ -89,16 +90,10 @@ namespace Narupa.Core.Math
 
         #region Matrices
 
-        /// <summary>
-        /// The 4x4 augmented matrix representing this transformation as it acts upon
-        /// vectors and directions in homogeneous coordinates.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.matrix"/>
         public Matrix4x4 matrix => Matrix4x4.TRS(position, rotation, Vector3.one * scale);
 
-        /// <summary>
-        /// The 4x4 augmented matrix representing the inverse of this transformation as it
-        /// acts upon vectors and directions in homogeneous coordinates.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.inverseMatrix"/>
         public Matrix4x4 inverseMatrix => inverse.matrix;
 
         #endregion
@@ -130,7 +125,7 @@ namespace Narupa.Core.Math
                                                   a.rotation * b.rotation,
                                                   a.scale * b.scale);
         }
-        
+
         public static Transformation operator *(UniformScaleTransformation a,
                                                 Transformation b)
         {
@@ -144,21 +139,13 @@ namespace Narupa.Core.Math
 
         #region Transformation of Points
 
-        /// <summary>
-        /// Transform a point in space using this transformation. When considered as a
-        /// transformation from an object's local space to world space, this takes points
-        /// in the object's local space to world space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.TransformPoint"/>
         public Vector3 TransformPoint(Vector3 pt)
         {
             return rotation * (scale * pt) + position;
         }
 
-        /// <summary>
-        /// Transform a point in space using the inverse of this transformation. When
-        /// considered as a transformation from an object's local space to world space,
-        /// this takes points in world space to the object's local space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.InverseTransformPoint"/>
         public Vector3 InverseTransformPoint(Vector3 pt)
         {
             return inverse.TransformPoint(pt);
@@ -169,29 +156,21 @@ namespace Narupa.Core.Math
 
         #region Transformation of Directions
 
-        /// <summary>
-        /// Transform a direction in space using this transformation. When considered as a
-        /// transformation from an object's local space to world space, this takes
-        /// directions in world space to the object's local space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.TransformDirection"/>
         public Vector3 TransformDirection(Vector3 direction)
         {
             return rotation * (scale * direction);
         }
 
-        /// <summary>
-        /// Transform a direction in space using the inverse of this transformation. When
-        /// considered as a transformation from an object's local space to world space,
-        /// this takes directions in world space to the object's local space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.InverseTransformDirection"/>
         public Vector3 InverseTransformDirection(Vector3 pt)
         {
             return inverse.TransformDirection(pt);
         }
 
         #endregion
-        
-        
+
+
         #region TransformPose
 
         /// <summary>
@@ -212,12 +191,13 @@ namespace Narupa.Core.Math
         {
             return this * trans;
         }
-        
+
         public override string ToString()
         {
             var pos = position;
             var rot = rotation.eulerAngles;
-            return $"UniformTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale}))";
+            return
+                $"UniformTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale}))";
         }
 
         #endregion

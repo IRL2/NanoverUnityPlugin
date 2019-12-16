@@ -9,8 +9,11 @@ namespace Narupa.Core.Math
     /// Also known as a Rigid Motion or a Proper Rigid Transformation. These
     /// transformations preserve orientation, distances and angles.
     /// </remarks>
-    public struct UnitScaleTransformation
+    public struct UnitScaleTransformation : ITransformation
     {
+        /// <inheritdoc cref="ITransformation.inverse"/>
+        ITransformation ITransformation.inverse => inverse;
+
         #region Fields
 
         /// <summary>
@@ -59,9 +62,7 @@ namespace Narupa.Core.Math
 
         #region Inverse
 
-        /// <summary>
-        /// The inverse of this transformation, which undoes this transformation.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.inverse"/>
         public UnitScaleTransformation inverse
         {
             get
@@ -78,16 +79,10 @@ namespace Narupa.Core.Math
 
         #region Matrices
 
-        /// <summary>
-        /// The 4x4 augmented matrix representing this transformation as it acts upon
-        /// vectors and directions in homogeneous coordinates.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.matrix"/>
         public Matrix4x4 matrix => Matrix4x4.TRS(position, rotation, Vector3.one);
 
-        /// <summary>
-        /// The 4x4 augmented matrix representing the inverse of this transformation as it
-        /// acts upon vectors and directions in homogeneous coordinates.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.inverseMatrix"/>
         public Matrix4x4 inverseMatrix => inverse.matrix;
 
         #endregion
@@ -128,11 +123,11 @@ namespace Narupa.Core.Math
         }
 
         public static Transformation operator *(UnitScaleTransformation a,
-                                                         Transformation b)
+                                                Transformation b)
         {
             return new Transformation(a.position + (a.rotation * b.Position),
-                                               a.rotation * b.Rotation,
-                                               b.Scale);
+                                      a.rotation * b.Rotation,
+                                      b.Scale);
         }
 
         #endregion
@@ -140,21 +135,13 @@ namespace Narupa.Core.Math
 
         #region Transformation of Points
 
-        /// <summary>
-        /// Transform a point in space using this transformation. When considered as a
-        /// transformation from an object's local space to world space, this takes points
-        /// in the object's local space to world space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.TransformPoint"/>
         public Vector3 TransformPoint(Vector3 pt)
         {
             return rotation * pt + position;
         }
 
-        /// <summary>
-        /// Transform a point in space using the inverse of this transformation. When
-        /// considered as a transformation from an object's local space to world space,
-        /// this takes points in world space to the object's local space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.InverseTransformPoint"/>
         public Vector3 InverseTransformPoint(Vector3 pt)
         {
             return inverse.TransformPoint(pt);
@@ -165,31 +152,24 @@ namespace Narupa.Core.Math
 
         #region Transformation of Directions
 
-        /// <summary>
-        /// Transform a direction in space using this transformation. When considered as a
-        /// transformation from an object's local space to world space, this takes
-        /// directions in world space to the object's local space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.TransformDirection"/>
         public Vector3 TransformDirection(Vector3 direction)
         {
             return rotation * direction;
         }
 
-        /// <summary>
-        /// Transform a direction in space using the inverse of this transformation. When
-        /// considered as a transformation from an object's local space to world space,
-        /// this takes directions in world space to the object's local space.
-        /// </summary>
+        /// <inheritdoc cref="ITransformation.InverseTransformDirection"/>
         public Vector3 InverseTransformDirection(Vector3 pt)
         {
             return inverse.TransformDirection(pt);
         }
-        
+
         public override string ToString()
         {
             var pos = position;
             var rot = rotation.eulerAngles;
-            return $"UnitTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}))";
+            return
+                $"UnitTransformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}))";
         }
 
         #endregion

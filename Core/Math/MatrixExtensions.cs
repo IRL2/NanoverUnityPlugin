@@ -60,5 +60,29 @@ namespace Narupa.Core.Math
         {
             return matrix * transformation;
         }
+
+        /// <inheritdoc cref="ITransformation.TransformPoint"/>
+        public static Vector3 TransformPoint(this Matrix4x4 matrix, Vector3 point)
+        {
+            return matrix.MultiplyPoint3x4(point);
+        }
+
+        /// <inheritdoc cref="ITransformation.InverseTransformPoint"/>
+        public static Vector3 InverseTransformPoint(this Matrix4x4 matrix, Vector3 point)
+        {
+            return matrix.inverse.MultiplyPoint3x4(point);
+        }
+
+        /// <inheritdoc cref="ITransformation.TransformDirection"/>
+        public static Vector3 TransformDirection(this Matrix4x4 matrix, Vector3 point)
+        {
+            return matrix.MultiplyVector(point);
+        }
+
+        /// <inheritdoc cref="ITransformation.InverseTransformDirection"/>
+        public static Vector3 InverseTransformDirection(this Matrix4x4 matrix, Vector3 point)
+        {
+            return matrix.inverse.MultiplyVector(point);
+        }
     }
 }

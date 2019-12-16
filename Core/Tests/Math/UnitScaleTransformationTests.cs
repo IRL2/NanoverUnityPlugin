@@ -89,8 +89,7 @@ namespace Narupa.Core.Tests.Math
         public void Inverse(
             [ValueSource(nameof(GetTransformations))] UnitScaleTransformation transformation)
         {
-            var matrix = transformation.matrix;
-            MathAssert.AreEqual(matrix.inverse, transformation.inverse.matrix);
+            TransformationAssert.IsInverseCorrect(transformation);
         }
 
         #endregion
@@ -122,8 +121,7 @@ namespace Narupa.Core.Tests.Math
         public void InverseMatrix(
             [ValueSource(nameof(GetTransformations))] UnitScaleTransformation transformation)
         {
-            var matrix = transformation.matrix;
-            MathAssert.AreEqual(matrix.inverse, transformation.inverseMatrix);
+            TransformationAssert.IsInverseMatrixCorrect(transformation);
         }
 
         #endregion
@@ -163,10 +161,7 @@ namespace Narupa.Core.Tests.Math
             [ValueSource(nameof(GetTransformationPairs))]
             (UnitScaleTransformation, UnitScaleTransformation) input)
         {
-            var (transformation1, transformation2) = input;
-            var matrix1 = transformation1.matrix;
-            var matrix2 = transformation2.matrix;
-            MathAssert.AreEqual(matrix1 * matrix2, (transformation1 * transformation2).matrix);
+            TransformationAssert.Multiplication(input, input.Item1 * input.Item2);
         }
 
         #endregion
@@ -179,9 +174,7 @@ namespace Narupa.Core.Tests.Math
             [ValueSource(nameof(GetTransformationAndVectors))]
             (UnitScaleTransformation, Vector3) input)
         {
-            var (transformation, vector) = input;
-            MathAssert.AreEqual(transformation.matrix.MultiplyPoint3x4(vector),
-                                transformation.TransformPoint(vector));
+            TransformationAssert.TransformPoint(input);
         }
 
         [Test]
@@ -189,9 +182,7 @@ namespace Narupa.Core.Tests.Math
             [ValueSource(nameof(GetTransformationAndVectors))]
             (UnitScaleTransformation, Vector3) input)
         {
-            var (transformation, vector) = input;
-            MathAssert.AreEqual(transformation.matrix.inverse.MultiplyPoint3x4(vector),
-                                transformation.InverseTransformPoint(vector));
+            TransformationAssert.InverseTransformPoint(input);
         }
 
         #endregion
@@ -204,9 +195,7 @@ namespace Narupa.Core.Tests.Math
             [ValueSource(nameof(GetTransformationAndVectors))]
             (UnitScaleTransformation, Vector3) input)
         {
-            var (transformation, vector) = input;
-            MathAssert.AreEqual(transformation.matrix.MultiplyVector(vector),
-                                transformation.TransformDirection(vector));
+            TransformationAssert.TransformDirection(input);
         }
 
         [Test]
@@ -214,9 +203,7 @@ namespace Narupa.Core.Tests.Math
             [ValueSource(nameof(GetTransformationAndVectors))]
             (UnitScaleTransformation, Vector3) input)
         {
-            var (transformation, vector) = input;
-            MathAssert.AreEqual(transformation.matrix.inverse.MultiplyVector(vector),
-                                transformation.InverseTransformDirection(vector));
+            TransformationAssert.TransformDirection(input);
         }
 
         #endregion
