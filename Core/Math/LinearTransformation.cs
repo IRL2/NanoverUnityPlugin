@@ -9,8 +9,7 @@ namespace Narupa.Core.Math
     /// reflections, scaling and shears.
     /// </summary>
     /// <remarks>
-    /// Every linear transformation can be represented as a 3x3 matrix (and vice
-    /// versa), with the three axes representing the three columns of the matrix.
+    /// All linear transformations preserve the origin.
     /// </remarks>
     [Serializable]
     public struct LinearTransformation : ITransformation

@@ -8,8 +8,26 @@ namespace Narupa.Core.Math
     /// <summary>
     /// Bundles position, rotation, and scale of a transformation.
     /// </summary>
-    public struct Transformation
+    public struct Transformation : ITransformation
     {
+        ITransformation ITransformation.inverse => new AffineTransformation(Matrix.inverse);
+
+        Matrix4x4 ITransformation.matrix => Matrix;
+
+        Matrix4x4 ITransformation.inverseMatrix => Matrix.inverse;
+
+        Vector3 ITransformation.TransformPoint(Vector3 point) => Matrix.TransformPoint(point);
+
+        Vector3 ITransformation.InverseTransformPoint(Vector3 point)
+            => Matrix.InverseTransformPoint(point);
+
+        Vector3 ITransformation.TransformDirection(Vector3 point)
+            => Matrix.TransformDirection(point);
+
+        Vector3 ITransformation.InverseTransformDirection(Vector3 point)
+            => Matrix.InverseTransformDirection(point);
+
+
         /// <summary>
         /// Construct a transformation from the translation, rotation, and
         /// scale of a TRS matrix.
@@ -38,7 +56,7 @@ namespace Narupa.Core.Math
                                       transform.rotation,
                                       transform.lossyScale);
         }
-        
+
         /// <summary>
         /// Construct a transformation from the translation, rotation, and
         /// scale of a Unity <see cref="Transform"/> relative to world space.
@@ -92,7 +110,7 @@ namespace Narupa.Core.Math
             transform.localRotation = Rotation;
             transform.localScale = Scale;
         }
-        
+
         /// <summary>
         /// Set the transform's position, rotation and scale relative to the world space from this transformation.
         /// </summary>
@@ -116,7 +134,8 @@ namespace Narupa.Core.Math
             var pos = Position;
             var rot = Rotation.eulerAngles;
             var scale = Scale;
-            return $"Transformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale.x}, {scale.y}, {scale.z}))";
+            return
+                $"Transformation(Position: ({pos.x}, {pos.y}, {pos.z}), Rotation: ({rot.x}, {rot.y}, {rot.z}), Scale: ({scale.x}, {scale.y}, {scale.z}))";
         }
 
         /// <summary>
