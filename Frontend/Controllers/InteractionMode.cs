@@ -15,8 +15,13 @@ namespace Narupa.Frontend.Controllers
     /// </remarks>
     public class InteractionMode : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField]
         private ControllerManager controller;
+
+        [SerializeField]
+        private GameObject interactionGizmo;
+#pragma warning restore 0649
 
         private void Awake()
         {
@@ -29,9 +34,6 @@ namespace Narupa.Frontend.Controllers
                 SetupController(controller.RightController);
             };
         }
-
-        [SerializeField]
-        private GameObject interactionGizmo;
 
         private void SetupController(VrController controller)
         {

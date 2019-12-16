@@ -10,6 +10,7 @@ namespace Narupa.Visualisation.Node.Color
     [Serializable]
     public class ResidueNameColor : VisualiserColor
     {
+#pragma warning disable 0649
         [SerializeField]
         private StringArrayProperty residueNames = new StringArrayProperty();
 
@@ -18,6 +19,7 @@ namespace Narupa.Visualisation.Node.Color
 
         [SerializeField]
         private StringColorMapping mapping;
+#pragma warning restore 0649
 
         protected override bool IsInputValid => residueNames.HasNonEmptyValue() 
                                              && particleResidues.HasNonEmptyValue();

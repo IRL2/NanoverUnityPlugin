@@ -13,8 +13,10 @@ namespace Narupa.Frontend.Controllers
     /// </summary>
     public class ControllerPivot : MonoBehaviour, IPosedObject
     {
+#pragma warning disable 0649
         [SerializeField]
         private float radius;
+#pragma warning restore 0649
 
         public float Radius => radius;
         
