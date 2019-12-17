@@ -21,7 +21,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
         private MultiplayerSession session2;
         private GrpcConnection connection2;
 
-        private const int DelayMilliseconds = 100;
+        private const int DelayMilliseconds = 250;
 
         [SetUp]
         public void AsyncSetup()
