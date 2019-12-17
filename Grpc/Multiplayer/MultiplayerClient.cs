@@ -143,7 +143,7 @@ namespace Narupa.Network
 
             var response = await Client.AcquireResourceLockAsync(request, 
                                                                  null, 
-                                                                 DateTime.Now.AddSeconds(1));
+                                                                 DateTime.UtcNow.AddSeconds(1));
 
             return response.Success;
         }
