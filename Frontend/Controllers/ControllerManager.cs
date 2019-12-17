@@ -10,11 +10,13 @@ namespace Narupa.Frontend.Controllers
     /// </summary>
     public class ControllerManager : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField]
         private VrController leftController;
 
         [SerializeField]
-        private VrController rightController;
+        private VrController rightController; 
+#pragma warning restore 0649
 
         /// <summary>
         /// The left <see cref="VrController" />.

@@ -1,4 +1,5 @@
 using System;
+using Narupa.Core.Math;
 using Narupa.Core.Science;
 using Narupa.Protocol.Trajectory;
 using UnityEngine;
@@ -54,12 +55,15 @@ namespace Narupa.Frame
 
         public static readonly (string Key, Type Type) ResidueNames
             = (FrameData.ResidueNameArrayKey, typeof(string[]));
+        
+        public static readonly (string Key, Type Type) BoxTransformation
+            = ("system.box.vectors", typeof(LinearTransformation));
 
         public static readonly (string Key, Type Type)[] All = new[]
         {
             Bonds, BondOrders, EntityCount, EntityName, KineticEnergy, ParticleCount,
             ParticleElements, ParticleNames, ParticlePositions, ParticleResidues, ParticleTypes,
-            PotentialEnergy, ResidueEntities, ResidueCount, ResidueNames
+            PotentialEnergy, ResidueEntities, ResidueCount, ResidueNames, BoxTransformation
         };
     }
 }

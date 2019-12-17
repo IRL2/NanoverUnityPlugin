@@ -61,23 +61,28 @@ namespace Narupa.Core.Math
             return matrix * transformation;
         }
 
-        /// <summary>
-        /// Set the transform's position, rotation, scale from this TRS matrix.
-        /// Invalid for compositions of rotation and non-uniform scales.
-        /// </summary>
-        public static void CopyTrsToTransform(this Matrix4x4 trs, Transform transform)
+        /// <inheritdoc cref="ITransformation.TransformPoint"/>
+        public static Vector3 TransformPoint(this Matrix4x4 matrix, Vector3 point)
         {
-            // we are not allowed to set global scale directly in Unity, so
-            // instead we unparent the object, make local changes, then reparent
-            var parent = transform.parent;
+            return matrix.MultiplyPoint3x4(point);
+        }
 
-            transform.parent = null;
+        /// <inheritdoc cref="ITransformation.InverseTransformPoint"/>
+        public static Vector3 InverseTransformPoint(this Matrix4x4 matrix, Vector3 point)
+        {
+            return matrix.inverse.MultiplyPoint3x4(point);
+        }
 
-            transform.localPosition = trs.GetTranslation();
-            transform.localRotation = trs.GetRotation();
-            transform.localScale = trs.GetScale();
+        /// <inheritdoc cref="ITransformation.TransformDirection"/>
+        public static Vector3 TransformDirection(this Matrix4x4 matrix, Vector3 point)
+        {
+            return matrix.MultiplyVector(point);
+        }
 
-            transform.parent = parent;
+        /// <inheritdoc cref="ITransformation.InverseTransformDirection"/>
+        public static Vector3 InverseTransformDirection(this Matrix4x4 matrix, Vector3 point)
+        {
+            return matrix.inverse.MultiplyVector(point);
         }
     }
 }

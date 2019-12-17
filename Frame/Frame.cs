@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Narupa.Core;
+using Narupa.Core.Math;
 using Narupa.Core.Science;
 using Narupa.Protocol.Trajectory;
 using UnityEngine;
@@ -119,6 +120,15 @@ namespace Narupa.Frame
         {
             get => Data.GetValueOrDefault<int>(FrameData.ParticleCountValueKey);
             set => Data[FrameData.ParticleCountValueKey] = value;
+        }
+        
+        /// <summary>
+        /// The transformation that represents the unit cell.
+        /// </summary>
+        public LinearTransformation? BoxVectors
+        {
+            get => Data.GetValueOrDefault<LinearTransformation>(StandardFrameProperties.BoxTransformation.Key);
+            set => Data[StandardFrameProperties.BoxTransformation.Key] = value;
         }
         
         /// <summary>

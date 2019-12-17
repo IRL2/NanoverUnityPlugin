@@ -54,6 +54,8 @@ namespace Narupa.Grpc
         public static Dictionary<string, object> ToDictionary(this Struct value)
         {
             var list = new Dictionary<string, object>();
+            if (value == null)
+                return list;
             foreach (var item in value.Fields)
             {
                 list.Add(item.Key, item.Value.ToObject());
@@ -119,6 +121,14 @@ namespace Narupa.Grpc
         /// </summary>
         public static Value ToProtobufValue(this IDictionary<string, object> dictionary)
         {
+            return Value.ForStruct(dictionary.ToProtobufStruct());
+        }
+        
+        /// <summary>
+        /// Convert a C# dictionary to a protobuf Struct.
+        /// </summary>
+        public static Struct ToProtobufStruct(this IDictionary<string, object> dictionary)
+        {
             var @struct = new Struct();
 
             foreach (var pair in dictionary)
@@ -126,7 +136,7 @@ namespace Narupa.Grpc
                 @struct.Fields.Add(pair.Key, pair.Value.ToProtobufValue());
             }
             
-            return Value.ForStruct(@struct);
+            return @struct;
         }
 
         /// <summary>
