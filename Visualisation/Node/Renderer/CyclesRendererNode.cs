@@ -10,6 +10,7 @@ namespace Narupa.Visualisation.Node.Renderer
     {
         private Mesh mesh;
 
+#pragma warning disable 0649
         [SerializeField]
         private Material material;
 
@@ -30,6 +31,8 @@ namespace Narupa.Visualisation.Node.Renderer
         
         [SerializeField]
         private ColorProperty color = new ColorProperty();
+
+#pragma warning restore 0649
 
         public Transform Transform { get; set; }
 

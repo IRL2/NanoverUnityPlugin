@@ -80,5 +80,31 @@ namespace Narupa.Grpc.Trajectory
             trajectoryClient?.Dispose();
             frameStream?.Dispose();
         }
+        
+        /// <inheritdoc cref="TrajectoryClient.CommandPlay"/>
+        public void Play()
+        {
+            trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandPlay);
+        }
+        
+        /// <inheritdoc cref="TrajectoryClient.CommandPause"/>
+        public void Pause()
+        {
+            trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandPause);
+        }
+        
+        /// <inheritdoc cref="TrajectoryClient.CommandReset"/>
+        public void Reset()
+        {
+            trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandReset);
+        }
+        
+        /// <inheritdoc cref="TrajectoryClient.CommandStep"/>
+        public void Step()
+        {
+            trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandStep);
+        }
+
+        public TrajectoryClient Client => trajectoryClient;
     }
 }

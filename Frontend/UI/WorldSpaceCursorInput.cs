@@ -17,8 +17,10 @@ namespace Narupa.Frontend.UI
     {
         private static WorldSpaceCursorInput Instance { get; set; }
 
+#pragma warning disable 0649
         [SerializeField]
-        private Camera camera;
+        new private Camera camera;
+#pragma warning restore 0649
 
         private IPosedObject cursor;
         private Canvas canvas;

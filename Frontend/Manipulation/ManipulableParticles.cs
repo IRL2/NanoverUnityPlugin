@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using Narupa.Core.Math;
-using Narupa.Grpc.Trajectory;
 using Narupa.Session;
 using UnityEngine;
 
@@ -22,7 +21,7 @@ namespace Narupa.Frontend.Manipulation
 
         private readonly Transform transform;
         private readonly ImdSession imdSession;
-        
+
         public IInteractableParticles InteractableParticles { get; set; }
 
         private readonly HashSet<ActiveParticleGrab> activeGrabs
@@ -42,14 +41,15 @@ namespace Narupa.Frontend.Manipulation
         /// of the given grabber. Return either the manipulation or null if there was
         /// nothing grabbable.
         /// </summary>
-        public IActiveManipulation StartParticleGrab(Transformation grabberPose)
+        public IActiveManipulation StartParticleGrab(UnitScaleTransformation grabberPose)
         {
             if (InteractableParticles.GetParticleGrab(grabberPose) is ActiveParticleGrab grab)
                 return StartParticleGrab(grabberPose, grab);
             return null;
         }
 
-        private ActiveParticleGrab StartParticleGrab(Transformation grabberPose, ActiveParticleGrab grab)
+        private ActiveParticleGrab StartParticleGrab(UnitScaleTransformation grabberPose,
+                                                     ActiveParticleGrab grab)
         {
             grab.UpdateManipulatorPose(grabberPose);
             grab.ParticleGrabUpdated += () => OnParticleGrabUpdated(grab);

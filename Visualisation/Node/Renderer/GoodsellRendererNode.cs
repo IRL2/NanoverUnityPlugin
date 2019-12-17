@@ -14,6 +14,7 @@ namespace Narupa.Visualisation.Node.Renderer
     [Serializable]
     public class GoodsellRendererNode : CommandBufferRendererNode
     {
+#pragma warning disable 0649
         [SerializeField]
         private Vector3ArrayProperty particlePositions = new Vector3ArrayProperty();
 
@@ -25,6 +26,7 @@ namespace Narupa.Visualisation.Node.Renderer
         
         [SerializeField]
         private IntArrayProperty particleFilter = new IntArrayProperty();
+#pragma warning restore 0649
 
         [SerializeField]
         private ColorProperty rendererColor = new ColorProperty();
@@ -55,6 +57,7 @@ namespace Narupa.Visualisation.Node.Renderer
             renderer.Transform = Transform;
         }
 
+#pragma warning disable 0649
         [SerializeField]
         private CameraEvent cameraEvent = CameraEvent.AfterForwardOpaque;
 
@@ -63,6 +66,7 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private GoodsellSphereRendererNode renderer = new GoodsellSphereRendererNode();
+#pragma warning restore 0649
 
         private bool isRendering = false;
         

@@ -17,7 +17,7 @@ namespace Narupa.Frontend.Manipulation
     /// </summary>
     public sealed class OnePointTranslateRotateGesture
     {
-        private Matrix4x4 controlPointToObjectMatrix;
+        private Transformation controlPointToObject;
 
         /// <summary>
         /// Begin the gesture with an initial object transform and initial control
@@ -25,12 +25,9 @@ namespace Narupa.Frontend.Manipulation
         /// transforms will remain invariant.
         /// </summary>
         public void BeginGesture(Transformation objectTransformation,
-                                 Transformation controlTransformation)
+                                 UniformScaleTransformation controlTransformation)
         {
-            var objectMatrix = objectTransformation.Matrix;
-            var controlMatrix = controlTransformation.Matrix;
-
-            controlPointToObjectMatrix = controlMatrix.GetTransformationTo(objectMatrix);
+            controlPointToObject = controlTransformation.TransformationTo(objectTransformation);
         }
 
         /// <summary>
@@ -40,12 +37,9 @@ namespace Narupa.Frontend.Manipulation
         /// The relative coordinates of the gesture within the object space
         /// remains invariant.
         /// </summary>
-        public Transformation UpdateControlPoint(Transformation controlTransformation)
+        public Transformation UpdateControlPoint(UniformScaleTransformation controlTransformation)
         {
-            var controlMatrix = controlTransformation.Matrix;
-            var objectMatrix = controlMatrix.TransformedBy(controlPointToObjectMatrix);
-
-            return Transformation.FromMatrix(objectMatrix);
+             return controlTransformation.TransformBy(controlPointToObject);
         }
     }
 
@@ -69,8 +63,8 @@ namespace Narupa.Frontend.Manipulation
         /// invariant.
         /// </summary>
         public void BeginGesture(Transformation objectTransformation,
-                                 Transformation controlTransformation1,
-                                 Transformation controlTransformation2)
+                                 UnitScaleTransformation controlTransformation1,
+                                 UnitScaleTransformation controlTransformation2)
         {
             var midpointTransformation = ComputeMidpointTransformation(controlTransformation1,
                                                                        controlTransformation2);
@@ -81,13 +75,13 @@ namespace Narupa.Frontend.Manipulation
         /// Return an updated object transformation to account for the changes
         /// in the control point transformations.
         /// </summary>
-        public Transformation UpdateControlPoints(Transformation controlTransformation1,
-                                                  Transformation controlTransformation2)
+        public Transformation UpdateControlPoints(UnitScaleTransformation controlTransformation1,
+                                                  UnitScaleTransformation controlTransformation2)
         {
             var midpointTransformation = ComputeMidpointTransformation(controlTransformation1,
                                                                        controlTransformation2);
             var objectTransformation = onePointGesture.UpdateControlPoint(midpointTransformation);
-
+            
             return objectTransformation;
         }
 
@@ -95,13 +89,13 @@ namespace Narupa.Frontend.Manipulation
         /// Compute a transformation that represents the "average" of two input
         /// transformations.
         /// </summary>
-        private static Transformation ComputeMidpointTransformation(
-            Transformation controlTransformation1,
-            Transformation controlTransformation2)
+        private static UniformScaleTransformation ComputeMidpointTransformation(
+            UnitScaleTransformation controlTransformation1,
+            UnitScaleTransformation controlTransformation2)
         {
             // position the origin between the two control points
-            var position1 = controlTransformation1.Position;
-            var position2 = controlTransformation2.Position;
+            var position1 = controlTransformation1.position;
+            var position2 = controlTransformation2.position;
             var position = Vector3.LerpUnclamped(position1, position2, 0.5f);
 
             // base the scale on the separation between the two control points
@@ -110,8 +104,8 @@ namespace Narupa.Frontend.Manipulation
             // choose an orientation where the line between the two control points
             // is one axis, and another axis is roughly the compromise between the
             // two up vectors of the control points
-            var rotation1 = controlTransformation1.Rotation;
-            var rotation2 = controlTransformation2.Rotation;
+            var rotation1 = controlTransformation1.rotation;
+            var rotation2 = controlTransformation2.rotation;
             var midRotation = Quaternion.SlerpUnclamped(rotation1, rotation2, 0.5f);
 
             var up = midRotation * Vector3.forward;
@@ -119,7 +113,7 @@ namespace Narupa.Frontend.Manipulation
 
             var rotation = Quaternion.LookRotation(right, up);
 
-            return new Transformation(position, rotation, scale * Vector3.one);
+            return new UniformScaleTransformation(position, rotation, scale);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Narupa.Visualisation.Node.Color
     [Serializable]
     public class GoodsellColorNode : VisualiserColorNode
     {
+#pragma warning disable 0649
         [SerializeField]
         private ElementArrayProperty elements = new ElementArrayProperty();
 
@@ -39,6 +40,7 @@ namespace Narupa.Visualisation.Node.Color
 
         [SerializeField]
         private GoodsellChainColor[] chainColors;
+#pragma warning restore 0649
 
         protected override bool IsInputDirty => elements.IsDirty
                                              || particleResidues.IsDirty

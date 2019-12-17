@@ -50,9 +50,9 @@ namespace Narupa.Frontend.Manipulation
         }
 
         /// <inheritdoc />
-        public void UpdateManipulatorPose(Transformation manipulatorPose)
+        public void UpdateManipulatorPose(UnitScaleTransformation manipulatorPose)
         {
-            GrabPosition = manipulatorPose.Position;
+            GrabPosition = manipulatorPose.position;
             ParticleGrabUpdated?.Invoke();
         }
 
