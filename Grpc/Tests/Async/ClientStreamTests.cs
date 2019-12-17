@@ -10,9 +10,9 @@ using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Async
 {
-    internal abstract class ClientStreamTests<TServer, TClient, TStream> :
-        ClientTests<TServer, TClient>
-        where TServer : IAsyncClosable
+    internal abstract class ClientStreamTests<TService, TClient, TStream> :
+        ClientTests<TService, TClient>
+        where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable
         where TStream : IAsyncClosable, ICancellable
     {

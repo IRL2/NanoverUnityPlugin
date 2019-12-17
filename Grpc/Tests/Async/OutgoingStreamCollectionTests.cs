@@ -15,7 +15,7 @@ using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Async
 {
-    internal class OutgoingStreamCollectionTests
+    internal class OutgoingStreamCollectionTests : BaseClientTests<InteractionService, ImdClient>
     {
         private static IEnumerable<AsyncUnitTests.AsyncTestInfo> GetTests()
         {
@@ -40,65 +40,54 @@ namespace Narupa.Grpc.Tests.Async
             AsyncUnitTests.RunAsyncTest(this, test);
         }
 
-        private InteractionServer server;
-        private GrpcConnection connection;
-        private ImdClient client;
         private OutgoingStreamCollection<ParticleInteraction, InteractionEndReply> streamCollection;
         private Action<ParticleInteraction> callback;
         private CancellationTokenSource collectionCancellationTokenSource;
 
-        [AsyncSetUp]
-        public Task SetUp()
+        protected override InteractionService GetService()
         {
-            server = new InteractionServer(54321);
-            connection = new GrpcConnection("localhost", 54321);
-            client = new ImdClient(connection);
+            return new InteractionService();
+        }
+
+        protected override ImdClient GetClient(GrpcConnection connection)
+        {
+            return new ImdClient(connection);
+        }
+
+        [AsyncSetUp]
+        public override Task SetUp()
+        {
+            base.SetUp();
+
             collectionCancellationTokenSource = new CancellationTokenSource();
             streamCollection =
                 new OutgoingStreamCollection<ParticleInteraction, InteractionEndReply>(
                     client.PublishInteractions, collectionCancellationTokenSource.Token);
             callback = Substitute.For<Action<ParticleInteraction>>();
-            server.Service.InteractionReceived += callback;
+            service.InteractionReceived += callback;
 
             return Task.CompletedTask;
         }
 
         [AsyncTearDown]
-        public async Task TearDown()
+        public override async Task TearDown()
         {
-            if (server != null)
-                await server.CloseAsync();
+            await base.TearDown();
             if (streamCollection != null)
                 await streamCollection.CloseAsync();
-            if (connection != null)
-                await connection.CloseAsync();
-            if (client != null)
-                await client.CloseAsync();
             streamCollection?.Dispose();
-            client?.Dispose();
-        }
-
-
-        [AsyncTest]
-        public Task CloseAsync_Works()
-        {
-            return Task.CompletedTask;
         }
 
         [AsyncTest]
-        public Task IsCancelled_Initial_False()
+        public async Task IsCancelled_Initial_False()
         {
             Assert.IsFalse(streamCollection.IsCancelled);
-
-            return Task.CompletedTask;
         }
 
         [AsyncTest]
-        public Task StartAsync_NullKey_Exception()
+        public async Task StartAsync_NullKey_Exception()
         {
             Assert.Throws<ArgumentNullException>(() => streamCollection.StartStream(null));
-
-            return Task.CompletedTask;
         }
 
         [AsyncTest]

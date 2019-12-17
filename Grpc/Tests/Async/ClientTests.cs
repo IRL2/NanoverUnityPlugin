@@ -5,38 +5,16 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Narupa.Core.Async;
+using Narupa.Grpc.Tests.Multiplayer;
 using Narupa.Testing.Async;
 using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Async
 {
-    internal abstract class ClientTests<TServer, TClient>
-        where TServer : IAsyncClosable
+    internal abstract class ClientTests<TService, TClient> : BaseClientTests<TService, TClient>
+        where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable
     {
-        protected abstract TServer GetServer();
-        protected abstract TClient GetClient(GrpcConnection connection);
-        protected abstract GrpcConnection GetConnection();
-
-        protected TServer server;
-        protected TClient client;
-        protected GrpcConnection connection;
-
-        public virtual Task SetUp()
-        {
-            server = GetServer();
-            connection = GetConnection();
-            client = GetClient(connection);
-
-            return Task.CompletedTask;
-        }
-
-        public virtual async Task TearDown()
-        {
-            await connection.CloseAsync();
-            await server.CloseAsync();
-        }
-
         [AsyncTest]
         public async Task CloseConnection_ConnectionToken_IsCancelled()
         {

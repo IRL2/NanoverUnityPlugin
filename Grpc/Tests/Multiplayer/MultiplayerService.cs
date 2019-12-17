@@ -7,7 +7,7 @@ using Narupa.Multiplayer;
 
 namespace Narupa.Grpc.Tests.Multiplayer
 {
-    internal class MultiplayerServer : Narupa.Multiplayer.Multiplayer.MultiplayerBase
+    internal class MultiplayerService : Narupa.Multiplayer.Multiplayer.MultiplayerBase, IBindableService
     {
         private ObservableDictionary<string, object> resources
             = new ObservableDictionary<string, object>();
@@ -128,6 +128,11 @@ namespace Narupa.Grpc.Tests.Multiplayer
             {
                 PlayerId = $"player{playerCount++}"
             };
+        }
+
+        public ServerServiceDefinition BindService()
+        {
+            return Narupa.Multiplayer.Multiplayer.BindService(this);
         }
     }
 }

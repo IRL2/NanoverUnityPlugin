@@ -10,10 +10,10 @@ using NSubstitute;
 
 namespace Narupa.Grpc.Tests.Async
 {
-    internal abstract class ClientOutgoingStreamTests<TServer, TClient, TMessage, TReply> :
+    internal abstract class ClientOutgoingStreamTests<TService, TClient, TMessage, TReply> :
         ClientStreamTests<
-            TServer, TClient, OutgoingStream<TMessage, TReply>>
-        where TServer : IAsyncClosable
+            TService, TClient, OutgoingStream<TMessage, TReply>>
+        where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable
         where TMessage : new()
     {

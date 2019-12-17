@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Narupa.Grpc.Tests.Multiplayer;
 using Narupa.Grpc.Tests.Trajectory;
 using Narupa.Grpc.Trajectory;
 using Narupa.Protocol.Trajectory;
@@ -27,8 +28,8 @@ namespace Narupa.Grpc.Tests.Session
         [AsyncTest]
         public async Task Trajectory()
         {
-            var server = new QueueTrajectoryServer(54321, new FrameData());
-            var connection = new GrpcConnection("localhost", 54321);
+            var service = new QueueTrajectoryService(new FrameData());
+            var (server, connection) = GrpcServer.CreateServerAndConnection(service);
 
             try
             {

@@ -12,9 +12,9 @@ using NUnit.Framework;
 namespace Narupa.Grpc.Tests.Async
 {
     internal abstract class
-        ClientIncomingStreamTests<TServer, TClient, TMessage> : ClientStreamTests<
-            TServer, TClient, IncomingStream<TMessage>>
-        where TServer : IAsyncClosable
+        ClientIncomingStreamTests<TService, TClient, TMessage> : ClientStreamTests<
+            TService, TClient, IncomingStream<TMessage>>
+        where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable
     {
         public abstract Task GetStreamTask(IncomingStream<TMessage> stream);
