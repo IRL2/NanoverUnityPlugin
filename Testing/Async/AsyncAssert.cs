@@ -137,7 +137,7 @@ namespace Narupa.Testing.Async
         /// after a certain timespan has passed.
         /// </summary>
         public static async Task PassesWithinTimeout(Action test,
-                                                     int timeout = 500,
+                                                     int timeout = 1000,
                                                      int interval = 100,
                                                      Task backgroundTask = null)
         {
@@ -167,7 +167,7 @@ namespace Narupa.Testing.Async
         /// <summary>
         /// Await a task, throwing an exception if the task does not complete within a timeout period.
         /// </summary>
-        public static async Task CompletesWithinTimeout(Task task, int timeout = 500, Task backgroundTask = null)
+        public static async Task CompletesWithinTimeout(Task task, int timeout = 1000, Task backgroundTask = null)
         {
             var delay = backgroundTask != null
                             ? RunTasksForDuration(timeout, backgroundTask)
