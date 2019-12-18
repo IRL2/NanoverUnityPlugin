@@ -66,7 +66,7 @@ namespace Narupa.Grpc.Tests.Session
 
             void HasReceivedFrame() => Assert.IsNotNull(session.CurrentFrame);
 
-            await AsyncAssert.WaitForAssertion(HasReceivedFrame);
+            await AsyncAssert.PassesWithinTimeout(HasReceivedFrame);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Narupa.Testing.Async
             Assert.AreEqual(2000, duration, 200);
         }
 
-        private async Task DelayThenException()
+        private static async Task DelayThenException()
         {
             await Task.Delay(1000);
             throw new Exception();

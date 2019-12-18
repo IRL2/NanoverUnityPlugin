@@ -11,6 +11,9 @@ using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Async
 {
+    /// <summary>
+    /// Setup a client and a server for testing gRPC.
+    /// </summary>
     internal abstract class BaseClientTests<TService, TClient>
         where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable

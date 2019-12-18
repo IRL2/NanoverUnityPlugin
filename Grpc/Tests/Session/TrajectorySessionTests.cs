@@ -77,7 +77,7 @@ namespace Narupa.Grpc.Tests.Session
                                               .Invoke(TrajectoryClient.CommandPlay,
                                                       Arg.Any<Struct>());
 
-            await AsyncAssert.WaitForAssertion(ReceivedCommand);
+            await AsyncAssert.PassesWithinTimeout(ReceivedCommand);
         }
 
         [AsyncTest]
@@ -89,7 +89,7 @@ namespace Narupa.Grpc.Tests.Session
                                               .Invoke(TrajectoryClient.CommandPause,
                                                       Arg.Any<Struct>());
 
-            await AsyncAssert.WaitForAssertion(ReceivedCommand);
+            await AsyncAssert.PassesWithinTimeout(ReceivedCommand);
         }
 
         [AsyncTest]
@@ -101,7 +101,7 @@ namespace Narupa.Grpc.Tests.Session
                                               .Invoke(TrajectoryClient.CommandReset,
                                                       Arg.Any<Struct>());
 
-            await AsyncAssert.WaitForAssertion(ReceivedCommand);
+            await AsyncAssert.PassesWithinTimeout(ReceivedCommand);
         }
 
         [AsyncTest]
@@ -113,7 +113,7 @@ namespace Narupa.Grpc.Tests.Session
                                               .Invoke(TrajectoryClient.CommandStep,
                                                       Arg.Any<Struct>());
 
-            await AsyncAssert.WaitForAssertion(ReceivedCommand);
+            await AsyncAssert.PassesWithinTimeout(ReceivedCommand);
         }
 
         [AsyncTest]
@@ -133,7 +133,7 @@ namespace Narupa.Grpc.Tests.Session
                                                             && s.Fields["xyz"].StringValue ==
                                                                "string"));
 
-            await AsyncAssert.WaitForAssertion(ReceivedCommand);
+            await AsyncAssert.PassesWithinTimeout(ReceivedCommand);
         }
     }
 }

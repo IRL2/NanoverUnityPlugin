@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using UnityEditor;
 using UnityEngine;
 
 namespace Narupa.Testing.Async
@@ -135,13 +136,18 @@ namespace Narupa.Testing.Async
         /// exceptions. This allows the test to return early if it passes, and only fail
         /// after a certain timespan has passed.
         /// </summary>
-        public static async Task WaitForAssertion(Action test, int delay = 500, int interval = 100)
+        public static async Task PassesWithinTimeout(Action test,
+                                                     int timeout = 500,
+                                                     int interval = 100,
+                                                     Task backgroundTask = null)
         {
-            var step = Mathf.Min(delay, interval);
             var time = 0;
-            while (time < delay)
+            while (time < timeout)
             {
-                await Task.Delay(step);
+                await (backgroundTask != null
+                    ? RunTasksForDuration(interval, backgroundTask)
+                    : Task.Delay(interval));
+                
                 try
                 {
                     test();
@@ -152,10 +158,33 @@ namespace Narupa.Testing.Async
                     // Ignore assertions
                 }
 
-                time += step;
+                time += interval;
             }
 
             test();
+        }
+
+        /// <summary>
+        /// Await a task, throwing an exception if the task does not complete within a timeout period.
+        /// </summary>
+        public static async Task CompletesWithinTimeout(Task task, int timeout = 500, Task backgroundTask = null)
+        {
+            var delay = backgroundTask != null
+                            ? RunTasksForDuration(timeout, backgroundTask)
+                            : Task.Delay(timeout);
+            if (await Task.WhenAny(task, delay) != task)
+                throw new AssertionException($"Task did not complete within {timeout} milliseconds.");
+        }
+
+        /// <summary>
+        /// Run a task that will last for a given duration, executing the provided tasks as well.
+        /// </summary>
+        /// <remarks>
+        /// Allows the simulation of waiting for a given time while one or more background tasks are running.
+        /// </remarks>
+        public static async Task RunTasksForDuration(int duration = 500, params Task[] tasks)
+        {
+            await Task.WhenAny(Task.WhenAll(Task.WhenAll(tasks), Task.Delay(duration)), Task.Delay(duration));
         }
     }
 }

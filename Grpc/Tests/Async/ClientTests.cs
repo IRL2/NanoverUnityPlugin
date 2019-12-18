@@ -5,7 +5,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Narupa.Core.Async;
-using Narupa.Grpc.Tests.Multiplayer;
 using Narupa.Testing.Async;
 using NUnit.Framework;
 
@@ -20,7 +19,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var connectionToken = connection.GetCancellationToken();
 
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.IsTrue(connectionToken.IsCancellationRequested);
         }
@@ -41,7 +40,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var clientToken = client.GetCancellationToken();
 
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.IsTrue(clientToken.IsCancellationRequested);
         }
@@ -51,7 +50,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             CancellationToken clientToken;
 
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(
                 () => clientToken = client.GetCancellationToken());
@@ -63,7 +62,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var clientToken = client.GetCancellationToken();
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.IsTrue(clientToken.IsCancellationRequested);
         }
@@ -86,7 +85,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             CancellationToken clientToken;
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(
                 () => clientToken = client.GetCancellationToken());
@@ -97,7 +96,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             CancellationToken clientToken;
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(
                 () => clientToken = client.GetCancellationToken());
@@ -106,9 +105,9 @@ namespace Narupa.Grpc.Tests.Async
         [AsyncTest]
         public async Task CloseClient_Idempotent()
         {
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
         }
 
         [AsyncTest]
@@ -124,7 +123,7 @@ namespace Narupa.Grpc.Tests.Async
         [AsyncTest]
         public async Task CloseThenCancelClient()
         {
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             client.Cancel();
         }
@@ -134,13 +133,14 @@ namespace Narupa.Grpc.Tests.Async
         {
             client.Cancel();
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
         }
 
         [AsyncTest]
         public async Task CloseClient_Simultaneous()
         {
-            await Task.WhenAll(client.CloseAsync(), client.CloseAsync());
+            await AsyncAssert.CompletesWithinTimeout(
+                Task.WhenAll(client.CloseAsync(), client.CloseAsync()));
         }
     }
 }

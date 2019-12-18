@@ -94,9 +94,13 @@ namespace Narupa.Grpc.Tests.Async
         public async Task SendAsync_Works()
         {
             var streamTask = streamCollection.StartStream("key");
-            await streamCollection.QueueMessageAsync("key", new ParticleInteraction());
-            await Task.WhenAny(streamTask, Task.Delay(250));
-            callback.ReceivedWithAnyArgs(1).Invoke(default);
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("key", new ParticleInteraction()));
+
+            void ServerReceivedItem() => callback.ReceivedWithAnyArgs(1).Invoke(default);
+
+            await AsyncAssert.PassesWithinTimeout(ServerReceivedItem,
+                                                  backgroundTask: streamTask);
         }
 
         [AsyncTest]
@@ -173,7 +177,7 @@ namespace Narupa.Grpc.Tests.Async
         [AsyncTest]
         public async Task StartAsync_AfterCloseAsync_Exception()
         {
-            await streamCollection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(() => streamCollection.StartStream("abc"));
         }
@@ -181,7 +185,7 @@ namespace Narupa.Grpc.Tests.Async
         [AsyncTest]
         public async Task SendAsync_AfterCloseAsync_Exception()
         {
-            await streamCollection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.CloseAsync());
 
             await AsyncAssert.ThrowsAsync<InvalidOperationException>(
                 async () => await streamCollection.QueueMessageAsync(
@@ -191,7 +195,7 @@ namespace Narupa.Grpc.Tests.Async
         [AsyncTest]
         public async Task EndAsync_AfterCloseAsync_Exception()
         {
-            await streamCollection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.CloseAsync());
 
             await AsyncAssert.ThrowsAsync<InvalidOperationException>(
                 async () => await streamCollection.EndStreamAsync("key"));
@@ -203,12 +207,14 @@ namespace Narupa.Grpc.Tests.Async
             var streamTask1 = streamCollection.StartStream("abc");
             var streamTask2 = streamCollection.StartStream("def");
 
-            await streamCollection.QueueMessageAsync("abc", new ParticleInteraction());
-            await streamCollection.QueueMessageAsync("def", new ParticleInteraction());
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("abc", new ParticleInteraction()));
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("def", new ParticleInteraction()));
 
             await Task.WhenAny(streamTask1, streamTask2, Task.Delay(150));
 
-            await streamCollection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.CloseAsync());
 
             callback.ReceivedWithAnyArgs(2).Invoke(default);
         }
@@ -218,23 +224,26 @@ namespace Narupa.Grpc.Tests.Async
         {
             var streamTask1 = streamCollection.StartStream("abc");
 
-            await streamCollection.QueueMessageAsync("abc", new ParticleInteraction());
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("abc", new ParticleInteraction()));
 
             await Task.WhenAny(streamTask1, Task.Delay(100));
 
             var streamTask2 = streamCollection.StartStream("def");
 
-            await streamCollection.QueueMessageAsync("def", new ParticleInteraction());
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("def", new ParticleInteraction()));
 
             await Task.WhenAny(streamTask1, streamTask2, Task.Delay(100));
 
-            await streamCollection.EndStreamAsync("abc");
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.EndStreamAsync("abc"));
 
-            await streamCollection.QueueMessageAsync("def", new ParticleInteraction());
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("def", new ParticleInteraction()));
 
             await Task.WhenAny(streamTask2, Task.Delay(100));
 
-            await streamCollection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.CloseAsync());
 
             callback.ReceivedWithAnyArgs(3).Invoke(default);
         }
@@ -244,21 +253,23 @@ namespace Narupa.Grpc.Tests.Async
         {
             var streamTask1 = streamCollection.StartStream("abc");
 
-            await streamCollection.QueueMessageAsync("abc", new ParticleInteraction());
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("abc", new ParticleInteraction()));
 
             await Task.WhenAny(streamTask1, Task.Delay(50));
 
-            await streamCollection.EndStreamAsync("abc");
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.EndStreamAsync("abc"));
 
             var streamTask2 = streamCollection.StartStream("abc");
 
-            await streamCollection.QueueMessageAsync("abc", new ParticleInteraction());
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("abc", new ParticleInteraction()));
 
             await Task.WhenAny(streamTask2, Task.Delay(50));
 
-            await streamCollection.EndStreamAsync("abc");
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.EndStreamAsync("abc"));
 
-            await streamCollection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.CloseAsync());
 
             callback.ReceivedWithAnyArgs(2).Invoke(default);
         }
@@ -268,11 +279,12 @@ namespace Narupa.Grpc.Tests.Async
         {
             var streamTask1 = streamCollection.StartStream("abc");
 
-            await streamCollection.QueueMessageAsync("abc", new ParticleInteraction());
+            await AsyncAssert.CompletesWithinTimeout(
+                streamCollection.QueueMessageAsync("abc", new ParticleInteraction()));
 
             await Task.WhenAny(streamTask1, Task.Delay(50));
 
-            await streamCollection.EndStreamAsync("abc");
+            await AsyncAssert.CompletesWithinTimeout(streamCollection.EndStreamAsync("abc"));
 
             callback.ReceivedWithAnyArgs(1).Invoke(default);
         }

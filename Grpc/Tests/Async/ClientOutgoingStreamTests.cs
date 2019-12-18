@@ -38,16 +38,18 @@ namespace Narupa.Grpc.Tests.Async
             {
                 await stream.QueueMessageAsync(new TMessage());
                 await stream.QueueMessageAsync(new TMessage());
-                await Task.Delay(50);
             }
 
-            await Task.WhenAny(streamTask,
-                               Sequential());
+            await AsyncAssert.CompletesWithinTimeout(Task.WhenAny(streamTask,
+                                                           Sequential()));
+            
+            void ServerReceivedMessages() =>  serverCallback.ReceivedWithAnyArgs(2)
+                                                            .Invoke(default);
 
-            serverCallback.ReceivedWithAnyArgs(2).Invoke(default);
+            await AsyncAssert.PassesWithinTimeout(ServerReceivedMessages);
         }
 
-        private Task GetStreamTask(OutgoingStream<TMessage, TReply> stream)
+        private static Task GetStreamTask(OutgoingStream<TMessage, TReply> stream)
         {
             return stream.StartSending();
         }
@@ -62,13 +64,15 @@ namespace Narupa.Grpc.Tests.Async
             {
                 await Task.WhenAll(stream.QueueMessageAsync(new TMessage()),
                                    stream.QueueMessageAsync(new TMessage()));
-                await Task.Delay(50);
             }
 
-            await Task.WhenAny(streamTask,
-                               Concurrent());
+            await AsyncAssert.CompletesWithinTimeout(Task.WhenAny(streamTask,
+                               Concurrent()));
+            
+            void ServerReceivedMessages() =>  serverCallback.ReceivedWithAnyArgs(2)
+                                                            .Invoke(default);
 
-            serverCallback.ReceivedWithAnyArgs(2).Invoke(default);
+            await AsyncAssert.PassesWithinTimeout(ServerReceivedMessages);
         }
     }
 }
