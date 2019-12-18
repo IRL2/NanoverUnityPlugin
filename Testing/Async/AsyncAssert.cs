@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using UnityEngine;
 
 namespace Narupa.Testing.Async
 {
@@ -127,6 +128,34 @@ namespace Narupa.Testing.Async
             where TActual : Exception
         {
             return await ThrowsAsync<TActual>(callback, string.Empty, null);
+        }
+
+        /// <summary>
+        /// Run the provided test at 100 millisecond intervals, ignoring assertion
+        /// exceptions. This allows the test to return early if it passes, and only fail
+        /// after a certain timespan has passed.
+        /// </summary>
+        public static async Task WaitForAssertion(Action test, int delay = 500, int interval = 100)
+        {
+            var step = Mathf.Min(delay, interval);
+            var time = 0;
+            while (time < delay)
+            {
+                await Task.Delay(step);
+                try
+                {
+                    test();
+                    return;
+                }
+                catch (AssertionException exception)
+                {
+                    // Ignore assertions
+                }
+
+                time += step;
+            }
+
+            test();
         }
     }
 }

@@ -6,8 +6,6 @@ using Narupa.Session;
 using Narupa.Testing.Async;
 using NSubstitute;
 using NUnit.Framework;
-using UnityEngine;
-using Assert = UnityEngine.Assertions.Assert;
 
 namespace Narupa.Grpc.Tests.Multiplayer
 {
@@ -21,7 +19,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
         private MultiplayerSession session2;
         private GrpcConnection connection2;
 
-        private const int DelayMilliseconds = 500;
+        private const int TimeoutMilliseconds = 1000;
 
         [SetUp]
         public void AsyncSetup()
@@ -81,8 +79,11 @@ namespace Narupa.Grpc.Tests.Multiplayer
         public async Task ValueChanged_ClientGetsUpdate()
         {
             service.Resources["abc"] = 1.2;
-            await Task.Delay(DelayMilliseconds);
-            CollectionAssert.Contains(session.SharedStateDictionary.Keys, "abc");
+
+            void HasReceivedKey() => CollectionAssert.Contains(session.SharedStateDictionary.Keys,
+                                                               "abc");
+
+            await AsyncAssert.WaitForAssertion(HasReceivedKey, TimeoutMilliseconds);
         }
 
         [AsyncTest]
@@ -91,9 +92,11 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var callback = Substitute.For<Action<string>>();
             session.SharedStateDictionaryKeyUpdated += callback;
 
+            void HasReceivedCallback() => callback.Received(1).Invoke(Arg.Is("abc"));
+
             service.Resources["abc"] = 1.2;
-            await Task.Delay(DelayMilliseconds);
-            callback.Received(1).Invoke(Arg.Is("abc"));
+
+            await AsyncAssert.WaitForAssertion(HasReceivedCallback, TimeoutMilliseconds);
         }
 
         [AsyncTest]
@@ -102,9 +105,9 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var value = session.GetSharedResource("abc");
             service.Resources["abc"] = 1.2;
 
-            await Task.Delay(DelayMilliseconds);
+            void HasReceivedValue() => Assert.AreEqual(1.2, value.Value);
 
-            Assert.AreEqual(1.2, value.Value);
+            await AsyncAssert.WaitForAssertion(HasReceivedValue, TimeoutMilliseconds);
         }
 
         [AsyncTest]
@@ -113,13 +116,12 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var callback = Substitute.For<Action>();
             var value = session.GetSharedResource("abc");
             value.ValueChanged += callback;
+
             service.Resources["abc"] = 1.2;
 
-            await Task.Delay(DelayMilliseconds);
+            void HasReceivedCallback() => callback.Received(1).Invoke();
 
-            Assert.AreEqual(1.2, value.Value);
-
-            callback.Received(1).Invoke();
+            await AsyncAssert.WaitForAssertion(HasReceivedCallback, TimeoutMilliseconds);
         }
 
         [AsyncTest]
@@ -129,11 +131,14 @@ namespace Narupa.Grpc.Tests.Multiplayer
             value.ObtainLock();
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value.LockState);
 
-            await Task.Delay(DelayMilliseconds);
+            void LockSuccessful()
+            {
+                Assert.AreEqual(MultiplayerResourceLockState.Locked, value.LockState);
+                Assert.IsTrue(service.Locks.TryGetValue("abc", out var v)
+                           && v.Equals(session.PlayerId));
+            }
 
-            Assert.AreEqual(MultiplayerResourceLockState.Locked, value.LockState);
-            Assert.IsTrue(service.Locks.TryGetValue("abc", out var v)
-                       && v.Equals(session.PlayerId));
+            await AsyncAssert.WaitForAssertion(LockSuccessful, TimeoutMilliseconds);
         }
 
         [AsyncTest]
@@ -142,21 +147,22 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var value2 = session2.GetSharedResource("abc");
             value2.ObtainLock();
 
-            await Task.Delay(DelayMilliseconds);
+            void DoesPlayer2HaveLock() => Assert.IsTrue(service.Locks.TryGetValue("abc", out var v1)
+                                                     && v1.Equals(session2.PlayerId));
 
-            Assert.IsTrue(service.Locks.TryGetValue("abc", out var v1)
-                       && v1.Equals(session2.PlayerId));
+            await AsyncAssert.WaitForAssertion(DoesPlayer2HaveLock, TimeoutMilliseconds);
 
             var value1 = session.GetSharedResource("abc");
             value1.ObtainLock();
 
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value1.LockState);
 
-            await Task.Delay(DelayMilliseconds);
+            void IsPlayer1LockRejected() =>
+                Assert.AreEqual(MultiplayerResourceLockState.Unlocked, value1.LockState);
 
-            Assert.AreEqual(MultiplayerResourceLockState.Unlocked, value1.LockState);
-            Assert.IsTrue(service.Locks.TryGetValue("abc", out var v2)
-                       && v2.Equals(session2.PlayerId));
+
+            await AsyncAssert.WaitForAssertion(IsPlayer1LockRejected, TimeoutMilliseconds);
+            await AsyncAssert.WaitForAssertion(DoesPlayer2HaveLock, TimeoutMilliseconds);
         }
 
         [AsyncTest]
@@ -165,36 +171,39 @@ namespace Narupa.Grpc.Tests.Multiplayer
             var value2 = session2.GetSharedResource("abc");
             value2.ObtainLock();
 
-            await Task.Delay(DelayMilliseconds);
+            void DoesPlayer2HaveLock() => Assert.IsTrue(service.Locks.TryGetValue("abc", out var v1)
+                                                     && v1.Equals(session2.PlayerId));
 
-            Assert.IsTrue(service.Locks.TryGetValue("abc", out var v1)
-                       && v1.Equals(session2.PlayerId));
+            await AsyncAssert.WaitForAssertion(DoesPlayer2HaveLock, TimeoutMilliseconds);
 
             var value1 = session.GetSharedResource("abc");
             value1.ObtainLock();
 
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value1.LockState);
 
-            await Task.Delay(DelayMilliseconds);
+            void IsPlayer1LockRejected() =>
+                Assert.AreEqual(MultiplayerResourceLockState.Unlocked, value1.LockState);
 
-            Assert.AreEqual(MultiplayerResourceLockState.Unlocked, value1.LockState);
-            Assert.IsTrue(service.Locks.TryGetValue("abc", out var v2)
-                       && v2.Equals(session2.PlayerId));
+            void IsPlayer1LockAccepted() =>
+                Assert.AreEqual(MultiplayerResourceLockState.Locked, value1.LockState);
+
+            void DoesPlayer1HaveLock() => Assert.IsTrue(service.Locks.TryGetValue("abc", out var v1)
+                                                     && v1.Equals(session.PlayerId));
+
+            await AsyncAssert.WaitForAssertion(IsPlayer1LockRejected, TimeoutMilliseconds);
+            await AsyncAssert.WaitForAssertion(DoesPlayer2HaveLock, TimeoutMilliseconds);
 
             value2.ReleaseLock();
 
-            await Task.Delay(DelayMilliseconds);
+            void NoLocks() => CollectionAssert.IsEmpty(service.Locks);
 
-            CollectionAssert.IsEmpty(service.Locks);
+            await AsyncAssert.WaitForAssertion(NoLocks, TimeoutMilliseconds);
 
             value1.ObtainLock();
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value1.LockState);
 
-            await Task.Delay(DelayMilliseconds);
-
-            Assert.AreEqual(MultiplayerResourceLockState.Locked, value1.LockState);
-            Assert.IsTrue(service.Locks.TryGetValue("abc", out var v3)
-                       && v3.Equals(session.PlayerId));
+            await AsyncAssert.WaitForAssertion(IsPlayer1LockAccepted, TimeoutMilliseconds);
+            await AsyncAssert.WaitForAssertion(DoesPlayer1HaveLock, TimeoutMilliseconds);
         }
     }
 }

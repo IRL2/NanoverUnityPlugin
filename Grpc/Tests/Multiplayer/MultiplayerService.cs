@@ -55,6 +55,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             ServerCallContext context)
         {
             var success = AcquireLock(request.PlayerId, request.ResourceId);
+            await Task.Delay(150);
             return new ResourceRequestResponse
             {
                 Success = success
@@ -66,6 +67,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             ServerCallContext context)
         {
             var success = ReleaseLock(request.PlayerId, request.ResourceId);
+            await Task.Delay(150);
             return new ResourceRequestResponse
             {
                 Success = success
