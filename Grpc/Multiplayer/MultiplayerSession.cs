@@ -10,9 +10,11 @@ using UnityEngine;
 
 using Avatar = Narupa.Multiplayer.Avatar;
 using System.Linq;
+using Grpc.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
 using Narupa.Grpc;
+using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
 using UnityEngine.Profiling;
 
@@ -30,6 +32,21 @@ namespace Narupa.Session
         public const string RightHandName = "hand.right";
         public const string SimulationPoseKey = "scene";
 
+        public MultiplayerSession()
+        {
+            SimulationPose = new MultiplayerResource<Transformation>(this, SimulationPoseKey, PoseFromObject, PoseToObject);
+        }
+
+        /// <summary>
+        /// The transformation of the simulation box.
+        /// </summary>
+        public readonly MultiplayerResource<Transformation> SimulationPose;
+
+        /// <summary>
+        /// Callback for when a multiplayer resource is updated.
+        /// </summary>
+        public Action<string> SharedStateDictionaryKeyUpdated;
+
         /// <summary>
         /// Dictionary of player ids to their last known avatar.
         /// </summary>
@@ -42,11 +59,6 @@ namespace Narupa.Session
         public Dictionary<string, object> SharedStateDictionary { get; } = new Dictionary<string, object>();
 
         /// <summary>
-        /// Currently known pose of the simulation space.
-        /// </summary>
-        public Transformation SimulationPose { get; private set; } = Transformation.Identity;
-
-        /// <summary>
         /// Is there an open client on this session?
         /// </summary>
         public bool IsOpen => client != null;
@@ -55,12 +67,6 @@ namespace Narupa.Session
         /// Has this session created a user?
         /// </summary>
         public bool HasPlayer => PlayerId != null;
-
-        /// <summary>
-        /// Do we know we have a lock on the simulation pose key in the shared
-        /// state dictionary?
-        /// </summary>
-        public bool HasSimulationPoseLock { get; private set; }
 
         /// <summary>
         /// Username of the current player, if any.
@@ -82,6 +88,11 @@ namespace Narupa.Session
         /// changes.
         /// </summary>
         public int ValuePublishInterval { get; set; } = 1000 / 30;
+
+        /// <summary>
+        /// The interval at which avatar updates should be sent to this client.
+        /// </summary>
+        public const float AvatarUpdateInterval = 1f / 30f;
 
         private MultiplayerClient client;
 
@@ -138,7 +149,6 @@ namespace Narupa.Session
 
             PlayerName = null;
             PlayerId = null;
-            HasSimulationPoseLock = false;
 
             Avatars.Clear();
             pendingAvatars.Clear();
@@ -157,19 +167,33 @@ namespace Narupa.Session
 
             PlayerName = playerName;
             PlayerId = response.PlayerId;
-
-            OutgoingAvatar = client.PublishAvatar(PlayerId);
-            IncomingAvatars = client.SubscribeAvatars(updateInterval: 1f / 30f,
-                                                      ignorePlayerId: PlayerId);
-
-            IncomingAvatars.MessageReceived += OnAvatarReceived;
-
-            OutgoingAvatar.StartSending().AwaitInBackgroundIgnoreCancellation();
-            IncomingAvatars.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+            
+            StartAvatars();
 
             IncomingValueUpdates = client.SubscribeAllResourceValues();
             IncomingValueUpdates.MessageReceived += OnResourceValuesUpdateReceived;
             IncomingValueUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+        }
+
+        public void StartAvatars()
+        {
+            try
+            {
+
+                OutgoingAvatar = client.PublishAvatar(PlayerId);
+                IncomingAvatars = client.SubscribeAvatars(updateInterval: AvatarUpdateInterval,
+                                                          ignorePlayerId: PlayerId);
+
+                IncomingAvatars.MessageReceived += OnAvatarReceived;
+
+                OutgoingAvatar.StartSending().AwaitInBackgroundIgnoreCancellation();
+                IncomingAvatars.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+
+            }
+            catch (RpcException e)
+            {
+                
+            }
         }
 
         /// <summary>
@@ -222,42 +246,29 @@ namespace Narupa.Session
         {
             pendingValues[key] = value.ToProtobufValue();
         }
-
+        
         /// <summary>
-        /// Attempt to gain exclusive write access to the shared "scene" value, 
-        /// which controls the pose of the simulation scene.
+        /// Get a key in the shared state dictionary.
         /// </summary>
-        public async Task<bool> LockSimulationPose()
+        public object GetSharedState(string key)
         {
-            bool success = await client.LockResource(PlayerId, SimulationPoseKey);
-
-            HasSimulationPoseLock = success;
-
-            return success;
+            return SharedStateDictionary.TryGetValue(key, out var value) ? value : null;
         }
 
         /// <summary>
-        /// Attempt to release our lock on the shared "scene" value.
+        /// Attempt to gain exclusive write access to the shared value of the given key.
         /// </summary>
-        public async Task<bool> ReleaseSimulationPose()
+        public async Task<bool> LockResource(string id)
         {
-            bool success = await client.ReleaseResource(PlayerId, SimulationPoseKey);
-
-            HasSimulationPoseLock = false;
-
-            return success;
+            return await client.LockResource(PlayerId, id);
         }
-
+        
         /// <summary>
-        /// Set the simulation pose to a given value.
+        /// Release the lock on the given object of a given key.
         /// </summary>
-        public void SetSimulationPose(Transformation pose)
+        public async Task<bool> ReleaseResource(string id)
         {
-            if (!HasSimulationPoseLock)
-                throw new InvalidOperationException(
-                    "You must lock the simulation pose before setting it!");
-
-            SetSharedState(SimulationPoseKey, PoseToObject(pose));
+            return await client.ReleaseResource(PlayerId, id);
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
@@ -293,11 +304,6 @@ namespace Narupa.Session
             foreach (var key in update.ResourceValueRemovals)
             {
                 SharedStateDictionaryKeyRemoved?.Invoke(key);
-            }
-
-            if (update.ResourceValueChanges.ContainsKey(SimulationPoseKey))
-            {
-                SimulationPose = PoseFromObject(SharedStateDictionary[SimulationPoseKey]);
             }
         }
 
@@ -416,6 +422,11 @@ namespace Narupa.Session
             }
 
             throw new ArgumentOutOfRangeException();
+        }
+
+        public MultiplayerResource<object> GetSharedResource(string key)
+        {
+            return new MultiplayerResource<object>(this, key);
         }
     }
 

@@ -4,9 +4,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using JetBrains.Annotations;
 
-namespace Narupa.Visualisation.Utility
+namespace Narupa.Core.Collections
 {
     /// <summary>
     /// A dictionary which implements <see cref="INotifyCollectionChanged" /> on the
@@ -53,10 +54,12 @@ namespace Narupa.Visualisation.Utility
         /// <inheritdoc cref="IDictionary{TKey,TValue}" />
         public void Clear()
         {
+            var keys = Keys.ToArray();
             dictionary.Clear();
             CollectionChanged?.Invoke(this,
                                       new NotifyCollectionChangedEventArgs(
-                                          NotifyCollectionChangedAction.Reset));
+                                          NotifyCollectionChangedAction.Remove,
+                                          keys));
         }
 
         /// <inheritdoc cref="IDictionary{TKey,TValue}" />
