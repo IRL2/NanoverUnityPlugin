@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2328836869028133637}
   - component: {fileID: 8611370669276084789}
   - component: {fileID: 4470637484251353897}
+  - component: {fileID: 7604759643221117606}
   - component: {fileID: 7698190664551895981}
   m_Layer: 0
   m_Name: cycles
@@ -87,6 +88,24 @@ MonoBehaviour:
     input:
       unityObject: {fileID: 11400000, guid: d9246a3960e1df3438615b81ea1b394e, type: 2}
       isValueProvided: 1
+--- !u!114 &7604759643221117606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75182077779563847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: particle.filter
+    input:
+      value: 
+      isValueProvided: 0
 --- !u!114 &7698190664551895981
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -43,11 +43,6 @@ namespace Narupa.Session
         public readonly MultiplayerResource<Transformation> SimulationPose;
 
         /// <summary>
-        /// Callback for when a multiplayer resource is updated.
-        /// </summary>
-        public Action<string> SharedStateDictionaryKeyUpdated;
-
-        /// <summary>
         /// Dictionary of player ids to their last known avatar.
         /// </summary>
         public Dictionary<string, MultiplayerAvatar> Avatars { get; } 
@@ -107,7 +102,7 @@ namespace Narupa.Session
 
         private Task avatarFlushingTask, valueFlushingTask;
 
-        public event Action<string, object> SharedStateDictionaryKeyChanged;
+        public event Action<string, object> SharedStateDictionaryKeyUpdated;
 
         public event Action<string> SharedStateDictionaryKeyRemoved;
 
@@ -298,7 +293,7 @@ namespace Narupa.Session
             {
                 var value = pair.Value.ToObject();
                 SharedStateDictionary[pair.Key] = value;
-                SharedStateDictionaryKeyChanged?.Invoke(pair.Key, value);
+                SharedStateDictionaryKeyUpdated?.Invoke(pair.Key, value);
             }
 
             foreach (var key in update.ResourceValueRemovals)

@@ -84,12 +84,12 @@ namespace Narupa.Grpc.Tests.Multiplayer
         [AsyncTest]
         public async Task ValueChanged_ClientCallback()
         {
-            var callback = Substitute.For<Action<string>>();
+            var callback = Substitute.For<Action<string, object>>();
             session.SharedStateDictionaryKeyUpdated += callback;
 
             service.Resources["abc"] = 1.2;
             await Task.Delay(DelayMilliseconds);
-            callback.Received(1).Invoke(Arg.Is("abc"));
+            callback.Received(1).Invoke(Arg.Is("abc"), Arg.Any<object>());
         }
 
         [AsyncTest]
