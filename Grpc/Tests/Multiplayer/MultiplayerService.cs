@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Narupa.Core.Collections;
@@ -103,22 +104,28 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 responseStream,
             ServerCallContext context)
         {
-            async void ResourcesOnCollectionChanged(object sender,
+            var update = new ResourceValuesUpdate();
+
+            void ResourcesOnCollectionChanged(object sender,
                                                     NotifyCollectionChangedEventArgs e)
             {
-                var update = new ResourceValuesUpdate();
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
                 foreach (var change in changes)
                     update.ResourceValueChanges[change] = resources[change].ToProtobufValue();
                 foreach (var removal in removals)
                     update.ResourceValueRemovals.Add(removal);
-                await responseStream.WriteAsync(update);
             }
 
             resources.CollectionChanged += ResourcesOnCollectionChanged;
             while (true)
             {
                 await Task.Delay(10);
+                if (update.ResourceValueChanges.Any() || update.ResourceValueRemovals.Any())
+                {
+                    var toSend = update;
+                    update = new ResourceValuesUpdate();
+                    await responseStream.WriteAsync(toSend);
+                }
             }
         }
 
