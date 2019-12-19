@@ -11,15 +11,19 @@ namespace Narupa.Visualisation.Node.Color
     [CreateAssetMenu(menuName = "Definition/String-Color Mapping")]
     public class StringColorMapping : ScriptableObject
     {
+#pragma warning disable 0649
         /// <summary>
         /// Default color used when a color is not found.
         /// </summary>
-        [SerializeField] private UnityEngine.Color defaultColor;
+        [SerializeField]
+        private UnityEngine.Color defaultColor;
 
         /// <summary>
         /// List of assignments, acting as a dictionary so Unity can serialize.
         /// </summary>
-        [SerializeField] private List<StringColorAssignment> dictionary;
+        [SerializeField]
+        private List<StringColorAssignment> dictionary;
+#pragma warning restore 0649
 
         /// <summary>
         /// Get the color for the given atomic element, returning a default color if the

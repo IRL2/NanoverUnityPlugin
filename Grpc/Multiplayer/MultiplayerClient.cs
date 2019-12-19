@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using JetBrains.Annotations;
 using Narupa.Multiplayer;
@@ -140,7 +141,9 @@ namespace Narupa.Network
                 ResourceId = key,
             };
 
-            var response = await Client.AcquireResourceLockAsync(request);
+            var response = await Client.AcquireResourceLockAsync(request, 
+                                                                 null, 
+                                                                 DateTime.UtcNow.AddSeconds(1));
 
             return response.Success;
         }

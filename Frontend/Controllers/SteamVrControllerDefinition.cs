@@ -19,6 +19,7 @@ namespace Narupa.Frontend.Controllers
         [Serializable]
         private struct ControllerDefinition
         {
+#pragma warning disable 0649
             [SerializeField]
             [Tooltip("Prefab to place at the position of the controller.")]
             internal VrControllerPrefab prefab;
@@ -26,8 +27,10 @@ namespace Narupa.Frontend.Controllers
             [SerializeField]
             [Tooltip("Should the default SteamVR model be hidden.")]
             internal bool hideSteamVrModel;
+#pragma warning restore 0649
         }
 
+#pragma warning disable 0649
         [SerializeField]
         [Tooltip("Internal SteamVR controller ID.")]
         private string controllerId;
@@ -39,6 +42,7 @@ namespace Narupa.Frontend.Controllers
         [SerializeField]
         [Tooltip("How to handle the right controller.")]
         private ControllerDefinition rightController;
+#pragma warning restore 0649
 
         /// <summary>
         /// Get the controller definition for a given SteamVR id.

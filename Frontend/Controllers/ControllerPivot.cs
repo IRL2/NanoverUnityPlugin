@@ -13,8 +13,10 @@ namespace Narupa.Frontend.Controllers
     /// </summary>
     public class ControllerPivot : MonoBehaviour, IPosedObject
     {
+#pragma warning disable 0649
         [SerializeField]
         private float radius;
+#pragma warning restore 0649
 
         public float Radius => radius;
         
@@ -39,7 +41,7 @@ namespace Narupa.Frontend.Controllers
         {
             get
             {
-                var transformation = Transformation.FromTransform(transform);
+                var transformation = Transformation.FromTransformRelativeToWorld(transform);
                 transformation.Scale = Vector3.one * radius;
                 return transformation;
             }

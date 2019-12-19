@@ -2,9 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using Narupa.Core.Math;
 using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Protocol;
+using UnityEngine;
 
 namespace Narupa.Grpc.Frame
 {
@@ -58,6 +60,26 @@ namespace Narupa.Grpc.Frame
                 elementArray[i] = (Element) indexArray[i];
 
             return elementArray;
+        }
+
+        /// <summary>
+        /// Convert a protobuf <see cref="ValueArray" /> to a <see cref="LinearTransformation"/>.
+        /// </summary>
+        public static LinearTransformation ToLinearTransformation(this ValueArray valueArray)
+        {
+            if (valueArray.ValuesCase != ValueArray.ValuesOneofCase.FloatValues)
+                throw new ArgumentException("ValueArray is of wrong type");
+
+            var floatArray = valueArray.FloatValues.Values;
+
+            if (floatArray.Count != 9)
+                throw new ArgumentException(
+                    "Incorrect number of floats to specify a linear transformation");
+
+            return new LinearTransformation(
+                new Vector3(floatArray[0], floatArray[1], floatArray[2]),
+                new Vector3(floatArray[3], floatArray[4], floatArray[5]),
+                new Vector3(floatArray[6], floatArray[7], floatArray[8]));
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Narupa.Frontend.Manipulation
         private class GrabManipulation : IActiveManipulation
         {
             public event Action ManipulationEnded;
-            public Transformation ManipulatorPose { get; private set; }
+            public UnitScaleTransformation ManipulatorPose { get; private set; }
 
             private readonly ManipulableTransform Manipulable;
 
@@ -30,7 +30,7 @@ namespace Narupa.Frontend.Manipulation
                 Manipulable = manipulable;
             }
 
-            public void UpdateManipulatorPose(Transformation manipulatorPose)
+            public void UpdateManipulatorPose(UnitScaleTransformation manipulatorPose)
             {
                 ManipulatorPose = manipulatorPose;
                 Manipulable.UpdateGesturesFromActiveManipulations();
@@ -65,7 +65,7 @@ namespace Narupa.Frontend.Manipulation
         /// A second grab will end the one-point gesture and begin a new
         /// two-point gesture.
         /// </summary>
-        public IActiveManipulation StartGrabManipulation(Transformation manipulatorPose)
+        public IActiveManipulation StartGrabManipulation(UnitScaleTransformation manipulatorPose)
         {
             if (manipulations.Count == 0)
             {
@@ -79,30 +79,30 @@ namespace Narupa.Frontend.Manipulation
             return null;
         }
 
-        private IActiveManipulation StartFirstGrab(Transformation manipulatorPose)
+        private IActiveManipulation StartFirstGrab(UnitScaleTransformation manipulatorPose)
         {
             var manipulation = CreateManipulation(manipulatorPose);
 
-            OnePointGesture.BeginGesture(Transformation.FromTransform(transform),
+            OnePointGesture.BeginGesture(Transformation.FromTransformRelativeToWorld(transform),
                                          manipulatorPose);
 
             return manipulation;
         }
 
-        private IActiveManipulation StartSecondGrab(Transformation manipulatorPose)
+        private IActiveManipulation StartSecondGrab(UnitScaleTransformation manipulatorPose)
         {
             var manipulation = CreateManipulation(manipulatorPose);
             var pose0 = manipulations[0].ManipulatorPose;
             var pose1 = manipulations[1].ManipulatorPose;
 
-            TwoPointGesture.BeginGesture(Transformation.FromTransform(transform),
+            TwoPointGesture.BeginGesture(Transformation.FromTransformRelativeToWorld(transform),
                                          pose0,
                                          pose1);
 
             return manipulation;
         }
 
-        private IActiveManipulation CreateManipulation(Transformation manipulatorPose)
+        private IActiveManipulation CreateManipulation(UnitScaleTransformation manipulatorPose)
         {
             var manipulation = new GrabManipulation(this);
             manipulation.UpdateManipulatorPose(manipulatorPose);
@@ -130,7 +130,7 @@ namespace Narupa.Frontend.Manipulation
         private void SwitchToSinglePointManipulation()
         {
             var pose = manipulations[0].ManipulatorPose;
-            var transformation = Transformation.FromTransform(transform);
+            var transformation = Transformation.FromTransformRelativeToWorld(transform);
 
             OnePointGesture.BeginGesture(transformation, pose);
         }
@@ -156,7 +156,7 @@ namespace Narupa.Frontend.Manipulation
             var pose = manipulations[0].ManipulatorPose;
             var transformation = OnePointGesture.UpdateControlPoint(pose);
 
-            transformation.CopyToTransform(transform);
+            transformation.CopyToTransformRelativeToWorld(transform);
         }
 
         private void UpdateTwoPointManipulation()
@@ -166,7 +166,7 @@ namespace Narupa.Frontend.Manipulation
 
             var transformation = TwoPointGesture.UpdateControlPoints(pose0, pose1);
 
-            transformation.CopyToTransform(transform);
+            transformation.CopyToTransformRelativeToWorld(transform);
         }
     }
 }

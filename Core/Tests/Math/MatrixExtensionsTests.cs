@@ -22,8 +22,8 @@ namespace Narupa.Core.Tests.Math
 
         private static MatrixPair GenerateRandomMatrixPairUniformScale()
         {
-            return new MatrixPair(SpatialTestData.GetRandomTransformationUniformScale().Matrix,
-                                  SpatialTestData.GetRandomTransformationUniformScale().Matrix);
+            return new MatrixPair(SpatialTestData.GetRandomTransformationPositiveUniformScale().Matrix,
+                                  SpatialTestData.GetRandomTransformationPositiveUniformScale().Matrix);
         }
 
         private static IEnumerable<Transformation> RandomTransformation =>
@@ -65,23 +65,6 @@ namespace Narupa.Core.Tests.Math
             Assert.That(transformation.Scale,
                         Is.EqualTo(transformation.Matrix.GetScale())
                           .Using(Vector3EqualityComparer.Instance));
-        }
-
-        [Test]
-        public void CopyTrsToTransform_WithRandomTRSAndNestedTransforms_HasSameMatrix(
-            [ValueSource(nameof(RandomMatrixPairsUniformScale))]
-            MatrixPair pair)
-        {
-            var parent = new GameObject("Parent").transform;
-            var child = new GameObject("Child").transform;
-            child.SetParent(parent);
-
-            pair.Item1.CopyTrsToTransform(parent);
-            pair.Item2.CopyTrsToTransform(child);
-
-            Assert.That(child.localToWorldMatrix,
-                        Is.EqualTo(pair.Item2)
-                          .Using(Matrix4x4TRSEqualityComparer.Instance));
         }
 
         [Test]

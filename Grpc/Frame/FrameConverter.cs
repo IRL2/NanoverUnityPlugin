@@ -26,11 +26,13 @@ namespace Narupa.Grpc.Frame
         /// <param name="previousFrame">
         /// A previous frame, from which to copy existing arrays if they exist.
         /// </param>
-        public static (Narupa.Frame.Frame Frame, FrameChanges Update) ConvertFrame([NotNull] FrameData data,
-                                                                      [CanBeNull]
-                                                                      Narupa.Frame.Frame previousFrame = null)
+        public static (Narupa.Frame.Frame Frame, FrameChanges Update) ConvertFrame(
+            [NotNull] FrameData data,
+            [CanBeNull] Narupa.Frame.Frame previousFrame = null)
         {
-            var frame = previousFrame != null ? Narupa.Frame.Frame.ShallowCopy(previousFrame) : new Narupa.Frame.Frame();
+            var frame = previousFrame != null
+                            ? Narupa.Frame.Frame.ShallowCopy(previousFrame)
+                            : new Narupa.Frame.Frame();
             var changes = new FrameChanges();
 
             foreach (var (id, array) in data.Arrays)
@@ -78,7 +80,9 @@ namespace Narupa.Grpc.Frame
             {
                 [FrameData.BondArrayKey] = FrameConversions.ToBondPairArray,
                 [FrameData.ParticleElementArrayKey] = FrameConversions.ToElementArray,
-                [FrameData.ParticlePositionArrayKey] = Conversions.ToVector3Array
+                [FrameData.ParticlePositionArrayKey] = Conversions.ToVector3Array,
+                [StandardFrameProperties.BoxTransformation.Key] 
+                = (obj) => (object) obj.ToLinearTransformation()
             };
 
         /// <summary>
