@@ -12,7 +12,8 @@ namespace Narupa.Grpc.Tests.Trajectory
     /// Simple implementation of a TrajectoryService that returns a single provided
     /// FrameData when SubscribeLatestFrames is called
     /// </summary>
-    internal class QueueTrajectoryService : TrajectoryService.TrajectoryServiceBase
+    internal class QueueTrajectoryService : TrajectoryService.TrajectoryServiceBase,
+                                            IBindableService
     {
         private readonly FrameData[] frameData;
 
@@ -37,6 +38,11 @@ namespace Narupa.Grpc.Tests.Trajectory
                 await responseStream.WriteAsync(new GetFrameResponse
                                                     { FrameIndex = i++, Frame = frame });
             }
+        }
+
+        public ServerServiceDefinition BindService()
+        {
+            return TrajectoryService.BindService(this);
         }
     }
 }

@@ -6,19 +6,24 @@ using Narupa.Protocol.Command;
 
 namespace Narupa.Grpc.Tests.Commands
 {
-    internal class CommandServer : Command.CommandBase
+    internal class CommandService : Command.CommandBase, IBindableService
     {
-        public event Action<string, Struct> RecievedCommand;
+        public event Action<string, Struct> ReceivedCommand;
 
         public override async Task<CommandReply> RunCommand(CommandMessage request, ServerCallContext context)
         {
-            RecievedCommand?.Invoke(request.Name, request.Arguments);
+            ReceivedCommand?.Invoke(request.Name, request.Arguments);
             return new CommandReply();
         }
 
         public override async Task<GetCommandsReply> GetCommands(GetCommandsRequest request, ServerCallContext context)
         {
             return new GetCommandsReply();
+        }
+
+        public ServerServiceDefinition BindService()
+        {
+            return Command.BindService(this);
         }
     }
 }

@@ -8,13 +8,14 @@ using Narupa.Grpc.Stream;
 using Narupa.Testing.Async;
 using NSubstitute;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Narupa.Grpc.Tests.Async
 {
     internal abstract class
-        ClientIncomingStreamTests<TServer, TClient, TMessage> : ClientStreamTests<
-            TServer, TClient, IncomingStream<TMessage>>
-        where TServer : IAsyncClosable
+        ClientIncomingStreamTests<TService, TClient, TMessage> : ClientStreamTests<
+            TService, TClient, IncomingStream<TMessage>>
+        where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable
     {
         public abstract Task GetStreamTask(IncomingStream<TMessage> stream);
@@ -29,14 +30,15 @@ namespace Narupa.Grpc.Tests.Async
             var stream = GetStream(client);
             var streamTask = GetStreamTask(stream);
 
-            await Task.WhenAny(streamTask, Task.Delay(50));
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
-            await connection.CloseAsync();
+            void IsStreamTaskCancelled()
+            {
+                Assert.AreEqual(TaskStatus.Canceled, streamTask.Status);
+                Assert.IsTrue(streamTask.IsCanceled);
+            }
 
-            await Task.WhenAny(streamTask, Task.Delay(200));
-
-            Assert.AreEqual(TaskStatus.Canceled, streamTask.Status);
-            Assert.IsTrue(streamTask.IsCanceled);
+            await AsyncAssert.PassesWithinTimeout(IsStreamTaskCancelled);
         }
 
         [AsyncTest]
@@ -44,7 +46,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(() => GetStreamTask(stream));
         }
@@ -55,12 +57,15 @@ namespace Narupa.Grpc.Tests.Async
             var stream = GetStream(client);
             var streamTask = GetStreamTask(stream);
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
-            await Task.WhenAny(streamTask, Task.Delay(200));
+            void IsStreamTaskCancelled()
+            {
+                Assert.AreEqual(TaskStatus.Canceled, streamTask.Status);
+                Assert.IsTrue(streamTask.IsCanceled);
+            }
 
-            Assert.AreEqual(TaskStatus.Canceled, streamTask.Status);
-            Assert.IsTrue(streamTask.IsCanceled);
+            await AsyncAssert.PassesWithinTimeout(IsStreamTaskCancelled);
         }
 
         [AsyncTest]
@@ -68,7 +73,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(() => GetStreamTask(stream));
         }
@@ -80,12 +85,15 @@ namespace Narupa.Grpc.Tests.Async
             var stream = GetStream(client);
             var streamTask = GetStreamTask(stream);
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
 
-            await Task.WhenAny(streamTask, Task.Delay(200));
+            void IsStreamTaskCancelled()
+            {
+                Assert.AreEqual(TaskStatus.Canceled, streamTask.Status);
+                Assert.IsTrue(streamTask.IsCanceled);
+            }
 
-            Assert.AreEqual(TaskStatus.Canceled, streamTask.Status);
-            Assert.IsTrue(streamTask.IsCanceled);
+            await AsyncAssert.PassesWithinTimeout(IsStreamTaskCancelled);
         }
 
         [AsyncTest]
@@ -93,7 +101,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(() => GetStreamTask(stream));
         }
@@ -107,11 +115,11 @@ namespace Narupa.Grpc.Tests.Async
             var callback = Substitute.For<Action<TMessage>>();
             var stream = GetStream(client);
             stream.MessageReceived += callback;
-            var task = GetStreamTask(stream);
 
-            await Task.WhenAny(task, Task.Delay(50));
+            void ClientReceivesMessage() => callback.Received(1).Invoke(Arg.Any<TMessage>());
 
-            callback.Received(1).Invoke(Arg.Any<TMessage>());
+            await AsyncAssert.PassesWithinTimeout(ClientReceivesMessage,
+                                                  backgroundTask: GetStreamTask(stream));
         }
 
         [AsyncTest]
@@ -126,8 +134,9 @@ namespace Narupa.Grpc.Tests.Async
             stream.MessageReceived += callback;
             var task = GetStreamTask(stream);
 
-            await task;
-
+            // Wait for server to finish sending frames
+            await AsyncAssert.CompletesWithinTimeout(task);
+            
             callback.Received(1).Invoke(Arg.Any<TMessage>());
         }
 
@@ -143,7 +152,8 @@ namespace Narupa.Grpc.Tests.Async
             stream.MessageReceived += callback;
             var task = GetStreamTask(stream);
 
-            await task;
+            // Wait for server to finish sending frames
+            await AsyncAssert.CompletesWithinTimeout(task);
 
             callback.Received(2).Invoke(Arg.Any<TMessage>());
         }
@@ -160,9 +170,9 @@ namespace Narupa.Grpc.Tests.Async
             stream.MessageReceived += callback;
             var task = GetStreamTask(stream);
 
-            await Task.WhenAny(task, Task.Delay(300));
+            await AsyncAssert.RunTasksForDuration(300, task);
 
-            await server.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(server.CloseAsync());
 
             callback.Received(2).Invoke(Arg.Any<TMessage>());
         }
@@ -178,14 +188,14 @@ namespace Narupa.Grpc.Tests.Async
             var stream = GetStream(client);
             stream.MessageReceived += callback;
             var task = GetStreamTask(stream);
-
-            await Task.WhenAny(task, Task.Delay(180));
+            
+            await AsyncAssert.RunTasksForDuration(180, task);
 
             callback.Received(2).Invoke(Arg.Any<TMessage>());
 
             stream.Cancel();
-
-            await Task.Delay(500);
+            
+            await AsyncAssert.RunTasksForDuration(500, task);
 
             callback.Received(2).Invoke(Arg.Any<TMessage>());
         }

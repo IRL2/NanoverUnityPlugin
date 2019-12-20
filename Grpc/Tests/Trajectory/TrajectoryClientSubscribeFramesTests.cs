@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace Narupa.Grpc.Tests.Trajectory
 {
     internal class TrajectoryClientSubscribeLatestFramesTests : ClientIncomingStreamTests<
-        InfiniteTrajectoryServer,
+        InfiniteTrajectoryService,
         TrajectoryClient,
         GetFrameResponse>
     {
@@ -53,19 +53,14 @@ namespace Narupa.Grpc.Tests.Trajectory
             await base.TearDown();
         }
 
-        protected override InfiniteTrajectoryServer GetServer()
+        protected override InfiniteTrajectoryService GetService()
         {
-            return new InfiniteTrajectoryServer(54321);
+            return new InfiniteTrajectoryService();
         }
 
         protected override TrajectoryClient GetClient(GrpcConnection connection)
         {
             return new TrajectoryClient(connection);
-        }
-
-        protected override GrpcConnection GetConnection()
-        {
-            return new GrpcConnection("localhost", 54321);
         }
 
         protected override IncomingStream<GetFrameResponse> GetStream(TrajectoryClient client)
@@ -80,12 +75,12 @@ namespace Narupa.Grpc.Tests.Trajectory
 
         public override void SetServerDelay(int delay)
         {
-            server.Delay = delay;
+            service.Delay = delay;
         }
 
         public override void SetServerMaxMessage(int count)
         {
-            server.MaxMessages = count;
+            service.MaxMessage = count;
         }
     }
 }

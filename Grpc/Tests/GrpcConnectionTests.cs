@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Narupa.Grpc;
+using Narupa.Grpc.Tests.Multiplayer;
 using Narupa.Grpc.Tests.Trajectory;
 using Narupa.Grpc.Trajectory;
 using Narupa.Testing.Async;
@@ -16,9 +17,6 @@ namespace Narupa.Network.Tests
 {
     public class GrpcConnectionTests
     {
-        private const string serverAddress = "localhost";
-        private const int serverPort = 55000;
-
         private static IEnumerable<AsyncUnitTests.AsyncTestInfo> GetTests()
         {
             return AsyncUnitTests.FindAsyncTestsInClass<GrpcConnectionTests>();
@@ -45,13 +43,13 @@ namespace Narupa.Network.Tests
             GrpcConnection connection;
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => connection = new GrpcConnection(serverAddress, -1));
+                () => connection = new GrpcConnection("localhost", -1));
         }
 
         [AsyncTest]
         public async Task NoServer_IsChannelIdle()
         {
-            var connection = new GrpcConnection(serverAddress, serverPort);
+            var connection = new GrpcConnection("localhost", 54321);
 
             try
             {
@@ -67,16 +65,16 @@ namespace Narupa.Network.Tests
         [AsyncTest]
         public async Task Server_IsChannelReady()
         {
-            var server = new QueueTrajectoryServer(serverPort);
-            var connection = new GrpcConnection(serverAddress, serverPort);
+            var service = new QueueTrajectoryService();
+            var (server, connection) = GrpcServer.CreateServerAndConnection(service);
 
             try
             {
-                var service = new TrajectoryClient(connection);
+                var client = new TrajectoryClient(connection);
 
                 using (var token = new CancellationTokenSource())
                 {
-                    var stream = service.SubscribeLatestFrames(externalToken: token.Token);
+                    var stream = client.SubscribeLatestFrames(externalToken: token.Token);
                     var task = stream.StartReceiving();
 
                     await Task.WhenAny(task, Task.Delay(100));
@@ -96,16 +94,16 @@ namespace Narupa.Network.Tests
         [AsyncTest]
         public async Task DisconnectedServer_IsChannelIdle()
         {
-            var server = new QueueTrajectoryServer(serverPort);
-            var connection = new GrpcConnection(serverAddress, serverPort);
+            var service = new QueueTrajectoryService();
+            var (server, connection) = GrpcServer.CreateServerAndConnection(service);
 
             try
             {
-                var service = new TrajectoryClient(connection);
+                var client = new TrajectoryClient(connection);
 
                 using (var token = new CancellationTokenSource())
                 {
-                    var stream = service.SubscribeLatestFrames(externalToken: token.Token);
+                    var stream = client.SubscribeLatestFrames(externalToken: token.Token);
                     var task = stream.StartReceiving();
 
                     await Task.WhenAny(task, Task.Delay(100));
@@ -129,8 +127,8 @@ namespace Narupa.Network.Tests
         [AsyncTest]
         public async Task Connection_CloseAsync_IsAtomic()
         {
-            var server = new QueueTrajectoryServer(serverPort);
-            var connection = new GrpcConnection(serverAddress, serverPort);
+            var service = new QueueTrajectoryService();
+            var (server, connection) = GrpcServer.CreateServerAndConnection(service);
 
             await connection.CloseAsync();
             await connection.CloseAsync();
