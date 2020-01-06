@@ -289,7 +289,7 @@ namespace Narupa.Session
 
         private void OnResourceValuesUpdateReceived(ResourceValuesUpdate update)
         {
-            foreach (var pair in update.ResourceValueChanges)
+            foreach (var pair in update.ResourceValueChanges.Fields)
             {
                 SharedStateDictionary[pair.Key] = pair.Value.ToObject();
                 SharedStateDictionaryKeyUpdated?.Invoke(pair.Key);
