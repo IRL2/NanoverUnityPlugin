@@ -112,7 +112,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             {
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
                 foreach (var change in changes)
-                    update.ResourceValueChanges[change] = resources[change].ToProtobufValue();
+                    update.ResourceValueChanges.Fields[change] = resources[change].ToProtobufValue();
                 foreach (var removal in removals)
                     update.ResourceValueRemovals.Add(removal);
             }
@@ -121,7 +121,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             while (true)
             {
                 await Task.Delay(10);
-                if (update.ResourceValueChanges.Any() || update.ResourceValueRemovals.Any())
+                if (update.ResourceValueChanges.Fields.Any() || update.ResourceValueRemovals.Any())
                 {
                     var toSend = update;
                     update = new ResourceValuesUpdate();
