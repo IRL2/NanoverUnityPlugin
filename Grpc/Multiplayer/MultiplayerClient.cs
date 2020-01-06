@@ -4,7 +4,7 @@
 using System;
 using System.Threading;
 using JetBrains.Annotations;
-using Narupa.Multiplayer;
+using Narupa.Protocol.Multiplayer;
 using System.Threading.Tasks;
 using Narupa.Grpc;
 using Narupa.Grpc.Stream;
@@ -18,7 +18,7 @@ namespace Narupa.Network
     /// over a <see cref="GrpcConnection" />.
     /// </summary>
     public class MultiplayerClient :
-        GrpcClient<Multiplayer.Multiplayer.MultiplayerClient>
+        GrpcClient<Multiplayer.MultiplayerClient>
     {
         // Chosen as an acceptable minimum rate that should ideally be 
         // explicitly increased.

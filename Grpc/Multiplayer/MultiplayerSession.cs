@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Narupa.Multiplayer;
+using Narupa.Protocol.Multiplayer;
 using Narupa.Network;
 using UnityEngine;
 
-using Avatar = Narupa.Multiplayer.Avatar;
+using Avatar = Narupa.Protocol.Multiplayer.Avatar;
 using System.Linq;
 using Grpc.Core;
 using Narupa.Core.Async;
@@ -342,7 +342,7 @@ namespace Narupa.Session
             var protoAvatar = new Avatar
             {
                 PlayerId = clientAvatar.PlayerId,
-                Component = { components },
+                Components = { components },
             };
 
             return protoAvatar;
@@ -368,7 +368,7 @@ namespace Narupa.Session
                 PlayerId = protoAvatar.PlayerId,
             };
 
-            foreach (var component in protoAvatar.Component)
+            foreach (var component in protoAvatar.Components)
             {
                 clientAvatar.Components[component.Name] = PoseFromComponent(component);
             }
