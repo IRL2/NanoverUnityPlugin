@@ -106,14 +106,15 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 responseStream,
             ServerCallContext context)
         {
-            var update = new ResourceValuesUpdate();
+            var update = new ResourceValuesUpdate
+            {
+                ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+            };
 
             void ResourcesOnCollectionChanged(object sender,
                                                     NotifyCollectionChangedEventArgs e)
             {
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
-
-                update.ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct();
 
                 foreach (var change in changes)
                     update.ResourceValueChanges.Fields[change] = resources[change].ToProtobufValue();
@@ -128,7 +129,10 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 if (update.ResourceValueChanges.Fields.Any() || update.ResourceValueRemovals.Any())
                 {
                     var toSend = update;
-                    update = new ResourceValuesUpdate();
+                    update = new ResourceValuesUpdate
+                    {
+                        ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+                    };
                     await responseStream.WriteAsync(toSend);
                 }
             }
