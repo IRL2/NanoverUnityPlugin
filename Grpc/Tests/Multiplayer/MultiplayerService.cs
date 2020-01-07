@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Narupa.Core.Collections;
 using Narupa.Protocol.Multiplayer;
+using UnityEngine;
 using static Narupa.Protocol.Multiplayer.Multiplayer;
 
 namespace Narupa.Grpc.Tests.Multiplayer
@@ -111,6 +112,9 @@ namespace Narupa.Grpc.Tests.Multiplayer
                                                     NotifyCollectionChangedEventArgs e)
             {
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
+
+                update.ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct();
+
                 foreach (var change in changes)
                     update.ResourceValueChanges.Fields[change] = resources[change].ToProtobufValue();
                 foreach (var removal in removals)
