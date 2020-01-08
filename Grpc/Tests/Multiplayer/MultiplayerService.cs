@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Narupa.Core.Collections;
-using Narupa.Multiplayer;
+using Narupa.Protocol.Multiplayer;
+using static Narupa.Protocol.Multiplayer.Multiplayer;
 
 namespace Narupa.Grpc.Tests.Multiplayer
 {
-    internal class MultiplayerService : Narupa.Multiplayer.Multiplayer.MultiplayerBase, IBindableService
+    internal class MultiplayerService : MultiplayerBase, IBindableService
     {
         private ObservableDictionary<string, object> resources
             = new ObservableDictionary<string, object>();
@@ -141,7 +142,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
         public ServerServiceDefinition BindService()
         {
-            return Narupa.Multiplayer.Multiplayer.BindService(this);
+            return Narupa.Protocol.Multiplayer.Multiplayer.BindService(this);
         }
     }
 }
