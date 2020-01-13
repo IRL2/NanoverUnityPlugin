@@ -41,8 +41,8 @@ namespace Narupa.Visualisation.Node.Protein
 
         public bool IsInputValid => peptideChains.HasNonNullValue();
 
-        public bool AreResiduesDirty
-            => atomResidues.IsDirty || peptideChains.IsDirty || atomNames.IsDirty;
+        public bool AreResiduesDirty =>
+            atomResidues.IsDirty || peptideChains.IsDirty || atomNames.IsDirty;
 
         public bool AreResiduesValid => atomResidues.HasNonEmptyValue() &&
                                         peptideChains.HasNonEmptyValue() &&
@@ -58,12 +58,15 @@ namespace Narupa.Visualisation.Node.Protein
                         UpdateResidues();
                 }
 
-
                 if (atomPositions.IsDirty)
                     UpdatePositions();
 
                 if (needRecalculate || Time.frameCount % 30 == 0)
+                {
                     CalculateSecondaryStructure();
+                    CalculateHydrogenBonds();
+                    needRecalculate = false;
+                }
             }
         }
 
@@ -77,6 +80,9 @@ namespace Narupa.Visualisation.Node.Protein
             needRecalculate = true;
         }
 
+        private SecondaryStructureAssignment[] secondaryStructure =
+            new SecondaryStructureAssignment[0];
+
         private void CalculateSecondaryStructure()
         {
             foreach (var peptideSequence in sequenceResidueData)
@@ -84,17 +90,21 @@ namespace Narupa.Visualisation.Node.Protein
 
             var peptideCount = peptideChains.Value.Sum(s => s.Count);
 
-            var secondaryStruct = new SecondaryStructureAssignment[peptideCount];
+            if (peptideCount != secondaryStructure.Length)
+            {
+                Array.Resize(ref secondaryStructure, peptideCount);
+            }
 
             var index = 0;
             foreach (var sequence in sequenceResidueData)
             foreach (var data in sequence)
-                secondaryStruct[index++] = data.SecondaryStructure;
+                secondaryStructure[index++] = data.SecondaryStructure;
 
-            residueSecondaryStructure.Value = secondaryStruct;
+            residueSecondaryStructure.Value = secondaryStructure;
+        }
 
-            needRecalculate = false;
-
+        private void CalculateHydrogenBonds()
+        {
             var bonds = new List<BondPair>();
             var seqOffset = 0;
             foreach (var sequence in sequenceResidueData)

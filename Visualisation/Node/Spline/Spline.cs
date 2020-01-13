@@ -34,6 +34,7 @@ namespace Narupa.Visualisation.Node.Spline
 
         private SplineArrayProperty splineSegments = new SplineArrayProperty();
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => sequences.HasNonNullValue()
                                              && positions.HasNonNullValue()
                                              && normals.HasNonNullValue()
@@ -41,6 +42,7 @@ namespace Narupa.Visualisation.Node.Spline
                                              && color.HasNonNullValue()
                                              && radius.HasNonNullValue();
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => sequences.IsDirty
                                              || positions.IsDirty
                                              || normals.IsDirty
@@ -50,6 +52,7 @@ namespace Narupa.Visualisation.Node.Spline
                                              || radius.IsDirty
                                              || scales.IsDirty;
 
+        /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
             sequences.IsDirty = false;
@@ -62,6 +65,7 @@ namespace Narupa.Visualisation.Node.Spline
             scales.IsDirty = false;
         }
 
+        /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
             var segmentCount = sequences.Value.Sum(s => s.Count - 1);
@@ -122,6 +126,7 @@ namespace Narupa.Visualisation.Node.Spline
             this.splineSegments.Value = splineSegments;
         }
 
+        /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
         protected override void ClearOutput()
         {
             splineSegments.UndefineValue();

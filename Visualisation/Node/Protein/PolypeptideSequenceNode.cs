@@ -72,15 +72,29 @@ namespace Narupa.Visualisation.Node.Protein
         /// <inheritdoc cref="UpdateOutput" />
         protected override void UpdateOutput()
         {
-            var residueSequences = new List<List<int>>();
-            var alphaCarbonSequences = new List<List<int>>();
-            var residueNames = this.residueNames.Value;
-            var atomNames = this.atomNames.Value;
-            var atomResidues = this.atomResidues.Value;
-            var residueEntities = this.residueEntities.Value;
+            var (resSequences, alphaSequences) = CalculateSequences(residueNames.Value,
+                                                                    atomNames.Value,
+                                                                    atomResidues.Value,
+                                                                    residueEntities.Value);
+            residueSequences.Value = resSequences;
+            alphaCarbonSequences.Value = alphaSequences;
+        }
+
+        /// <summary>
+        /// Calculate sequences of polypeptides
+        /// </summary>
+        private static (IReadOnlyList<int>[] residueSequences, IReadOnlyList<int>[] alphaCarbonSequences)
+            CalculateSequences(string[] residueNames,
+                               string[] atomNames,
+                               int[] atomResidues,
+                               int[] residueEntities)
+        {
+            var residueSequences = new List<IReadOnlyList<int>>();
+            var alphaCarbonSequences = new List<IReadOnlyList<int>>();
             var currentResidues = new List<int>();
             var currentAlphaCarbons = new List<int>();
-            int currentEntity = -1;
+            var currentEntity = -1;
+
             for (var atom = 0; atom < atomNames.Length; atom++)
             {
                 if (!string.Equals(atomNames[atom], "ca",
@@ -109,8 +123,7 @@ namespace Narupa.Visualisation.Node.Protein
                 alphaCarbonSequences.Add(currentAlphaCarbons);
             }
 
-            this.residueSequences.Value = residueSequences.ToArray();
-            this.alphaCarbonSequences.Value = alphaCarbonSequences.ToArray();
+            return (residueSequences.ToArray(), alphaCarbonSequences.ToArray());
         }
 
         /// <inheritdoc cref="ClearOutput" />

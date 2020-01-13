@@ -46,6 +46,7 @@ namespace Narupa.Visualisation.Node.Spline
 
         private BondArrayProperty outputInteriorBonds = new BondArrayProperty();
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => sequences.HasNonNullValue()
                                              && positions.HasNonNullValue()
                                              && normals.HasNonNullValue()
@@ -53,6 +54,7 @@ namespace Narupa.Visualisation.Node.Spline
                                              && color.HasNonNullValue()
                                              && radius.HasNonNullValue();
 
+        /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => sequences.IsDirty
                                              || positions.IsDirty
                                              || normals.IsDirty
@@ -63,6 +65,7 @@ namespace Narupa.Visualisation.Node.Spline
                                              || interiorBonds.IsDirty
                                              || scales.IsDirty;
 
+        /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
             sequences.IsDirty = false;
@@ -76,6 +79,7 @@ namespace Narupa.Visualisation.Node.Spline
             scales.IsDirty = false;
         }
 
+        /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
             if (sequences.IsDirty || !outputPositions.HasValue)
@@ -186,6 +190,7 @@ namespace Narupa.Visualisation.Node.Spline
             outputColors.MarkValueAsChanged();
         }
 
+        /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
         protected override void ClearOutput()
         {
             outputBonds.UndefineValue();
