@@ -160,12 +160,12 @@ namespace Narupa.Visualisation.Node.Renderer
             {
                 triangles.AddRange(new[]
                 {
-                    l * sides + s, l * sides + (s + 1) % sides, (l + 1) * sides + s
+                    l * sides + (s) % sides, l * sides + (s + 1) % sides, (l + 1) * sides + (s) % sides
                 });
                 triangles.AddRange(new[]
                 {
                     l * sides + (s + 1) % sides, (l + 1) * sides + (s + 1) % sides,
-                    (l + 1) * sides + s
+                    (l + 1) * sides + (s) % sides
                 });
             }
         }

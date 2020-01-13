@@ -127,7 +127,7 @@ namespace Narupa.Visualisation.Node.Spline
                 positions.IsDirty = true;
             }
 
-            if (positions.IsDirty)
+            if (positions.IsDirty || shape.IsDirty)
             {
                 var offset = 0;
                 var normals = this.normals.Value;

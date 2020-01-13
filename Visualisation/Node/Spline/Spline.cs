@@ -24,6 +24,9 @@ namespace Narupa.Visualisation.Node.Spline
         private ColorArrayProperty colors = new ColorArrayProperty();
 
         [SerializeField]
+        private FloatArrayProperty scales = new FloatArrayProperty();
+
+        [SerializeField]
         private ColorProperty color;
 
         [SerializeField]
@@ -44,7 +47,8 @@ namespace Narupa.Visualisation.Node.Spline
                                              || tangents.IsDirty
                                              || colors.IsDirty
                                              || color.IsDirty
-                                             || radius.IsDirty;
+                                             || radius.IsDirty
+                                             || scales.IsDirty;
 
         protected override void ClearDirty()
         {
@@ -55,6 +59,7 @@ namespace Narupa.Visualisation.Node.Spline
             colors.IsDirty = false;
             color.IsDirty = false;
             radius.IsDirty = false;
+            scales.IsDirty = false;
         }
 
         protected override void UpdateOutput()
@@ -75,8 +80,9 @@ namespace Narupa.Visualisation.Node.Spline
                 var startPosition = positions.Value[sequence[0]];
                 var startNormal = normals.Value[offset];
                 var startTangent = tangents.Value[offset];
-                var startColor = color * (colors.HasValue ? colors.Value[sequence[0]] : UnityEngine.Color.white);
-                var startSize = radius;
+                var startColor =
+                    color * (colors.HasValue ? colors.Value[offset] : UnityEngine.Color.white);
+                var startSize = radius * (scales.HasValue ? scales.Value[offset] : 1f);
 
 
                 for (var i = 0; i < sequenceLength - 1; i++)
@@ -84,8 +90,10 @@ namespace Narupa.Visualisation.Node.Spline
                     var endPosition = positions.Value[sequence[i + 1]];
                     var endNormal = normals.Value[offset + i + 1];
                     var endTangent = tangents.Value[offset + i + 1];
-                    var endColor = color * (colors.HasValue ? colors.Value[sequence[i + 1]] : UnityEngine.Color.white);
-                    var endSize = radius;
+                    var endColor = color * (colors.HasValue
+                                                ? colors.Value[offset + i + 1]
+                                                : UnityEngine.Color.white);
+                    var endSize = radius * (scales.HasValue ? scales.Value[offset + i + 1] : 1f);
 
                     splineSegments[offset + i] = new SplineSegment
                     {

@@ -34,6 +34,11 @@ namespace Narupa.Visualisation.Node.Spline
         {
             for (var j = 1; j < normals.Length; j++)
             {
+                var prev = outputNormals[j - 1];
+                var current = outputNormals[j];
+                if (Vector3.Dot(prev, current) < 0)
+                    outputNormals[j] = -current;
+                /*
                 var a = normals[j] - Vector3.Project(normals[j], tangents[j]);
                 var b = Vector3.Cross(tangents[j], normals[j]);
                 a = a.normalized;
@@ -49,6 +54,7 @@ namespace Narupa.Visualisation.Node.Spline
                 {
                     outputNormals[j] = b * Mathf.Sign(dot2);
                 }
+                */
             }
         }
 
