@@ -232,7 +232,7 @@ namespace Narupa.Grpc
         public static object ToInt(this Value value)
         {
             if(value.KindCase != Value.KindOneofCase.NumberValue)
-                throw new ArgumentException("Value is not of type int");
+                throw new ArgumentException("Value is not numeric, and cannot be converted to an integer");
             return (int) value.NumberValue;
         }
     }
