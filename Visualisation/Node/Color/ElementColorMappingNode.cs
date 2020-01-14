@@ -22,7 +22,7 @@ namespace Narupa.Visualisation.Node.Color
         /// <summary>
         /// The color mapping between elements and colors.
         /// </summary>
-        public IProperty<IConverter<Element, UnityEngine.Color>> Mapping => mapping;
+        public IProperty<IMapping<Element, UnityEngine.Color>> Mapping => mapping;
 
         /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => base.IsInputDirty || mapping.IsDirty;
@@ -41,7 +41,7 @@ namespace Narupa.Visualisation.Node.Color
         protected override UnityEngine.Color GetColor(Element element)
         {
             return mapping.HasNonNullValue()
-                       ? mapping.Value.Convert(element)
+                       ? mapping.Value.Map(element)
                        : UnityEngine.Color.white;
         }
     }

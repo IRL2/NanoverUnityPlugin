@@ -34,7 +34,7 @@ namespace Narupa.Visualisation.Property
     /// </summary>
     [Serializable]
     public class ElementColorMappingProperty :
-        InterfaceProperty<IConverter<Element, Color>>
+        InterfaceProperty<IMapping<Element, Color>>
     {
     }
 

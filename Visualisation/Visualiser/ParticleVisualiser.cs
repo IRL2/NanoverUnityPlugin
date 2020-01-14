@@ -88,7 +88,7 @@ namespace Narupa.Visualisation.Visualiser
         /// <summary>
         /// Per-element color scheme for coloring atoms.
         /// </summary>
-        public IProperty<IConverter<Element, Color>> ColorScheme => colorScheme;
+        public IProperty<IMapping<Element, Color>> ColorScheme => colorScheme;
 
         [Header("Scale")]
         [SerializeField]
