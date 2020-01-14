@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Narupa.Core.Collections;
 using Narupa.Protocol.Multiplayer;
+using UnityEngine;
 using static Narupa.Protocol.Multiplayer.Multiplayer;
 
 namespace Narupa.Grpc.Tests.Multiplayer
@@ -105,14 +106,18 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 responseStream,
             ServerCallContext context)
         {
-            var update = new ResourceValuesUpdate();
+            var update = new ResourceValuesUpdate
+            {
+                ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+            };
 
             void ResourcesOnCollectionChanged(object sender,
                                                     NotifyCollectionChangedEventArgs e)
             {
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
+
                 foreach (var change in changes)
-                    update.ResourceValueChanges[change] = resources[change].ToProtobufValue();
+                    update.ResourceValueChanges.Fields[change] = resources[change].ToProtobufValue();
                 foreach (var removal in removals)
                     update.ResourceValueRemovals.Add(removal);
             }
@@ -121,10 +126,13 @@ namespace Narupa.Grpc.Tests.Multiplayer
             while (true)
             {
                 await Task.Delay(10);
-                if (update.ResourceValueChanges.Any() || update.ResourceValueRemovals.Any())
+                if (update.ResourceValueChanges.Fields.Any() || update.ResourceValueRemovals.Any())
                 {
                     var toSend = update;
-                    update = new ResourceValuesUpdate();
+                    update = new ResourceValuesUpdate
+                    {
+                        ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+                    };
                     await responseStream.WriteAsync(toSend);
                 }
             }
