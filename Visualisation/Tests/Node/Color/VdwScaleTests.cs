@@ -1,6 +1,7 @@
 using Narupa.Core.Science;
 using Narupa.Visualisation.Node.Color;
 using Narupa.Visualisation.Node.Scale;
+using Narupa.Visualisation.Properties.Collections;
 using Narupa.Visualisation.Property;
 using NUnit.Framework;
 using UnityEngine;

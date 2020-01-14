@@ -1,4 +1,5 @@
 using System;
+using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
 using UnityEngine;

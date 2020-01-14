@@ -71,6 +71,7 @@
                 float4 color : TEXCOORD0;
                 float4 worldVertex : TEXCOORD1;
                 float4 normal : TEXCOORD2;
+                float bias : TEXCOORD3;
             };
             
             float _Diffuse;
@@ -150,7 +151,7 @@
                 a1 = 1 - (1- a1) * (1-a1);
                 a2 = 1 - (1-a2) * (1-a2);
                
-                v.vertex.xz = 0.01 * v.vertex.xz;
+                v.vertex.xz = _Radius * v.vertex.xz;
                
                 v.vertex.xz += sign(dot1) * a1 * d1 + sign(dot2) * a2 * d2;
                 
@@ -162,7 +163,8 @@
                 o.worldVertex = v.vertex;
                 o.normal = normalize(mul(mat, float4(v.normal.xyz, 0)));
                 o.color = lerp(curve.startColor, curve.endColor, smoothstep(0, 1, bias));
-                  
+                o.bias = bias;
+                
                 return o;
             }
             
@@ -175,7 +177,14 @@
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
                 float3 c = _WorldSpaceCameraPos.xyz;
                 
+                float d = cos((i.bias + _Time.x * 4) * 3.1415f);
+                d = d * d * d * d;
+                d = d * d;
+                
+               
                 color = DIFFUSE(color, n, l, _Diffuse);
+                
+                 color += 0.25 * fixed4(1,1,1,1) * d;
                 
                 return color;
             }

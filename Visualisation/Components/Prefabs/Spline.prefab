@@ -165,29 +165,29 @@ MonoBehaviour:
     destinationFieldName: sequences
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: particle.positions
-    destinationFieldName: positions
+    destinationFieldName: particlePositions
   - sourceComponent: {fileID: 4908190071600149755}
     sourceFieldName: outputNormals
-    destinationFieldName: normals
+    destinationFieldName: splineNormals
   - sourceComponent: {fileID: 6196488865804266995}
     sourceFieldName: tangents
-    destinationFieldName: tangents
+    destinationFieldName: splineTangents
   node:
     sequences:
       isValueProvided: 0
-    positions:
+    particlePositions:
       isValueProvided: 0
       value: []
-    normals:
+    splineNormals:
       isValueProvided: 0
       value: []
-    tangents:
+    splineTangents:
       isValueProvided: 0
       value: []
-    colors:
+    splineColors:
       isValueProvided: 0
       value: []
-    scales:
+    splineScales:
       isValueProvided: 0
       value: []
     color:

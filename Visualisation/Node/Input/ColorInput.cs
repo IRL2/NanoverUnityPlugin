@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
 
 namespace Narupa.Visualisation.Node.Input

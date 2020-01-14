@@ -3,6 +3,8 @@
 
 using System;
 using Narupa.Frame;
+using Narupa.Visualisation.Properties;
+using Narupa.Visualisation.Properties.Collections;
 using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
 using UnityEngine;

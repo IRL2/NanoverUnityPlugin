@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
 
 namespace Narupa.Visualisation.Node.Filter

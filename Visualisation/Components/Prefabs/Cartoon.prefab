@@ -170,35 +170,35 @@ MonoBehaviour:
     destinationFieldName: sequences
   - sourceComponent: {fileID: 8528582866378757811}
     sourceFieldName: particle.positions
-    destinationFieldName: positions
+    destinationFieldName: particlePositions
   - sourceComponent: {fileID: 4908190071600149755}
     sourceFieldName: outputNormals
-    destinationFieldName: normals
+    destinationFieldName: splineNormals
   - sourceComponent: {fileID: 6196488865804266995}
     sourceFieldName: tangents
-    destinationFieldName: tangents
-  - sourceComponent: {fileID: 5466285506234206123}
-    sourceFieldName: output
-    destinationFieldName: colors
-  - sourceComponent: {fileID: 6993334706722370264}
-    sourceFieldName: output
-    destinationFieldName: scales
+    destinationFieldName: splineTangents
+  - sourceComponent: {fileID: 6587007813008960025}
+    sourceFieldName: colors
+    destinationFieldName: splineColors
+  - sourceComponent: {fileID: 5250697645549547763}
+    sourceFieldName: scales
+    destinationFieldName: splineScales
   node:
     sequences:
       isValueProvided: 0
-    positions:
+    particlePositions:
       isValueProvided: 0
       value: []
-    normals:
+    splineNormals:
       isValueProvided: 0
       value: []
-    tangents:
+    splineTangents:
       isValueProvided: 0
       value: []
-    colors:
+    splineColors:
       isValueProvided: 0
       value: []
-    scales:
+    splineScales:
       isValueProvided: 0
       value: []
     color:
@@ -233,7 +233,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: c4ff711234eb21b44b2201ed56702aca, type: 2}
     splineRadius:
       isValueProvided: 1
-      value: 1
+      value: 0.04
 --- !u!114 &7135926777135089143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 7622629646505865421}
-    sourceFieldName: residueSecondaryStructure
+    sourceFieldName: splineSecondaryStructure
     destinationFieldName: secondaryStructure
   node:
     secondaryStructure:
@@ -370,13 +370,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection:
   - sourceComponent: {fileID: 7622629646505865421}
-    sourceFieldName: residueSecondaryStructure
+    sourceFieldName: splineSecondaryStructure
     destinationFieldName: secondaryStructure
   node:
     secondaryStructure:
       isValueProvided: 0
       value: 
-    radius: 0.00001
+    radius: 0
     helixRadius: 0.4
     turnRadius: 0.1
     sheetRadius: 0.5

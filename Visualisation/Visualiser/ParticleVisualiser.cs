@@ -6,6 +6,7 @@ using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Node.Color;
 using Narupa.Visualisation.Node.Renderer;
 using Narupa.Visualisation.Node.Scale;
+using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 

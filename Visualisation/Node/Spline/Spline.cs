@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Narupa.Visualisation.Properties;
+using Narupa.Visualisation.Properties.Collections;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
@@ -12,19 +14,19 @@ namespace Narupa.Visualisation.Node.Spline
         private SelectionArrayProperty sequences = new SelectionArrayProperty();
 
         [SerializeField]
-        private Vector3ArrayProperty positions = new Vector3ArrayProperty();
+        private Vector3ArrayProperty particlePositions = new Vector3ArrayProperty();
 
         [SerializeField]
-        private Vector3ArrayProperty normals = new Vector3ArrayProperty();
+        private Vector3ArrayProperty splineNormals = new Vector3ArrayProperty();
 
         [SerializeField]
-        private Vector3ArrayProperty tangents = new Vector3ArrayProperty();
+        private Vector3ArrayProperty splineTangents = new Vector3ArrayProperty();
 
         [SerializeField]
-        private ColorArrayProperty colors = new ColorArrayProperty();
+        private ColorArrayProperty splineColors = new ColorArrayProperty();
 
         [SerializeField]
-        private FloatArrayProperty scales = new FloatArrayProperty();
+        private FloatArrayProperty splineScales = new FloatArrayProperty();
 
         [SerializeField]
         private ColorProperty color;
@@ -36,33 +38,33 @@ namespace Narupa.Visualisation.Node.Spline
 
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
         protected override bool IsInputValid => sequences.HasNonNullValue()
-                                             && positions.HasNonNullValue()
-                                             && normals.HasNonNullValue()
-                                             && tangents.HasNonNullValue()
+                                             && particlePositions.HasNonNullValue()
+                                             && splineNormals.HasNonNullValue()
+                                             && splineTangents.HasNonNullValue()
                                              && color.HasNonNullValue()
                                              && radius.HasNonNullValue();
 
         /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
         protected override bool IsInputDirty => sequences.IsDirty
-                                             || positions.IsDirty
-                                             || normals.IsDirty
-                                             || tangents.IsDirty
-                                             || colors.IsDirty
+                                             || particlePositions.IsDirty
+                                             || splineNormals.IsDirty
+                                             || splineTangents.IsDirty
+                                             || splineColors.IsDirty
                                              || color.IsDirty
                                              || radius.IsDirty
-                                             || scales.IsDirty;
+                                             || splineScales.IsDirty;
 
         /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
             sequences.IsDirty = false;
-            positions.IsDirty = false;
-            normals.IsDirty = false;
-            tangents.IsDirty = false;
-            colors.IsDirty = false;
+            particlePositions.IsDirty = false;
+            splineNormals.IsDirty = false;
+            splineTangents.IsDirty = false;
+            splineColors.IsDirty = false;
             color.IsDirty = false;
             radius.IsDirty = false;
-            scales.IsDirty = false;
+            splineScales.IsDirty = false;
         }
 
         /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
@@ -81,23 +83,23 @@ namespace Narupa.Visualisation.Node.Spline
                     continue;
                 var sequenceLength = sequence.Count;
 
-                var startPosition = positions.Value[sequence[0]];
-                var startNormal = normals.Value[offset];
-                var startTangent = tangents.Value[offset];
+                var startPosition = particlePositions.Value[sequence[0]];
+                var startNormal = splineNormals.Value[offset];
+                var startTangent = splineTangents.Value[offset];
                 var startColor =
-                    color * (colors.HasValue ? colors.Value[offset] : UnityEngine.Color.white);
-                var startSize = radius * (scales.HasValue ? scales.Value[offset] : 1f);
+                    color * (splineColors.HasValue ? splineColors.Value[offset] : UnityEngine.Color.white);
+                var startSize = radius * (splineScales.HasValue ? splineScales.Value[offset] : 1f);
 
 
                 for (var i = 0; i < sequenceLength - 1; i++)
                 {
-                    var endPosition = positions.Value[sequence[i + 1]];
-                    var endNormal = normals.Value[offset + i + 1];
-                    var endTangent = tangents.Value[offset + i + 1];
-                    var endColor = color * (colors.HasValue
-                                                ? colors.Value[offset + i + 1]
+                    var endPosition = particlePositions.Value[sequence[i + 1]];
+                    var endNormal = splineNormals.Value[offset + i + 1];
+                    var endTangent = splineTangents.Value[offset + i + 1];
+                    var endColor = color * (splineColors.HasValue
+                                                ? splineColors.Value[offset + i + 1]
                                                 : UnityEngine.Color.white);
-                    var endSize = radius * (scales.HasValue ? scales.Value[offset + i + 1] : 1f);
+                    var endSize = radius * (splineScales.HasValue ? splineScales.Value[offset + i + 1] : 1f);
 
                     splineSegments[offset + i] = new SplineSegment
                     {

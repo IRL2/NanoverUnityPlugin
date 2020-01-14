@@ -8,6 +8,7 @@ using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Frame.Event;
 using Narupa.Protocol.Trajectory;
+using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 

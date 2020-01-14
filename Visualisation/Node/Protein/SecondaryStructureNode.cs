@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Narupa.Frame;
+using Narupa.Visualisation.Properties;
+using Narupa.Visualisation.Properties.Collections;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
@@ -30,7 +32,7 @@ namespace Narupa.Visualisation.Node.Protein
 
         private bool needRecalculate = true;
 
-        private SecondaryStructureArrayProperty residueSecondaryStructure =
+        private SecondaryStructureArrayProperty splineSecondaryStructure =
             new SecondaryStructureArrayProperty();
 
         private BondArrayProperty hydrogenBonds =
@@ -100,7 +102,7 @@ namespace Narupa.Visualisation.Node.Protein
             foreach (var data in sequence)
                 secondaryStructure[index++] = data.SecondaryStructure;
 
-            residueSecondaryStructure.Value = secondaryStructure;
+            splineSecondaryStructure.Value = secondaryStructure;
         }
 
         private void CalculateHydrogenBonds()

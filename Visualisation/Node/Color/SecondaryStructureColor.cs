@@ -1,5 +1,6 @@
 using System;
 using Narupa.Visualisation.Node.Protein;
+using Narupa.Visualisation.Properties.Collections;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Narupa.Visualisation.Node.Calculator;
 using Narupa.Visualisation.Node.Spline;
+using Narupa.Visualisation.Properties;
+using Narupa.Visualisation.Properties.Collections;
 using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
 using UnityEngine;
