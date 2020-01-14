@@ -8,8 +8,8 @@ using Narupa.Protocol.Imd;
 
 namespace Narupa.Grpc.Tests.Interactive
 {
-    internal class
-        InteractionService : InteractiveMolecularDynamics.InteractiveMolecularDynamicsBase
+    internal class InteractionService : 
+        InteractiveMolecularDynamics.InteractiveMolecularDynamicsBase, IBindableService
     {
         public override async Task<InteractionEndReply> PublishInteraction(
             IAsyncStreamReader<ParticleInteraction> requestStream,
@@ -28,5 +28,10 @@ namespace Narupa.Grpc.Tests.Interactive
         public bool ThrowException { get; set; } = false;
 
         public event Action<ParticleInteraction> InteractionReceived;
+        
+        public ServerServiceDefinition BindService()
+        {
+            return InteractiveMolecularDynamics.BindService(this);
+        }
     }
 }

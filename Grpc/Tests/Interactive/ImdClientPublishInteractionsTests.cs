@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Interactive
 {
-    internal class ImdClientPublishInteractionsTests : ClientOutgoingStreamTests<InteractionServer,
+    internal class ImdClientPublishInteractionsTests : ClientOutgoingStreamTests<InteractionService,
         ImdClient, ParticleInteraction, InteractionEndReply>
     {
         private static IEnumerable<AsyncUnitTests.AsyncTestInfo> GetTests()
@@ -52,21 +52,16 @@ namespace Narupa.Grpc.Tests.Interactive
             await base.TearDown();
         }
 
-        protected override InteractionServer GetServer()
+        protected override InteractionService GetService()
         {
-            return new InteractionServer(54321);
+            return new InteractionService();
         }
 
         protected override ImdClient GetClient(GrpcConnection connection)
         {
             return new ImdClient(connection);
         }
-
-        protected override GrpcConnection GetConnection()
-        {
-            return new GrpcConnection("localhost", 54321);
-        }
-
+        
         protected override OutgoingStream<ParticleInteraction, InteractionEndReply> GetStream(
             ImdClient client)
         {
@@ -75,7 +70,7 @@ namespace Narupa.Grpc.Tests.Interactive
 
         public override void AddServerCallback(Action<ParticleInteraction> callback)
         {
-            server.Service.InteractionReceived += callback;
+            service.InteractionReceived += callback;
         }
     }
 }

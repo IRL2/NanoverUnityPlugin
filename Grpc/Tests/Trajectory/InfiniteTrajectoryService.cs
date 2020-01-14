@@ -14,7 +14,8 @@ namespace Narupa.Grpc.Tests.Trajectory
     /// of
     /// <see cref="FrameData" /> when SubscribeLatestFrames is called
     /// </summary>
-    internal class InfiniteTrajectoryService : TrajectoryService.TrajectoryServiceBase
+    internal class InfiniteTrajectoryService : TrajectoryService.TrajectoryServiceBase,
+                                               IBindableService
     {
         private readonly FrameData[] frameData;
 
@@ -45,6 +46,11 @@ namespace Narupa.Grpc.Tests.Trajectory
                 });
                 FrameDataSent?.Invoke();
             }
+        }
+
+        public ServerServiceDefinition BindService()
+        {
+            return TrajectoryService.BindService(this);
         }
     }
 }

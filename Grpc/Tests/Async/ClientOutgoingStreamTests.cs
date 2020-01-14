@@ -10,10 +10,10 @@ using NSubstitute;
 
 namespace Narupa.Grpc.Tests.Async
 {
-    internal abstract class ClientOutgoingStreamTests<TServer, TClient, TMessage, TReply> :
+    internal abstract class ClientOutgoingStreamTests<TService, TClient, TMessage, TReply> :
         ClientStreamTests<
-            TServer, TClient, OutgoingStream<TMessage, TReply>>
-        where TServer : IAsyncClosable
+            TService, TClient, OutgoingStream<TMessage, TReply>>
+        where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable
         where TMessage : new()
     {
@@ -38,16 +38,18 @@ namespace Narupa.Grpc.Tests.Async
             {
                 await stream.QueueMessageAsync(new TMessage());
                 await stream.QueueMessageAsync(new TMessage());
-                await Task.Delay(50);
             }
 
-            await Task.WhenAny(streamTask,
-                               Sequential());
+            await AsyncAssert.CompletesWithinTimeout(Task.WhenAny(streamTask,
+                                                           Sequential()));
+            
+            void ServerReceivedMessages() =>  serverCallback.ReceivedWithAnyArgs(2)
+                                                            .Invoke(default);
 
-            serverCallback.ReceivedWithAnyArgs(2).Invoke(default);
+            await AsyncAssert.PassesWithinTimeout(ServerReceivedMessages);
         }
 
-        private Task GetStreamTask(OutgoingStream<TMessage, TReply> stream)
+        private static Task GetStreamTask(OutgoingStream<TMessage, TReply> stream)
         {
             return stream.StartSending();
         }
@@ -62,13 +64,15 @@ namespace Narupa.Grpc.Tests.Async
             {
                 await Task.WhenAll(stream.QueueMessageAsync(new TMessage()),
                                    stream.QueueMessageAsync(new TMessage()));
-                await Task.Delay(50);
             }
 
-            await Task.WhenAny(streamTask,
-                               Concurrent());
+            await AsyncAssert.CompletesWithinTimeout(Task.WhenAny(streamTask,
+                               Concurrent()));
+            
+            void ServerReceivedMessages() =>  serverCallback.ReceivedWithAnyArgs(2)
+                                                            .Invoke(default);
 
-            serverCallback.ReceivedWithAnyArgs(2).Invoke(default);
+            await AsyncAssert.PassesWithinTimeout(ServerReceivedMessages);
         }
     }
 }

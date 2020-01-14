@@ -10,9 +10,9 @@ using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Async
 {
-    internal abstract class ClientStreamTests<TServer, TClient, TStream> :
-        ClientTests<TServer, TClient>
-        where TServer : IAsyncClosable
+    internal abstract class ClientStreamTests<TService, TClient, TStream> :
+        ClientTests<TService, TClient>
+        where TService : IBindableService
         where TClient : IAsyncClosable, ICancellable
         where TStream : IAsyncClosable, ICancellable
     {
@@ -23,7 +23,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.IsTrue(stream.IsCancelled);
         }
@@ -31,7 +31,7 @@ namespace Narupa.Grpc.Tests.Async
         [AsyncTest]
         public async Task CloseConnection_StartStreamAfter_Exception()
         {
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(() => GetStream(client));
         }
@@ -43,7 +43,7 @@ namespace Narupa.Grpc.Tests.Async
 
             var streamToken = stream.GetCancellationToken();
 
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.IsTrue(streamToken.IsCancellationRequested);
         }
@@ -55,7 +55,7 @@ namespace Narupa.Grpc.Tests.Async
 
             CancellationToken streamToken;
 
-            await connection.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(connection.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(
                 () => streamToken = stream.GetCancellationToken());
@@ -66,7 +66,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.IsTrue(stream.IsCancelled);
         }
@@ -76,7 +76,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.IsTrue(stream.IsCancelled);
         }
@@ -84,7 +84,7 @@ namespace Narupa.Grpc.Tests.Async
         [AsyncTest]
         public async Task CloseClient_StartStreamAfter_Exception()
         {
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(() => GetStream(client));
         }
@@ -106,7 +106,7 @@ namespace Narupa.Grpc.Tests.Async
 
             var streamToken = stream.GetCancellationToken();
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.IsTrue(streamToken.IsCancellationRequested);
         }
@@ -132,7 +132,7 @@ namespace Narupa.Grpc.Tests.Async
 
             CancellationToken streamToken;
 
-            await client.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(client.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(
                 () => streamToken = stream.GetCancellationToken());
@@ -158,7 +158,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
 
             Assert.IsTrue(stream.IsCancelled);
         }
@@ -182,7 +182,7 @@ namespace Narupa.Grpc.Tests.Async
 
             var streamToken = stream.GetCancellationToken();
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
 
             Assert.IsTrue(streamToken.IsCancellationRequested);
         }
@@ -208,7 +208,7 @@ namespace Narupa.Grpc.Tests.Async
 
             CancellationToken streamToken;
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
 
             Assert.Throws<InvalidOperationException>(
                 () => streamToken = stream.GetCancellationToken());
@@ -238,12 +238,12 @@ namespace Narupa.Grpc.Tests.Async
             var stream1Token = stream1.GetCancellationToken();
             var stream2Token = stream2.GetCancellationToken();
 
-            await stream1.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream1.CloseAsync());
 
             Assert.IsTrue(stream1Token.IsCancellationRequested);
             Assert.IsFalse(stream2Token.IsCancellationRequested);
 
-            await stream2.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream2.CloseAsync());
         }
 
         [AsyncTest]
@@ -270,9 +270,9 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
         }
 
         [AsyncTest]
@@ -292,7 +292,7 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
 
             stream.Cancel();
         }
@@ -304,7 +304,7 @@ namespace Narupa.Grpc.Tests.Async
 
             stream.Cancel();
 
-            await stream.CloseAsync();
+            await AsyncAssert.CompletesWithinTimeout(stream.CloseAsync());
         }
 
         [AsyncTest]
@@ -312,7 +312,8 @@ namespace Narupa.Grpc.Tests.Async
         {
             var stream = GetStream(client);
 
-            await Task.WhenAll(stream.CloseAsync(), stream.CloseAsync());
+            await AsyncAssert.CompletesWithinTimeout(
+                Task.WhenAll(stream.CloseAsync(), stream.CloseAsync()));
         }
     }
 }

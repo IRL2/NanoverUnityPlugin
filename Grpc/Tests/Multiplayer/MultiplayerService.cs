@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Narupa.Core.Collections;
-using Narupa.Multiplayer;
+using Narupa.Protocol.Multiplayer;
+using UnityEngine;
+using static Narupa.Protocol.Multiplayer.Multiplayer;
 
 namespace Narupa.Grpc.Tests.Multiplayer
 {
-    internal class MultiplayerServer : Narupa.Multiplayer.Multiplayer.MultiplayerBase
+    internal class MultiplayerService : MultiplayerBase, IBindableService
     {
         private ObservableDictionary<string, object> resources
             = new ObservableDictionary<string, object>();
@@ -55,6 +58,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             ServerCallContext context)
         {
             var success = AcquireLock(request.PlayerId, request.ResourceId);
+            await Task.Delay(150);
             return new ResourceRequestResponse
             {
                 Success = success
@@ -66,6 +70,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             ServerCallContext context)
         {
             var success = ReleaseLock(request.PlayerId, request.ResourceId);
+            await Task.Delay(150);
             return new ResourceRequestResponse
             {
                 Success = success
@@ -101,22 +106,35 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 responseStream,
             ServerCallContext context)
         {
-            async void ResourcesOnCollectionChanged(object sender,
+            var update = new ResourceValuesUpdate
+            {
+                ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+            };
+
+            void ResourcesOnCollectionChanged(object sender,
                                                     NotifyCollectionChangedEventArgs e)
             {
-                var update = new ResourceValuesUpdate();
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
+
                 foreach (var change in changes)
-                    update.ResourceValueChanges[change] = resources[change].ToProtobufValue();
+                    update.ResourceValueChanges.Fields[change] = resources[change].ToProtobufValue();
                 foreach (var removal in removals)
                     update.ResourceValueRemovals.Add(removal);
-                await responseStream.WriteAsync(update);
             }
 
             resources.CollectionChanged += ResourcesOnCollectionChanged;
             while (true)
             {
                 await Task.Delay(10);
+                if (update.ResourceValueChanges.Fields.Any() || update.ResourceValueRemovals.Any())
+                {
+                    var toSend = update;
+                    update = new ResourceValuesUpdate
+                    {
+                        ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+                    };
+                    await responseStream.WriteAsync(toSend);
+                }
             }
         }
 
@@ -128,6 +146,11 @@ namespace Narupa.Grpc.Tests.Multiplayer
             {
                 PlayerId = $"player{playerCount++}"
             };
+        }
+
+        public ServerServiceDefinition BindService()
+        {
+            return Narupa.Protocol.Multiplayer.Multiplayer.BindService(this);
         }
     }
 }
