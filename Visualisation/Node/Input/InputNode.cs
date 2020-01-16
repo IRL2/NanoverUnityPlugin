@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using Narupa.Visualisation.Property;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Input
@@ -11,12 +12,29 @@ namespace Narupa.Visualisation.Node.Input
     /// given key.
     /// </summary>
     [Serializable]
-    public abstract class InputNode<TProperty> where TProperty : new()
+    public abstract class InputNode<TProperty> : IInputNode where TProperty : Property.Property, new()
     {
-        [SerializeField]
-        private string name;
+        IProperty IInputNode.Input => input;
 
         [SerializeField]
+        private string name;
+        
+        [SerializeField]
         private TProperty input = new TProperty();
+
+        public TProperty Input => input;
+
+        public string Name
+        {
+            get => name;
+            set => name = value;
+        }
+    }
+
+    public interface IInputNode
+    { 
+        string Name { get; set; }
+
+        IProperty Input { get; }
     }
 }

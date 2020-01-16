@@ -229,5 +229,10 @@ namespace Narupa.Visualisation
 
             areDrawArgumentsDirty = false;
         }
+
+        public void ClearDataBuffer(string key)
+        {
+            dataBuffers.RemoveBuffer(key);
+        }
     }
 }

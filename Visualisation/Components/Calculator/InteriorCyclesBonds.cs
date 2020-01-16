@@ -1,7 +1,9 @@
+using Narupa.Visualisation.Node.Calculator;
+
 namespace Narupa.Visualisation.Components.Calculator
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Calculator.InteriorCyclesBonds" />
-    public class InteriorCyclesBonds : VisualisationComponent<Node.Calculator.InteriorCyclesBonds>
+    /// <inheritdoc cref="InteriorCyclesBondsNode" />
+    public class InteriorCyclesBonds : VisualisationComponent<InteriorCyclesBondsNode>
     {
         private void Update()
         {

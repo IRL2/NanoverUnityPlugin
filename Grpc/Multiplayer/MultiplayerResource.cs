@@ -92,7 +92,7 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         public event Action LockReleased;
 
-        private void SharedStateDictionaryKeyUpdated(string key)
+        private void SharedStateDictionaryKeyUpdated(string key, object value)
         {
             if (key == ResourceKey)
             {

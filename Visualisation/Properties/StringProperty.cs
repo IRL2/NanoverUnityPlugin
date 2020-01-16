@@ -7,7 +7,7 @@ namespace Narupa.Visualisation.Properties
     /// Serializable <see cref="Property" /> for a <see cref="string" /> value.
     /// </summary>
     [Serializable]
-    public class StringProperty : Property<string>
+    public class StringProperty : SerializableProperty<string>
     {
     }
 }

@@ -22,6 +22,16 @@ namespace Narupa.Visualisation.Property
         /// Is this property linked to another?
         /// </summary>
         bool HasLinkedProperty { get; }
+        
+        /// <summary>
+        /// Attempt to set the value without knowing the types involved.
+        /// </summary>
+        void TrySetValue(object value);
+
+        /// <summary>
+        /// Attempt to set the linked property without knowing the types involved.
+        /// </summary>
+        void TrySetLinkedProperty(object property);
     }
     
     /// <summary>

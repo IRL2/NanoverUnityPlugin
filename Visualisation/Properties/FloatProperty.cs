@@ -7,7 +7,7 @@ namespace Narupa.Visualisation.Properties
     /// Serializable <see cref="Property" /> for a <see cref="float" /> value.
     /// </summary>
     [Serializable]
-    public class FloatProperty : Property<float>
+    public class FloatProperty : SerializableProperty<float>
     {
     }
 }

@@ -8,7 +8,7 @@ namespace Narupa.Visualisation.Properties
     /// Serializable <see cref="Property" /> for a <see cref="Gradient" /> value.
     /// </summary>
     [Serializable]
-    public class GradientProperty : Property<Gradient>
+    public class GradientProperty : SerializableProperty<Gradient>
     {
     }
 }

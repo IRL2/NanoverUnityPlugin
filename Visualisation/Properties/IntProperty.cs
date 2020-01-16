@@ -7,7 +7,7 @@ namespace Narupa.Visualisation.Properties
     /// Serializable <see cref="Property" /> for an <see cref="int" /> value.
     /// </summary>
     [Serializable]
-    public class IntProperty : Property<int>
+    public class IntProperty : SerializableProperty<int>
     {
     }
 }

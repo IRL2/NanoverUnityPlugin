@@ -1,6 +1,9 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using Narupa.Core;
+using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Node.Color;
@@ -86,7 +89,7 @@ namespace Narupa.Visualisation.Visualiser
         /// <summary>
         /// Per-element color scheme for coloring atoms.
         /// </summary>
-        public IProperty<ElementColorMapping> ColorScheme => colorScheme;
+        public IProperty<IMapping<Element, Color>> ColorScheme => colorScheme;
 
         [Header("Scale")]
         [SerializeField]
@@ -129,15 +132,15 @@ namespace Narupa.Visualisation.Visualiser
 
         #region Visualisation Nodes
 
-        private readonly FrameAdaptor frameAdaptor = new FrameAdaptor();
+        private readonly FrameAdaptorNode frameAdaptor = new FrameAdaptorNode();
 
-        private readonly ElementPaletteColor particleColors = new ElementPaletteColor();
+        private readonly ElementColorMappingNode particleColors = new ElementColorMappingNode();
 
-        private readonly VdwScale particleScales = new VdwScale();
+        private readonly VdwScaleNode particleScales = new VdwScaleNode();
 
-        private readonly ParticleBondRenderer bondRenderer = new ParticleBondRenderer();
+        private readonly ParticleBondRendererNode bondRenderer = new ParticleBondRendererNode();
 
-        private readonly ParticleSphereRenderer sphereRenderer = new ParticleSphereRenderer();
+        private readonly ParticleSphereRendererNode sphereRenderer = new ParticleSphereRendererNode();
 
         #endregion
 

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Narupa.Protocol.Multiplayer;
 using Narupa.Network;
 using UnityEngine;
-
 using Avatar = Narupa.Protocol.Multiplayer.Avatar;
 using System.Linq;
 using Grpc.Core;
@@ -16,6 +15,7 @@ using Narupa.Core.Math;
 using Narupa.Grpc;
 using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
+using UnityEngine.Profiling;
 
 namespace Narupa.Session
 {
@@ -33,7 +33,9 @@ namespace Narupa.Session
 
         public MultiplayerSession()
         {
-            SimulationPose = new MultiplayerResource<Transformation>(this, SimulationPoseKey, PoseFromObject, PoseToObject);
+            SimulationPose =
+                new MultiplayerResource<Transformation>(this, SimulationPoseKey, PoseFromObject,
+                                                        PoseToObject);
         }
 
         /// <summary>
@@ -42,26 +44,22 @@ namespace Narupa.Session
         public readonly MultiplayerResource<Transformation> SimulationPose;
 
         /// <summary>
-        /// Callback for when a multiplayer resource is updated.
-        /// </summary>
-        public Action<string> SharedStateDictionaryKeyUpdated;
-
-        /// <summary>
         /// Dictionary of player ids to their last known avatar.
         /// </summary>
-        public Dictionary<string, MultiplayerAvatar> Avatars { get; } 
+        public Dictionary<string, MultiplayerAvatar> Avatars { get; }
             = new Dictionary<string, MultiplayerAvatar>();
 
         /// <summary>
         /// Dictionary of the currently known shared state.
         /// </summary>
-        public Dictionary<string, object> SharedStateDictionary { get; } = new Dictionary<string, object>();
+        public Dictionary<string, object> SharedStateDictionary { get; } =
+            new Dictionary<string, object>();
 
         /// <summary>
         /// Is there an open client on this session?
         /// </summary>
         public bool IsOpen => client != null;
-        
+
         /// <summary>
         /// Has this session created a user?
         /// </summary>
@@ -101,10 +99,15 @@ namespace Narupa.Session
 
         private Dictionary<string, MultiplayerAvatar> pendingAvatars
             = new Dictionary<string, MultiplayerAvatar>();
+
         private Dictionary<string, object> pendingValues
             = new Dictionary<string, object>();
 
         private Task avatarFlushingTask, valueFlushingTask;
+
+        public event Action<string, object> SharedStateDictionaryKeyUpdated;
+
+        public event Action<string> SharedStateDictionaryKeyRemoved;
 
         /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
@@ -122,7 +125,7 @@ namespace Narupa.Session
                 avatarFlushingTask.AwaitInBackground();
             }
 
-            if (valueFlushingTask ==  null)
+            if (valueFlushingTask == null)
             {
                 valueFlushingTask = CallbackInterval(FlushValues, ValuePublishInterval);
                 valueFlushingTask.AwaitInBackground();
@@ -162,7 +165,7 @@ namespace Narupa.Session
 
             PlayerName = playerName;
             PlayerId = response.PlayerId;
-            
+
             StartAvatars();
 
             IncomingValueUpdates = client.SubscribeAllResourceValues();
@@ -174,7 +177,6 @@ namespace Narupa.Session
         {
             try
             {
-
                 OutgoingAvatar = client.PublishAvatar(PlayerId);
                 IncomingAvatars = client.SubscribeAvatars(updateInterval: AvatarUpdateInterval,
                                                           ignorePlayerId: PlayerId);
@@ -183,11 +185,9 @@ namespace Narupa.Session
 
                 OutgoingAvatar.StartSending().AwaitInBackgroundIgnoreCancellation();
                 IncomingAvatars.StartReceiving().AwaitInBackgroundIgnoreCancellation();
-
             }
             catch (RpcException e)
             {
-                
             }
         }
 
@@ -229,9 +229,12 @@ namespace Narupa.Session
         /// </summary>
         public void SetVRAvatarEmpty()
         {
-            SetVRAvatar(new MultiplayerAvatar { PlayerId = PlayerId });
+            SetVRAvatar(new MultiplayerAvatar
+            {
+                PlayerId = PlayerId
+            });
         }
-        
+
         /// <summary>
         /// Set the given key in the shared state dictionary, which will be
         /// sent to the server according in the future according to the publish 
@@ -241,7 +244,7 @@ namespace Narupa.Session
         {
             pendingValues[key] = value.ToProtobufValue();
         }
-        
+
         /// <summary>
         /// Get a key in the shared state dictionary.
         /// </summary>
@@ -257,7 +260,7 @@ namespace Narupa.Session
         {
             return await client.LockResource(PlayerId, id);
         }
-        
+
         /// <summary>
         /// Release the lock on the given object of a given key.
         /// </summary>
@@ -289,10 +292,22 @@ namespace Narupa.Session
 
         private void OnResourceValuesUpdateReceived(ResourceValuesUpdate update)
         {
-            foreach (var pair in update.ResourceValueChanges.Fields)
+            if (update.ResourceValueChanges != null)
             {
-                SharedStateDictionary[pair.Key] = pair.Value.ToObject();
-                SharedStateDictionaryKeyUpdated?.Invoke(pair.Key);
+                foreach (var pair in update.ResourceValueChanges.Fields)
+                {
+                    var value = pair.Value.ToObject();
+                    SharedStateDictionary[pair.Key] = value;
+                    SharedStateDictionaryKeyUpdated?.Invoke(pair.Key, value);
+                }
+            }
+
+            if (update.ResourceValueRemovals != null)
+            {
+                foreach (var key in update.ResourceValueRemovals)
+                {
+                    SharedStateDictionaryKeyRemoved?.Invoke(key);
+                }
             }
         }
 
@@ -304,7 +319,7 @@ namespace Narupa.Session
             foreach (var avatar in pendingAvatars.Values)
             {
                 OutgoingAvatar.QueueMessageAsync(ClientAvatarToProtoAvatar(avatar))
-                    .AwaitInBackgroundIgnoreCancellation();
+                              .AwaitInBackgroundIgnoreCancellation();
             }
 
             pendingAvatars.Clear();
@@ -318,7 +333,7 @@ namespace Narupa.Session
             foreach (var pair in pendingValues)
             {
                 client.SetResourceValue(PlayerId, pair.Key, pair.Value.ToProtobufValue())
-                    .AwaitInBackgroundIgnoreCancellation();
+                      .AwaitInBackgroundIgnoreCancellation();
             }
 
             pendingValues.Clear();
@@ -336,20 +351,26 @@ namespace Narupa.Session
         private static Avatar ClientAvatarToProtoAvatar(MultiplayerAvatar clientAvatar)
         {
             var components = clientAvatar
-                .Components
-                .Select(pair => ComponentFromPose(pair.Key, pair.Value));
+                             .Components
+                             .Select(pair => ComponentFromPose(pair.Key, pair.Value));
 
             var protoAvatar = new Avatar
             {
                 PlayerId = clientAvatar.PlayerId,
-                Components = { components },
+                Components =
+                {
+                    components
+                },
             };
 
             return protoAvatar;
 
             AvatarComponent ComponentFromPose(string name, Transformation? pose)
             {
-                var component = new AvatarComponent { Name = name };
+                var component = new AvatarComponent
+                {
+                    Name = name
+                };
 
                 if (pose is Transformation validPose)
                 {
@@ -390,9 +411,8 @@ namespace Narupa.Session
         {
             var data = new object[]
             {
-                pose.Position.x, pose.Position.y, pose.Position.z,
-                pose.Rotation.x, pose.Rotation.y, pose.Rotation.z, pose.Rotation.w,
-                pose.Scale.x, pose.Scale.y, pose.Scale.z,
+                pose.Position.x, pose.Position.y, pose.Position.z, pose.Rotation.x, pose.Rotation.y,
+                pose.Rotation.z, pose.Rotation.w, pose.Scale.x, pose.Scale.y, pose.Scale.z,
             };
 
             return data;
@@ -422,7 +442,8 @@ namespace Narupa.Session
     public sealed class MultiplayerAvatar
     {
         public string PlayerId { get; set; }
-        public Dictionary<string, Transformation?> Components { get; } 
+
+        public Dictionary<string, Transformation?> Components { get; }
             = new Dictionary<string, Transformation?>();
     }
 }

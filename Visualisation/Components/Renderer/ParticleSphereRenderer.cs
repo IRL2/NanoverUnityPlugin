@@ -2,13 +2,14 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using Narupa.Visualisation.Components.Renderer;
+using Narupa.Visualisation.Node.Renderer;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Components.Visualiser
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Renderer.ParticleSphereRenderer"/>
+    /// <inheritdoc cref="ParticleSphereRendererNode" />
     public class ParticleSphereRenderer :
-        VisualisationComponentRenderer<Node.Renderer.ParticleSphereRenderer>
+        VisualisationComponentRenderer<ParticleSphereRendererNode>
     {
         private void Start()
         {
@@ -24,12 +25,11 @@ namespace Narupa.Visualisation.Components.Visualiser
         {
             node.Render(camera);
         }
-        
+
         protected override void UpdateInEditor()
         {
             base.UpdateInEditor();
             node.ResetBuffers();
         }
-
     }
 }

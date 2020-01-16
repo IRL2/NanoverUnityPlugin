@@ -1,18 +1,19 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using Narupa.Visualisation.Node.Renderer;
 using UnityEngine;
 
 namespace Narupa.Visualisation.Components.Renderer
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Renderer.ParticleBondRenderer"/>
-    public class ParticleBondRenderer : VisualisationComponentRenderer<Node.Renderer.ParticleBondRenderer>
+    /// <inheritdoc cref="ParticleBondRendererNode" />
+    public class ParticleBondRenderer : VisualisationComponentRenderer<ParticleBondRendererNode>
     {
         private void Start()
         {
             node.Transform = transform;
         }
-        
+
         private void OnDestroy()
         {
             node.Dispose();
@@ -22,12 +23,11 @@ namespace Narupa.Visualisation.Components.Renderer
         {
             node.Render(camera);
         }
-        
+
         protected override void UpdateInEditor()
         {
             base.UpdateInEditor();
             node.ResetBuffers();
         }
-
     }
 }

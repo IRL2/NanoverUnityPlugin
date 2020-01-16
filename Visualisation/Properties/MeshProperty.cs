@@ -8,7 +8,7 @@ namespace Narupa.Visualisation.Properties
     /// Serializable <see cref="Property" /> for a <see cref="Mesh" /> value.
     /// </summary>
     [Serializable]
-    public class MeshProperty : Property<Mesh>
+    public class MeshProperty : SerializableProperty<Mesh>
     {
     }
 }

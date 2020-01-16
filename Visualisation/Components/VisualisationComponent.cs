@@ -18,7 +18,7 @@ namespace Narupa.Visualisation.Components
     /// storing the node has a serialized parameter.
     /// </summary>
     [ExecuteAlways]
-    public abstract class VisualisationComponent<TNode> : VisualisationComponent
+    public abstract class VisualisationComponent<TNode> : VisualisationComponent, IVisualisationComponent<TNode>
         where TNode : new()
     {
         [SerializeField]
@@ -33,6 +33,8 @@ namespace Narupa.Visualisation.Components
         {
             return node;
         }
+
+        public TNode Node => node;
     }
 
     /// <summary>
@@ -43,7 +45,7 @@ namespace Narupa.Visualisation.Components
     /// graph in the Editor.
     /// </summary>
     public abstract class VisualisationComponent : MonoBehaviour, ISerializationCallbackReceiver,
-                                                   IPropertyProvider
+        IPropertyProvider
     {
         protected virtual void OnEnable()
         {
@@ -109,10 +111,10 @@ namespace Narupa.Visualisation.Components
         /// <summary>
         /// Setup a link between two property providers
         /// </summary>
-        private static void LinkProperties<T>(IPropertyProvider source,
-                                              string sourceName,
-                                              IPropertyProvider destination,
-                                              string destName)
+        public static void LinkProperties<T>(IPropertyProvider source,
+                                             string sourceName,
+                                             IPropertyProvider destination,
+                                             string destName)
         {
             if (!(source.GetOrCreateProperty<T>(sourceName) is IReadOnlyProperty<T> sourceOutput))
                 throw new InvalidOperationException();
@@ -135,16 +137,16 @@ namespace Narupa.Visualisation.Components
                     $"{this} is missing a destination property with name {destName}");
             var type = inputProperty.FieldType;
             while (!type.IsGenericType ||
-                   type.GetGenericTypeDefinition() != typeof(Property<>))
+                   type.GetGenericTypeDefinition() != typeof(LinkableProperty<>))
                 type = type.BaseType;
             type = type.GetGenericArguments()[0];
 
             // Get the correct generic method
             var method = typeof(VisualisationComponent).GetMethod(nameof(LinkProperties),
                                                                   BindingFlags.Public
-                                                                | BindingFlags.NonPublic
-                                                                | BindingFlags.Static)
-                                                       ?.MakeGenericMethod(type);
+                                                                  | BindingFlags.NonPublic
+                                                                  | BindingFlags.Static)
+                ?.MakeGenericMethod(type);
 
             if (method == null)
                 throw new InvalidOperationException(
@@ -220,8 +222,8 @@ namespace Narupa.Visualisation.Components
 
             var allFields = GetWrappedVisualisationNodeType()
                 .GetFieldsInSelfOrParents(BindingFlags.Instance
-                                        | BindingFlags.NonPublic
-                                        | BindingFlags.Public);
+                                          | BindingFlags.NonPublic
+                                          | BindingFlags.Public);
 
             var validFields = allFields.Where(field => typeof(IReadOnlyProperty).IsAssignableFrom(
                                                   field.FieldType

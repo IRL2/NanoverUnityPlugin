@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Color
 {
     [Serializable]
-    public class SecondaryStructureColor : VisualiserColor
+    public class SecondaryStructureColor : VisualiserColorNode
     {
         [SerializeField]
         private SecondaryStructureArrayProperty secondaryStructure;

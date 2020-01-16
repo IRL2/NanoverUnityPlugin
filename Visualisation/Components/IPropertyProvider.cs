@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Narupa.Visualisation.Property;
 
-namespace Narupa.Visualisation.Node.Adaptor
+namespace Narupa.Visualisation.Components
 {
     /// <summary>
     /// An object which can provide visualisation properties.
@@ -40,7 +40,8 @@ namespace Narupa.Visualisation.Node.Adaptor
         IReadOnlyProperty<T> GetOrCreateProperty<T>(string name);
 
         /// <summary>
-        /// Could this provider give a property on a call to <see cref="GetOrCreateProperty{T}"/>?.
+        /// Could this provider give a property on a call to
+        /// <see cref="GetOrCreateProperty{T}" />?.
         /// </summary>
         bool CanProvideProperty<T>(string name);
     }

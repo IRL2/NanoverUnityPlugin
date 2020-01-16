@@ -8,7 +8,7 @@ namespace Narupa.Visualisation.Properties
     /// Serializable <see cref="Property" /> for a <see cref="Material" /> value.
     /// </summary>
     [Serializable]
-    public class MaterialProperty : Property<Material>
+    public class MaterialProperty : SerializableProperty<Material>
     {
     }
 }

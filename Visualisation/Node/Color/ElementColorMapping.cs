@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Narupa.Core;
 using Narupa.Core.Science;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Narupa.Visualisation.Node.Color
     /// coloring.
     /// </summary>
     [CreateAssetMenu(menuName = "Definition/Element Color Mapping")]
-    public class ElementColorMapping : ScriptableObject
+    public class ElementColorMapping : ScriptableObject, IMapping<Element, UnityEngine.Color>
     {
 #pragma warning disable 0649
         /// <summary>
@@ -35,7 +36,7 @@ namespace Narupa.Visualisation.Node.Color
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public UnityEngine.Color GetColor(Element element)
+        public UnityEngine.Color Map(Element element)
         {
             var atomicNumber = (int) element;
             foreach (var item in dictionary)

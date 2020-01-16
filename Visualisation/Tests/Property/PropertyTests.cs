@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Narupa.Visualisation.Tests.Property
 {
     public abstract class PropertyTests<TProperty, TValue>
-        where TProperty : Property<TValue>, new()
+        where TProperty : SerializableProperty<TValue>, new()
     {
         protected virtual bool IsReferenceType => typeof(TValue).IsByRef;
 

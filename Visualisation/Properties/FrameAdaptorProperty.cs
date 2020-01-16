@@ -8,7 +8,7 @@ namespace Narupa.Visualisation.Properties
     /// Serializable <see cref="Property" /> for a <see cref="FrameAdaptor" /> value.
     /// </summary>
     [Serializable]
-    public class FrameAdaptorProperty : Property<FrameAdaptor>
+    public class FrameAdaptorProperty : SerializableProperty<FrameAdaptor>
     {
     }
 }

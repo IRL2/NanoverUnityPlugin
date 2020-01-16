@@ -2,26 +2,48 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Visualisation.Node.Adaptor;
+using System.Reflection;
+using Narupa.Visualisation.Property;
 
-namespace Plugins.Narupa.Visualisation.Components
+namespace Narupa.Visualisation.Components
 {
+    /// <summary>
+    /// Extension methods for <see cref="IPropertyProvider" />.
+    /// </summary>
     public static class PropertyProviderExtensions
     {
-        /// <summary>
-        /// Non-generic version of <see cref="IPropertyProvider.CanProvideProperty{T}"/>
-        /// </summary>
+        /// <inheritdoc cref="IPropertyProvider.CanProvideProperty{T}"/>
         public static bool CanProvideProperty(this IPropertyProvider provider,
                                               string name,
                                               Type type)
         {
             return (bool) typeof(IPropertyProvider)
-                          .GetMethod(nameof(provider.CanProvideProperty))
-                          .MakeGenericMethod(type)
-                          .Invoke(provider, new object[]
-                          {
-                              name
-                          });
+                .GetMethod(nameof(provider.CanProvideProperty),
+                           BindingFlags.Public
+                           | BindingFlags.NonPublic
+                           | BindingFlags.Instance)
+                .MakeGenericMethod(type)
+                .Invoke(provider, new object[]
+                {
+                    name
+                });
+        }
+
+        /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}"/>
+        public static IReadOnlyProperty GetOrCreateProperty(this IPropertyProvider provider,
+                                                            string name,
+                                                            Type type)
+        {
+            return typeof(IPropertyProvider)
+                .GetMethod(nameof(provider.GetOrCreateProperty),
+                           BindingFlags.Public
+                           | BindingFlags.NonPublic
+                           | BindingFlags.Instance)
+                .MakeGenericMethod(type)
+                .Invoke(provider, new object[]
+                {
+                    name
+                }) as IReadOnlyProperty;
         }
     }
 }

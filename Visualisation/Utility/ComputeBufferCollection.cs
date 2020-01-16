@@ -88,6 +88,9 @@ namespace Narupa.Visualisation.Utility
         /// </summary>
         public void SetBuffer<T>(string bufferName, T[] content) where T : struct
         {
+            if (content.Length == 0)
+                return;
+            
             EnsureComputeBufferExists(bufferName, content.Length, Marshal.SizeOf(typeof(T)));
 
             computeBuffers[bufferName].SetData(content);
@@ -155,6 +158,15 @@ namespace Narupa.Visualisation.Utility
         public void Clear()
         {
             computeBuffers.Clear();
+        }
+
+        public void RemoveBuffer(string key)
+        {
+            if (computeBuffers.TryGetValue(key, out var buffer))
+            {
+                buffer.Dispose();
+                computeBuffers.Remove(key);
+            }
         }
     }
 }

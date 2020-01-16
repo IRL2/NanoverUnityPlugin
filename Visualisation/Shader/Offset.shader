@@ -3,6 +3,7 @@
     Properties
     {
         _Offset ("Offset", Float) = 0.015
+        _Color ("Color", Color) = (1, 1, 1 ,1)
         _Diffuse ("Diffuse", Float) = 0.5
     }
     SubShader
@@ -30,6 +31,7 @@
         };
 
         float _Offset;
+        fixed4 _Color;
 
         v2f offset_vert (appdata v, float mult)
         {
@@ -66,7 +68,7 @@
                 fixed4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-                return color * saturate(lerp(1, dot(n, l), _Diffuse));;
+                return _Color * pow(color, 2.2) * saturate(lerp(1, dot(n, l), _Diffuse));
             }
 
             ENDCG
@@ -91,7 +93,7 @@
                 fixed4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-                return color * saturate(lerp(1, dot(n, l), _Diffuse));;
+                return _Color * pow(color, 2.2) * saturate(lerp(1, dot(n, l), _Diffuse));;
             }
 
             ENDCG

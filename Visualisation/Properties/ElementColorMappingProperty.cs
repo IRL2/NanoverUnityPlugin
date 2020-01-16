@@ -1,6 +1,9 @@
 using System;
+using Narupa.Core;
+using Narupa.Core.Science;
 using Narupa.Visualisation.Node.Color;
 using Narupa.Visualisation.Property;
+using UnityEngine;
 
 namespace Narupa.Visualisation.Properties
 {
@@ -9,7 +12,7 @@ namespace Narupa.Visualisation.Properties
     /// value.
     /// </summary>
     [Serializable]
-    public class ElementColorMappingProperty : Property<ElementColorMapping>
+    public class ElementColorMappingProperty : InterfaceProperty<IMapping<Element, Color>>
     {
     }
 }
