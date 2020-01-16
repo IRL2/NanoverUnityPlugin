@@ -8,9 +8,6 @@ namespace Narupa.Frontend.Manipulation
     /// <summary>
     /// Represents a grab between a particle and world-space position
     /// </summary>
-    // TODO: this was exposed last minute and should be refactored into 
-    // something cleaner, and not expose EndManipulation publically. See
-    // issue #74
     public class ActiveParticleGrab : IActiveManipulation
     {
         /// <inheritdoc cref="IActiveManipulation.ManipulationEnded"/>
