@@ -50,7 +50,11 @@
             float width = lerp(curve.startScale.x, curve.endScale.x, t);
             float depth = lerp(curve.startScale.y, curve.endScale.y, t);
             
-            float4x4 mat = get_transformation_matrix(width*_Radius*normalize(right.xyz), tangent.xyz, depth*_Radius*normalize(normal.xyz), pos.xyz);
+            float scale = _Radius * lerp(curve.startScale.x, curve.endScale.x, t);
+            
+            float signX = sign(determinant(ObjectToWorld));
+            
+            float4x4 mat = get_transformation_matrix(signX*scale*normalize(right.xyz), scale*tangent.xyz, scale*normalize(normal.xyz), pos.xyz);
             
             return mat;
         }
@@ -81,16 +85,16 @@
                 float bias = v.vertex.y;
                 float4x4 mat = GetHermiteMatrix(bias);
                 v.vertex.y = 0;
-                v.vertex = mul(mat, v.vertex);
+                  
+                v.vertex = mul(mat, float4(v.vertex.xyz, 1));
                 o.normal = normalize(mul(mat, float4(v.normal.xyz, 0)));
                 
-                float3 curveNormal = lerp(spline.startNormal, spline.endNormal, bias);
-                
-                v.vertex = mul(ObjectToWorld, v.vertex);
+                v.vertex = mul(ObjectToWorld, float4(v.vertex.xyz, 1));
+                o.normal = mul(ObjectToWorldInverseTranspose, float4(o.normal.xyz, 0));
                 
                 float t = smoothstep(0, 1, bias);
             
-                o.color = lerp(spline.startColor, spline.endColor, t);
+                o.color = lerp(pow(spline.startColor, 2.2), pow(spline.endColor, 2.2), t);
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 

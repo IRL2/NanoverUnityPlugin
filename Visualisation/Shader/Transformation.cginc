@@ -9,6 +9,7 @@
 
     uniform float4x4 ObjectToWorld = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
     uniform float4x4 WorldToObject = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+    uniform float4x4 ObjectToWorldInverseTranspose = float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
 
     #if defined(UNITY_CG_INCLUDED)
         #define InstanceSpaceViewDirection(v) mul(WorldToObject, float4(_WorldSpaceCameraPos.xyz, 1)).xyz - v

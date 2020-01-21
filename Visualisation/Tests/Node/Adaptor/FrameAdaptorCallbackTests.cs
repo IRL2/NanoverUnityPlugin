@@ -10,20 +10,8 @@ using UnityEngine;
 
 namespace Narupa.Visualisation.Tests.Node.Adaptor
 {
-    public class FrameAdaptorTests
+    public class FrameAdaptorCallbackTests
     {
-        public class FrameSnapshot : ITrajectorySnapshot
-        {
-            public void Update(Frame.Frame frame, FrameChanges changes)
-            {
-                CurrentFrame = frame;
-                FrameChanged?.Invoke(frame, changes);
-            }
-
-            public Frame.Frame CurrentFrame { get; private set; }
-            public event FrameChanged FrameChanged;
-        }
-
         private FrameSnapshot source;
 
         private FrameAdaptorNode adaptor;

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 455347891125820170}
   - component: {fileID: 2948249340003140760}
   m_Layer: 0
-  m_Name: Goodsell Color
+  m_Name: goodsell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,8 +52,8 @@ MonoBehaviour:
   node:
     name: particle.elements
     input:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
 --- !u!114 &8442834605439998331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,8 +70,8 @@ MonoBehaviour:
   node:
     name: particle.residues
     input:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
 --- !u!114 &6150773974466418009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,8 +88,8 @@ MonoBehaviour:
   node:
     name: residue.chains
     input:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
 --- !u!114 &6071749428003081500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,8 +106,8 @@ MonoBehaviour:
   node:
     name: residue.names
     input:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
 --- !u!114 &455347891125820170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,17 +135,17 @@ MonoBehaviour:
     destinationFieldName: residueEntities
   node:
     elements:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
     particleResidues:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
     residueEntities:
-      isValueProvided: 0
       value: 
-    residueNames:
       isValueProvided: 0
+    residueNames:
       value: []
+      isValueProvided: 0
     waterColor: {r: 1, g: 0.7216981, b: 0.7216981, a: 1}
     chainColors:
     - NonHeteroColor: {r: 0.6, g: 0.8000001, b: 1, a: 1}
@@ -185,9 +185,9 @@ MonoBehaviour:
   inputLinkCollection:
   - sourceComponent: {fileID: 455347891125820170}
     sourceFieldName: colors
-    destinationFieldName: input
+    destinationFieldName: output
   node:
     name: particle.colors
-    input:
-      isValueProvided: 0
+    output:
       value: []
+      isValueProvided: 0

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1900448658886156701}
   - component: {fileID: 6529192864124320622}
-  - component: {fileID: 4779769348369292179}
   - component: {fileID: 7604027006933302359}
   - component: {fileID: 3421694816922696361}
   - component: {fileID: 8379820703431466785}
@@ -20,7 +19,7 @@ GameObject:
   - component: {fileID: 1900448658886156697}
   - component: {fileID: 1900448658886156694}
   m_Layer: 0
-  m_Name: Ball and Stick
+  m_Name: ball and stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,26 +55,8 @@ MonoBehaviour:
   node:
     name: color
     input:
-      isValueProvided: 1
       value: {r: 1, g: 1, b: 1, a: 1}
---- !u!114 &4779769348369292179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900448658886156695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: particle.filter
-    input:
-      isValueProvided: 0
-      value: 
+      isValueProvided: 1
 --- !u!114 &7604027006933302359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,8 +73,8 @@ MonoBehaviour:
   node:
     name: particle.scale
     input:
-      isValueProvided: 1
       value: 0.1
+      isValueProvided: 1
 --- !u!114 &3421694816922696361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,8 +91,8 @@ MonoBehaviour:
   node:
     name: particle.colors
     input:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
 --- !u!114 &8379820703431466785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,8 +109,8 @@ MonoBehaviour:
   node:
     name: bond.pairs
     input:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
 --- !u!114 &5176173228503488438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,8 +127,8 @@ MonoBehaviour:
   node:
     name: particle.scales
     input:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
 --- !u!114 &2187803143233138763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,8 +145,8 @@ MonoBehaviour:
   node:
     name: particle.positions
     input:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
 --- !u!114 &4072638902273047189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,8 +163,8 @@ MonoBehaviour:
   node:
     name: bond.scale
     input:
-      isValueProvided: 1
       value: 0.05
+      isValueProvided: 1
 --- !u!114 &1900448658886156697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,46 +196,40 @@ MonoBehaviour:
   - sourceComponent: {fileID: 7604027006933302359}
     sourceFieldName: input
     destinationFieldName: particleScale
-  - sourceComponent: {fileID: 4779769348369292179}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
   - sourceComponent: {fileID: 6529192864124320622}
     sourceFieldName: input
     destinationFieldName: rendererColor
   node:
     material:
-      isValueProvided: 1
       value: {fileID: 2100000, guid: 8ab524378960e644f9a238927b43e467, type: 2}
-    mesh:
       isValueProvided: 1
+    mesh:
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    particleFilter:
-      isValueProvided: 0
-      value: 
+      isValueProvided: 1
     bondScale:
-      isValueProvided: 0
       value: 0.06
+      isValueProvided: 0
     bondPairs:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particlePositions:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleColors:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleScales:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     rendererColor:
-      isValueProvided: 0
       value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 0
     particleScale:
-      isValueProvided: 0
       value: 1
-    bondOrders:
       isValueProvided: 0
+    bondOrders:
       value: 
+      isValueProvided: 0
 --- !u!114 &1900448658886156694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,9 +252,6 @@ MonoBehaviour:
   - sourceComponent: {fileID: 7604027006933302359}
     sourceFieldName: input
     destinationFieldName: rendererScale
-  - sourceComponent: {fileID: 4779769348369292179}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
   - sourceComponent: {fileID: 2187803143233138763}
     sourceFieldName: input
     destinationFieldName: particlePositions
@@ -288,26 +260,23 @@ MonoBehaviour:
     destinationFieldName: rendererColor
   node:
     particlePositions:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleColors:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     particleScales:
-      isValueProvided: 0
       value: []
+      isValueProvided: 0
     rendererColor:
-      isValueProvided: 0
       value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 0
     rendererScale:
-      isValueProvided: 0
       value: 1
-    particleFilter:
       isValueProvided: 0
-      value: 
     mesh:
-      isValueProvided: 1
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    material:
       isValueProvided: 1
+    material:
       value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
+      isValueProvided: 1

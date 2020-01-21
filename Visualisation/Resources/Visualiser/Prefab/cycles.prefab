@@ -9,10 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8675595082771297215}
-  - component: {fileID: 2328836869028133637}
+  - component: {fileID: 4445252473862147284}
   - component: {fileID: 8611370669276084789}
   - component: {fileID: 4470637484251353897}
-  - component: {fileID: 7604759643221117606}
   - component: {fileID: 7698190664551895981}
   m_Layer: 0
   m_Name: cycles
@@ -35,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2328836869028133637
+--- !u!114 &4445252473862147284
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,13 +43,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 75182077779563847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3debffbae2948ccb8f413f906e7e8a7, type: 3}
+  m_Script: {fileID: 11500000, guid: e3d9c1f4f34948e8bb51530d262fbcb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
     parentAdaptor:
-      value: {fileID: 0}
+      unityObject: {fileID: 0}
+      isValueProvided: 0
+    particleFilter:
+      value: 
       isValueProvided: 0
 --- !u!114 &8611370669276084789
 MonoBehaviour:
@@ -68,7 +70,7 @@ MonoBehaviour:
   node:
     name: scale
     input:
-      value: 0.05
+      value: 0.1
       isValueProvided: 1
 --- !u!114 &4470637484251353897
 MonoBehaviour:
@@ -88,24 +90,6 @@ MonoBehaviour:
     input:
       unityObject: {fileID: 11400000, guid: d9246a3960e1df3438615b81ea1b394e, type: 2}
       isValueProvided: 1
---- !u!114 &7604759643221117606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75182077779563847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: particle.filter
-    input:
-      value: 
-      isValueProvided: 0
 --- !u!114 &7698190664551895981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,4 +105,6 @@ MonoBehaviour:
   prefabs:
   - {fileID: 8528582866378757822, guid: 119ca4398534dda4db7ed5f9fe16476f, type: 3}
   - {fileID: 6914795531129879088, guid: 4d8702b24a6b0424cbb5fc18ab856197, type: 3}
-  frameAdaptor: {fileID: 2328836869028133637}
+  frameAdaptor:
+    unityObject: {fileID: 4445252473862147284}
+    isValueProvided: 1

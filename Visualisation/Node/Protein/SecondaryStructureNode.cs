@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Narupa.Frame;
 using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Properties.Collections;
@@ -15,39 +14,117 @@ namespace Narupa.Visualisation.Node.Protein
     [Serializable]
     public class SecondaryStructureNode
     {
+        #region Input Properties
+
+        /// <summary>
+        /// Array of atomic positions. This should contains the atoms which are relevant to
+        /// the protein backbone.
+        /// </summary>
+        public IProperty<Vector3[]> AtomPositions => atomPositions;
+
+        /// <inheritdoc cref="AtomPositions" />
         [SerializeField]
         private Vector3ArrayProperty atomPositions;
 
+        /// <summary>
+        /// Array of residue indices which may appear in
+        /// <see cref="PeptideResidueSequences" /> for each atom.
+        /// </summary>
+        public IProperty<int[]> AtomResidues => atomResidues;
+
+        /// <inheritdoc cref="AtomResidues" />
         [SerializeField]
         private IntArrayProperty atomResidues;
 
+        /// <summary>
+        /// Array of atom names. Each amino acid should have atoms named 'CA', 'C', 'N' and
+        /// 'O'.
+        /// </summary>
+        public IProperty<string[]> AtomNames => atomNames;
+
+        /// <inheritdoc cref="AtomNames" />
         [SerializeField]
         private StringArrayProperty atomNames;
 
-        [SerializeField]
-        private SelectionArrayProperty peptideChains;
+        /// <summary>
+        /// Number of residues involved. The maximum index referenced in both
+        /// <see cref="AtomResidues" /> and <see cref="PeptideResidueSequences" /> should
+        /// be less than this value.
+        /// </summary>
+        public IProperty<int> ResidueCount => residueCount;
 
+        /// <inheritdoc cref="ResidueCount" />
+        [SerializeField]
+        private IntProperty residueCount;
+
+        /// <summary>
+        /// Array of residue indices that indicate which residues are involved in a protein
+        /// chain.
+        /// </summary>
+        public IProperty<IReadOnlyList<int>[]> PeptideResidueSequences => peptideResidueSequences;
+
+        /// <inheritdoc cref="PeptideResidueSequences" />
+        [SerializeField]
+        private SelectionArrayProperty peptideResidueSequences;
+
+        /// <summary>
+        /// Options to configure the DSSP algorithm.
+        /// </summary>
         [SerializeField]
         private DsspOptions dsspOptions = new DsspOptions();
 
-        private bool needRecalculate = true;
+        #endregion
 
-        private SecondaryStructureArrayProperty splineSecondaryStructure =
+        #region Output Properties
+
+        /// <summary>
+        /// Secondary structure assignments for each residue. The size of this array will
+        /// be equal to <see cref="ResidueCount" />, with residues that are not in one of
+        /// the peptide chains provided in <see cref="PeptideResidueSequences" /> being
+        /// given the assignment <see cref="SecondaryStructureAssignment.None" />
+        /// </summary>
+        public IReadOnlyProperty<SecondaryStructureAssignment[]> ResidueSecondaryStructure =>
+            residueSecondaryStructure;
+
+        /// <inheritdoc cref="ResidueSecondaryStructure" />
+        private readonly SecondaryStructureArrayProperty residueSecondaryStructure =
             new SecondaryStructureArrayProperty();
 
-        private BondArrayProperty hydrogenBonds =
-            new BondArrayProperty();
+        /// <summary>
+        /// Array of calculated hydrogen bonds, based on indices of atoms in the
+        /// <see cref="AtomPositions" />.
+        /// </summary>
+        public IReadOnlyProperty<BondPair[]> HydrogenBonds => hydrogenBonds;
 
-        public List<SecondaryStructureResidueData[]> sequenceResidueData =
+        /// <inheritdoc cref="HydrogenBonds" />
+        private BondArrayProperty hydrogenBonds = new BondArrayProperty();
+
+        #endregion
+
+        #region State Management 
+
+        /// <summary>
+        /// Does the secondary structure require recalculating.
+        /// </summary>
+        private bool needRecalculate = true;
+
+        /// <summary>
+        /// Set of residue data (positions of hydrogen-bonding involved atoms) for each
+        /// residue in each sequence specified in <see cref="PeptideResidueSequences" />.
+        /// </summary>
+        private List<SecondaryStructureResidueData[]> sequenceResidueData =
             new List<SecondaryStructureResidueData[]>();
 
-        public bool IsInputValid => peptideChains.HasNonNullValue();
+        #endregion
+        
+        public bool IsInputValid => peptideResidueSequences.HasNonNullValue()
+                                 && residueCount.HasNonNullValue();
 
-        public bool AreResiduesDirty =>
-            atomResidues.IsDirty || peptideChains.IsDirty || atomNames.IsDirty;
+        public bool AreResiduesDirty => atomResidues.IsDirty || peptideResidueSequences.IsDirty ||
+                                        atomNames.IsDirty || residueCount.IsDirty;
 
         public bool AreResiduesValid => atomResidues.HasNonEmptyValue() &&
-                                        peptideChains.HasNonEmptyValue() &&
+                                        peptideResidueSequences.HasNonEmptyValue() &&
                                         atomNames.HasNonEmptyValue();
 
         public void Refresh()
@@ -75,47 +152,36 @@ namespace Narupa.Visualisation.Node.Protein
         private void UpdateResidues()
         {
             sequenceResidueData.Clear();
-            foreach (var sequence in peptideChains.Value)
+            foreach (var sequence in peptideResidueSequences.Value)
                 sequenceResidueData.Add(
                     DsspAlgorithm.GetResidueData(sequence, atomResidues, atomNames));
 
             needRecalculate = true;
         }
 
-        private SecondaryStructureAssignment[] secondaryStructure =
-            new SecondaryStructureAssignment[0];
-
         private void CalculateSecondaryStructure()
         {
             foreach (var peptideSequence in sequenceResidueData)
                 DsspAlgorithm.CalculateSecondaryStructure(peptideSequence, dsspOptions);
 
-            var peptideCount = peptideChains.Value.Sum(s => s.Count);
+            residueSecondaryStructure.Resize(residueCount.Value);
 
-            if (peptideCount != secondaryStructure.Length)
-            {
-                Array.Resize(ref secondaryStructure, peptideCount);
-            }
-
-            var index = 0;
             foreach (var sequence in sequenceResidueData)
             foreach (var data in sequence)
-                secondaryStructure[index++] = data.SecondaryStructure;
+                residueSecondaryStructure.Value[data.ResidueIndex] = data.SecondaryStructure;
 
-            splineSecondaryStructure.Value = secondaryStructure;
+            residueSecondaryStructure.MarkValueAsChanged();
         }
 
         private void CalculateHydrogenBonds()
         {
             var bonds = new List<BondPair>();
-            var seqOffset = 0;
             foreach (var sequence in sequenceResidueData)
             {
                 foreach (var data in sequence)
                     if (data.DonorHydrogenBondResidue != null)
-                        bonds.Add(new BondPair(seqOffset + data.ordinal,
-                                               seqOffset + data.DonorHydrogenBondResidue.ordinal));
-                seqOffset += sequence.Length;
+                        bonds.Add(new BondPair(data.OxygenIndex,
+                                               data.DonorHydrogenBondResidue.NitrogenIndex));
             }
 
             hydrogenBonds.Value = bonds.ToArray();

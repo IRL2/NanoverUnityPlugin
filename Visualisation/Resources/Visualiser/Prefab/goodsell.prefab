@@ -9,8 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8675595082771297215}
-  - component: {fileID: 2328836869028133637}
-  - component: {fileID: 180825243155122774}
+  - component: {fileID: 6746676476517114991}
   - component: {fileID: 7698190664551895981}
   m_Layer: 0
   m_Name: goodsell
@@ -33,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2328836869028133637
+--- !u!114 &6746676476517114991
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,30 +41,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 75182077779563847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3debffbae2948ccb8f413f906e7e8a7, type: 3}
+  m_Script: {fileID: 11500000, guid: e3d9c1f4f34948e8bb51530d262fbcb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
     parentAdaptor:
-      value: {fileID: 0}
+      unityObject: {fileID: 0}
       isValueProvided: 0
---- !u!114 &180825243155122774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75182077779563847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: particle.filter
-    input:
+    particleFilter:
       value: 
       isValueProvided: 0
 --- !u!114 &7698190664551895981
@@ -83,4 +67,6 @@ MonoBehaviour:
   prefabs:
   - {fileID: 8528582866378757822, guid: d2b9c24c729c2914dae65603e337a6ca, type: 3}
   - {fileID: 1900448658886156695, guid: 251a1918ca61aab4c9d8a4f3ddd850f0, type: 3}
-  frameAdaptor: {fileID: 2328836869028133637}
+  frameAdaptor:
+    unityObject: {fileID: 6746676476517114991}
+    isValueProvided: 1

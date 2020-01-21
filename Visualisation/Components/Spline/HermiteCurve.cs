@@ -1,4 +1,6 @@
+using System;
 using Narupa.Visualisation.Node.Spline;
+using UnityEngine;
 
 namespace Narupa.Visualisation.Components.Spline
 {

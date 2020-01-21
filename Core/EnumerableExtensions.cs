@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Narupa.Utility
 {
@@ -46,6 +47,52 @@ namespace Narupa.Utility
             }
 
             return -1;
+        }
+
+        /// <summary>
+        /// Yield an enumerable with the provided index skipped over.
+        /// </summary>
+        public static IEnumerable<T> WithoutIndex<T>(this IEnumerable<T> list, int index)
+        {
+            var i = 0;
+            foreach (var item in list)
+            {
+                if (i != index)
+                {
+                    yield return item;
+                }
+                i++;
+            }
+        }
+        
+        /// <summary>
+        /// Treat a single item as an <see cref="IEnumerable{T}"/> of one item.
+        /// </summary>
+        public static IEnumerable<T> AsEnumerable<T>(this T value)
+        {
+            yield return value;
+        }
+
+        /// <summary>
+        /// Get all permutations of a set.
+        /// </summary>
+        public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list)
+        {
+            var i = 0;
+            foreach(var item in list)
+            {
+                var subsequence = list.WithoutIndex(i);
+                foreach (var subpermutation in subsequence.GetPermutations())
+                {
+                    yield return item.AsEnumerable().Concat(subpermutation);
+                }
+                i++;
+            }
+
+            if (i == 1)
+            {
+                yield return list;
+            }
         }
     }
 }

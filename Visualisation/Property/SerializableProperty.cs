@@ -15,6 +15,10 @@ namespace Narupa.Visualisation.Property
     [Serializable]
     public abstract class Property : IProperty
     {
+        IReadOnlyProperty IProperty.LinkedProperty => NonGenericLinkedProperty;
+
+        protected abstract IReadOnlyProperty NonGenericLinkedProperty { get; }
+
         /// <summary>
         /// Callback for when the value is changed or undefined.
         /// </summary>
@@ -183,6 +187,8 @@ namespace Narupa.Visualisation.Property
         /// </summary>
         [CanBeNull]
         private IReadOnlyProperty<TValue> linkedProperty;
+
+        protected override IReadOnlyProperty NonGenericLinkedProperty => linkedProperty;
 
         /// <inheritdoc cref="IProperty{TValue}.HasValue" />
         public override bool HasValue

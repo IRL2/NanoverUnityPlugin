@@ -25,9 +25,6 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private IntArrayProperty particleResidues = new IntArrayProperty();
-        
-        [SerializeField]
-        private IntArrayProperty particleFilter = new IntArrayProperty();
 #pragma warning restore 0649
 
         [SerializeField]
@@ -53,7 +50,6 @@ namespace Narupa.Visualisation.Node.Renderer
             renderer.ParticlePositions.LinkedProperty = particlePositions;
             renderer.ParticleColors.LinkedProperty = particleColors;
             renderer.ParticleResidues.LinkedProperty = particleResidues;
-            renderer.ParticleFilter.LinkedProperty = particleFilter;
             renderer.RendererColor.LinkedProperty = rendererColor;
 
             renderer.Transform = Transform;

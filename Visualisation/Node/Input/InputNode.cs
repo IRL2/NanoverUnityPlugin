@@ -16,6 +16,8 @@ namespace Narupa.Visualisation.Node.Input
     {
         IProperty IInputNode.Input => input;
 
+        public Type InputType => input.PropertyType;
+
         [SerializeField]
         private string name;
         
@@ -36,5 +38,7 @@ namespace Narupa.Visualisation.Node.Input
         string Name { get; set; }
 
         IProperty Input { get; }
+        
+        Type InputType { get; }
     }
 }

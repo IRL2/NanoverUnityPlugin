@@ -32,6 +32,8 @@ namespace Narupa.Visualisation.Property
         /// Attempt to set the linked property without knowing the types involved.
         /// </summary>
         void TrySetLinkedProperty(object property);
+        
+        IReadOnlyProperty LinkedProperty { get; }
     }
     
     /// <summary>
@@ -46,6 +48,6 @@ namespace Narupa.Visualisation.Property
         /// <summary>
         /// Linked property that will override this value.
         /// </summary>
-        IReadOnlyProperty<TValue> LinkedProperty { get; set; }
+        new IReadOnlyProperty<TValue> LinkedProperty { get; set; }
     }
 }

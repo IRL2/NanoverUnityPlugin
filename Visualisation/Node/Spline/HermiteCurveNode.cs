@@ -20,17 +20,21 @@ namespace Narupa.Visualisation.Node.Spline
         [SerializeField]
         private Vector3ArrayProperty positions = new Vector3ArrayProperty();
 
+        public IProperty<Vector3[]> Positions => positions;
+
         /// <summary>
         /// Groups of indices of the Positions array which form sequences.
         /// </summary>
         [SerializeField]
-        private SelectionArrayProperty sequences = new SelectionArrayProperty();
+        private IntArrayProperty sequences = new IntArrayProperty();
 
         /// <summary>
         /// Set of normals, for each vertex for each sequence.
         /// </summary>
         private Vector3ArrayProperty normals = new Vector3ArrayProperty();
 
+        public IReadOnlyProperty<Vector3[]> Tangents => tangents;
+        
         /// <summary>
         /// Set of tangents, for each vertex for each sequence.
         /// </summary>
@@ -54,32 +58,33 @@ namespace Narupa.Visualisation.Node.Spline
         /// <param name="normals">The array of normals to be partially filled for this sequence.</param>
         /// <param name="tangents">The array of tangents to be partially filled for this sequence.</param>
         /// <param name="shape">A factor to distort the tangents by.</param>
-        private static void CalculateNormalsAndTangents(IReadOnlyList<int> sequence,
+        private static void CalculateNormalsAndTangents(int sequenceLength,
+                                                        int sequenceOffset,
                                                         IReadOnlyList<Vector3> positions,
-                                                        int offset,
                                                         ref Vector3[] normals,
                                                         ref Vector3[] tangents,
                                                         float shape)
         {
-            var count = sequence.Count;
-
+            var min = sequenceOffset;
+            var max = sequenceOffset + sequenceLength;
+            
             // Calculate tangents based offsets between positions.
-            for (var j = 1; j < count - 1; j++)
-                tangents[offset + j] =
-                    shape * (positions[sequence[j + 1]] - positions[sequence[j - 1]]);
+            for (var j = min + 1; j < max - 1; j++)
+                tangents[j] =
+                    shape * (positions[j + 1] - positions[j - 1]);
 
-            // Initial and final tangents
-            tangents[offset] = tangents[offset + 1];
-            tangents[offset + count - 1] = tangents[offset + count - 2];
+            // Initial and final tangents are simply the tangents of the second and second from last tangents
+            tangents[min] = tangents[min + 1];
+            tangents[max - 1] = tangents[max - 2];
 
             // Compute normals by rejection of second derivative of curve from tangent
-            for (var i = 1; i < count - 2; i++)
+            for (var i = min; i < max - 1; i++)
             {
-                var p1 = positions[sequence[i]];
-                var p2 = positions[sequence[i + 1]];
+                var p1 = positions[i];
+                var p2 = positions[i + 1];
 
-                var m1 = tangents[offset + i];
-                var m2 = tangents[offset + i + 1];
+                var m1 = tangents[i];
+                var m2 = tangents[i + 1];
 
                 var n0 = -6 * p1 - 4 * m1 + 6 * p2 - 2 * m2;
                 var n1 = 6 * p1 + 2 * m1 - 6 * p2 + 4 * m2;
@@ -87,17 +92,18 @@ namespace Narupa.Visualisation.Node.Spline
                 n0 -= Vector3.Project(n0, m1);
                 n1 -= Vector3.Project(n1, m2);
 
-                normals[offset + i] += n0;
-                normals[offset + i + 1] += n1;
+                normals[i] += n0;
+                normals[i + 1] += n1;
             }
 
-            for (var i = 1; i < count - 1; i++)
+            // Normalize all normals
+            for (var i = min; i < max; i++)
             {
-                normals[offset + i] = normals[offset + i].normalized;
+                normals[i] = normals[i].normalized;
             }
 
             // Set the first normal
-            normals[offset] = (2 * normals[offset + 1] - normals[offset + 2]).normalized;
+            normals[min] = (2 * normals[min + 1] - normals[min + 2]).normalized;
         }
 
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
@@ -123,7 +129,7 @@ namespace Narupa.Visualisation.Node.Spline
         {
             if (sequences.IsDirty)
             {
-                var vertexCount = sequences.Value.Sum(a => a.Count);
+                var vertexCount = sequences.Value.Sum();
                 normals.Resize(vertexCount);
                 tangents.Resize(vertexCount);
                 positions.IsDirty = true;
@@ -134,15 +140,15 @@ namespace Narupa.Visualisation.Node.Spline
                 var offset = 0;
                 var normals = this.normals.Value;
                 var tangents = this.tangents.Value;
-                foreach (var sequence in sequences.Value)
+                foreach (var sequenceLength in sequences.Value)
                 {
-                    CalculateNormalsAndTangents(sequence,
-                                                positions.Value,
+                    CalculateNormalsAndTangents(sequenceLength,
                                                 offset,
+                                                positions.Value,
                                                 ref normals,
                                                 ref tangents,
                                                 shape);
-                    offset += sequence.Count - 1;
+                    offset += sequenceLength;
                 }
 
                 this.normals.Value = normals;

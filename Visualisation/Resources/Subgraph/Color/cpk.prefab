@@ -111,9 +111,9 @@ MonoBehaviour:
   inputLinkCollection:
   - sourceComponent: {fileID: 8528582866378757810}
     sourceFieldName: colors
-    destinationFieldName: input
+    destinationFieldName: output
   node:
     name: particle.colors
-    input:
+    output:
       value: []
       isValueProvided: 0

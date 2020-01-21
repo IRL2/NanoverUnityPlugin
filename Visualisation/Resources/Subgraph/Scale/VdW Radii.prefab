@@ -49,8 +49,8 @@ MonoBehaviour:
   node:
     name: particle.elements
     input:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
 --- !u!114 &4905911803482447985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,11 +69,11 @@ MonoBehaviour:
     destinationFieldName: elements
   node:
     elements:
-      isValueProvided: 0
       value: 
+      isValueProvided: 0
     scale:
-      isValueProvided: 1
       value: 1
+      isValueProvided: 1
 --- !u!114 &6947444575870807714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,9 +89,9 @@ MonoBehaviour:
   inputLinkCollection:
   - sourceComponent: {fileID: 4905911803482447985}
     sourceFieldName: scales
-    destinationFieldName: input
+    destinationFieldName: output
   node:
     name: particle.scales
-    input:
-      isValueProvided: 0
+    output:
       value: []
+      isValueProvided: 0

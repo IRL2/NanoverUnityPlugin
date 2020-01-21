@@ -29,12 +29,12 @@ namespace Narupa.Visualisation.Components
                 });
         }
 
-        /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}"/>
-        public static IReadOnlyProperty GetOrCreateProperty(this IPropertyProvider provider,
+        /// <inheritdoc cref="IDynamicPropertyProvider.GetOrCreateProperty{T}"/>
+        public static IReadOnlyProperty GetOrCreateProperty(this IDynamicPropertyProvider provider,
                                                             string name,
                                                             Type type)
         {
-            return typeof(IPropertyProvider)
+            return typeof(IDynamicPropertyProvider)
                 .GetMethod(nameof(provider.GetOrCreateProperty),
                            BindingFlags.Public
                            | BindingFlags.NonPublic

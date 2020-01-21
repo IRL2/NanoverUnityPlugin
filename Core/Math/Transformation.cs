@@ -18,29 +18,14 @@ namespace Narupa.Core.Math
 
         Vector3 ITransformation.TransformPoint(Vector3 point) => Matrix.TransformPoint(point);
 
-        Vector3 ITransformation.InverseTransformPoint(Vector3 point)
-            => Matrix.InverseTransformPoint(point);
+        Vector3 ITransformation.InverseTransformPoint(Vector3 point) =>
+            Matrix.InverseTransformPoint(point);
 
-        Vector3 ITransformation.TransformDirection(Vector3 point)
-            => Matrix.TransformDirection(point);
+        Vector3 ITransformation.TransformDirection(Vector3 point) =>
+            Matrix.TransformDirection(point);
 
-        Vector3 ITransformation.InverseTransformDirection(Vector3 point)
-            => Matrix.InverseTransformDirection(point);
-
-
-        /// <summary>
-        /// Construct a transformation from the translation, rotation, and
-        /// scale of a TRS matrix.
-        /// </summary>
-        /// <remarks>
-        /// This is only works if the matrix involves uniform scaling. 
-        /// </remarks>
-        public static Transformation FromMatrix(Matrix4x4 matrix)
-        {
-            return new Transformation(matrix.GetTranslation(),
-                                      matrix.GetRotation(),
-                                      matrix.GetScale());
-        }
+        Vector3 ITransformation.InverseTransformDirection(Vector3 point) =>
+            Matrix.InverseTransformDirection(point);
 
         /// <summary>
         /// Construct a transformation from the translation, rotation, and
@@ -93,6 +78,12 @@ namespace Narupa.Core.Math
         /// <see cref="Matrix4x4" /> representation of this transformation.
         /// </summary>
         public Matrix4x4 Matrix => Matrix4x4.TRS(Position, Rotation, Scale);
+
+        public Matrix4x4 Inverse => Matrix.inverse;
+
+        public Matrix4x4 InverseTranspose =>
+            Matrix4x4.TRS(Position, Rotation,
+                          new Vector3(1f / Scale.x, 1f / Scale.y, 1f / Scale.z));
 
         public Transformation(Vector3 position, Quaternion rotation, Vector3 scale)
         {

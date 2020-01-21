@@ -46,9 +46,14 @@ namespace Narupa.Visualisation.Node.Protein
         private readonly SelectionArrayProperty residueSequences = new SelectionArrayProperty();
 
         /// <summary>
-        /// A set of sequences of alpha carbon atom indices that form polypeptide chains.
+        /// A set of alpha carbon atom indices that form polypeptide chains.
         /// </summary>
-        private readonly SelectionArrayProperty alphaCarbonSequences = new SelectionArrayProperty();
+        private readonly IntArrayProperty alphaCarbonSequences = new IntArrayProperty();
+        
+        /// <summary>
+        /// The lengths of each sequence.
+        /// </summary>
+        private readonly IntArrayProperty sequenceLengths = new IntArrayProperty();
 
         /// <inheritdoc cref="IsInputValid" />
         protected override bool IsInputValid => atomNames.HasNonNullValue()
@@ -79,7 +84,8 @@ namespace Narupa.Visualisation.Node.Protein
                                                                     atomResidues.Value,
                                                                     residueEntities.Value);
             residueSequences.Value = resSequences;
-            alphaCarbonSequences.Value = alphaSequences;
+            alphaCarbonSequences.Value = alphaSequences.SelectMany(i => i).ToArray();
+            sequenceLengths.Value = alphaSequences.Select(i => i.Count).ToArray();
         }
 
         /// <summary>

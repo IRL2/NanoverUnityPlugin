@@ -3,9 +3,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Visualisation.Components.Adaptor;
+using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Node.Input;
 using Narupa.Visualisation.Node.Output;
+using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
 using UnityEngine;
 
@@ -24,16 +25,16 @@ namespace Narupa.Visualisation.Components
         private readonly List<GameObject> currentSubgraphs = new List<GameObject>();
 
         [SerializeField]
-        private FrameAdaptor frameAdaptor;
+        private FrameAdaptorProperty frameAdaptor = new FrameAdaptorProperty();
 
         /// <summary>
         /// The <see cref="FrameAdaptor" /> used to provide keys that are not provided
         /// anywhere else and do not have a default value.
         /// </summary>
-        public FrameAdaptor FrameAdaptor
+        public IDynamicPropertyProvider FrameAdaptor
         {
-            get => frameAdaptor;
-            set => frameAdaptor = value;
+            get => frameAdaptor.Value;
+            set => frameAdaptor.Value = value;
         }
 
         private void OnEnable()
@@ -48,9 +49,16 @@ namespace Narupa.Visualisation.Components
                 {
                     var subgraph = Instantiate(prefab, transform);
                     subgraph.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+                    SetupAllFrameAdaptorsInSubgraph(subgraph);
                     SetupAllInputNodesInSubgraph(subgraph);
                     currentSubgraphs.Add(subgraph);
                 }
+        }
+
+        private void SetupAllFrameAdaptorsInSubgraph(GameObject subgraph)
+        {
+            foreach (var node in subgraph.GetVisualisationNodesInChildren<FrameAdaptorNode>())
+                node.ParentAdaptor.LinkedProperty = this.frameAdaptor;
         }
 
         private void OnDisable()
@@ -84,10 +92,12 @@ namespace Narupa.Visualisation.Components
         /// </remarks>
         private void SetupInputNode(IInputNode input)
         {
-            // Search for an output node of a subgraph
+            // Search for an output node / adaptor of a preceding subgraph
+
             for (var i = currentSubgraphs.Count - 1; i >= 0; i--)
             {
                 var subgraph = currentSubgraphs[i];
+                
                 if (GetOutputNodeWithName(subgraph, input.Name)?.Output is IReadOnlyProperty output)
                 {
                     input.Input.TrySetLinkedProperty(output);
@@ -106,6 +116,19 @@ namespace Narupa.Visualisation.Components
             // If there's a default value, that's okay
             if (input.Input.HasValue)
                 return;
+
+            for (var i = currentSubgraphs.Count - 1; i >= 0; i--)
+            {
+                var subgraph = currentSubgraphs[i];
+                
+                if (GetAdaptor(subgraph) is IDynamicPropertyProvider adaptor)
+                {
+                    var outputProperty =
+                        adaptor.GetOrCreateProperty(input.Name, input.InputType);
+                    input.Input.TrySetLinkedProperty(outputProperty);
+                    return;
+                }
+            }
 
             // Search for the key in the frame
             input.Input.TrySetLinkedProperty(
@@ -130,6 +153,14 @@ namespace Narupa.Visualisation.Components
         {
             return existing.GetVisualisationNodes<IOutputNode>().FirstOrDefault(
                 c => c.Name == name);
+        }
+
+        /// <summary>
+        /// Find an <see cref="IDynamicPropertyProvider" /> present in a given <see cref="GameObject" />.
+        /// </summary>
+        private static IDynamicPropertyProvider GetAdaptor(GameObject existing)
+        {
+            return existing.GetVisualisationNodes<IDynamicPropertyProvider>().LastOrDefault();
         }
 
         /// <summary>

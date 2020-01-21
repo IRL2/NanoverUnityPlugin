@@ -27,9 +27,6 @@ namespace Narupa.Visualisation.Node.Renderer
 
         [SerializeField]
         private MeshProperty mesh = new MeshProperty();
-
-        [SerializeField]
-        private IntArrayProperty particleFilter = new IntArrayProperty();
 #pragma warning restore 0649
 
         #region Input Properties
@@ -111,9 +108,7 @@ namespace Narupa.Visualisation.Node.Renderer
                                           && rendererColor.HasValue
                                           && particleScale.HasValue;
 
-        private int InstanceCount => particleFilter.HasNonNullValue()
-                                         ? filter.Length
-                                         : bondPairs.Value.Length;
+        private int InstanceCount => bondPairs.Value.Length;
 
         public override bool IsInputDirty => mesh.IsDirty
                                           || material.IsDirty
@@ -122,8 +117,7 @@ namespace Narupa.Visualisation.Node.Renderer
                                           || particleScale.IsDirty
                                           || particlePositions.IsDirty
                                           || particleColors.IsDirty
-                                          || particleScales.IsDirty
-                                          || particleFilter.IsDirty;
+                                          || particleScales.IsDirty;
 
         public override void UpdateInput()
         {
@@ -149,7 +143,6 @@ namespace Narupa.Visualisation.Node.Renderer
             UpdateColorsIfDirty();
             UpdateScalesIfDirty();
             UpdateBondsIfDirty();
-            UpdateFilterIfDirty();
         }
 
         private void UpdatePositionsIfDirty()
@@ -198,68 +191,7 @@ namespace Narupa.Visualisation.Node.Renderer
                 bondOrders.IsDirty = false;
             }
         }
-
-        [SerializeField]
-        private bool bondToNonFiltered = false;
-
-        /// <summary>
-        /// Should this renderer draw bonds between particles that are filtered and those which are not.
-        /// </summary>
-        public bool BondToNonFiltered
-        {
-            get => bondToNonFiltered;
-            set => bondToNonFiltered = value;
-        }
-
         private int[] filter = new int[0];
-
-        private void UpdateFilterIfDirty()
-        {
-            if (particleFilter.IsDirty)
-            {
-                if (particleFilter.HasNonEmptyValue())
-                {
-                    var partFilter = particleFilter.Value;
-
-                    var maxBondCount = bondPairs.Value.Length;
-                    Array.Resize(ref filter, maxBondCount);
-                    var i = 0;
-                    var j = 0;
-                    foreach (var bond in bondPairs.Value)
-                    {
-                        if (bondToNonFiltered)
-                        {
-                            if (SearchAlgorithms.BinarySearch(bond.A, partFilter)
-                             || SearchAlgorithms.BinarySearch(bond.B, partFilter))
-                                filter[i++] = j;
-                        }
-                        else
-                        {
-                            if (SearchAlgorithms.BinarySearch(bond.A, partFilter)
-                             && SearchAlgorithms.BinarySearch(bond.B, partFilter))
-                                filter[i++] = j;
-                        }
-
-                        j++;
-                    }
-
-                    Array.Resize(ref filter, i);
-
-                    InstancingUtility.SetFilter(drawCommand, filter);
-                }
-                else if (particleFilter.HasNonNullValue())
-                {
-                    Array.Resize(ref filter, 0);
-                    InstancingUtility.SetFilter(drawCommand, filter);
-                }
-                else
-                {
-                    InstancingUtility.SetFilter(drawCommand, null);
-                }
-
-                particleFilter.IsDirty = false;
-            }
-        }
 
         private void UpdateMeshAndMaterials()
         {

@@ -19,19 +19,10 @@ namespace Narupa.Visualisation.Node.Output
         [SerializeField]
         private string name;
 
+        [SerializeField]
         private TProperty output = new TProperty();
 
-        [SerializeField]
-        private TProperty input = new TProperty();
-
-        public OutputNode()
-        {
-            output.TrySetLinkedProperty(input);
-        }
-        
         public string Name => name;
-
-        public TProperty Output => output;
     }
     
     public interface IOutputNode

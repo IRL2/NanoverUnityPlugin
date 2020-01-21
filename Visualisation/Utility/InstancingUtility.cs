@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Runtime.InteropServices;
+using Narupa.Core.Math;
 using Narupa.Frame;
 using UnityEngine;
 
@@ -39,23 +40,6 @@ namespace Narupa.Visualisation.Utility
             command.SetKeyword("SCALE_ARRAY");
             command.SetDataBuffer("ScaleArray", scales);
         }
-        
-        /// <summary>
-        /// Enable the filter array in the shader and set the filter values.
-        /// </summary>
-        public static void SetFilter(IndirectMeshDrawCommand command, int[] filter)
-        {
-            if (filter == null)
-            {
-                command.SetKeyword("FILTER_ARRAY", false);
-                command.ClearDataBuffer("FilterArray");
-            }
-            else
-            {
-                command.SetKeyword("FILTER_ARRAY");
-                command.SetDataBuffer("FilterArray", filter);
-            }
-        }
 
         /// <summary>
         /// Enable the edge array in the shader and set the edge values.
@@ -81,8 +65,10 @@ namespace Narupa.Visualisation.Utility
         /// </summary>
         public static void SetTransform(IndirectMeshDrawCommand command, Transform transform)
         {
-            command.SetMatrix("WorldToObject", transform.worldToLocalMatrix);
-            command.SetMatrix("ObjectToWorld", transform.localToWorldMatrix);
+            var trs = Transformation.FromTransformRelativeToWorld(transform);
+            command.SetMatrix("WorldToObject", trs.Inverse);
+            command.SetMatrix("ObjectToWorld", trs.Matrix);
+            command.SetMatrix("ObjectToWorldInverseTranspose", trs.InverseTranspose);
         }
 
         public static ComputeBuffer CreateBuffer<T>(T[] array)

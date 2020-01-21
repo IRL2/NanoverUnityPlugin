@@ -8,6 +8,7 @@ using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Frame.Event;
 using Narupa.Protocol.Trajectory;
+using Narupa.Visualisation.Components;
 using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
 using UnityEngine;
@@ -23,13 +24,19 @@ namespace Narupa.Visualisation.Node.Adaptor
     /// and the visualisation system.
     /// </remarks>
     [Serializable]
-    public class FrameAdaptorNode : IFrameConsumer
+    public class FrameAdaptorNode : IFrameConsumer, IDynamicPropertyProvider
     {
         /// <summary>
         /// Dynamic properties created by the system, with the keys corresponding to the keys in the frame's data.
         /// </summary>
-        internal readonly Dictionary<string, Property.Property> properties =
+        private readonly Dictionary<string, Property.Property> properties =
             new Dictionary<string, Property.Property>();
+
+        public virtual IEnumerable<(string key, IReadOnlyProperty value)> GetExistingProperties()
+        {
+            foreach (var (key, value) in properties)
+                yield return (key, value);
+        }
 
         /// <summary>
         /// Get a property which has already been setup.
@@ -37,7 +44,7 @@ namespace Narupa.Visualisation.Node.Adaptor
         /// <remarks>
         /// Returns null if a property with this key has not been defined yet.
         /// </remarks>
-        public Property.Property GetExistingProperty(string key)
+        public virtual IReadOnlyProperty GetProperty(string key)
         {
             return properties.TryGetValue(key, out var value)
                        ? value
@@ -50,13 +57,14 @@ namespace Narupa.Visualisation.Node.Adaptor
         /// <remarks>
         /// Returns null if there is already a property with this name, but it's the wrong type.
         /// </remarks>
-        public IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
+        public virtual IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
         {
-            if (properties.TryGetValue(name, out var existing))
-                return existing as IReadOnlyProperty<T>;
+            if (GetProperty(name) is IReadOnlyProperty<T> existing)
+                return existing;
+
             var property = new SerializableProperty<T>();
             properties[name] = property;
-            OnCreateProperty<T>(name, property);
+            OnCreateProperty(name, property);
             return property;
         }
 
@@ -105,17 +113,18 @@ namespace Narupa.Visualisation.Node.Adaptor
         [SerializeField]
         private FrameAdaptorProperty parentAdaptor = new FrameAdaptorProperty();
 
-        private void OnCreateProperty<T>(string key, SerializableProperty<T> property)
+        public IProperty<IDynamicPropertyProvider> ParentAdaptor => parentAdaptor;
+
+        private void OnCreateProperty<T>(string key, IProperty<T> property)
         {
             // Link to the parent adaptor
             if (parentAdaptor.HasNonNullValue())
             {
                 property.LinkedProperty = parentAdaptor.Value
-                                                           .Adaptor
-                                                           .GetOrCreateProperty<T>(key);
+                                                       .GetOrCreateProperty<T>(key);
             }
             else if (FrameSource?.CurrentFrame != null
-             && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
+                  && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
             {
                 property.TrySetValue(value);
             }
@@ -129,8 +138,7 @@ namespace Narupa.Visualisation.Node.Adaptor
                 {
                     foreach (var (key, property) in properties)
                         property.TrySetLinkedProperty(parentAdaptor.Value
-                                                                   .Adaptor
-                                                                   .GetExistingProperty(key));
+                                                                   .GetProperty(key));
                 }
                 else
                 {
