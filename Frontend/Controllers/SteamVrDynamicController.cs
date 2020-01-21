@@ -57,12 +57,16 @@ namespace Narupa.Frontend.Controllers
 
             var definition = SteamVrControllerDefinition.GetControllerDefinition(type);
             if (definition == null)
-                Debug.LogWarning($"Unsupported controller type: {type}");
+            {
+                Debug.LogWarning($"Unsupported controller type: {type}, using fallback.");
+                definition = SteamVrControllerDefinition.GetControllerDefinition("null");
+            }
+
             var prefab = definition.GetPrefab(input);
 
             if (prefab == null)
             {
-                Debug.LogWarning($"Controller type '{type}' is missing prefab for {input}");
+                Debug.LogWarning($"Controller type '{type}' is missing prefab for {input}. Controller will be unusable.");
                 currentPrefab = null;
             }
             else
