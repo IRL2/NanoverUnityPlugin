@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8611370669276084789}
   - component: {fileID: 7698190664551895981}
   m_Layer: 0
-  m_Name: spline
+  m_Name: curved bond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   node:
     name: scale
     input:
-      value: 0.1
+      value: 0.05
       isValueProvided: 1
 --- !u!114 &7698190664551895981
 MonoBehaviour:
@@ -84,9 +84,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 4265432535112186709, guid: e9d374d0e94de7b4390c8f2ba2c481c1, type: 3}
   - {fileID: 8528582866378757822, guid: d2f5fbc8cb179854db29178992a5202a, type: 3}
-  - {fileID: 540731497701321300, guid: 641c1d57739ca4149958bfd623a06909, type: 3}
+  - {fileID: 540731497701321300, guid: 34942b8d02e486e4b9f92878ed33193c, type: 3}
   frameAdaptor:
     unityObject: {fileID: 9131715220313689428}
     isValueProvided: 1

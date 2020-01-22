@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &75182077779563847
+--- !u!1 &8528582866378757822
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8675595082771297215}
-  - component: {fileID: 9131715220313689428}
-  - component: {fileID: 8611370669276084789}
-  - component: {fileID: 7698190664551895981}
+  - component: {fileID: 8528582866378757812}
+  - component: {fileID: -5295248949285926282}
+  - component: {fileID: 2108871244718725460}
+  - component: {fileID: 6947444575870807714}
   m_Layer: 0
-  m_Name: spline
+  m_Name: Secondary Structure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8675595082771297215
+--- !u!4 &8528582866378757812
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75182077779563847}
+  m_GameObject: {fileID: 8528582866378757822}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,60 +33,66 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9131715220313689428
+--- !u!114 &-5295248949285926282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75182077779563847}
+  m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d9c1f4f34948e8bb51530d262fbcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 72996cf867374b4c984e509b7970a4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    parentAdaptor:
-      unityObject: {fileID: 0}
-      isValueProvided: 0
-    particleFilter:
+    name: residue.secondarystructures
+    input:
       value: 
       isValueProvided: 0
---- !u!114 &8611370669276084789
+--- !u!114 &2108871244718725460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75182077779563847}
+  m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b42f6f78d95455a82a47b56046ced7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection: []
+  inputLinkCollection:
+  - sourceComponent: {fileID: -5295248949285926282}
+    sourceFieldName: input
+    destinationFieldName: secondaryStructure
   node:
-    name: scale
-    input:
-      value: 0.1
-      isValueProvided: 1
---- !u!114 &7698190664551895981
+    secondaryStructure:
+      value: 
+      isValueProvided: 0
+    radius: 0
+    helixRadius: 1
+    turnRadius: 0
+    sheetRadius: 1
+--- !u!114 &6947444575870807714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75182077779563847}
+  m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 274be437113845cabf24f8e2b4e3093d, type: 3}
+  m_Script: {fileID: 11500000, guid: b7d4aa2b881744089c4f7917bb2ad882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabs:
-  - {fileID: 4265432535112186709, guid: e9d374d0e94de7b4390c8f2ba2c481c1, type: 3}
-  - {fileID: 8528582866378757822, guid: d2f5fbc8cb179854db29178992a5202a, type: 3}
-  - {fileID: 540731497701321300, guid: 641c1d57739ca4149958bfd623a06909, type: 3}
-  frameAdaptor:
-    unityObject: {fileID: 9131715220313689428}
-    isValueProvided: 1
+  inputLinkCollection:
+  - sourceComponent: {fileID: 2108871244718725460}
+    sourceFieldName: scales
+    destinationFieldName: output
+  node:
+    name: particle.widths
+    output:
+      value: []
+      isValueProvided: 0

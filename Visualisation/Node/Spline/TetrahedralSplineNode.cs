@@ -12,7 +12,7 @@ namespace Narupa.Visualisation.Node.Spline
     public class TetrahedralSplineNode : GenericOutputNode
     {
         [SerializeField]
-        private SelectionArrayProperty sequences = new SelectionArrayProperty();
+        private IntArrayProperty sequenceLengths = new IntArrayProperty();
 
         [SerializeField]
         private Vector3ArrayProperty positions = new Vector3ArrayProperty();
@@ -49,7 +49,7 @@ namespace Narupa.Visualisation.Node.Spline
         private BondArrayProperty outputInteriorBonds = new BondArrayProperty();
 
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
-        protected override bool IsInputValid => sequences.HasNonNullValue()
+        protected override bool IsInputValid => sequenceLengths.HasNonNullValue()
                                              && positions.HasNonNullValue()
                                              && normals.HasNonNullValue()
                                              && tangents.HasNonNullValue()
@@ -57,7 +57,7 @@ namespace Narupa.Visualisation.Node.Spline
                                              && radius.HasNonNullValue();
 
         /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
-        protected override bool IsInputDirty => sequences.IsDirty
+        protected override bool IsInputDirty => sequenceLengths.IsDirty
                                              || positions.IsDirty
                                              || normals.IsDirty
                                              || tangents.IsDirty
@@ -70,7 +70,7 @@ namespace Narupa.Visualisation.Node.Spline
         /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
         protected override void ClearDirty()
         {
-            sequences.IsDirty = false;
+            sequenceLengths.IsDirty = false;
             positions.IsDirty = false;
             normals.IsDirty = false;
             tangents.IsDirty = false;
@@ -84,10 +84,10 @@ namespace Narupa.Visualisation.Node.Spline
         /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
-            if (sequences.IsDirty || !outputPositions.HasValue)
+            if (sequenceLengths.IsDirty || !outputPositions.HasValue)
             {
-                var pointCount = sequences.Value.Sum(i => i.Count);
-                var segmentCount = sequences.Value.Sum(i => i.Count - 1);
+                var pointCount = sequenceLengths.Value.Sum(i => i);
+                var segmentCount = sequenceLengths.Value.Sum(i => i - 1);
                 var bondcount = pointCount + 4 * segmentCount;
 
                 outputPositions.Resize(pointCount * 2);
@@ -98,9 +98,8 @@ namespace Narupa.Visualisation.Node.Spline
 
                 // Generate bonds between each pair of points representing a point of the spline.
                 var bondIndex = 0;
-                foreach (var sequence in sequences)
+                foreach (var sequenceLength in sequenceLengths)
                 {
-                    var sequenceLength = sequence.Count;
                     for (var i = 0; i < sequenceLength; i++)
                     {
                         outputBonds[bondIndex] = new BondPair(bondIndex * 2, bondIndex * 2 + 1);
@@ -110,9 +109,8 @@ namespace Narupa.Visualisation.Node.Spline
 
                 var pointIndex = 0;
                 var faceIndex = 0;
-                foreach (var sequence in sequences)
+                foreach (var sequenceLength in sequenceLengths)
                 {
-                    var sequenceLength = sequence.Count;
                     for (var segment = 0; segment < sequenceLength - 1; segment++)
                     {
                         outputBonds[bondIndex] = new BondPair(pointIndex, pointIndex + 2);
@@ -164,12 +162,11 @@ namespace Narupa.Visualisation.Node.Spline
             }
 
             var index = 0;
-            foreach (var sequence in sequences)
+            foreach (var sequenceLength in sequenceLengths)
             {
-                var sequenceLength = sequence.Count;
                 for (var vertex = 0; vertex < sequenceLength; vertex++)
                 {
-                    var position = positions[sequence[vertex]];
+                    var position = positions[index];
                     var tangent = tangents[index];
                     var normal = normals[index];
                     var binormal = Vector3.Cross(tangent, normal);

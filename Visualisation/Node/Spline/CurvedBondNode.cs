@@ -109,17 +109,18 @@ namespace Narupa.Visualisation.Node.Spline
                     EndNormal = norm2,
                     StartColor = color1,
                     EndColor = color2,
-                    StartScale = Vector3.one * 0.1f,
-                    EndScale = Vector3.one * 0.1f
+                    StartScale = Vector3.one,
+                    EndScale = Vector3.one
                 };
 
                 l++;
             }
+            splineSegment.MarkValueAsChanged();
         }
 
         protected override void ClearOutput()
         {
-            throw new NotImplementedException();
+            splineSegment.UndefineValue();
         }
     }
 }

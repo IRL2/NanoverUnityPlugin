@@ -184,7 +184,7 @@
                
                 color = DIFFUSE(color, n, l, _Diffuse);
                 
-                 color += 0.25 * fixed4(1,1,1,1) * d;
+                 //color += 0.25 * fixed4(1,1,1,1) * d;
                 
                 return color;
             }

@@ -213,5 +213,5 @@ MonoBehaviour:
   node:
     name: scale
     input:
-      value: 0
-      isValueProvided: 0
+      value: 0.1
+      isValueProvided: 1
