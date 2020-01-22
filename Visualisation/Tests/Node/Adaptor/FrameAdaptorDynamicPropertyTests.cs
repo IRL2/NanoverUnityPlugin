@@ -11,7 +11,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
         {
             var adaptor = new FrameAdaptorNode();
 
-            CollectionAssert.IsEmpty(adaptor.GetExistingProperties());
+            CollectionAssert.IsEmpty(adaptor.GetProperties());
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                 ("property1", property1), ("property2", property2)
             };
 
-            CollectionAssert.AreEquivalent(expected, adaptor.GetExistingProperties());
+            CollectionAssert.AreEquivalent(expected, adaptor.GetProperties());
         }
     }
 }

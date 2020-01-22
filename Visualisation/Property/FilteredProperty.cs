@@ -60,6 +60,7 @@ namespace Narupa.Visualisation.Property
 
         public event Action ValueChanged;
         public Type PropertyType => typeof(T[]);
+        object IReadOnlyProperty.Value => Value;
 
         public T[] Value
         {

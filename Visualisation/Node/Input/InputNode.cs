@@ -20,7 +20,7 @@ namespace Narupa.Visualisation.Node.Input
 
         [SerializeField]
         private string name;
-        
+
         [SerializeField]
         private TProperty input = new TProperty();
 

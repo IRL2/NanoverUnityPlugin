@@ -61,6 +61,7 @@ namespace Narupa.Visualisation.Property
 
         public event Action ValueChanged;
         public Type PropertyType => typeof(BondPair[]);
+        object IReadOnlyProperty.Value => Value;
 
         public BondPair[] Value
         {

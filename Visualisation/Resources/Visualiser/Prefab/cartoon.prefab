@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8675595082771297215}
   - component: {fileID: 9131715220313689428}
+  - component: {fileID: 5385219640503428808}
   - component: {fileID: 8611370669276084789}
   - component: {fileID: -1402476061116011615}
   - component: {fileID: 7698190664551895981}
   m_Layer: 0
-  m_Name: elliptic spline
+  m_Name: cartoon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,12 +49,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    parentAdaptor:
+    adaptor:
       unityObject: {fileID: 0}
-      isValueProvided: 0
+      isValueProvided: 1
     particleFilter:
       value: 
       isValueProvided: 0
+--- !u!114 &5385219640503428808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75182077779563847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4689b01528f34e1d87f7fc4115d255a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    adaptor:
+      unityObject: {fileID: 9131715220313689428}
+      isValueProvided: 1
+    options:
+      Cutoff: -0.5
 --- !u!114 &8611370669276084789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,8 +124,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 4265432535112186709, guid: e9d374d0e94de7b4390c8f2ba2c481c1, type: 3}
-  - {fileID: 8528582866378757822, guid: d2f5fbc8cb179854db29178992a5202a, type: 3}
+  - {fileID: 8528582866378757822, guid: 8b7387b745e1e3f43ac3f19963eccd13, type: 3}
+  - {fileID: 8528582866378757822, guid: c82a405170df41a44a54e634dabefdaf, type: 3}
   - {fileID: 540731497701321300, guid: 049e710c4f9dfc548a915a0348dda769, type: 3}
   frameAdaptor:
-    unityObject: {fileID: 9131715220313689428}
+    unityObject: {fileID: 5385219640503428808}
     isValueProvided: 1

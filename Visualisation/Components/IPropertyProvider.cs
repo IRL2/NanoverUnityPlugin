@@ -24,11 +24,6 @@ namespace Narupa.Visualisation.Components
         IEnumerable<(string name, Type type)> GetPotentialProperties();
         
         /// <summary>
-        /// Get all exisiting properties.
-        /// </summary>
-        IEnumerable<(string name, IReadOnlyProperty property)> GetProperties();
-
-        /// <summary>
         /// Could this provider give a property on a call to
         /// <see cref="IDynamicPropertyProvider.GetOrCreateProperty{T}" />?.
         /// </summary>

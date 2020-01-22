@@ -1,9 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Node.Adaptor;
+using Narupa.Visualisation.Components.Adaptor;
 using Narupa.Visualisation.Node.Input;
 using Narupa.Visualisation.Node.Output;
 using Narupa.Visualisation.Property;
@@ -25,7 +25,7 @@ namespace Narupa.Visualisation.Editor
             var file = new StringWriter();
 
             file.WriteLine("digraph G {");
-            
+
             file.WriteLine("rankdir=RL");
 
             var connections = new List<(long, long)>();
@@ -60,9 +60,40 @@ namespace Narupa.Visualisation.Editor
                         label = input.Name;
                     if (child.GetWrappedVisualisationNode() is IOutputNode output)
                         label = output.Name;
+                    if (prop.HasValue && prop.PropertyType.IsArray)
+                        label += $" {prop.PropertyType.GetElementType().Name}[{(prop.Value as Array).Length}]";
                     var color = prop.HasValue ? "green" : "red";
                     file.WriteLine($"{GetId(prop)} [label=\"{label}\" color={color} shape=box];");
                     FindConnections(prop, connections);
+                }
+
+                if (child is SecondaryStructureAdaptor ss)
+                {
+                    var node = ss.Node;
+                    
+                    file.WriteLine($"subgraph cluster_{GetId(node.polypeptideSequence)} {{");
+                    file.WriteLine($"label = \"polypeptideSequence\"");
+                    foreach (var (name, prop) in VisualisationUtility.GetAllPropertyFields(
+                        node.polypeptideSequence))
+                    {
+                        var color = prop.HasValue ? "green" : "red";
+                        file.WriteLine(
+                            $"{GetId(prop)} [label=\"{name}\" color={color} shape=box];");
+                        FindConnections(prop, connections);
+                    }
+                    file.WriteLine("}");
+
+                    file.WriteLine($"subgraph cluster_{GetId(node.secondaryStructure)} {{");
+                    file.WriteLine($"label = \"secondaryStructure\"");
+                    foreach (var (name, prop) in VisualisationUtility.GetAllPropertyFields(
+                        node.secondaryStructure))
+                    {
+                        var color = prop.HasValue ? "green" : "red";
+                        file.WriteLine(
+                            $"{GetId(prop)} [label=\"{name}\" color={color} shape=box];");
+                        FindConnections(prop, connections);
+                    }
+                    file.WriteLine("}");
                 }
 
                 file.WriteLine("}");
@@ -78,7 +109,8 @@ namespace Narupa.Visualisation.Editor
             file.WriteLine("}");
         }
 
-        private static IEnumerable<(string, IReadOnlyProperty)> GetProperties(VisualisationComponent child)
+        private static IEnumerable<(string, IReadOnlyProperty)> GetProperties(
+            VisualisationComponent child)
         {
             foreach (var prop in child.GetProperties())
             {
@@ -86,7 +118,6 @@ namespace Narupa.Visualisation.Editor
                 if (prop.property is IFilteredProperty filter)
                     yield return (prop.name, filter.SourceProperty);
             }
-                   
         }
 
         private static void FindConnections(IReadOnlyProperty prop, List<(long, long)> connections)

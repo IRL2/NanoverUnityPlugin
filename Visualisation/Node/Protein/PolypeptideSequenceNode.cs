@@ -16,29 +16,39 @@ namespace Narupa.Visualisation.Node.Protein
     [Serializable]
     public class PolypeptideSequenceNode : GenericOutputNode
     {
+        public IProperty<string[]> AtomNames => atomNames;
+        
         /// <summary>
         /// The name of each atom.
         /// </summary>
         [SerializeField]
         private StringArrayProperty atomNames = new StringArrayProperty();
 
+        public IProperty<int[]> AtomResidues => atomResidues;
+        
         /// <summary>
         /// The residue index for each atom.
         /// </summary>
         [SerializeField]
         private IntArrayProperty atomResidues = new IntArrayProperty();
 
+        public IProperty<string[]> ResidueNames => residueNames;
+        
         /// <summary>
         /// The name of each residue.
         /// </summary>
         [SerializeField]
         private StringArrayProperty residueNames = new StringArrayProperty();
 
+        public IProperty<int[]> ResidueEntities => residueEntities;
+        
         /// <summary>
         /// The entity (chain) index for each residue.
         /// </summary>
         [SerializeField]
         private IntArrayProperty residueEntities = new IntArrayProperty();
+
+        public IProperty<IReadOnlyList<int>[]> ResidueSequences => residueSequences;
 
         /// <summary>
         /// A set of sequences of residue indices that form polypeptide chains.

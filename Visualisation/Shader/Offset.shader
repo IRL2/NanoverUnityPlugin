@@ -36,7 +36,8 @@
         v2f offset_vert (appdata v, float mult)
         {
             v2f o;
-            v.normal *= sign(mult * _Offset);
+            
+            v.normal *= sign(mult * _Offset) * sign(determinant(unity_ObjectToWorld));
             o.normal = mul(unity_ObjectToWorld, float4(v.normal.xyz, 0));
             
             v.vertex += v.normal * abs(_Offset);

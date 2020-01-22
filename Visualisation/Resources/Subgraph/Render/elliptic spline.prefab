@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 388422638878536012}
   - component: {fileID: 3398256802243044189}
   - component: {fileID: -1505358463544815047}
+  - component: {fileID: 1491414476553930106}
   m_Layer: 0
   m_Name: elliptic spline
   m_TagString: Untagged
@@ -252,7 +253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: particle.scales
+    name: particle.widths
     input:
       value: []
       isValueProvided: 0
@@ -291,4 +292,48 @@ MonoBehaviour:
     name: width
     input:
       value: 0.1
+      isValueProvided: 1
+--- !u!114 &1491414476553930106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540731497701321300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73992ab43ebd415eb814845a706956c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 4984550295642847123}
+    sourceFieldName: input
+    destinationFieldName: particlePositions
+  - sourceComponent: {fileID: 5017277406944769200}
+    sourceFieldName: input
+    destinationFieldName: particleColors
+  - sourceComponent: {fileID: 3398256802243044189}
+    sourceFieldName: input
+    destinationFieldName: rendererScale
+  node:
+    particlePositions:
+      value: []
+      isValueProvided: 0
+    particleColors:
+      value: []
+      isValueProvided: 0
+    particleScales:
+      value: []
+      isValueProvided: 0
+    rendererColor:
+      value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 1
+    rendererScale:
+      value: 0
+      isValueProvided: 1
+    mesh:
+      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      isValueProvided: 1
+    material:
+      value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
       isValueProvided: 1

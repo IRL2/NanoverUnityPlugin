@@ -57,7 +57,7 @@ namespace Narupa.Visualisation.Components
 
         private void SetupAllFrameAdaptorsInSubgraph(GameObject subgraph)
         {
-            foreach (var node in subgraph.GetVisualisationNodesInChildren<FrameAdaptorNode>())
+            foreach (var node in subgraph.GetVisualisationNodesInChildren<PassThroughAdaptorNode>())
                 node.ParentAdaptor.LinkedProperty = this.frameAdaptor;
         }
 

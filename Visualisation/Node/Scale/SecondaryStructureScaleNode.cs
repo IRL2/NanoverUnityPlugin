@@ -1,7 +1,6 @@
 using System;
-using Narupa.Visualisation.Node.Calculator;
 using Narupa.Visualisation.Node.Protein;
-using Narupa.Visualisation.Node.Scale;
+using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Properties.Collections;
 using Narupa.Visualisation.Property;
 using UnityEngine;
@@ -15,7 +14,10 @@ namespace Narupa.Visualisation.Node.Scale
     public class SecondaryStructureScaleNode : VisualiserScaleNode
     {
         [SerializeField]
-        private SecondaryStructureArrayProperty secondaryStructure;
+        private SecondaryStructureArrayProperty residueSecondaryStructure;
+
+        [SerializeField]
+        private IntArrayProperty particleResidues;
 
         [SerializeField]
         private float radius;
@@ -49,13 +51,16 @@ namespace Narupa.Visualisation.Node.Scale
         }
 
 
-        protected override bool IsInputValid => secondaryStructure.HasNonEmptyValue();
+        protected override bool IsInputValid => residueSecondaryStructure.HasNonEmptyValue()
+                                             && particleResidues.HasNonNullValue();
 
-        protected override bool IsInputDirty => secondaryStructure.IsDirty;
+        protected override bool IsInputDirty => residueSecondaryStructure.IsDirty
+                                             || particleResidues.IsDirty;
 
         protected override void ClearDirty()
         {
-            secondaryStructure.IsDirty = false;
+            residueSecondaryStructure.IsDirty = false;
+            particleResidues.IsDirty = false;
         }
 
         protected override void ClearOutput()
@@ -65,10 +70,11 @@ namespace Narupa.Visualisation.Node.Scale
 
         protected override void UpdateOutput()
         {
-            var secondaryStructure = this.secondaryStructure.Value;
-            var scaleArray = scales.Resize(secondaryStructure.Length);
-            for (var i = 0; i < secondaryStructure.Length; i++)
-                scaleArray[i] = GetSecondaryStructureScale(secondaryStructure[i]);
+            var secondaryStructure = this.residueSecondaryStructure.Value;
+            var residues = this.particleResidues.Value;
+            var scaleArray = scales.Resize(residues.Length);
+            for (var i = 0; i < residues.Length; i++)
+                scaleArray[i] = GetSecondaryStructureScale(secondaryStructure[residues[i]]);
 
             scales.Value = scaleArray;
         }

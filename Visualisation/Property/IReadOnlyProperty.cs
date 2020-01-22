@@ -24,6 +24,8 @@ namespace Narupa.Visualisation.Property
         /// The <see cref="Type"/> that this property wraps.
         /// </summary>
         Type PropertyType { get; }
+        
+        object Value { get; }
     }
     
     /// <remarks>
@@ -37,6 +39,6 @@ namespace Narupa.Visualisation.Property
         /// <summary>
         /// The current value of the property.
         /// </summary>
-        TValue Value { get; }
+        new TValue Value { get; }
     }
 }

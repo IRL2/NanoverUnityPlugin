@@ -3,7 +3,7 @@ using Narupa.Visualisation.Properties;
 
 namespace Narupa.Visualisation.Components.Adaptor
 {
-    public class FilteredAdaptor : FrameAdaptorComponent<FilteredAdaptorNode>
+    public class SecondaryStructureAdaptor : FrameAdaptorComponent<SecondaryStructureAdaptorNode>
     {
         protected override void OnDisable()
         {

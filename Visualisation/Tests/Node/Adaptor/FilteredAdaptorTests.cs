@@ -21,7 +21,8 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
 
         private Frame.Frame emptyFrame;
         private Frame.Frame frameWithPositions;
-        private FilteredAdaptorNode adaptor;
+        private FrameAdaptorNode frameAdaptor;
+        private FilteredAdaptorNode filterAdaptor;
         private int[] filter;
         private IReadOnlyProperty<Vector3[]> property;
         private Vector3[] filteredPositions;
@@ -39,7 +40,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
             {
                 Vector3.right, Vector3.forward
             };
-                
+
             emptyFrame = new Frame.Frame();
 
             frameWithPositions = new Frame.Frame
@@ -47,7 +48,9 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                 ParticlePositions = positions
             };
 
-            adaptor = new FilteredAdaptorNode();
+            frameAdaptor = new FrameAdaptorNode();
+            filterAdaptor = new FilteredAdaptorNode();
+            filterAdaptor.ParentAdaptor.Value = frameAdaptor;
 
             filter = new[]
             {
@@ -57,19 +60,19 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
 
         private static void SetAdaptorsFilter(FilteredAdaptorDynamicPropertyTests test)
         {
-            test.adaptor.ParticleFilter.Value = test.filter;
+            test.filterAdaptor.ParticleFilter.Value = test.filter;
         }
 
         private static void SetAdaptorsFrame(FilteredAdaptorDynamicPropertyTests test)
         {
             var frameSource = new FrameSnapshot();
             frameSource.Update(test.frameWithPositions);
-            test.adaptor.FrameSource = frameSource;
+            test.frameAdaptor.FrameSource = frameSource;
         }
 
         private static void GetProperty(FilteredAdaptorDynamicPropertyTests test)
         {
-            test.property = test.adaptor.ParticlePositions;
+            test.property = test.filterAdaptor.ParticlePositions;
         }
 
         public delegate void SetupFunction(FilteredAdaptorDynamicPropertyTests test);

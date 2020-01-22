@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Narupa.Frame;
 using Narupa.Frame.Import.CIF;
 using Narupa.Frame.Import.CIF.Components;
+using Narupa.Visualisation.Components;
+using Narupa.Visualisation.Node.Adaptor;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
@@ -138,7 +140,8 @@ namespace Narupa.Visualisation.Editor
         {
             hasOnPrefabStageOpenedBeenCalled = true;
 
-            if (prefabStage.prefabContentsRoot?.GetComponentInChildren<IFrameConsumer>() == null)
+            if (prefabStage.prefabContentsRoot?.GetComponent<IFrameConsumer>() == null
+                && prefabStage.prefabContentsRoot?.GetVisualisationNode<PassThroughAdaptorNode>() == null)
             {
                 isValidPrefabForVisualisation = false;
                 return;
@@ -293,9 +296,22 @@ namespace Narupa.Visualisation.Editor
             var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             var root = prefabStage.prefabContentsRoot;
             var renderer = root.GetComponent<IFrameConsumer>();
-            if (renderer == null)
-                return;
-            renderer.FrameSource = molecule;
+            if (renderer != null)
+            {
+                renderer.FrameSource = molecule;
+            }
+            else
+            {
+                var adaptor = root.GetVisualisationNode<PassThroughAdaptorNode>();
+                if (adaptor != null)
+                {
+                    var frameAdaptor = new FrameAdaptorNode();
+                    frameAdaptor.FrameSource = molecule;
+                    adaptor.ParentAdaptor.Value = frameAdaptor;
+                    adaptor.Refresh();
+                }
+            }
+           
             root.gameObject.SendMessage("Update");
         }
 

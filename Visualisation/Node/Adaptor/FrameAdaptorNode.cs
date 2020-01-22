@@ -24,129 +24,14 @@ namespace Narupa.Visualisation.Node.Adaptor
     /// and the visualisation system.
     /// </remarks>
     [Serializable]
-    public class FrameAdaptorNode : IFrameConsumer, IDynamicPropertyProvider
+    public class FrameAdaptorNode : BaseAdaptorNode, IFrameConsumer
     {
-        /// <summary>
-        /// Dynamic properties created by the system, with the keys corresponding to the keys in the frame's data.
-        /// </summary>
-        private readonly Dictionary<string, Property.Property> properties =
-            new Dictionary<string, Property.Property>();
-
-        public virtual IEnumerable<(string key, IReadOnlyProperty value)> GetExistingProperties()
+        protected override void OnCreateProperty<T>(string key, IProperty<T> property)
         {
-            foreach (var (key, value) in properties)
-                yield return (key, value);
-        }
-
-        /// <summary>
-        /// Get a property which has already been setup.
-        /// </summary>
-        /// <remarks>
-        /// Returns null if a property with this key has not been defined yet.
-        /// </remarks>
-        public virtual IReadOnlyProperty GetProperty(string key)
-        {
-            return properties.TryGetValue(key, out var value)
-                       ? value
-                       : null;
-        }
-
-        /// <summary>
-        /// Get a frame property, or create one if it has not been defined yet.
-        /// </summary>
-        /// <remarks>
-        /// Returns null if there is already a property with this name, but it's the wrong type.
-        /// </remarks>
-        public virtual IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
-        {
-            if (GetProperty(name) is IReadOnlyProperty<T> existing)
-                return existing;
-
-            var property = new SerializableProperty<T>();
-            properties[name] = property;
-            OnCreateProperty(name, property);
-            return property;
-        }
-
-        /// <summary>
-        /// Array of elements of the provided frame.
-        /// </summary>
-        public IReadOnlyProperty<Element[]> ParticleElements =>
-            GetOrCreateProperty<Element[]>(FrameData.ParticleElementArrayKey);
-
-        /// <summary>
-        /// Array of particle positions of the provided frame.
-        /// </summary>
-        public IReadOnlyProperty<Vector3[]> ParticlePositions =>
-            GetOrCreateProperty<Vector3[]>(FrameData.ParticlePositionArrayKey);
-
-        /// <summary>
-        /// Array of bonds of the provided frame.
-        /// </summary>
-        public IReadOnlyProperty<BondPair[]> BondPairs =>
-            GetOrCreateProperty<BondPair[]>(FrameData.BondArrayKey);
-
-        /// <summary>
-        /// Array of bond orders of the provided frame.
-        /// </summary>
-        public IReadOnlyProperty<int[]> BondOrders =>
-            GetOrCreateProperty<int[]>(FrameData.BondOrderArrayKey);
-
-        /// <summary>
-        /// Array of particle residues of the provided frame.
-        /// </summary>
-        public IReadOnlyProperty<int[]> ParticleResidues =>
-            GetOrCreateProperty<int[]>(FrameData.ParticleResidueArrayKey);
-
-        /// <summary>
-        /// Array of particle names of the provided frame.
-        /// </summary>
-        public IReadOnlyProperty<string[]> ParticleNames =>
-            GetOrCreateProperty<string[]>(FrameData.ParticleNameArrayKey);
-
-        /// <summary>
-        /// Array of residue names of the provided frame.
-        /// </summary>
-        public IReadOnlyProperty<string[]> ResidueNames =>
-            GetOrCreateProperty<string[]>(FrameData.ResidueNameArrayKey);
-
-        [SerializeField]
-        private FrameAdaptorProperty parentAdaptor = new FrameAdaptorProperty();
-
-        public IProperty<IDynamicPropertyProvider> ParentAdaptor => parentAdaptor;
-
-        private void OnCreateProperty<T>(string key, IProperty<T> property)
-        {
-            // Link to the parent adaptor
-            if (parentAdaptor.HasNonNullValue())
-            {
-                property.LinkedProperty = parentAdaptor.Value
-                                                       .GetOrCreateProperty<T>(key);
-            }
-            else if (FrameSource?.CurrentFrame != null
+            if (FrameSource?.CurrentFrame != null
                   && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
             {
                 property.TrySetValue(value);
-            }
-        }
-
-        public void Refresh()
-        {
-            if (parentAdaptor.IsDirty)
-            {
-                if (parentAdaptor.HasNonNullValue())
-                {
-                    foreach (var (key, property) in properties)
-                        property.TrySetLinkedProperty(parentAdaptor.Value
-                                                                   .GetProperty(key));
-                }
-                else
-                {
-                    foreach (var (key, property) in properties)
-                        property.TrySetLinkedProperty(null);
-                }
-
-                parentAdaptor.IsDirty = false;
             }
         }
 
@@ -156,13 +41,10 @@ namespace Narupa.Visualisation.Node.Adaptor
         /// </summary>
         private void OnFrameUpdated(IFrame frame, FrameChanges changes = null)
         {
-            if (parentAdaptor.HasNonNullValue())
-                return;
-
             if (frame == null)
                 return;
 
-            foreach (var (key, property) in properties)
+            foreach (var (key, property) in Properties)
                 if ((changes?.GetIsChanged(key) ?? true)
                  && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
                     property.TrySetValue(value);

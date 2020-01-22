@@ -24,7 +24,7 @@ namespace Narupa.Visualisation.Node.Protein
 
         /// <inheritdoc cref="AtomPositions" />
         [SerializeField]
-        private Vector3ArrayProperty atomPositions;
+        private Vector3ArrayProperty atomPositions = new Vector3ArrayProperty();
 
         /// <summary>
         /// Array of residue indices which may appear in
@@ -34,7 +34,7 @@ namespace Narupa.Visualisation.Node.Protein
 
         /// <inheritdoc cref="AtomResidues" />
         [SerializeField]
-        private IntArrayProperty atomResidues;
+        private IntArrayProperty atomResidues = new IntArrayProperty();
 
         /// <summary>
         /// Array of atom names. Each amino acid should have atoms named 'CA', 'C', 'N' and
@@ -44,7 +44,7 @@ namespace Narupa.Visualisation.Node.Protein
 
         /// <inheritdoc cref="AtomNames" />
         [SerializeField]
-        private StringArrayProperty atomNames;
+        private StringArrayProperty atomNames = new StringArrayProperty();
 
         /// <summary>
         /// Number of residues involved. The maximum index referenced in both
@@ -55,7 +55,7 @@ namespace Narupa.Visualisation.Node.Protein
 
         /// <inheritdoc cref="ResidueCount" />
         [SerializeField]
-        private IntProperty residueCount;
+        private IntProperty residueCount = new IntProperty();
 
         /// <summary>
         /// Array of residue indices that indicate which residues are involved in a protein
@@ -65,11 +65,18 @@ namespace Narupa.Visualisation.Node.Protein
 
         /// <inheritdoc cref="PeptideResidueSequences" />
         [SerializeField]
-        private SelectionArrayProperty peptideResidueSequences;
+        private SelectionArrayProperty peptideResidueSequences = new SelectionArrayProperty();
 
         /// <summary>
         /// Options to configure the DSSP algorithm.
         /// </summary>
+        public DsspOptions DsspOptions
+        {
+            get => dsspOptions;
+            set => dsspOptions = value;
+        }
+
+        /// <inheritdoc cref="DsspOptions" />
         [SerializeField]
         private DsspOptions dsspOptions = new DsspOptions();
 

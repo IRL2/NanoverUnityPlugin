@@ -30,5 +30,16 @@ namespace Narupa.Visualisation.Components
                 if (comp.GetWrappedVisualisationNode() is TNode node)
                     yield return node;
         }
+        
+        /// <summary>
+        /// Get the first visualisation nodes of a given type that are in this game object.
+        /// </summary>
+        public static TNode GetVisualisationNode<TNode>(this GameObject go) where TNode : class
+        {
+            foreach(var comp in go.GetComponents<VisualisationComponent>())
+                if (comp.GetWrappedVisualisationNode() is TNode node)
+                    return node;
+            return null;
+        }
     }
 }

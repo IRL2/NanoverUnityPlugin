@@ -10,20 +10,13 @@ using Narupa.Visualisation.Property;
 namespace Narupa.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="FrameAdaptorNode" />
-    public class FrameAdaptorComponent<TAdaptor> : VisualisationComponent<TAdaptor>,
-                                              IFrameConsumer
-        where TAdaptor : FrameAdaptorNode, new()
+    public class FrameAdaptorComponent<TAdaptor> : VisualisationComponent<TAdaptor>
+        where TAdaptor : BaseAdaptorNode, new()
     {
-        /// <inheritdoc cref="IFrameConsumer.FrameSource" />
-        public ITrajectorySnapshot FrameSource
-        {
-            set => node.FrameSource = value;
-        }
-
         /// <summary>
         /// The wrapped <see cref="FrameAdaptor" />.
         /// </summary>
-        public FrameAdaptorNode Adaptor => node;
+        public BaseAdaptorNode Adaptor => node;
 
         protected override void OnEnable()
         {
@@ -47,7 +40,7 @@ namespace Narupa.Visualisation.Components.Adaptor
         {
             foreach (var existing in base.GetProperties())
                 yield return existing;
-            foreach (var (key, property) in node.GetExistingProperties())
+            foreach (var (key, property) in node.GetProperties())
                 yield return (key, property);
         }
 

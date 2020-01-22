@@ -29,5 +29,7 @@ namespace Narupa.Visualisation.Property
         public event Action ValueChanged;
 
         public Type PropertyType => typeof(int);
+
+        object IReadOnlyProperty.Value => Value;
     }
 }

@@ -33,31 +33,7 @@
             
             void procedural_setup() {
             }
-            
-        float4x4 GetHermiteMatrix(float t) {
-            SplineSegment curve = instance_spline();
-            
-            float3 normal = lerp(curve.startNormal, curve.endNormal, t);
-            
-            float3 tangent = normalize(GetHermiteTangent(t, curve.startPoint, curve.startTangent, curve.endPoint, curve.endTangent));
-            
-            float3 pos = GetHermitePoint(t, curve.startPoint, curve.startTangent, curve.endPoint, curve.endTangent);
-            
-            normal = normal - dot(normal, tangent) * tangent;
-            
-            
-            normal = curve.startNormal + curve.endNormal;
-                normal = normal - dot(normal, tangent) * tangent;
-                normal = normalize(normal);
-            
-            
-            float3 right = -cross(normal, tangent);
-            
-            float4x4 mat = get_transformation_matrix(normalize(right.xyz), tangent.xyz, normalize(normal.xyz), pos.xyz);
-            
-            return mat;
-        }
-
+         
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -98,7 +74,7 @@
                 v.vertex.y = 0;
                 
                 // Normalize the vertex relative to the origin
-                v.vertex = normalize(v.vertex);
+                v.vertex.xz = normalize(v.vertex.xz);
                 
                 // The center of the spline at this part of the segment
                 float3 pos = GetHermitePoint(bias, curve.startPoint, curve.startTangent, curve.endPoint, curve.endTangent);
@@ -116,6 +92,9 @@
                 float3 binormal = -cross(tangent, axis);
                 binormal = normalize(binormal);
                 
+                // Factor to fix x flipping
+                float signX = sign(determinant(ObjectToWorld));
+                binormal *= signX;
                 
                 // The matrix representing this reference frame
                 float4x4 mat = get_transformation_matrix(-binormal.xyz, tangent.xyz, axis.xyz, pos.xyz);
@@ -151,18 +130,21 @@
                 a1 = 1 - (1- a1) * (1-a1);
                 a2 = 1 - (1-a2) * (1-a2);
                
-                v.vertex.xz = _Radius * v.vertex.xz;
+                v.vertex.xz = 0.5 * _Radius * v.vertex.xz;
                
                 v.vertex.xz += sign(dot1) * a1 * d1 + sign(dot2) * a2 * d2;
                 
                 // Transform the vertex by both the reference frame and into world space
-                v.vertex = mul(mat, v.vertex);
-                v.vertex = mul(ObjectToWorld, v.vertex);
+                v.vertex = mul(mat, float4(v.vertex.xyz, 1));
+                v.vertex = mul(ObjectToWorld, float4(v.vertex.xyz, 1));
+                
+                o.normal = normalize(mul(mat, float4(v.normal.xyz, 0)));
+                o.normal = normalize(mul(ObjectToWorldInverseTranspose, float4(o.normal.xyz, 0)));
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.worldVertex = v.vertex;
-                o.normal = normalize(mul(mat, float4(v.normal.xyz, 0)));
-                o.color = lerp(curve.startColor, curve.endColor, smoothstep(0, 1, bias));
+                
+                o.color = lerp(pow(curve.startColor, 2.2), pow(curve.endColor, 2.2), bias);
                 o.bias = bias;
                 
                 return o;

@@ -220,18 +220,7 @@ namespace Narupa.Visualisation.Components
         {
             var node = GetWrappedVisualisationNode();
 
-            var allFields = GetWrappedVisualisationNodeType()
-                .GetFieldsInSelfOrParents(BindingFlags.Instance
-                                          | BindingFlags.NonPublic
-                                          | BindingFlags.Public);
-
-            var validFields = allFields.Where(field => typeof(IReadOnlyProperty).IsAssignableFrom(
-                                                  field.FieldType
-                                              ));
-
-            return validFields.Select(field => (field.Name,
-                                                field.GetValue(node) as
-                                                    IReadOnlyProperty));
+            return VisualisationUtility.GetAllPropertyFields(node);
         }
 
         /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}" />
