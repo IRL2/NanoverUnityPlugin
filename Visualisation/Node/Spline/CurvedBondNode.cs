@@ -34,14 +34,16 @@ namespace Narupa.Visualisation.Node.Spline
 
         protected override void UpdateOutput()
         {
+            var particlePositions = this.particlePositions.Value;
+          
             if (bondPairs.IsDirty)
             {
-                Array.Resize(ref offsetArray, particlePositions.Value.Length);
-                Array.Resize(ref offsetCount, particlePositions.Value.Length);
+                Array.Resize(ref offsetArray, particlePositions.Length);
+                Array.Resize(ref offsetCount, particlePositions.Length);
             }
 
             var bondcount = bondPairs.Value.Length;
-            var particleCount = particlePositions.Value.Length;
+            var particleCount = particlePositions.Length;
             
             for (var i = 0; i < particleCount; i++)
             {
@@ -53,14 +55,18 @@ namespace Narupa.Visualisation.Node.Spline
             {
                 var a = bond.A;
                 var b = bond.B;
-                var dir = particlePositions.Value[b] - particlePositions.Value[a];
+                var dir = particlePositions[b] - particlePositions[a];
                 offsetArray[a] += dir;
                 offsetArray[b] -= dir;
                 offsetCount[a]++;
                 offsetCount[b]++;
             }
 
-            splineSegment.Resize(bondcount);
+            this.splineSegment.Resize(bondcount);
+            var splineSegment = this.splineSegment.Value;
+            var hasColors = this.particleColors.HasValue;
+            var particleColors = this.particleColors.Value;
+
             var l = 0;
             foreach (var bond in bondPairs)
             {
@@ -91,11 +97,11 @@ namespace Narupa.Visualisation.Node.Spline
                 var norm1 = Vector3.Cross(Vector3.up, tan1).normalized;
                 var norm2 = Vector3.Cross(Vector3.up, tan2).normalized;
 
-                var color1 = particleColors.HasValue
+                var color1 = hasColors
                                  ? particleColors[bond.A]
                                  : UnityEngine.Color.white;
 
-                var color2 = particleColors.HasValue
+                var color2 = hasColors
                                  ? particleColors[bond.B]
                                  : UnityEngine.Color.white;
 
@@ -115,7 +121,8 @@ namespace Narupa.Visualisation.Node.Spline
 
                 l++;
             }
-            splineSegment.MarkValueAsChanged();
+
+            this.splineSegment.Value = splineSegment;
         }
 
         protected override void ClearOutput()

@@ -148,15 +148,17 @@ namespace Narupa.Visualisation.Node.Spline
 
         private void RecalculateResidues()
         {
+            var atomResidues = this.atomResidues.Value;
+            var atomNames = this.atomNames.Value;
+            
             var vertexCount = residueSequences.Value.Sum(a => a.Count);
-
             var residueIndices = residueSequences.Value.SelectMany(t => t).ToList();
 
             Array.Resize(ref alphaCarbonIndices, vertexCount);
             Array.Resize(ref carbonylOxygenIndices, vertexCount);
             Array.Resize(ref amineNitrogenIndices, vertexCount);
 
-            for (var i = 0; i < atomResidues.Value.Length; i++)
+            for (var i = 0; i < atomResidues.Length; i++)
             {
                 var resId = atomResidues[i];
                 var index = residueIndices.IndexOf(resId);

@@ -33,7 +33,10 @@ namespace Narupa.Visualisation.Node.Protein
 
         protected override void UpdateOutput()
         {
-            var particleCount = particleResidues.Value.Length;
+            var particleCount = this.particleResidues.Value.Length;
+            var particleResidues = this.particleResidues.Value;
+            var residueEntities = this.residueEntities.Value;
+            
             var l = new List<int>();
             var j = 0;
             var e = -1;

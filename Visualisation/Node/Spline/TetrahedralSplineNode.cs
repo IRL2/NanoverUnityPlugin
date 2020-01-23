@@ -84,18 +84,20 @@ namespace Narupa.Visualisation.Node.Spline
         /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
         protected override void UpdateOutput()
         {
-            if (sequenceLengths.IsDirty || !outputPositions.HasValue)
+            if (sequenceLengths.IsDirty || !this.outputPositions.HasValue)
             {
                 var pointCount = sequenceLengths.Value.Sum(i => i);
                 var segmentCount = sequenceLengths.Value.Sum(i => i - 1);
                 var bondcount = pointCount + 4 * segmentCount;
 
-                outputPositions.Resize(pointCount * 2);
-                outputBonds.Resize(bondcount);
-                outputColors.Resize(pointCount * 2);
-                outputFaces.Resize(segmentCount * 4);
+                this.outputPositions.Resize(pointCount * 2);
+                this.outputBonds.Resize(bondcount);
+                this.outputColors.Resize(pointCount * 2);
+                this.outputFaces.Resize(segmentCount * 4);
 
-
+                var outputBonds = this.outputBonds.Value;
+                var outputFaces = this.outputFaces.Value;
+                
                 // Generate bonds between each pair of points representing a point of the spline.
                 var bondIndex = 0;
                 foreach (var sequenceLength in sequenceLengths)
@@ -135,8 +137,8 @@ namespace Narupa.Visualisation.Node.Spline
                     pointIndex += 2;
                 }
 
-                outputBonds.MarkValueAsChanged();
-                outputFaces.MarkValueAsChanged();
+                this.outputBonds.Value = outputBonds;
+                this.outputFaces.Value = outputFaces;
 
                 interiorBonds.IsDirty = true;
             }
@@ -145,15 +147,18 @@ namespace Narupa.Visualisation.Node.Spline
             {
                 if (interiorBonds.HasNonNullValue())
                 {
-                    outputInteriorBonds.Resize(interiorBonds.Value.Length);
+                    var interiorBonds = this.interiorBonds.Value;
 
-                    for (var i = 0; i < interiorBonds.Value.Length; i++)
+                    this.outputInteriorBonds.Resize(interiorBonds.Length);
+                    var outputInteriorBonds = this.outputInteriorBonds.Value;
+                    
+                    for (var i = 0; i < interiorBonds.Length; i++)
                     {
                         outputInteriorBonds[i] = new BondPair(interiorBonds[i].A * 2,
                                                               interiorBonds[i].B * 2);
                     }
 
-                    outputInteriorBonds.MarkValueAsChanged();
+                    this.outputInteriorBonds.Value = outputInteriorBonds;
                 }
                 else
                 {
@@ -161,6 +166,12 @@ namespace Narupa.Visualisation.Node.Spline
                 }
             }
 
+            var outputPositions = this.outputPositions.Value;
+            var outputColors = this.outputColors.Value;
+            var positions = this.positions.Value;
+            var tangents = this.tangents.Value;
+            var normals = this.normals.Value;
+            
             var index = 0;
             foreach (var sequenceLength in sequenceLengths)
             {
@@ -185,8 +196,8 @@ namespace Narupa.Visualisation.Node.Spline
                 }
             }
 
-            outputPositions.MarkValueAsChanged();
-            outputColors.MarkValueAsChanged();
+            this.outputPositions.Value = outputPositions;
+            this.outputColors.Value = outputColors;
         }
 
         /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>

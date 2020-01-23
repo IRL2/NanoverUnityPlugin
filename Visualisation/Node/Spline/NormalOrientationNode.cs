@@ -33,30 +33,17 @@ namespace Narupa.Visualisation.Node.Spline
         /// </summary>
         public void RotateNormals(Vector3[] normals, Vector3[] tangents)
         {
+            var outputNormals = this.outputNormals.Value;
+            
             for (var j = 1; j < normals.Length; j++)
             {
                 var prev = outputNormals[j - 1];
                 var current = outputNormals[j];
                 if (Vector3.Dot(prev, current) < 0)
                     outputNormals[j] = -current;
-                /*
-                var a = normals[j] - Vector3.Project(normals[j], tangents[j]);
-                var b = Vector3.Cross(tangents[j], normals[j]);
-                a = a.normalized;
-                b = b.normalized;
-                var dot1 = Vector3.Dot(normals[j - 1], a);
-                var dot2 = Vector3.Dot(normals[j - 1], b);
-
-                if (dot1 * dot1 > dot2 * dot2)
-                {
-                    outputNormals[j] = a * Mathf.Sign(dot1);
-                }
-                else
-                {
-                    outputNormals[j] = b * Mathf.Sign(dot2);
-                }
-                */
             }
+
+            this.outputNormals.Value = outputNormals;
         }
 
         /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
@@ -80,7 +67,6 @@ namespace Narupa.Visualisation.Node.Spline
             outputNormals.Resize(inputNormals.Value.Length);
             Array.Copy(inputNormals, outputNormals, inputNormals.Value.Length);
             RotateNormals(outputNormals.Value, inputTangents.Value);
-            outputNormals.MarkValueAsChanged();
         }
 
         /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>

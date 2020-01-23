@@ -1,19 +1,19 @@
-// Copyright (c) Intangible Realities Lab. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
 using UnityEngine;
 
 namespace Narupa.Visualisation.Property
 {
     /// <summary>
-    /// A property who's value and its presence are both serialized.
+    /// A interface-based property which is serialised as a Unity Object.
     /// </summary>
-    public class SerializableProperty<TValue> : LinkableProperty<TValue>
+    public class InterfaceProperty<TValue> : LinkableProperty<TValue>,
+                                             ISerializationCallbackReceiver
     {
         /// <summary>
-        /// Value serialized by Unity.
+        /// Unity object which could implement the interface.
         /// </summary>
         [SerializeField]
+        private Object unityObject;
+
         private TValue value;
 
         /// <summary>
@@ -30,6 +30,10 @@ namespace Narupa.Visualisation.Property
 
             {
                 this.value = value;
+                if (value is Object obj)
+                    unityObject = obj;
+                else
+                    unityObject = null;
                 isValueProvided = true;
             }
         }
@@ -41,10 +45,23 @@ namespace Narupa.Visualisation.Property
             if (HasProvidedValue)
             {
                 isValueProvided = false;
+                unityObject = null;
                 MarkValueAsChanged();
             }
 
             base.UndefineValue();
+        }
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+            if (unityObject is TValue val)
+            {
+                this.value = val;
+            }
         }
     }
 }

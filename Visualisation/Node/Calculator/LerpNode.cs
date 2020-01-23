@@ -24,12 +24,16 @@ namespace Narupa.Visualisation.Node.Calculator
 
         protected override void UpdateOutput()
         {
-            if (cached.Length != input.Value.Length)
+            var input = this.input.Value;
+            
+            if (cached.Length != input.Length)
             {
-                output.Resize(input.Value.Length);
-                Array.Resize(ref cached, input.Value.Length);
+                output.Resize(input.Length);
+                Array.Resize(ref cached, input.Length);
+                Array.Copy(input, cached, input.Length);
             }
-            for (var i = 0; i < input.Value.Length; i++)
+            
+            for (var i = 0; i < input.Length; i++)
             {
                 cached[i] = MoveTowards(cached[i], input[i]);
             }

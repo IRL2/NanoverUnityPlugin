@@ -35,12 +35,5 @@ namespace Narupa.Visualisation.Properties.Collections
         {
             return GetEnumerator();
         }
-
-
-        public TValue this[int i]
-        {
-            get => Value[i];
-            set => Value[i] = value;
-        }
     }
 }

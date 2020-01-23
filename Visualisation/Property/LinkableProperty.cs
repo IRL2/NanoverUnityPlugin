@@ -23,17 +23,42 @@ namespace Narupa.Visualisation.Property
         {
             get
             {
-                if (HasLinkedProperty)
-                    return LinkedProperty.HasValue;
-                if (HasProvidedValue)
-                    return true;
-                return false;
+                if (!isCachedHasValueValid)
+                {
+                    cachedHasValue = GetHasValueInternal();
+                    isCachedHasValueValid = true;
+                }
+
+                return cachedHasValue;
             }
+        }
+
+        private bool isCachedValueValid = false;
+        private bool isCachedHasValueValid = false;
+        private bool cachedHasValue = false;
+        private TValue cachedValue = default;
+
+        private void ResetCache()
+        {
+            isCachedValueValid = false;
+            cachedValue = default;
+            isCachedHasValueValid = false;
+            cachedHasValue = false;
+        }
+
+        private bool GetHasValueInternal()
+        {
+            if (HasLinkedProperty)
+                return LinkedProperty.HasValue;
+            if (HasProvidedValue)
+                return true;
+            return false;
         }
 
         /// <inheritdoc cref="Property.MarkValueAsChanged" />
         public override void MarkValueAsChanged()
         {
+            ResetCache();
             base.MarkValueAsChanged();
             OnValueChanged();
         }
@@ -47,12 +72,13 @@ namespace Narupa.Visualisation.Property
         {
             get
             {
-                if (HasLinkedProperty)
-                    return LinkedProperty.Value;
-                if (HasProvidedValue)
-                    return ProvidedValue;
-                throw new InvalidOperationException(
-                    "Tried accessing value of property when it is not defined");
+                if (!isCachedValueValid)
+                {
+                    cachedValue = GetValueInternal();
+                    isCachedValueValid = true;
+                }
+
+                return cachedValue;
             }
             set
             {
@@ -60,6 +86,16 @@ namespace Narupa.Visualisation.Property
                 ProvidedValue = value;
                 MarkValueAsChanged();
             }
+        }
+
+        private TValue GetValueInternal()
+        {
+            if (HasLinkedProperty)
+                return LinkedProperty.Value;
+            if (HasProvidedValue)
+                return ProvidedValue;
+            throw new InvalidOperationException(
+                "Tried accessing value of property when it is not defined");
         }
 
         /// <inheritdoc cref="IProperty{TValue}.HasLinkedProperty" />

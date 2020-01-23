@@ -90,8 +90,9 @@ namespace Narupa.Visualisation.Node.Spline
         {
             var segmentCount = sequenceCounts.Value.Sum(s => s - 1);
 
-            splineSegments.Resize(segmentCount);
-
+            this.splineSegments.Resize(segmentCount);
+            var splineSegments = this.splineSegments.Value;
+            
             var offset = 0;
             var segOffset = 0;
 
@@ -130,7 +131,7 @@ namespace Narupa.Visualisation.Node.Spline
                 segOffset += sequenceLength - 1;
             }
 
-            splineSegments.Value = splineSegments;
+            this.splineSegments.Value = splineSegments;
         }
 
         /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
