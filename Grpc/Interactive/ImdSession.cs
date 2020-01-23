@@ -87,6 +87,9 @@ namespace Narupa.Session
             IncomingInteractionsUpdates?.CloseAsync();
             IncomingInteractionsUpdates?.Dispose();
             IncomingInteractionsUpdates = null;
+
+            Interactions.Clear();
+            pendingInteractions.Clear();
         }
 
         /// <summary>
