@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Narupa.Visualisation.Components;
 using Narupa.Visualisation.Node.Adaptor;
+using Narupa.Visualisation.Property;
 using Plugins.Narupa.Visualisation.Components;
 using UnityEditor;
 using UnityEngine;
@@ -14,7 +15,7 @@ using Object = UnityEngine.Object;
 namespace Narupa.Visualisation.Editor
 {
     /// <summary>
-    /// Property drawer override for drawing <see cref="Property.Property" /> fields
+    /// Property drawer override for drawing <see cref="Property" /> fields
     /// which belong to a <see cref="VisualisationComponent" />.
     /// </summary>
     [InitializeOnLoad]
