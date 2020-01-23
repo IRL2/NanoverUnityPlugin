@@ -221,7 +221,7 @@ namespace Narupa.Visualisation.Editor
 
                 if (fields.Contains(link.SourceProperty.stringValue))
                     GUI.color = Color.green;
-                else if (sourceProvider.CanProvideProperty(link.SourceProperty.stringValue,
+                else if (sourceProvider.CanDynamicallyProvideProperty(link.SourceProperty.stringValue,
                                                            destinationType))
                     GUI.color = Color.yellow;
                 else

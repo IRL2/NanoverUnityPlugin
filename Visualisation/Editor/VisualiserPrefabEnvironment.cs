@@ -141,7 +141,7 @@ namespace Narupa.Visualisation.Editor
             hasOnPrefabStageOpenedBeenCalled = true;
 
             if (prefabStage.prefabContentsRoot?.GetComponent<IFrameConsumer>() == null
-                && prefabStage.prefabContentsRoot?.GetVisualisationNode<PassThroughAdaptorNode>() == null)
+                && prefabStage.prefabContentsRoot?.GetVisualisationNode<ParentedAdaptor>() == null)
             {
                 isValidPrefabForVisualisation = false;
                 return;
@@ -302,7 +302,7 @@ namespace Narupa.Visualisation.Editor
             }
             else
             {
-                var adaptor = root.GetVisualisationNode<PassThroughAdaptorNode>();
+                var adaptor = root.GetVisualisationNode<ParentedAdaptor>();
                 if (adaptor != null)
                 {
                     var frameAdaptor = new FrameAdaptorNode();

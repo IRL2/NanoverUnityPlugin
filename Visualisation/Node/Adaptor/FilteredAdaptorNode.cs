@@ -15,8 +15,11 @@ namespace Narupa.Visualisation.Node.Adaptor
     /// A variation of a <see cref="FrameAdaptorNode"/> which applies a filter to any key of the form 'particle.*'.
     /// </summary>
     [Serializable]
-    public class FilteredAdaptorNode : PassThroughAdaptorNode
+    public class FilteredAdaptorNode : ParentedAdaptor
     {
+        /// <summary>
+        /// A filter which will affect all fields of the form 'particle.*'.
+        /// </summary>
         public IProperty<int[]> ParticleFilter => particleFilter;
 
         [SerializeField]
@@ -25,12 +28,14 @@ namespace Narupa.Visualisation.Node.Adaptor
         private readonly Dictionary<string, IReadOnlyProperty> filteredProperties =
             new Dictionary<string, IReadOnlyProperty>();
 
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperties"/>
         public override IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
         {
             foreach (var (key, value) in filteredProperties)
                 yield return (key, value);
         }
 
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperty"/>
         public override IReadOnlyProperty GetProperty(string key)
         {
             return filteredProperties.TryGetValue(key, out var value)
@@ -38,6 +43,7 @@ namespace Narupa.Visualisation.Node.Adaptor
                        : null;
         }
 
+        /// <inheritdoc cref="BaseAdaptorNode.GetOrCreateProperty{T}"/>
         public override IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
         {
             if (GetProperty(name) is IReadOnlyProperty<T> existing)

@@ -57,7 +57,7 @@ namespace Narupa.Visualisation.Components
 
         private void SetupAllFrameAdaptorsInSubgraph(GameObject subgraph)
         {
-            foreach (var node in subgraph.GetVisualisationNodesInChildren<PassThroughAdaptorNode>())
+            foreach (var node in subgraph.GetVisualisationNodesInChildren<ParentedAdaptor>())
                 node.ParentAdaptor.LinkedProperty = this.frameAdaptor;
         }
 
@@ -117,6 +117,7 @@ namespace Narupa.Visualisation.Components
             if (input.Input.HasValue)
                 return;
 
+            // Look for adaptors further up the chain
             for (var i = currentSubgraphs.Count - 1; i >= 0; i--)
             {
                 var subgraph = currentSubgraphs[i];

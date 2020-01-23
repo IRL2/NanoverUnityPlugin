@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Narupa.Core;
 using Narupa.Core.Science;
@@ -36,6 +37,18 @@ namespace Narupa.Visualisation.Node.Adaptor
             properties[name] = property;
             OnCreateProperty(name, property);
             return property;
+        }
+
+        /// <inheritdoc cref="IDynamicPropertyProvider.GetPotentialProperties" />
+        public IEnumerable<(string name, Type type)> GetPotentialProperties()
+        {
+            return StandardFrameProperties.All;
+        }
+
+        /// <inheritdoc cref="IDynamicPropertyProvider.CanDynamicallyProvideProperty{T}" />
+        public bool CanDynamicallyProvideProperty<T>(string name)
+        {
+            return true;
         }
 
         /// <inheritdoc cref="IDynamicPropertyProvider.GetProperty" />

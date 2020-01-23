@@ -199,12 +199,6 @@ namespace Narupa.Visualisation.Components
             ClearUpInvalidLinks();
         }
 
-        /// <inheritdoc cref="IPropertyProvider.GetPotentialProperties" />
-        public virtual IEnumerable<(string name, Type type)> GetPotentialProperties()
-        {
-            yield break;
-        }
-
         /// <inheritdoc cref="IPropertyProvider.GetProperty" />
         public virtual IReadOnlyProperty GetProperty(string name)
         {
@@ -221,19 +215,6 @@ namespace Narupa.Visualisation.Components
             var node = GetWrappedVisualisationNode();
 
             return VisualisationUtility.GetAllPropertyFields(node);
-        }
-
-        /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}" />
-        public virtual IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
-        {
-            if (GetProperty(name) is IReadOnlyProperty<T> property)
-                return property;
-            throw new ArgumentException($"{this} does not have property {name}");
-        }
-
-        public virtual bool CanProvideProperty<T>(string name)
-        {
-            return false;
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Narupa.Core.Collections;
-using Narupa.Utility;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Property;
 using NUnit.Framework;

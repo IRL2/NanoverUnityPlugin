@@ -10,7 +10,7 @@ using Narupa.Visualisation.Property;
 namespace Narupa.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="FrameAdaptorNode" />
-    public class FrameAdaptorComponent<TAdaptor> : VisualisationComponent<TAdaptor>
+    public class FrameAdaptorComponent<TAdaptor> : VisualisationComponent<TAdaptor>, IDynamicPropertyProvider
         where TAdaptor : BaseAdaptorNode, new()
     {
         /// <summary>
@@ -29,10 +29,10 @@ namespace Narupa.Visualisation.Components.Adaptor
             node.Refresh();
         }
 
-        /// <inheritdoc cref="IPropertyProvider.GetPotentialProperties" />
-        public override IEnumerable<(string name, Type type)> GetPotentialProperties()
+        /// <inheritdoc cref="IDynamicPropertyProvider.GetPotentialProperties" />
+        public IEnumerable<(string name, Type type)> GetPotentialProperties()
         {
-            return StandardFrameProperties.All;
+            return node.GetPotentialProperties();
         }
 
         /// <inheritdoc cref="IPropertyProvider.GetProperties" />
@@ -50,18 +50,18 @@ namespace Narupa.Visualisation.Components.Adaptor
             return base.GetProperty(name) ?? node.GetProperty(name);
         }
 
-        /// <inheritdoc cref="IPropertyProvider.GetOrCreateProperty{T}" />
-        public override IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
+        /// <inheritdoc cref="IDynamicPropertyProvider.GetOrCreateProperty{T}" />
+        public IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
         {
             if (GetProperty(name) is IReadOnlyProperty<T> property)
                 return property;
             return node.GetOrCreateProperty<T>(name);
         }
 
-        /// <inheritdoc cref="IPropertyProvider.CanProvideProperty{T}" />
-        public override bool CanProvideProperty<T>(string name)
+        /// <inheritdoc cref="IDynamicPropertyProvider.CanDynamicallyProvideProperty{T}" />
+        public bool CanDynamicallyProvideProperty<T>(string name)
         {
-            return true;
+            return node.CanDynamicallyProvideProperty<T>(name);
         }
     }
 }

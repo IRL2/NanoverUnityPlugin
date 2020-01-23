@@ -7,14 +7,22 @@ using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Adaptor
 {
+    /// <summary>
+    /// An <see cref="BaseAdaptorNode"/> which is linked to another adaptor. This adaptor contains its own properties, but links them to the parent. This means that the parent can be changed without listeners to this adaptor needing to change their links.
+    /// </summary>
     [Serializable]
-    public class PassThroughAdaptorNode : BaseAdaptorNode
+    public class ParentedAdaptor : BaseAdaptorNode
     {
+        /// <inheritdoc cref="ParentAdaptor"/>
         [SerializeField]
         private FrameAdaptorProperty adaptor = new FrameAdaptorProperty();
 
+        /// <summary>
+        /// The adaptor that this adaptor inherits from.
+        /// </summary>
         public IProperty<IDynamicPropertyProvider> ParentAdaptor => adaptor;
 
+        /// <inheritdoc cref="BaseAdaptorNode.OnCreateProperty{T}"/>
         protected override void OnCreateProperty<T>(string key, IProperty<T> property)
         {
             base.OnCreateProperty(key, property);
@@ -22,6 +30,7 @@ namespace Narupa.Visualisation.Node.Adaptor
                 property.LinkedProperty = adaptor.Value.GetOrCreateProperty<T>(key);
         }
 
+        /// <inheritdoc cref="BaseAdaptorNode.Refresh"/>
         public override void Refresh()
         {
             if (adaptor.IsDirty)

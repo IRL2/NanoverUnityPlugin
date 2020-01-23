@@ -10,16 +10,28 @@ namespace Narupa.Core.Collections
     /// <see cref="ToString()" /> method to provide a list of its contents, optionally
     /// with a custom function to generate the names of each element.
     /// </summary>
+    /// <remarks>
+    /// Useful for Unit Tests which accept a generated <see cref="IEnumerable" />
+    /// parameter, so that the test log is more clear on the contents of the parameter.
+    /// </remarks>
     public class EnumerableWithName<T> : IEnumerable<T>
     {
         private readonly IEnumerable<T> enumerable;
         private readonly Func<T, string> namer;
 
+        /// <summary>
+        /// Create a wrapper around an <see cref="IEnumerable{T}" />, using the items built
+        /// in <see cref="ToString" /> function.
+        /// </summary>
         public EnumerableWithName(IEnumerable<T> enumerable) : this(
             enumerable, t => t.ToString())
         {
         }
 
+        /// <summary>
+        /// Create a wrapper around an <see cref="IEnumerable{T}" />, with a function which
+        /// generates the display name for each element.
+        /// </summary>
         public EnumerableWithName(IEnumerable<T> enumerable, Func<T, string> namer)
         {
             this.enumerable = enumerable;

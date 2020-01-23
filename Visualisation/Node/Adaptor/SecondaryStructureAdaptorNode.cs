@@ -7,8 +7,11 @@ using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Adaptor
 {
+    /// <summary>
+    /// An <see cref="BaseAdaptorNode"/> which injects a 'residue.secondarystructures' key which provides per residue secondary structure based on the DSSP algorithm.
+    /// </summary>
     [Serializable]
-    public class SecondaryStructureAdaptorNode : PassThroughAdaptorNode
+    public class SecondaryStructureAdaptorNode : ParentedAdaptor
     {
         internal PolypeptideSequenceNode polypeptideSequence = new PolypeptideSequenceNode();
         internal SecondaryStructureNode secondaryStructure = new SecondaryStructureNode();
@@ -36,6 +39,7 @@ namespace Narupa.Visualisation.Node.Adaptor
             secondaryStructure.DsspOptions = options;
         }
 
+        /// <inheritdoc cref="BaseAdaptorNode.Refresh"/>
         public override void Refresh()
         {
             base.Refresh();
@@ -45,6 +49,7 @@ namespace Narupa.Visualisation.Node.Adaptor
 
         private const string ResidueSecondaryStructureKey = "residue.secondarystructures";
 
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperty"/>
         public override IReadOnlyProperty GetProperty(string key)
         {
             if (key == ResidueSecondaryStructureKey)
@@ -52,6 +57,7 @@ namespace Narupa.Visualisation.Node.Adaptor
             return base.GetProperty(key);
         }
 
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperties"/>
         public override IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
         {
             foreach (var prop in base.GetProperties())
@@ -59,6 +65,7 @@ namespace Narupa.Visualisation.Node.Adaptor
             yield return (ResidueSecondaryStructureKey, assignments);
         }
 
+        /// <inheritdoc cref="BaseAdaptorNode.GetOrCreateProperty{T}"/>
         public override IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
         {
             if (typeof(T) == typeof(SecondaryStructureAssignment[]) &&

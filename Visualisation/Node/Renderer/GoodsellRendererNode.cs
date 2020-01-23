@@ -30,6 +30,10 @@ namespace Narupa.Visualisation.Node.Renderer
         [SerializeField]
         private ColorProperty rendererColor = new ColorProperty();
 
+        [SerializeField]
+        private FloatProperty rendererScale = new FloatProperty();
+
+        
         /// <summary>
         /// The transform to center this renderer on.
         /// </summary>
@@ -51,6 +55,7 @@ namespace Narupa.Visualisation.Node.Renderer
             renderer.ParticleColors.LinkedProperty = particleColors;
             renderer.ParticleResidues.LinkedProperty = particleResidues;
             renderer.RendererColor.LinkedProperty = rendererColor;
+            renderer.RendererScale.LinkedProperty = rendererScale;
 
             renderer.Transform = Transform;
         }

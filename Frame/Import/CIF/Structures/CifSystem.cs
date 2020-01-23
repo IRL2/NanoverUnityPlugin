@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Narupa.Core.Collections;
 using Narupa.Core.Science;
 using Narupa.Frame.Import.CIF.Components;
-using Narupa.Utility;
 using UnityEngine;
 
 namespace Narupa.Frame.Import.CIF.Structures

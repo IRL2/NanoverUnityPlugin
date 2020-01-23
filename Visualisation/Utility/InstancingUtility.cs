@@ -66,9 +66,9 @@ namespace Narupa.Visualisation.Utility
         public static void SetTransform(IndirectMeshDrawCommand command, Transform transform)
         {
             var trs = Transformation.FromTransformRelativeToWorld(transform);
-            command.SetMatrix("WorldToObject", trs.Inverse);
+            command.SetMatrix("WorldToObject", trs.InverseMatrix);
             command.SetMatrix("ObjectToWorld", trs.Matrix);
-            command.SetMatrix("ObjectToWorldInverseTranspose", trs.InverseTranspose);
+            command.SetMatrix("ObjectToWorldInverseTranspose", trs.InverseTransposeMatrix);
         }
 
         public static ComputeBuffer CreateBuffer<T>(T[] array)

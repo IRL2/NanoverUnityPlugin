@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4905911803482447985}
   - component: {fileID: 6947444575870807714}
   m_Layer: 0
-  m_Name: VdW Radii
+  m_Name: vdw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
       value: 
       isValueProvided: 0
     scale:
-      value: 1
+      value: 10
       isValueProvided: 1
 --- !u!114 &6947444575870807714
 MonoBehaviour:
