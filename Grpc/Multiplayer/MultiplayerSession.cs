@@ -154,6 +154,9 @@ namespace Narupa.Session
 
             Avatars.Clear();
             pendingAvatars.Clear();
+
+            SharedStateDictionary.Clear();
+            pendingValues.Clear();
         }
 
         /// <summary>
