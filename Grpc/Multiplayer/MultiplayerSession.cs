@@ -155,7 +155,7 @@ namespace Narupa.Session
             Avatars.Clear();
             pendingAvatars.Clear();
 
-            SharedStateDictionary.Clear();
+            ClearSharedState();
             pendingValues.Clear();
         }
 
@@ -293,6 +293,17 @@ namespace Narupa.Session
                 return;
 
             Avatars[avatar.PlayerId] = ProtoAvatarToClientAvatar(avatar);
+        }
+
+        private void ClearSharedState()
+        {
+            var keys = SharedStateDictionary.Keys.ToList();
+            SharedStateDictionary.Clear();
+
+            foreach (var key in keys)
+            {
+                SharedStateDictionaryKeyRemoved?.Invoke(key);
+            }
         }
 
         private void OnResourceValuesUpdateReceived(ResourceValuesUpdate update)
