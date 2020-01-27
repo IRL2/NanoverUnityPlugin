@@ -18,7 +18,9 @@ namespace Narupa.Visualisation.Editor
         [MenuItem("Narupa/Generate GraphVIZ")]
         public static void GenerateGraphViz()
         {
-            var root = PrefabStageUtility.GetCurrentPrefabStage()?.prefabContentsRoot;
+            var root = Selection.activeGameObject;
+            if(root == null)
+                root = PrefabStageUtility.GetCurrentPrefabStage()?.prefabContentsRoot;
             if (root == null)
                 return;
 
