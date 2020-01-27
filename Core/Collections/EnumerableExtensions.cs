@@ -78,12 +78,12 @@ namespace Narupa.Core.Collections
         /// <summary>
         /// Get all permutations of a set.
         /// </summary>
-        public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list)
+        public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> set)
         {
             var i = 0;
-            foreach (var item in list)
+            foreach (var item in set)
             {
-                var subsequence = list.WithoutIndex(i);
+                var subsequence = set.WithoutIndex(i);
                 foreach (var subpermutation in subsequence.GetPermutations())
                 {
                     yield return item.AsEnumerable().Concat(subpermutation);
@@ -94,7 +94,7 @@ namespace Narupa.Core.Collections
 
             if (i == 1)
             {
-                yield return list;
+                yield return set;
             }
         }
 
