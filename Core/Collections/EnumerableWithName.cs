@@ -14,7 +14,7 @@ namespace Narupa.Core.Collections
     /// Useful for Unit Tests which accept a generated <see cref="IEnumerable" />
     /// parameter, so that the test log is more clear on the contents of the parameter.
     /// </remarks>
-    public class EnumerableWithName<T> : IEnumerable<T>
+    public class PrettyEnumerable<T> : IEnumerable<T>
     {
         private readonly IEnumerable<T> enumerable;
         private readonly Func<T, string> namer;
