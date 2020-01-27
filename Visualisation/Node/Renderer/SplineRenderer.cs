@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Visualisation.Node.Calculator;
 using Narupa.Visualisation.Node.Spline;
 using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Properties.Collections;
@@ -111,8 +110,14 @@ namespace Narupa.Visualisation.Node.Renderer
                 vertices.Add(new Vector3(-0.5f, z, -0.5f));
             }
 
-            triangles.AddRange(new[] { 0, 2, 6 });
-            triangles.AddRange(new[] { 2, 4, 6 });
+            triangles.AddRange(new[]
+            {
+                0, 2, 6
+            });
+            triangles.AddRange(new[]
+            {
+                2, 4, 6
+            });
 
             // Bottom
 
@@ -120,17 +125,41 @@ namespace Narupa.Visualisation.Node.Renderer
             {
                 var lvl = l * 8;
                 var lvl2 = l * 8 + 8;
-                triangles.AddRange(new[] { lvl + 0, lvl2 + 0, lvl + 1 });
-                triangles.AddRange(new[] { lvl + 1, lvl2 + 0, lvl2 + 1 });
+                triangles.AddRange(new[]
+                {
+                    lvl + 0, lvl2 + 0, lvl + 1
+                });
+                triangles.AddRange(new[]
+                {
+                    lvl + 1, lvl2 + 0, lvl2 + 1
+                });
 
-                triangles.AddRange(new[] { lvl + 2, lvl2 + 2, lvl + 3 });
-                triangles.AddRange(new[] { lvl + 3, lvl2 + 2, lvl2 + 3 });
+                triangles.AddRange(new[]
+                {
+                    lvl + 2, lvl2 + 2, lvl + 3
+                });
+                triangles.AddRange(new[]
+                {
+                    lvl + 3, lvl2 + 2, lvl2 + 3
+                });
 
-                triangles.AddRange(new[] { lvl + 4, lvl2 + 4, lvl + 5 });
-                triangles.AddRange(new[] { lvl + 5, lvl2 + 4, lvl2 + 5 });
+                triangles.AddRange(new[]
+                {
+                    lvl + 4, lvl2 + 4, lvl + 5
+                });
+                triangles.AddRange(new[]
+                {
+                    lvl + 5, lvl2 + 4, lvl2 + 5
+                });
 
-                triangles.AddRange(new[] { lvl + 6, lvl2 + 6, lvl + 7 });
-                triangles.AddRange(new[] { lvl + 7, lvl2 + 6, lvl2 + 7 });
+                triangles.AddRange(new[]
+                {
+                    lvl + 6, lvl2 + 6, lvl + 7
+                });
+                triangles.AddRange(new[]
+                {
+                    lvl + 7, lvl2 + 6, lvl2 + 7
+                });
             }
         }
 
@@ -162,33 +191,14 @@ namespace Narupa.Visualisation.Node.Renderer
             {
                 triangles.AddRange(new[]
                 {
-                    l * sides + (s) % sides, l * sides + (s + 1) % sides, (l + 1) * sides + (s) % sides
+                    l * sides + (s) % sides, l * sides + (s + 1) % sides,
+                    (l + 1) * sides + (s) % sides
                 });
                 triangles.AddRange(new[]
                 {
                     l * sides + (s + 1) % sides, (l + 1) * sides + (s + 1) % sides,
                     (l + 1) * sides + (s) % sides
                 });
-            }
-        }
-
-        public void OnDrawGizmos()
-        {
-            foreach (var segment in splineSegments.Value)
-            {
-                Gizmos.color = UnityEngine.Color.white;
-
-                for (var t = 0f; t < 1f; t += 0.1f)
-                {
-                    var pt1 = segment.GetPoint(t);
-                    var pt2 = segment.GetPoint(t + 0.1f);
-                    Gizmos.DrawLine(pt1, pt2);
-                }
-                Gizmos.DrawSphere(segment.StartPoint, 0.01f);
-                
-                Gizmos.color = UnityEngine.Color.blue;
-                Gizmos.DrawLine(segment.StartPoint, segment.StartPoint + 0.2f * segment.StartTangent);
-
             }
         }
     }
