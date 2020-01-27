@@ -21,7 +21,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
         private Frame.Frame emptyFrame;
         private Frame.Frame frameWithPositions;
         private FrameAdaptorNode frameAdaptor;
-        private FilteredAdaptorNode filterAdaptor;
+        private ParticleFilteredAdaptorNode filterAdaptor;
         private int[] filter;
         private IReadOnlyProperty<Vector3[]> property;
         private Vector3[] filteredPositions;
@@ -48,7 +48,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
             };
 
             frameAdaptor = new FrameAdaptorNode();
-            filterAdaptor = new FilteredAdaptorNode();
+            filterAdaptor = new ParticleFilteredAdaptorNode();
             filterAdaptor.ParentAdaptor.Value = frameAdaptor;
 
             filter = new[]
@@ -83,8 +83,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                 SetAdaptorsFilter, SetAdaptorsFrame, GetProperty
             };
             return actions.GetPermutations()
-                          .Select(e => new EnumerableWithName<SetupFunction>(e,
-                                                                             t => t.Method.Name));
+                          .Select(e => e.AsPretty(t => t.Method.Name));
         }
 
         [Test]

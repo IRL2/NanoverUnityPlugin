@@ -14,7 +14,7 @@ namespace Narupa.Core.Collections
     /// Useful for Unit Tests which accept a generated <see cref="IEnumerable" />
     /// parameter, so that the test log is more clear on the contents of the parameter.
     /// </remarks>
-    public class PrettyEnumerable<T> : IEnumerable<T>
+    internal class PrettyEnumerable<T> : IEnumerable<T>
     {
         private readonly IEnumerable<T> enumerable;
         private readonly Func<T, string> namer;
@@ -23,7 +23,7 @@ namespace Narupa.Core.Collections
         /// Create a wrapper around an <see cref="IEnumerable{T}" />, using the items built
         /// in <see cref="ToString" /> function.
         /// </summary>
-        public EnumerableWithName(IEnumerable<T> enumerable) : this(
+        public PrettyEnumerable(IEnumerable<T> enumerable) : this(
             enumerable, t => t.ToString())
         {
         }
@@ -32,7 +32,7 @@ namespace Narupa.Core.Collections
         /// Create a wrapper around an <see cref="IEnumerable{T}" />, with a function which
         /// generates the display name for each element.
         /// </summary>
-        public EnumerableWithName(IEnumerable<T> enumerable, Func<T, string> namer)
+        public PrettyEnumerable(IEnumerable<T> enumerable, Func<T, string> namer)
         {
             this.enumerable = enumerable;
             this.namer = namer;

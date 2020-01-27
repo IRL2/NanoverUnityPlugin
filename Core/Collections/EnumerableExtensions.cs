@@ -1,6 +1,7 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,12 +62,13 @@ namespace Narupa.Core.Collections
                 {
                     yield return item;
                 }
+
                 i++;
             }
         }
-        
+
         /// <summary>
-        /// Treat a single item as an <see cref="IEnumerable{T}"/> of one item.
+        /// Treat a single item as an <see cref="IEnumerable{T}" /> of one item.
         /// </summary>
         public static IEnumerable<T> AsEnumerable<T>(this T value)
         {
@@ -79,13 +81,14 @@ namespace Narupa.Core.Collections
         public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list)
         {
             var i = 0;
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 var subsequence = list.WithoutIndex(i);
                 foreach (var subpermutation in subsequence.GetPermutations())
                 {
                     yield return item.AsEnumerable().Concat(subpermutation);
                 }
+
                 i++;
             }
 
@@ -93,6 +96,26 @@ namespace Narupa.Core.Collections
             {
                 yield return list;
             }
+        }
+
+        /// <summary>
+        /// Wraps an <see cref="IEnumerable{T}" /> so the <see cref="object.ToString" />
+        /// method prints a list of the elements separated by commas.
+        /// </summary>
+        public static IEnumerable<T> AsPretty<T>(this IEnumerable<T> enumerable)
+        {
+            return new PrettyEnumerable<T>(enumerable);
+        }
+
+        /// <summary>
+        /// Wraps an <see cref="IEnumerable{T}" /> so the <see cref="object.ToString" />
+        /// method prints a list of the function <paramref name="toString" /> applied to
+        /// each element, separated by commas.
+        /// </summary>
+        public static IEnumerable<T> AsPretty<T>(this IEnumerable<T> enumerable,
+                                                 Func<T, string> toString)
+        {
+            return new PrettyEnumerable<T>(enumerable, toString);
         }
     }
 }
