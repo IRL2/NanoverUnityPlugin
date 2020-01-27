@@ -15,7 +15,7 @@ namespace Narupa.Visualisation.Node.Adaptor
     /// A variation of a <see cref="FrameAdaptorNode"/> which applies a filter to any key of the form 'particle.*'.
     /// </summary>
     [Serializable]
-    public class FilteredAdaptorNode : ParentedAdaptor
+    public class ParticleFilteredAdaptorNode : ParentedAdaptor
     {
         /// <summary>
         /// A filter which will affect all fields of the form 'particle.*'.
