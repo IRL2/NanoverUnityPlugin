@@ -77,12 +77,19 @@ namespace Narupa.Session
         public void CloseClient()
         {
             client?.CloseAndCancelAllSubscriptions();
+            client?.Dispose();
             client = null;
 
+            InteractionStreams?.CloseAsync();
             InteractionStreams?.Dispose();
             InteractionStreams = null;
+
+            IncomingInteractionsUpdates?.CloseAsync();
             IncomingInteractionsUpdates?.Dispose();
             IncomingInteractionsUpdates = null;
+
+            Interactions.Clear();
+            pendingInteractions.Clear();
         }
 
         /// <summary>
@@ -169,8 +176,7 @@ namespace Narupa.Session
         /// <inheritdoc cref="IDisposable.Dispose" />
         public void Dispose()
         {
-            client?.Dispose();
-            InteractionStreams?.Dispose();
+            CloseClient();
         }
 
         private async Task FlushingLoop()

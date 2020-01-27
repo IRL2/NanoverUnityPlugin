@@ -71,14 +71,18 @@ namespace Narupa.Grpc.Trajectory
         public void CloseClient()
         {
             trajectoryClient?.CloseAndCancelAllSubscriptions();
+            trajectoryClient?.Dispose();
             trajectoryClient = null;
+
+            frameStream?.CloseAsync();
+            frameStream?.Dispose();
+            frameStream = null;
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
         public void Dispose()
         {
-            trajectoryClient?.Dispose();
-            frameStream?.Dispose();
+            CloseClient();
         }
         
         /// <inheritdoc cref="TrajectoryClient.CommandPlay"/>

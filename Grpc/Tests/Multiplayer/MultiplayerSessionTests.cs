@@ -81,7 +81,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             void HasReceivedKey() => CollectionAssert.Contains(session.SharedStateDictionary.Keys,
                                                                "abc");
 
-            await AsyncAssert.PassesWithinTimeout(HasReceivedKey);
+            await AsyncAssert.PassesWithinTimeout(HasReceivedKey, timeout: 10000);
         }
 
         [AsyncTest]

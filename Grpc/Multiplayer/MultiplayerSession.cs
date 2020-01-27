@@ -138,10 +138,14 @@ namespace Narupa.Session
         public void CloseClient()
         {
             client?.CloseAndCancelAllSubscriptions();
+            client?.Dispose();
             client = null;
 
+            IncomingAvatars?.CloseAsync();
             IncomingAvatars?.Dispose();
             IncomingAvatars = null;
+
+            OutgoingAvatar?.CloseAsync();
             OutgoingAvatar?.Dispose();
             OutgoingAvatar = null;
 
@@ -150,6 +154,9 @@ namespace Narupa.Session
 
             Avatars.Clear();
             pendingAvatars.Clear();
+
+            ClearSharedState();
+            pendingValues.Clear();
         }
 
         /// <summary>
@@ -276,9 +283,7 @@ namespace Narupa.Session
             FlushAvatars();
             FlushValues();
 
-            client?.Dispose();
-            OutgoingAvatar?.Dispose();
-            IncomingAvatars?.Dispose();
+            CloseClient();
         }
 
         private void OnAvatarReceived(Avatar avatar)
@@ -288,6 +293,17 @@ namespace Narupa.Session
                 return;
 
             Avatars[avatar.PlayerId] = ProtoAvatarToClientAvatar(avatar);
+        }
+
+        private void ClearSharedState()
+        {
+            var keys = SharedStateDictionary.Keys.ToList();
+            SharedStateDictionary.Clear();
+
+            foreach (var key in keys)
+            {
+                SharedStateDictionaryKeyRemoved?.Invoke(key);
+            }
         }
 
         private void OnResourceValuesUpdateReceived(ResourceValuesUpdate update)
