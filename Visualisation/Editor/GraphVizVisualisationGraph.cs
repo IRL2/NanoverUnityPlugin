@@ -13,13 +13,17 @@ using UnityEngine;
 
 namespace Narupa.Visualisation.Editor
 {
-    public static class GraphVizVisualisationGraph
+    /// <summary>
+    /// Generates a graph of the currently selected visualiser as graph in the DOT
+    /// language, suitable for visualisation using GraphViz.
+    /// </summary>
+    internal static class GraphVizVisualisationGraph
     {
         [MenuItem("Narupa/Generate GraphVIZ")]
-        public static void GenerateGraphViz()
+        internal static void GenerateGraphViz()
         {
             var root = Selection.activeGameObject;
-            if(root == null)
+            if (root == null)
                 root = PrefabStageUtility.GetCurrentPrefabStage()?.prefabContentsRoot;
             if (root == null)
                 return;
@@ -44,9 +48,9 @@ namespace Narupa.Visualisation.Editor
             EditorGUIUtility.systemCopyBuffer = str;
         }
 
-        private static void DrawObject(GameObject root,
-                                       TextWriter file,
-                                       List<(long, long)> connections)
+        internal static void DrawObject(GameObject root,
+                                        TextWriter file,
+                                        List<(long, long)> connections)
         {
             file.WriteLine($"subgraph cluster_{GetId(root)} {{");
             file.WriteLine($"label = \"{root.name}\"");
@@ -63,7 +67,8 @@ namespace Narupa.Visualisation.Editor
                     if (child.GetWrappedVisualisationNode() is IOutputNode output)
                         label = output.Name;
                     if (prop.HasValue && prop.PropertyType.IsArray)
-                        label += $" {prop.PropertyType.GetElementType().Name}[{(prop.Value as Array).Length}]";
+                        label +=
+                            $" {prop.PropertyType.GetElementType().Name}[{(prop.Value as Array).Length}]";
                     var color = prop.HasValue ? "green" : "red";
                     file.WriteLine($"{GetId(prop)} [label=\"{label}\" color={color} shape=box];");
                     FindConnections(prop, connections);
@@ -72,7 +77,7 @@ namespace Narupa.Visualisation.Editor
                 if (child is SecondaryStructureAdaptor ss)
                 {
                     var node = ss.Node;
-                    
+
                     file.WriteLine($"subgraph cluster_{GetId(node.polypeptideSequence)} {{");
                     file.WriteLine($"label = \"polypeptideSequence\"");
                     foreach (var (name, prop) in VisualisationUtility.GetAllPropertyFields(
@@ -83,6 +88,7 @@ namespace Narupa.Visualisation.Editor
                             $"{GetId(prop)} [label=\"{name}\" color={color} shape=box];");
                         FindConnections(prop, connections);
                     }
+
                     file.WriteLine("}");
 
                     file.WriteLine($"subgraph cluster_{GetId(node.secondaryStructure)} {{");
@@ -95,6 +101,7 @@ namespace Narupa.Visualisation.Editor
                             $"{GetId(prop)} [label=\"{name}\" color={color} shape=box];");
                         FindConnections(prop, connections);
                     }
+
                     file.WriteLine("}");
                 }
 
@@ -111,7 +118,7 @@ namespace Narupa.Visualisation.Editor
             file.WriteLine("}");
         }
 
-        private static IEnumerable<(string, IReadOnlyProperty)> GetProperties(
+        internal static IEnumerable<(string, IReadOnlyProperty)> GetProperties(
             VisualisationComponent child)
         {
             foreach (var prop in child.GetProperties())
@@ -122,7 +129,7 @@ namespace Narupa.Visualisation.Editor
             }
         }
 
-        private static void FindConnections(IReadOnlyProperty prop, List<(long, long)> connections)
+        internal static void FindConnections(IReadOnlyProperty prop, List<(long, long)> connections)
         {
             if (prop is IProperty property && property.HasLinkedProperty)
             {
@@ -144,7 +151,7 @@ namespace Narupa.Visualisation.Editor
             }
         }
 
-        private static long GetId(object obj)
+        internal static long GetId(object obj)
         {
             return (long) int.MaxValue + (long) obj.GetHashCode();
         }
