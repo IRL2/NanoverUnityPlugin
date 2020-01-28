@@ -39,7 +39,7 @@ namespace Narupa.Visualisation.Property
     public interface IProperty<TValue> : IReadOnlyProperty<TValue>, IProperty
     {
         /// <inheritdoc cref="IProperty.Value" />
-        new TValue Value { set; }
+        new TValue Value { get; set; }
 
         /// <inheritdoc cref="IProperty.Value" />
         new IReadOnlyProperty<TValue> LinkedProperty { set; }

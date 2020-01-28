@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5856870839696454166}
   - component: {fileID: 8780840651017874724}
   - component: {fileID: 1302462309606565754}
-  - component: {fileID: 5276900905653429674}
   - component: {fileID: 4567862862104944956}
   - component: {fileID: 8568249322398230451}
   - component: {fileID: 146005666751186440}
@@ -22,6 +21,7 @@ GameObject:
   - component: {fileID: 6914795531129879089}
   - component: {fileID: 2054158667743431333}
   - component: {fileID: 423097259195395586}
+  - component: {fileID: 7693630364666978037}
   m_Layer: 0
   m_Name: cycles
   m_TagString: Untagged
@@ -115,24 +115,6 @@ MonoBehaviour:
     input:
       value: []
       isValueProvided: 0
---- !u!114 &5276900905653429674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6914795531129879088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: particle.residues
-    input:
-      value: 
-      isValueProvided: 0
 --- !u!114 &4567862862104944956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,21 +149,15 @@ MonoBehaviour:
   - sourceComponent: {fileID: 1302462309606565754}
     sourceFieldName: input
     destinationFieldName: bonds
-  - sourceComponent: {fileID: 5276900905653429674}
+  - sourceComponent: {fileID: 7693630364666978037}
     sourceFieldName: input
-    destinationFieldName: particleResidues
-  - sourceComponent: {fileID: 5856870839696454166}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
+    destinationFieldName: particleCount
   node:
-    particleFilter:
-      value: 
-      isValueProvided: 0
     bonds:
       value: []
       isValueProvided: 0
-    particleResidues:
-      value: 
+    particleCount:
+      value: 0
       isValueProvided: 0
 --- !u!114 &146005666751186440
 MonoBehaviour:
@@ -242,9 +218,6 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4567862862104944956}
     sourceFieldName: input
     destinationFieldName: particleColors
-  - sourceComponent: {fileID: 5856870839696454166}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
   - sourceComponent: {fileID: 5214239840595827744}
     sourceFieldName: input
     destinationFieldName: rendererColor
@@ -258,9 +231,6 @@ MonoBehaviour:
     mesh:
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
       isValueProvided: 1
-    particleFilter:
-      value: 
-      isValueProvided: 0
     bondScale:
       value: 1
       isValueProvided: 1
@@ -285,7 +255,6 @@ MonoBehaviour:
     bondOrders:
       value: 
       isValueProvided: 0
-    bondToNonFiltered: 0
 --- !u!114 &6914795531129879089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,9 +274,6 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4567862862104944956}
     sourceFieldName: input
     destinationFieldName: particleColors
-  - sourceComponent: {fileID: 5856870839696454166}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
   - sourceComponent: {fileID: 5214239840595827744}
     sourceFieldName: input
     destinationFieldName: rendererColor
@@ -330,9 +296,6 @@ MonoBehaviour:
     rendererScale:
       value: 0.1
       isValueProvided: 1
-    particleFilter:
-      value: 
-      isValueProvided: 0
     mesh:
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
       isValueProvided: 1
@@ -361,9 +324,6 @@ MonoBehaviour:
   - sourceComponent: {fileID: 4567862862104944956}
     sourceFieldName: input
     destinationFieldName: particleColors
-  - sourceComponent: {fileID: 5856870839696454166}
-    sourceFieldName: input
-    destinationFieldName: particleFilter
   - sourceComponent: {fileID: 5214239840595827744}
     sourceFieldName: input
     destinationFieldName: rendererColor
@@ -377,9 +337,6 @@ MonoBehaviour:
     mesh:
       value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
       isValueProvided: 1
-    particleFilter:
-      value: 
-      isValueProvided: 0
     bondScale:
       value: 1
       isValueProvided: 1
@@ -404,7 +361,6 @@ MonoBehaviour:
     bondOrders:
       value: 
       isValueProvided: 0
-    bondToNonFiltered: 0
 --- !u!114 &423097259195395586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,4 +407,22 @@ MonoBehaviour:
       isValueProvided: 1
     color:
       value: {r: 0, g: 0, b: 0, a: 0}
+      isValueProvided: 0
+--- !u!114 &7693630364666978037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914795531129879088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4cb6b71496e474a95dc2d19cb956d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: particle.count
+    input:
+      value: 0
       isValueProvided: 0
