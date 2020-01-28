@@ -75,7 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: particle.filter
+    name: particle.residues
     input:
       value: 
       isValueProvided: 0
@@ -152,12 +152,18 @@ MonoBehaviour:
   - sourceComponent: {fileID: 7693630364666978037}
     sourceFieldName: input
     destinationFieldName: particleCount
+  - sourceComponent: {fileID: 5856870839696454166}
+    sourceFieldName: input
+    destinationFieldName: particleResidues
   node:
     bonds:
       value: []
       isValueProvided: 0
     particleCount:
       value: 0
+      isValueProvided: 0
+    particleResidues:
+      value: 
       isValueProvided: 0
 --- !u!114 &146005666751186440
 MonoBehaviour:
