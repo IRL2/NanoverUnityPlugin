@@ -65,7 +65,7 @@ namespace Narupa.Visualisation.Node.Spline
             this.splineSegment.Resize(bondcount);
             var splineSegment = this.splineSegment.Value;
             var hasColors = this.particleColors.HasValue;
-            var particleColors = this.particleColors.Value;
+            var particleColors = hasColors ?  this.particleColors.Value : null;
 
             var l = 0;
             foreach (var bond in bondPairs)
