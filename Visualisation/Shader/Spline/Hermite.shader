@@ -94,7 +94,7 @@
                 
                 float t = smoothstep(0, 1, bias);
             
-                o.color = lerp(pow(spline.startColor, 2.2), pow(spline.endColor, 2.2), t);
+                o.color = _Color * lerp(pow(spline.startColor, 2.2), pow(spline.endColor, 2.2), t);
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 
