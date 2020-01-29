@@ -18,6 +18,9 @@ namespace Narupa.Visualisation.Node.Renderer
         [SerializeField]
         private SplineArrayProperty splineSegments = new SplineArrayProperty();
 
+        [SerializeField]
+        private ColorProperty rendererColor = new ColorProperty();
+
         public IProperty<SplineSegment[]> SplineSegments => splineSegments;
 
         [SerializeField]
@@ -53,7 +56,7 @@ namespace Narupa.Visualisation.Node.Renderer
                 InstancingUtility.SetTransform(drawCommand, Transform);
 
                 drawCommand.SetDataBuffer("SplineArray", splineSegments.Value);
-                drawCommand.SetColor("_Color", UnityEngine.Color.white);
+                drawCommand.SetColor("_Color", rendererColor.Value);
                 drawCommand.SetFloat("_Radius", splineRadius.Value);
 
                 drawCommand.MarkForRenderingThisFrame(camera);

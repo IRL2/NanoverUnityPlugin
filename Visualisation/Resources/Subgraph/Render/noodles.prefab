@@ -16,8 +16,9 @@ GameObject:
   - component: {fileID: -2576155161986276186}
   - component: {fileID: 4407376667810571756}
   - component: {fileID: 2877708729130223005}
+  - component: {fileID: -2915614379898923502}
   m_Layer: 0
-  m_Name: curved bond
+  m_Name: noodles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,10 +57,16 @@ MonoBehaviour:
   - sourceComponent: {fileID: 2877708729130223005}
     sourceFieldName: input
     destinationFieldName: splineRadius
+  - sourceComponent: {fileID: -2915614379898923502}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
   node:
     useBox: 0
     splineSegments:
       value: []
+      isValueProvided: 0
+    rendererColor:
+      value: {r: 0, g: 0, b: 0, a: 0}
       isValueProvided: 0
     segments: 32
     sides: 64
@@ -107,6 +114,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: 2877708729130223005}
     sourceFieldName: input
     destinationFieldName: rendererScale
+  - sourceComponent: {fileID: -2915614379898923502}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
   node:
     particlePositions:
       value: []
@@ -214,4 +224,22 @@ MonoBehaviour:
     name: scale
     input:
       value: 0.1
+      isValueProvided: 1
+--- !u!114 &-2915614379898923502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540731497701321300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d35f42ae2141f29ec4578f172eb678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: color
+    input:
+      value: {r: 1, g: 1, b: 1, a: 1}
       isValueProvided: 1
