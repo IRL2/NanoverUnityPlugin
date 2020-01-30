@@ -27,11 +27,6 @@ namespace Narupa.Visualisation.Node.Calculator
 
         public IProperty<int> ParticleCount => particleCount;
 
-        [SerializeField]
-        private IntArrayProperty particleResidues = new IntArrayProperty();
-
-        public IProperty<int[]> ParticleResidues => particleResidues;
-
         private readonly SelectionArrayProperty cycles = new SelectionArrayProperty();
 
         public IReadOnlyProperty<IReadOnlyList<int>[]> Cycles => cycles;
@@ -58,14 +53,8 @@ namespace Narupa.Visualisation.Node.Calculator
                     for (var i = 0; i < particleCount; i++)
                         neighbourList[i] = new List<int>();
 
-                    var hasResidues = particleResidues.HasValue;
-
                     foreach (var bond in bonds)
                     {
-                        // Only allow cycles within residues
-                        if (hasResidues 
-                         && particleResidues.Value[bond.A] != particleResidues.Value[bond.B])
-                            continue;
                         neighbourList[bond.A].Add(bond.B);
                         neighbourList[bond.B].Add(bond.A);
                     }
@@ -118,8 +107,6 @@ namespace Narupa.Visualisation.Node.Calculator
             while (T.Any())
             {
                 var p = T.Dequeue();
-
-                Debug.Log(p.AsPretty());
 
                 if (p.Count == 6)
                     continue;
