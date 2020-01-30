@@ -41,6 +41,8 @@ namespace Narupa.Grpc.Tests.Multiplayer
             connection2 = new GrpcConnection("localhost", server.Port);
             session2.OpenClient(connection2);
             await session2.JoinMultiplayer("mike");
+
+            await Task.Delay(500);
         }
 
         [TearDown]
@@ -81,7 +83,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             void HasReceivedKey() => CollectionAssert.Contains(session.SharedStateDictionary.Keys,
                                                                "abc");
 
-            await AsyncAssert.PassesWithinTimeout(HasReceivedKey, timeout: 10000);
+            await AsyncAssert.PassesWithinTimeout(HasReceivedKey);
         }
 
         [AsyncTest]
