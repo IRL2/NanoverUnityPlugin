@@ -302,7 +302,14 @@ namespace Narupa.Session
 
             foreach (var key in keys)
             {
-                SharedStateDictionaryKeyRemoved?.Invoke(key);
+                try
+                {
+                    SharedStateDictionaryKeyRemoved?.Invoke(key);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
         }
 
