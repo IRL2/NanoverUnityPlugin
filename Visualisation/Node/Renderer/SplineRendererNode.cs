@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Renderer
 {
     [Serializable]
-    public class SplineRenderer
+    public class SplineRendererNode : IDisposable
     {
         [SerializeField]
         private bool useBox = true;
@@ -56,8 +56,8 @@ namespace Narupa.Visualisation.Node.Renderer
                 InstancingUtility.SetTransform(drawCommand, Transform);
 
                 drawCommand.SetDataBuffer("SplineArray", splineSegments.Value);
-                drawCommand.SetColor("_Color", rendererColor.Value);
-                drawCommand.SetFloat("_Radius", splineRadius.Value);
+                drawCommand.SetColor("_Color", rendererColor.HasValue ? rendererColor.Value : UnityEngine.Color.white);
+                drawCommand.SetFloat("_Radius", splineRadius.HasValue ? splineRadius.Value : 1f);
 
                 drawCommand.MarkForRenderingThisFrame(camera);
             }
@@ -203,6 +203,11 @@ namespace Narupa.Visualisation.Node.Renderer
                     (l + 1) * sides + (s) % sides
                 });
             }
+        }
+
+        public void Dispose()
+        {
+            drawCommand?.Dispose();
         }
     }
 }

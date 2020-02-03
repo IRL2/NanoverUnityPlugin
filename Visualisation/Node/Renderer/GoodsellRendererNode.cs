@@ -40,9 +40,9 @@ namespace Narupa.Visualisation.Node.Renderer
         public Transform Transform { get; set; }
 
         /// <inheritdoc cref="CommandBufferRendererNode.Cleanup"/>
-        public override void Cleanup()
+        public override void Dispose()
         {
-            base.Cleanup();
+            base.Dispose();
             renderer.ResetBuffers();
         }
 
@@ -78,7 +78,7 @@ namespace Narupa.Visualisation.Node.Renderer
         {
             if (renderer.IsInputDirty && renderer.ShouldRender != isRendering)
             {
-                Cleanup();
+                Dispose();
                 isRendering = renderer.ShouldRender;
             }
 

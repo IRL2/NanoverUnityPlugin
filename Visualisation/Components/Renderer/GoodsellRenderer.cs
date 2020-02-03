@@ -11,13 +11,8 @@ namespace Plugins.Narupa.Visualisation.Components.Renderer
         {
             base.OnEnable();
             node.Transform = transform;
-            node.Cleanup();
+            node.Dispose();
             node.Setup();
-        }
-
-        private void OnDestroy()
-        {
-            node.Cleanup();
         }
 
         protected override void Render(Camera camera)
@@ -28,7 +23,7 @@ namespace Plugins.Narupa.Visualisation.Components.Renderer
         protected override void UpdateInEditor()
         {
             base.UpdateInEditor();
-            node.Cleanup();
+            node.Dispose();
         }
     }
 }

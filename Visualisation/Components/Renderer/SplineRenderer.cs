@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Narupa.Visualisation.Components.Renderer
 {
-    public class SplineRenderer : VisualisationComponentRenderer<Node.Renderer.SplineRenderer>
+    public class SplineRenderer : VisualisationComponentRenderer<Node.Renderer.SplineRendererNode>
     {
         protected override void OnEnable()
         {
