@@ -216,5 +216,11 @@ namespace Narupa.Visualisation.Components
 
             return VisualisationUtility.GetAllPropertyFields(node);
         }
+
+        protected virtual void OnDestroy()
+        {
+            if(GetWrappedVisualisationNode() is IDisposable disposable)
+                disposable.Dispose();
+        }
     }
 }

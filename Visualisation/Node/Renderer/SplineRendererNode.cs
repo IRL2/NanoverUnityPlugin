@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Narupa.Visualisation.Node.Renderer
 {
     [Serializable]
-    public class SplineRenderer
+    public class SplineRendererNode : IDisposable
     {
         [SerializeField]
         private bool useBox = true;
@@ -203,6 +203,11 @@ namespace Narupa.Visualisation.Node.Renderer
                     (l + 1) * sides + (s) % sides
                 });
             }
+        }
+
+        public void Dispose()
+        {
+            drawCommand?.Dispose();
         }
     }
 }

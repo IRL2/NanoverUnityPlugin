@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Narupa.Core;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Object = UnityEngine.Object;
 
 namespace Narupa.Visualisation.Node.Renderer
 {
@@ -10,7 +12,7 @@ namespace Narupa.Visualisation.Node.Renderer
     /// which is a list of commands (rendering to textures, blitting, etc.)
     /// that can be executed at some point in the rendering pipeline.
     /// </summary>
-    public abstract class CommandBufferRendererNode
+    public abstract class CommandBufferRendererNode : IDisposable
     {
         /// <summary>
         /// Cached store of per camera command buffers.
@@ -21,14 +23,17 @@ namespace Narupa.Visualisation.Node.Renderer
         /// <summary>
         /// Cleanup all buffers, removing them from the cameras.
         /// </summary>
-        public virtual void Cleanup()
+        public virtual void Dispose()
         {
             foreach (var (camera, buffers) in buffers)
             {
                 if (camera)
                 {
                     foreach (var (evnt, buffer) in buffers)
+                    {
                         camera.RemoveCommandBuffer(evnt, buffer);
+                        buffer.Dispose();
+                    }
                 }
             }
 

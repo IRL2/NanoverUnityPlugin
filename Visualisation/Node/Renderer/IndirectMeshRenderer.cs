@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 namespace Plugins.Narupa.Visualisation.Node.Renderer
 {
-    public abstract class IndirectMeshRenderer
+    public abstract class IndirectMeshRenderer : IDisposable
     {
         public void AppendToCommandBuffer(CommandBuffer buffer)
         {
