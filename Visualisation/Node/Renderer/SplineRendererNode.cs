@@ -56,8 +56,8 @@ namespace Narupa.Visualisation.Node.Renderer
                 InstancingUtility.SetTransform(drawCommand, Transform);
 
                 drawCommand.SetDataBuffer("SplineArray", splineSegments.Value);
-                drawCommand.SetColor("_Color", rendererColor.Value);
-                drawCommand.SetFloat("_Radius", splineRadius.Value);
+                drawCommand.SetColor("_Color", rendererColor.HasValue ? rendererColor.Value : UnityEngine.Color.white);
+                drawCommand.SetFloat("_Radius", splineRadius.HasValue ? splineRadius.Value : 1f);
 
                 drawCommand.MarkForRenderingThisFrame(camera);
             }
