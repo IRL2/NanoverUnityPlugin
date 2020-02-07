@@ -44,6 +44,14 @@ namespace Narupa.Visualisation.Node.Calculator
         private readonly ArrayProperty<Cycle> cycles = new ArrayProperty<Cycle>();
 
         /// <summary>
+        /// Set of particle residue indices.
+        /// </summary>
+        public IReadOnlyProperty<int[]> ParticleResidues => particleResidues;
+
+        /// <inheritdoc cref="ParticleResidues"/>
+        private readonly IntArrayProperty particleResidues = new IntArrayProperty();
+
+        /// <summary>
         /// Number of cycles.
         /// </summary>
         public IReadOnlyProperty<int> CyclesCount => cyclesCount;
@@ -74,6 +82,14 @@ namespace Narupa.Visualisation.Node.Calculator
 
             foreach (var bond in bonds)
             {
+                // Only include bonds within residues.
+                if (particleResidues.HasValue)
+                {
+                    var res1 = particleResidues.Value[bond.A];
+                    var res2 = particleResidues.Value[bond.B];
+                    if (res1 != res2)
+                        continue;
+                }
                 neighbourList[bond.A].Add(bond.B);
                 neighbourList[bond.B].Add(bond.A);
             }
