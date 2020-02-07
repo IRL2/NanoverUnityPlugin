@@ -57,12 +57,20 @@ namespace Narupa.Visualisation.Node.Color
                 {
                     Array.Resize(ref cachedArray, inputColors.Value.Length);
                     Array.Copy(inputColors.Value, cachedArray, inputColors.Value.Length);
+                    
+                    outputColors.Resize(cachedArray.Length);
+                    Array.Copy(cachedArray, outputColors.Value, cachedArray.Length);
+                    outputColors.MarkValueAsChanged();
                 }
                 else if (count.HasNonNullValue())
                 {
                     Array.Resize(ref cachedArray, count.Value);
                     for (var i = 0; i < count.Value; i++)
                         cachedArray[i] = UnityEngine.Color.white;
+                    
+                    outputColors.Resize(cachedArray.Length);
+                    Array.Copy(cachedArray, outputColors.Value, cachedArray.Length);
+                    outputColors.MarkValueAsChanged();
                 }
                 else
                 {
