@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    parentAdaptor:
+    adaptor:
       unityObject: {fileID: 0}
       isValueProvided: 0
     particleFilter:
@@ -66,6 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 8528582866378757822, guid: d2b9c24c729c2914dae65603e337a6ca, type: 3}
+  - {fileID: 8528582866378757822, guid: 885426ce1f99d6a4fafe2934e8783c09, type: 3}
   - {fileID: 1900448658886156695, guid: 251a1918ca61aab4c9d8a4f3ddd850f0, type: 3}
   frameAdaptor:
     unityObject: {fileID: 6746676476517114991}
