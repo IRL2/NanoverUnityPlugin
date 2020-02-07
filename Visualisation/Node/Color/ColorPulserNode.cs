@@ -15,10 +15,15 @@ namespace Narupa.Visualisation.Node.Color
         [SerializeField]
         private ColorArrayProperty inputColors = new ColorArrayProperty();
 
-        private ColorArrayProperty outputColors = new ColorArrayProperty();
+        [SerializeField]
+        private IntProperty count = new IntProperty();
 
         [SerializeField]
         private IntArrayProperty highlightFilter = new IntArrayProperty();
+
+        private ColorArrayProperty outputColors = new ColorArrayProperty();
+
+        private UnityEngine.Color[] cachedArray = new UnityEngine.Color[0];
 
         [SerializeField]
         private float speed = 6f;
@@ -29,11 +34,10 @@ namespace Narupa.Visualisation.Node.Color
         [SerializeField]
         private float minimum = 0f;
 
-        private bool isFilterNonZero = false;
-        private bool areInputColorsValid = false;
 
         public bool IsInputDirty => inputColors.IsDirty
-                                 || highlightFilter.IsDirty;
+                                 || highlightFilter.IsDirty
+                                 || count.IsDirty;
 
         private float strength = 1f;
         private float targetStrength = 1f;
@@ -42,17 +46,23 @@ namespace Narupa.Visualisation.Node.Color
 
         public void Refresh()
         {
+            var isFilterNonZero = false;
+            var isOutputValid = false;
             if (IsInputDirty)
             {
                 isFilterNonZero = highlightFilter.HasNonEmptyValue();
-                areInputColorsValid = inputColors.HasNonNullValue();
+                isOutputValid = inputColors.HasNonNullValue() || count.HasNonNullValue();
 
-                if (areInputColorsValid)
+                if (inputColors.HasNonNullValue())
                 {
-                    var arr = new UnityEngine.Color[inputColors.Value.Length];
-                    outputColors.Value = arr;
-                    Array.Copy(inputColors.Value, outputColors.Value, inputColors.Value.Length);
-                    outputColors.MarkValueAsChanged();
+                    Array.Resize(ref cachedArray, inputColors.Value.Length);
+                    Array.Copy(inputColors.Value, cachedArray, inputColors.Value.Length);
+                }
+                else if (count.HasNonNullValue())
+                {
+                    Array.Resize(ref cachedArray, count.Value);
+                    for (var i = 0; i < count.Value; i++)
+                        cachedArray[i] = UnityEngine.Color.white;
                 }
                 else
                 {
@@ -65,15 +75,18 @@ namespace Narupa.Visualisation.Node.Color
 
             targetStrength = isFilterNonZero ? 1 : 0;
 
-            if (areInputColorsValid && (strength != targetStrength || isFilterNonZero))
+            if (isOutputValid && (strength != targetStrength || isFilterNonZero))
             {
+                strength = Mathf.MoveTowards(strength, targetStrength, speed);
                 var darken = Mathf.Lerp(1f, darkenAmount, targetStrength);
                 var intensity = Mathf.Lerp(minimum, maximum,
                                            targetStrength *
-                                           (0.5f + 0.5f * Mathf.Sin(Time.deltaTime)));
+                                           (0.5f + 0.5f * Mathf.Sin(speed * Time.time)));
+
+                outputColors.Resize(cachedArray.Length);
 
                 for (var i = 0; i < inputColors.Value.Length; i++)
-                    outputColors.Value[i] *= darken;
+                    outputColors.Value[i] = cachedArray[i] * darken;
 
                 if (isFilterNonZero)
                 {
