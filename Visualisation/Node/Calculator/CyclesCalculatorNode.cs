@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Collections;
 using Narupa.Frame;
 using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Properties.Collections;
@@ -15,60 +14,79 @@ namespace Narupa.Visualisation.Node.Calculator
     /// to only include cycles wholely within a single residue.
     /// </summary>
     [Serializable]
-    public class CyclesCalculatorNode
+    public class CyclesCalculatorNode : GenericOutputNode
     {
+        /// <summary>
+        /// Bonds involved in the molecule.
+        /// </summary>
+        public IProperty<BondPair[]> Bonds => bonds;
+
+        /// <inheritdoc cref="Bonds"/>
         [SerializeField]
         private BondArrayProperty bonds = new BondArrayProperty();
 
-        public IProperty<BondPair[]> Bonds => bonds;
 
+        /// <summary>
+        /// Total number of particles involved in the system.
+        /// </summary>
+        public IProperty<int> ParticleCount => particleCount;
+
+        /// <inheritdoc cref="ParticleCount"/>
         [SerializeField]
         private IntProperty particleCount = new IntProperty();
 
-        public IProperty<int> ParticleCount => particleCount;
+        /// <summary>
+        /// List of set of indices that make up each cycle.
+        /// </summary>
+        public IReadOnlyProperty<Cycle[]> Cycles => cycles;
 
-        private readonly SelectionArrayProperty cycles = new SelectionArrayProperty();
+        /// <inheritdoc cref="Cycles"/>
+        private readonly ArrayProperty<Cycle> cycles = new ArrayProperty<Cycle>();
 
-        public IReadOnlyProperty<IReadOnlyList<int>[]> Cycles => cycles;
-
-        private readonly IntProperty cyclesCount = new IntProperty();
-
+        /// <summary>
+        /// Number of cycles.
+        /// </summary>
         public IReadOnlyProperty<int> CyclesCount => cyclesCount;
 
-        private readonly List<Cycle> cachedCycles = new List<Cycle>();
+        /// <inheritdoc cref="CyclesCount"/>
+        private readonly IntProperty cyclesCount = new IntProperty();
 
-        protected virtual bool IsInputDirty => bonds.IsDirty || particleCount.IsDirty;
+        /// <inheritdoc cref="GenericOutputNode.IsInputDirty"/>
+        protected override bool IsInputDirty => bonds.IsDirty || particleCount.IsDirty;
 
-        protected virtual bool IsInputValid => bonds.HasNonEmptyValue();
+        /// <inheritdoc cref="GenericOutputNode.IsInputValid"/>
+        protected override bool IsInputValid => bonds.HasNonEmptyValue();
 
-        public void Refresh()
+        /// <inheritdoc cref="GenericOutputNode.ClearDirty"/>
+        protected override void ClearDirty()
         {
-            if (IsInputDirty)
+            bonds.IsDirty = false;
+            particleCount.IsDirty = false;
+        }
+
+        /// <inheritdoc cref="GenericOutputNode.UpdateOutput"/>
+        protected override void UpdateOutput()
+        {
+            var particleCount = this.particleCount.Value;
+            var neighbourList = new List<int>[particleCount];
+            for (var i = 0; i < particleCount; i++)
+                neighbourList[i] = new List<int>();
+
+            foreach (var bond in bonds)
             {
-                cachedCycles.Clear();
-                if (IsInputValid)
-                {
-                    var particleCount = this.particleCount.Value;
-                    var neighbourList = new List<int>[particleCount];
-                    for (var i = 0; i < particleCount; i++)
-                        neighbourList[i] = new List<int>();
-
-                    foreach (var bond in bonds)
-                    {
-                        neighbourList[bond.A].Add(bond.B);
-                        neighbourList[bond.B].Add(bond.A);
-                    }
-
-                    cachedCycles.Clear();
-                    cachedCycles.AddRange(ComputeChordlessCycles(particleCount, neighbourList));
-                }
-
-                cycles.Value = cachedCycles.Select(cycle => cycle.ToList())
-                                           .ToArray();
-                cyclesCount.Value = cachedCycles.Count;
-
-                ClearDirty();
+                neighbourList[bond.A].Add(bond.B);
+                neighbourList[bond.B].Add(bond.A);
             }
+
+            cycles.Value = ComputeChordlessCycles(particleCount, neighbourList).ToArray();
+            cyclesCount.Value = cycles.Value.Length;
+        }
+
+        /// <inheritdoc cref="GenericOutputNode.ClearOutput"/>
+        protected override void ClearOutput()
+        {
+            cycles.UndefineValue();
+            cyclesCount.UndefineValue();
         }
 
         /// <summary>
@@ -126,21 +144,11 @@ namespace Narupa.Visualisation.Node.Calculator
                     p2.Add(v);
 
                     if (adjacency[p[0]].Contains(v))
-                    {
                         yield return new Cycle(p2.ToArray());
-                    }
                     else
-                    {
                         T.Enqueue(p2);
-                    }
                 }
             }
-        }
-
-        protected virtual void ClearDirty()
-        {
-            bonds.IsDirty = false;
-            particleCount.IsDirty = false;
         }
     }
 }

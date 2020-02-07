@@ -13,7 +13,7 @@ namespace Narupa.Visualisation.Properties.Collections
     /// values;
     /// </summary>
     [Serializable]
-    public abstract class ArrayProperty<TValue> : SerializableProperty<TValue[]>, IEnumerable<TValue>
+    public class ArrayProperty<TValue> : SerializableProperty<TValue[]>, IEnumerable<TValue>
     {
         /// <summary>
         /// Resize the array in this property, creating an array if not possible.
