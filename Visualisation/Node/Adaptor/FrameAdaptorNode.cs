@@ -26,8 +26,49 @@ namespace Narupa.Visualisation.Node.Adaptor
     [Serializable]
     public class FrameAdaptorNode : BaseAdaptorNode, IFrameConsumer
     {
+        private Dictionary<string, IProperty> propertyOverrides = new Dictionary<string, IProperty>();
+
+        public IProperty<TValue> AddCustomProperty<TValue>(string name)
+        {
+            var prop = new SerializableProperty<TValue>();
+            propertyOverrides[name] = prop;
+            return prop;
+        }
+        
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperty"/>
+        public override IReadOnlyProperty GetProperty(string key)
+        {
+            if (propertyOverrides.TryGetValue(key, out var value))
+                return value;
+            return base.GetProperty(key);
+        }
+
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperties"/>
+        public override IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
+        {
+            foreach (var prop in base.GetProperties())
+                yield return prop;
+            foreach(var (key, prop) in propertyOverrides)
+                yield return (key, prop);
+        }
+
+        /// <inheritdoc cref="BaseAdaptorNode.GetOrCreateProperty{T}"/>
+        public override IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
+        {
+            foreach (var (key, prop) in propertyOverrides)
+            {
+                if (name == key && prop is IReadOnlyProperty<T> propAsT)
+                    return propAsT;
+            }
+            
+            return base.GetOrCreateProperty<T>(name);
+        }
+        
+        
         protected override void OnCreateProperty<T>(string key, IProperty<T> property)
         {
+            if (propertyOverrides.ContainsKey(key))
+                return;
             if (FrameSource?.CurrentFrame != null
                   && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
             {
@@ -45,9 +86,13 @@ namespace Narupa.Visualisation.Node.Adaptor
                 return;
 
             foreach (var (key, property) in Properties)
+            {
+                if (propertyOverrides.ContainsKey(key))
+                    return;
                 if ((changes?.GetIsChanged(key) ?? true)
                  && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
                     property.TrySetValue(value);
+            }
         }
 
         private ITrajectorySnapshot source;

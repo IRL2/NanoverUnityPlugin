@@ -64,24 +64,31 @@ namespace Narupa.Visualisation.Node.Adaptor
                 filteredProperties[name] = property;
                 return property;
             }
-
-            if (!name.Contains("particle."))
+            
+            if (name.Contains(".particles") && property is IReadOnlyProperty<int[]> indexProp)
             {
-                filteredProperties[name] = property;
-                return property;
+                var filtered = new IndexFilteredProperty(indexProp, particleFilter);
+                
+                filteredProperties[name] = filtered;
+                return filtered as IReadOnlyProperty<T>;
             }
 
-            var elementType = typeof(T).GetElementType();
 
-            var filteredType = typeof(FilteredProperty<>).MakeGenericType(elementType);
+            if (name.Contains("particle."))
+            {
+                var elementType = typeof(T).GetElementType();
+                var filteredType = typeof(FilteredProperty<>).MakeGenericType(elementType);
 
-            var filtered =
-                Activator.CreateInstance(filteredType, property, particleFilter) as
-                    IReadOnlyProperty<T>;
+                var filtered =
+                    Activator.CreateInstance(filteredType, property, particleFilter) as
+                        IReadOnlyProperty<T>;
 
-            filteredProperties[name] = filtered;
-
-            return filtered;
+                filteredProperties[name] = filtered;
+                return filtered;
+            }
+            
+            filteredProperties[name] = property;
+            return property;
         }
     }
 }
