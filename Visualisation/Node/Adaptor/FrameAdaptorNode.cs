@@ -4,20 +4,16 @@
 using System;
 using System.Collections.Generic;
 using Narupa.Core;
-using Narupa.Core.Science;
 using Narupa.Frame;
 using Narupa.Frame.Event;
-using Narupa.Protocol.Trajectory;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Properties;
 using Narupa.Visualisation.Property;
-using UnityEngine;
 
 namespace Narupa.Visualisation.Node.Adaptor
 {
     /// <summary>
     /// Visualisation node which reads frames using <see cref="IFrameConsumer" /> and
-    /// dynamically provides the frame's data as properties for the visualisation system.
+    /// dynamically provides the frame's data as properties for the visualisation
+    /// system.
     /// </summary>
     /// <remarks>
     /// This visualisation node acts as the bridge between the underlying trajectory
@@ -26,16 +22,21 @@ namespace Narupa.Visualisation.Node.Adaptor
     [Serializable]
     public class FrameAdaptorNode : BaseAdaptorNode, IFrameConsumer
     {
-        private Dictionary<string, IProperty> propertyOverrides = new Dictionary<string, IProperty>();
+        private Dictionary<string, IProperty> propertyOverrides =
+            new Dictionary<string, IProperty>();
 
+        /// <summary>
+        /// Add a property with the given type and name to this adaptor that is not
+        /// affected by the frame.
+        /// </summary>
         public IProperty<TValue> AddCustomProperty<TValue>(string name)
         {
             var prop = new SerializableProperty<TValue>();
             propertyOverrides[name] = prop;
             return prop;
         }
-        
-        /// <inheritdoc cref="BaseAdaptorNode.GetProperty"/>
+
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperty" />
         public override IReadOnlyProperty GetProperty(string key)
         {
             if (propertyOverrides.TryGetValue(key, out var value))
@@ -43,16 +44,16 @@ namespace Narupa.Visualisation.Node.Adaptor
             return base.GetProperty(key);
         }
 
-        /// <inheritdoc cref="BaseAdaptorNode.GetProperties"/>
+        /// <inheritdoc cref="BaseAdaptorNode.GetProperties" />
         public override IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
         {
-            foreach (var prop in base.GetProperties())
-                yield return prop;
-            foreach(var (key, prop) in propertyOverrides)
+            foreach (var (key, prop) in propertyOverrides)
+                yield return (key, prop);
+            foreach (var (key, prop) in base.GetProperties())
                 yield return (key, prop);
         }
 
-        /// <inheritdoc cref="BaseAdaptorNode.GetOrCreateProperty{T}"/>
+        /// <inheritdoc cref="BaseAdaptorNode.GetOrCreateProperty{T}" />
         public override IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
         {
             foreach (var (key, prop) in propertyOverrides)
@@ -60,17 +61,17 @@ namespace Narupa.Visualisation.Node.Adaptor
                 if (name == key && prop is IReadOnlyProperty<T> propAsT)
                     return propAsT;
             }
-            
+
             return base.GetOrCreateProperty<T>(name);
         }
-        
-        
+
+        /// <inheritdoc cref="BaseAdaptorNode.OnCreateProperty{T}" />
         protected override void OnCreateProperty<T>(string key, IProperty<T> property)
         {
             if (propertyOverrides.ContainsKey(key))
                 return;
             if (FrameSource?.CurrentFrame != null
-                  && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
+             && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
             {
                 property.TrySetValue(value);
             }
