@@ -22,53 +22,42 @@ namespace Narupa.Visualisation.Node.Adaptor
     [Serializable]
     public class FrameAdaptorNode : BaseAdaptorNode, IFrameConsumer
     {
-        private Dictionary<string, IProperty> propertyOverrides =
-            new Dictionary<string, IProperty>();
+        private List<string> propertyOverrides = new List<string>();
 
         /// <summary>
         /// Add a property with the given type and name to this adaptor that is not
         /// affected by the frame.
         /// </summary>
-        public IProperty<TValue> AddCustomProperty<TValue>(string name)
+        public IProperty<TValue> AddOverrideProperty<TValue>(string name)
         {
-            var prop = new SerializableProperty<TValue>();
-            propertyOverrides[name] = prop;
+            var prop = base.GetOrCreateProperty<TValue>(name) as IProperty<TValue>;
+            propertyOverrides.Add(name);
             return prop;
         }
-
-        /// <inheritdoc cref="BaseAdaptorNode.GetProperty" />
-        public override IReadOnlyProperty GetProperty(string key)
+        
+        /// <summary>
+        /// Remove a property with the given type and name from this adaptor that is not
+        /// affected by the frame.
+        /// </summary>
+        public void RemoveOverrideProperty<TValue>(string name)
         {
-            if (propertyOverrides.TryGetValue(key, out var value))
-                return value;
-            return base.GetProperty(key);
-        }
-
-        /// <inheritdoc cref="BaseAdaptorNode.GetProperties" />
-        public override IEnumerable<(string name, IReadOnlyProperty property)> GetProperties()
-        {
-            foreach (var (key, prop) in propertyOverrides)
-                yield return (key, prop);
-            foreach (var (key, prop) in base.GetProperties())
-                yield return (key, prop);
-        }
-
-        /// <inheritdoc cref="BaseAdaptorNode.GetOrCreateProperty{T}" />
-        public override IReadOnlyProperty<T> GetOrCreateProperty<T>(string name)
-        {
-            foreach (var (key, prop) in propertyOverrides)
-            {
-                if (name == key && prop is IReadOnlyProperty<T> propAsT)
-                    return propAsT;
-            }
-
-            return base.GetOrCreateProperty<T>(name);
+            propertyOverrides.Remove(name);
+            GetPropertyValueFromFrame(name, GetOrCreateProperty<TValue>(name) as IProperty);
         }
 
         /// <inheritdoc cref="BaseAdaptorNode.OnCreateProperty{T}" />
         protected override void OnCreateProperty<T>(string key, IProperty<T> property)
         {
-            if (propertyOverrides.ContainsKey(key))
+            GetPropertyValueFromFrame(key, property);
+        }
+
+        /// <summary>
+        /// Update a property by getting the value with the given key from the current
+        /// frame, ignoring if this property is marked as an override.
+        /// </summary>
+        private void GetPropertyValueFromFrame(string key, IProperty property)
+        {
+            if (propertyOverrides.Contains(key))
                 return;
             if (FrameSource?.CurrentFrame != null
              && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
@@ -88,11 +77,8 @@ namespace Narupa.Visualisation.Node.Adaptor
 
             foreach (var (key, property) in Properties)
             {
-                if (propertyOverrides.ContainsKey(key))
-                    return;
-                if ((changes?.GetIsChanged(key) ?? true)
-                 && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
-                    property.TrySetValue(value);
+                if (changes?.GetIsChanged(key) ?? true)
+                    GetPropertyValueFromFrame(key, property);
             }
         }
 

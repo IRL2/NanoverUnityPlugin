@@ -57,7 +57,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
             CollectionAssert.AreEqual(FramePositions, prop.Value);
         }
 
-        private static IEnumerable<IEnumerable<Action<FrameAdaptorOverrideTests>>> GetActions()
+        private static IEnumerable<IEnumerable<Action<FrameAdaptorOverrideTests>>> GetOverrideActions()
         {
             var set = new Action<FrameAdaptorOverrideTests>[]
             {
@@ -65,6 +65,18 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
             };
             return set.GetPermutations().Select(s => s.AsPretty(t => t.Method.Name));
         }
+        
+        private static IEnumerable<IEnumerable<Action<FrameAdaptorOverrideTests>>> GetOverrideThenRemoveActions()
+        {
+            var set = new Action<FrameAdaptorOverrideTests>[]
+            {
+                GetProperty, UpdateFrame, AddOverride, RemoveOverride
+            };
+            return set.GetPermutations()
+                      .Where(s => s.IndexOf(AddOverride) < s.IndexOf(RemoveOverride))
+                      .Select(s => s.AsPretty(t => t.Method.Name));
+        }
+
 
         private static void GetProperty(FrameAdaptorOverrideTests test)
         {
@@ -78,17 +90,31 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
         
         private static void AddOverride(FrameAdaptorOverrideTests test)
         {
-            var @override = test.adaptor.AddCustomProperty<Vector3[]>(StandardFrameProperties.ParticlePositions.Key);
+            var @override = test.adaptor.AddOverrideProperty<Vector3[]>(StandardFrameProperties.ParticlePositions.Key);
             @override.Value = OverridePositions;
+        }
+        
+        private static void RemoveOverride(FrameAdaptorOverrideTests test)
+        {
+            test.adaptor.RemoveOverrideProperty<Vector3[]>(StandardFrameProperties.ParticlePositions.Key);
         }
 
         [Test]
-        public void OverrideBeforeGetPropertyFirst([ValueSource(nameof(GetActions))] IEnumerable<Action<FrameAdaptorOverrideTests>> actions)
+        public void Override([ValueSource(nameof(GetOverrideActions))] IEnumerable<Action<FrameAdaptorOverrideTests>> actions)
         {
             foreach (var action in actions)
                 action(this);
             
             CollectionAssert.AreEqual(OverridePositions, property.Value);
+        }
+        
+        [Test]
+        public void OverrideThenRemove([ValueSource(nameof(GetOverrideThenRemoveActions))] IEnumerable<Action<FrameAdaptorOverrideTests>> actions)
+        {
+            foreach (var action in actions)
+                action(this);
+            
+            CollectionAssert.AreEqual(FramePositions, property.Value);
         }
     }
 }
