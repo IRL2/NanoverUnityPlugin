@@ -3,6 +3,7 @@
 
 using System;
 using JetBrains.Annotations;
+using UnityEngine.Assertions;
 
 namespace Narupa.Frame.Event
 {
@@ -16,8 +17,9 @@ namespace Narupa.Frame.Event
         /// </summary>
         public FrameChangedEventArgs(IFrame frame, FrameChanges changes = null)
         {
+            Assert.IsNotNull(changes);
             Frame = frame;
-            Changes = changes ?? new FrameChanges();
+            Changes = changes ?? FrameChanges.All;
         }
 
         /// <summary>
