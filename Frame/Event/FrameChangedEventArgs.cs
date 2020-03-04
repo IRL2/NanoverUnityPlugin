@@ -17,7 +17,6 @@ namespace Narupa.Frame.Event
         /// </summary>
         public FrameChangedEventArgs(IFrame frame, FrameChanges changes = null)
         {
-            Assert.IsNotNull(changes);
             Frame = frame;
             Changes = changes ?? FrameChanges.All;
         }

@@ -22,7 +22,7 @@ namespace Narupa.Frame.Tests
         public void Frame_UpdateInfo()
         {
             var frame = Substitute.For<IFrame>();
-            var update = Substitute.For<FrameChanges>();
+            var update = FrameChanges.WithChanges("abc", "def");
 
             var args = new FrameChangedEventArgs(frame, update);
 
