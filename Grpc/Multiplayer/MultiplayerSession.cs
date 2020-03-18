@@ -73,7 +73,7 @@ namespace Narupa.Session
         /// <summary>
         /// ID of the current player, if any.
         /// </summary>
-        public string PlayerId { get; private set; }
+        public string PlayerId { get; private set; } = null;
 
         /// <summary>
         /// How many milliseconds to put between sending updates to our avatar.
@@ -108,6 +108,8 @@ namespace Narupa.Session
         public event Action<string, object> SharedStateDictionaryKeyUpdated;
 
         public event Action<string> SharedStateDictionaryKeyRemoved;
+
+        public event Action MultiplayerJoined;
 
         /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
@@ -178,6 +180,8 @@ namespace Narupa.Session
             IncomingValueUpdates = client.SubscribeAllResourceValues();
             IncomingValueUpdates.MessageReceived += OnResourceValuesUpdateReceived;
             IncomingValueUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+
+            MultiplayerJoined?.Invoke();
         }
 
         public void StartAvatars()

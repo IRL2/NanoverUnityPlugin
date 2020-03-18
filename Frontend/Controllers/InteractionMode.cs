@@ -23,16 +23,23 @@ namespace Narupa.Frontend.Controllers
         private GameObject interactionGizmo;
 #pragma warning restore 0649
 
-        private void Awake()
+        private void OnEnable()
         {
-            controller.LeftController.ControllerReset += () =>
-            {
-                SetupController(controller.LeftController);
-            };
-            controller.RightController.ControllerReset += () =>
-            {
-                SetupController(controller.RightController);
-            };
+            controller.LeftController.ControllerReset += SetupLeftController;
+            controller.RightController.ControllerReset += SetupRightController;
+            
+            SetupLeftController();
+            SetupRightController();
+        }
+
+        private void SetupLeftController()
+        {
+            SetupController(controller.LeftController);
+        }
+
+        private void SetupRightController()
+        {
+            SetupController(controller.RightController);
         }
 
         private void SetupController(VrController controller)

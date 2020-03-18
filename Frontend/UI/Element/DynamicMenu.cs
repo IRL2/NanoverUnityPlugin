@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Narupa.Frontend.UI
@@ -11,11 +12,16 @@ namespace Narupa.Frontend.UI
         [SerializeField]
         private UiButton buttonPrefab;
 
-        public void AddItem(string name, Sprite icon, Action callback)
+        private List<UiButton> children = new List<UiButton>();
+
+        public void AddItem(string name, Sprite icon, Action callback, string subtext = null)
         {
             var button = CreateButton();
+            children.Add(button);
             button.Text = name;
             button.Image = icon;
+            if (subtext != null)
+                button.Subtext = subtext;
             button.OnClick += callback;
         }
 
@@ -24,6 +30,18 @@ namespace Narupa.Frontend.UI
             var button = Instantiate(buttonPrefab, transform);
             button.gameObject.SetActive(true);
             return button;
+        }
+
+        private void DestroyButton(UiButton button)
+        {
+            Destroy(button);
+        }
+
+        public void ClearChildren()
+        {
+            foreach (var child in children)
+                DestroyButton(child);
+            children.Clear();
         }
     }
 }
