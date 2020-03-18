@@ -60,7 +60,8 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 float3 edgeEndPoint = edge_position(1);
                 
                 // Transformation of box
-                setup_isotropic_edge_transformation(edgeStartPoint, edgeEndPoint, 1);
+                float scale = max(edge_scale(0), edge_scale(1)) * _ParticleScale;
+                setup_isotropic_edge_transformation(edgeStartPoint, edgeEndPoint, scale);
             }
             
             struct appdata
@@ -76,7 +77,9 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 float3 rayDirection : TEXCOORD1;
                 float3 bondStart : TEXCOORD2;
                 float3 bondDir : TEXCOORD3;
-                float3 bondConst : TEXCOORD4;
+                float4 bondConst : TEXCOORD4;
+                fixed4 color1 : TEXCOORD5;
+                fixed4 color2 : TEXCOORD6;
             };
             
             v2f vert (appdata i)
@@ -100,9 +103,13 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 
                 float dist = length(p2 - p1);
               
-                float R1 = 0.1 * 0.1;
-                float R2 = 0.1 * 0.1;
-                float gamma = 0.4;
+                float R1 = edge_scale(0) * _ParticleScale * 0.5;
+                R1 = R1 * R1;
+                
+                float R2 = edge_scale(1) * _ParticleScale * 0.5;
+                R2 = R2 * R2;
+                
+                float gamma = 0.7;
                 float G = 1 + gamma * gamma;
                 float U = (R1 - R2) / (2.0 * dist) + (dist  * (G - 1)) / (2.0 * G);
                
@@ -110,7 +117,10 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 o.bondConst.x = R1;
                 o.bondConst.y = G;
                 o.bondConst.z = U;
+                o.bondConst.w = U + dist / G;
                 
+                o.color1 = _Color * edge_color(0);
+                o.color2 = _Color * edge_color(1);
                 
                 return o;
             }
@@ -170,6 +180,30 @@ Shader "NarupaXR/Opaque/Hyperballs"
                     discard;
                     
                 float t = -b2a - sqrt(disc);
+                
+               
+                float3 r = p + d * t;
+                
+                float3 bp = i.bondStart;
+                float3 bd = i.bondDir;
+                
+                float sgned = dot(r - bp, bd);
+                
+                float U = i.bondConst.z;
+                float U2 = i.bondConst.w;
+                
+                if(sgned < U || sgned > U2)
+                    discard;
+                    
+                float bias = (sgned - U) / (U2 - U);
+                
+                float3 n = float3(dot(quad_form._11_12_13_14, float4(r, 1)), dot(quad_form._21_22_23_24, float4(r, 1)), dot(quad_form._31_32_33_34, float4(r, 1)));
+                n = normalize(n);
+                
+                float3 l = normalize(_WorldSpaceLightPos0.xyz);
+    
+    
+                o.color = DIFFUSE(lerp(i.color1, i.color2, bias), n, l, _Diffuse);
                 
                 OUTPUT_FRAG_DEPTH(o, p + d * t);
                 return o;
