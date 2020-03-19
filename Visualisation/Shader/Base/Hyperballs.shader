@@ -109,7 +109,7 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 float R2 = edge_scale(1) * _ParticleScale * 0.5;
                 R2 = R2 * R2;
                 
-                float gamma = 0.7;
+                float gamma = 1.1;
                 float G = 1 + gamma * gamma;
                 float U = (R1 - R2) / (2.0 * dist) + (dist  * (G - 1)) / (2.0 * G);
                
@@ -181,8 +181,16 @@ Shader "NarupaXR/Opaque/Hyperballs"
                     
                 float t = -b2a - sqrt(disc);
                 
-               
                 float3 r = p + d * t;
+                float3 n = float3(dot(quad_form._11_12_13_14, float4(r, 1)), dot(quad_form._21_22_23_24, float4(r, 1)), dot(quad_form._31_32_33_34, float4(r, 1)));
+                 
+                if(dot(n, d) > 0) {
+                    t = -b2a + sqrt(disc);
+                    r = p + d * t;
+                    n = float3(dot(quad_form._11_12_13_14, float4(r, 1)), dot(quad_form._21_22_23_24, float4(r, 1)), dot(quad_form._31_32_33_34, float4(r, 1)));
+                }
+               
+                
                 
                 float3 bp = i.bondStart;
                 float3 bd = i.bondDir;
@@ -197,11 +205,12 @@ Shader "NarupaXR/Opaque/Hyperballs"
                     
                 float bias = (sgned - U) / (U2 - U);
                 
-                float3 n = float3(dot(quad_form._11_12_13_14, float4(r, 1)), dot(quad_form._21_22_23_24, float4(r, 1)), dot(quad_form._31_32_33_34, float4(r, 1)));
+               
                 n = normalize(n);
                 
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
     
+                bias = step(0.5, bias);
     
                 o.color = DIFFUSE(lerp(i.color1, i.color2, bias), n, l, _Diffuse);
                 
