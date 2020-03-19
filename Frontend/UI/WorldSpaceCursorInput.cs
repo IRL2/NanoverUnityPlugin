@@ -65,8 +65,10 @@ namespace Narupa.Frontend.UI
             }
 
             previousClickState = currentClickState;
-            currentClickState = mousePresent && clickButton.IsPressed;
+            currentClickState = mousePresent && IsClickPressed;
         }
+
+        public bool IsClickPressed => clickButton != null && clickButton.IsPressed;
 
         /// <summary>
         /// Sets the canvas with an <see cref="IPosedObject" /> to provide the location
