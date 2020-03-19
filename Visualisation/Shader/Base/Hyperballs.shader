@@ -197,6 +197,7 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 
                 float sgned = dot(r - bp, bd);
                 
+                float G = i.bondConst.y;
                 float U = i.bondConst.z;
                 float U2 = i.bondConst.w;
                 
@@ -210,7 +211,7 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
     
-                bias = step(0.5, bias);
+                bias = step(U / ((G-1) * (U2 - U)), bias);
     
                 o.color = DIFFUSE(lerp(i.color1, i.color2, bias), n, l, _Diffuse);
                 
