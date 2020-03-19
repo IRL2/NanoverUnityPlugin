@@ -50,6 +50,10 @@ namespace Narupa.Frontend.UI
 
         private Canvas canvas;
 
+        protected Canvas Canvas => canvas;
+
+        public VrController Controller => controller;
+
         private void Awake()
         {
             Assert.IsNotNull(controller, $"{nameof(NarupaCanvas)} must have a pointer to the {nameof(VrController)} that will control it.");
@@ -67,7 +71,7 @@ namespace Narupa.Frontend.UI
         protected virtual void RegisterCanvas()
         {
             WorldSpaceCursorInput.SetCanvasAndCursor(canvas,
-                                                     controller.HeadPose,
+                                                     controller.CursorPose,
                                                      inputAction.WrapAsButton(inputSource));
         }
 

@@ -1,8 +1,10 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 namespace Narupa.Frontend.Controllers
 {
@@ -29,7 +31,16 @@ namespace Narupa.Frontend.Controllers
 
         [SerializeField]
         private ControllerPivot head;
+        
+        [SerializeField]
+        private UnityEventString showNotification;
 #pragma warning restore 0649
+        
+        [Serializable]
+        public class UnityEventString : UnityEvent<string>
+        {
+            
+        }
 
         /// <summary>
         /// The cursor point where tools should be centered.
@@ -51,6 +62,11 @@ namespace Narupa.Frontend.Controllers
             Assert.IsNotNull(grip, $"VR Controller Prefab is missing {nameof(grip)} pivot.");
             Assert.IsNotNull(head, $"VR Controller Prefab is missing {nameof(head)} pivot.");
             Assert.IsNotNull(cursor, $"VR Controller Prefab is missing {nameof(cursor)} pivot.");
+        }
+
+        public void PushNotification(string text)
+        {
+            showNotification.Invoke(text);
         }
     }
 }

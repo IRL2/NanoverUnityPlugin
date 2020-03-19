@@ -29,5 +29,10 @@ namespace Narupa.Frontend.UI
         /// Get the current hovered over game object.
         /// </summary>
         public GameObject CurrentHoverTarget => GetPointerEventData().pointerEnter;
+        
+        public new void ClearSelection()
+        {
+            base.ClearSelection();
+        }
     }
 }

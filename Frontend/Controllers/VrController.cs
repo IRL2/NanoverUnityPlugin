@@ -25,11 +25,20 @@ namespace Narupa.Frontend.Controllers
         {
             IsControllerActive = controller != null;
 
+            controllerPrefab = controller;
+
             SetupPose(ref cursor, controller?.Cursor, cursorPose, OnCursorPoseChanged);
             SetupPose(ref grip, controller?.Grip, gripPose, OnGripPoseChanged);
             SetupPose(ref head, controller?.Head, headPose, OnHeadPoseChanged);
 
             ControllerReset?.Invoke();
+        }
+
+        private VrControllerPrefab controllerPrefab;
+
+        public void PushNotification(string text)
+        {
+            controllerPrefab.PushNotification(text);
         }
 
         private void SetupPose(ref ControllerPivot pivot,

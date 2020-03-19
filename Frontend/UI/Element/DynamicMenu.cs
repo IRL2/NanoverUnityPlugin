@@ -34,7 +34,7 @@ namespace Narupa.Frontend.UI
 
         private void DestroyButton(UiButton button)
         {
-            Destroy(button);
+            Destroy(button.gameObject);
         }
 
         public void ClearChildren()
