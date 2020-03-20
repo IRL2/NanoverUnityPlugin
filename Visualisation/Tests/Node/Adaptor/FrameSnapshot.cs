@@ -8,7 +8,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
         public void Update(Frame.Frame frame, FrameChanges changes = null)
         {
             CurrentFrame = frame;
-            FrameChanged?.Invoke(frame, changes);
+            FrameChanged?.Invoke(frame, changes ?? FrameChanges.All);
         }
 
         public Frame.Frame CurrentFrame { get; private set; }

@@ -29,7 +29,7 @@ namespace Narupa.Frame
         public void SetCurrentFrame(Frame frame, FrameChanges changes = null)
         {
             CurrentFrame = frame;
-            CurrentFrameChanges = changes;
+            CurrentFrameChanges = changes ?? FrameChanges.All;
             FrameChanged?.Invoke(CurrentFrame, CurrentFrameChanges);
         }
 
