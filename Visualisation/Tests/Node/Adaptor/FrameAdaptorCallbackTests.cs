@@ -41,10 +41,8 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                           {
                               ParticlePositions = positionArray
                           },
-                          new FrameChanges
-                          {
-                              [FrameData.ParticlePositionArrayKey] = true
-                          });
+                          FrameChanges.WithChanges(FrameData.ParticlePositionArrayKey)
+                          );
 
             positionsChangedHandler.ReceivedWithAnyArgs(1).Invoke();
             elementsChangedHandler.ReceivedWithAnyArgs(0).Invoke();
@@ -61,10 +59,8 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                           {
                               ParticleElements = elementArray
                           },
-                          new FrameChanges
-                          {
-                              [FrameData.ParticleElementArrayKey] = true
-                          });
+                          FrameChanges.WithChanges(FrameData.ParticleElementArrayKey)
+                          );
 
             positionsChangedHandler.ReceivedWithAnyArgs(0).Invoke();
             elementsChangedHandler.ReceivedWithAnyArgs(1).Invoke();
@@ -81,10 +77,8 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
                           {
                               BondPairs = bondArray
                           },
-                          new FrameChanges
-                          {
-                              [FrameData.BondArrayKey] = true
-                          });
+                          FrameChanges.WithChanges(FrameData.BondArrayKey)
+                          );
 
             positionsChangedHandler.ReceivedWithAnyArgs(0).Invoke();
             elementsChangedHandler.ReceivedWithAnyArgs(0).Invoke();

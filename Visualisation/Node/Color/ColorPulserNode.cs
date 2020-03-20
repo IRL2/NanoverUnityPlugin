@@ -93,7 +93,7 @@ namespace Narupa.Visualisation.Node.Color
 
                 outputColors.Resize(cachedArray.Length);
 
-                for (var i = 0; i < inputColors.Value.Length; i++)
+                for (var i = 0; i < cachedArray.Length; i++)
                     outputColors.Value[i] = cachedArray[i] * darken;
 
                 if (isFilterNonZero)

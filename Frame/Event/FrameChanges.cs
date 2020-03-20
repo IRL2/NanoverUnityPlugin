@@ -12,13 +12,33 @@ namespace Narupa.Frame.Event
     /// </summary>
     public class FrameChanges
     {
-        private readonly HashSet<string> changed = new HashSet<string>();
+        private bool haveAllChanged = false;
+        
+        private readonly HashSet<string> changed  = new HashSet<string>();
+
+        public static FrameChanges None => new FrameChanges()
+        {
+            haveAllChanged = false
+        };
+
+        public static FrameChanges All => new FrameChanges
+        {
+            haveAllChanged = true
+        };
+
+        public static FrameChanges WithChanges(params string[] keys)
+        {
+            var changes = None;
+            foreach (var key in keys)
+                changes.MarkAsChanged(key);
+            return changes;
+        }
 
         /// <summary>
         /// Indicates whether any keys have been changed in comparison to a
         /// previous frame.
         /// </summary>
-        public bool HasAnythingChanged => changed.Count > 0;
+        public bool HasAnythingChanged => haveAllChanged || changed.Count > 0;
 
         /// <summary>
         /// Merge another <see cref="FrameChanges" />, such that the update
@@ -26,6 +46,7 @@ namespace Narupa.Frame.Event
         /// </summary>
         public void MergeChanges(FrameChanges otherChanges)
         {
+            haveAllChanged = this.haveAllChanged || otherChanges.haveAllChanged;
             changed.UnionWith(otherChanges.changed);
         }
 
@@ -33,27 +54,18 @@ namespace Narupa.Frame.Event
         /// Check if the field with the given id as having been changed from the previous
         /// frame.
         /// </summary>
-        public bool GetIsChanged(string id)
+        public bool HasChanged(string id)
         {
-            return changed.Contains(id);
-        }
-
-        public bool this[string id]
-        {
-            get => GetIsChanged(id);
-            set => SetIsChanged(id, value);
+            return haveAllChanged || changed.Contains(id);
         }
 
         /// <summary>
         /// Mark the field with the given id as having been changed from the previous
         /// frame.
         /// </summary>
-        public void SetIsChanged(string id, bool changedState)
+        public void MarkAsChanged(string id)
         {
-            if (changedState)
-                changed.Add(id);
-            else
-                changed.Remove(id);
+            changed.Add(id);
         }
     }
 }

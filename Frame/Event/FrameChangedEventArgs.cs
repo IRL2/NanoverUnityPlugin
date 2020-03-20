@@ -3,6 +3,7 @@
 
 using System;
 using JetBrains.Annotations;
+using UnityEngine.Assertions;
 
 namespace Narupa.Frame.Event
 {
@@ -14,10 +15,10 @@ namespace Narupa.Frame.Event
         /// <summary>
         /// Create event arguments that represent a frame that has updated.
         /// </summary>
-        public FrameChangedEventArgs(IFrame frame, FrameChanges changes = null)
+        public FrameChangedEventArgs(IFrame frame, [NotNull] FrameChanges changes)
         {
             Frame = frame;
-            Changes = changes ?? new FrameChanges();
+            Changes = changes;
         }
 
         /// <summary>
