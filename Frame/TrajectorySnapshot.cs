@@ -26,10 +26,10 @@ namespace Narupa.Frame
         /// <summary>
         /// Set the current frame, replacing the existing one.
         /// </summary>
-        public void SetCurrentFrame(Frame frame, FrameChanges changes = null)
+        public void SetCurrentFrame(Frame frame, FrameChanges changes)
         {
             CurrentFrame = frame;
-            CurrentFrameChanges = changes ?? FrameChanges.All;
+            CurrentFrameChanges = changes;
             FrameChanged?.Invoke(CurrentFrame, CurrentFrameChanges);
         }
 

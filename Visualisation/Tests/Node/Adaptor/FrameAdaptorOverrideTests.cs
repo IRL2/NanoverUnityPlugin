@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Narupa.Core.Collections;
 using Narupa.Frame;
+using Narupa.Frame.Event;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Property;
 using NUnit.Framework;
@@ -45,14 +46,14 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
         public void NoOverrideGetPropertyFirst()
         {
             var prop = adaptor.ParticlePositions;
-            source.Update(frame);
+            source.Update(frame, FrameChanges.All);
             CollectionAssert.AreEqual(FramePositions, prop.Value);
         }
         
         [Test]
         public void NoOverrideGetPropertyAfter()
         {
-            source.Update(frame);
+            source.Update(frame, FrameChanges.All);
             var prop = adaptor.ParticlePositions;
             CollectionAssert.AreEqual(FramePositions, prop.Value);
         }
@@ -85,7 +86,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
 
         private static void UpdateFrame(FrameAdaptorOverrideTests test)
         {
-            test.source.Update(test.frame);
+            test.source.Update(test.frame, FrameChanges.All);
         }
         
         private static void AddOverride(FrameAdaptorOverrideTests test)

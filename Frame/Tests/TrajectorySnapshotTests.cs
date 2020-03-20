@@ -33,11 +33,11 @@ namespace Narupa.Frame.Tests
 
             callback.Received(0)();
 
-            trajectory.SetCurrentFrame(new Frame());
+            trajectory.SetCurrentFrame(new Frame(), FrameChanges.All);
 
             callback.Received(1)();
 
-            trajectory.SetCurrentFrame(new Frame());
+            trajectory.SetCurrentFrame(new Frame(), FrameChanges.All);
 
             callback.Received(2)();
         }

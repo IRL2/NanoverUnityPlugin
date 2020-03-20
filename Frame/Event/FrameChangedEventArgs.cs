@@ -15,10 +15,10 @@ namespace Narupa.Frame.Event
         /// <summary>
         /// Create event arguments that represent a frame that has updated.
         /// </summary>
-        public FrameChangedEventArgs(IFrame frame, FrameChanges changes = null)
+        public FrameChangedEventArgs(IFrame frame, [NotNull] FrameChanges changes)
         {
             Frame = frame;
-            Changes = changes ?? FrameChanges.All;
+            Changes = changes;
         }
 
         /// <summary>

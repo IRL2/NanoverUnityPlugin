@@ -14,9 +14,12 @@ namespace Narupa.Frame.Event
     {
         private bool haveAllChanged = false;
         
-        private readonly HashSet<string> changed = new HashSet<string>();
-        
-        public static FrameChanges None => new FrameChanges();
+        private readonly HashSet<string> changed  = new HashSet<string>();
+
+        public static FrameChanges None => new FrameChanges()
+        {
+            haveAllChanged = false
+        };
 
         public static FrameChanges All => new FrameChanges
         {
@@ -29,11 +32,6 @@ namespace Narupa.Frame.Event
             foreach (var key in keys)
                 changes.MarkAsChanged(key);
             return changes;
-        }
-
-        private FrameChanges()
-        {
-            
         }
 
         /// <summary>

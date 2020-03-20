@@ -13,7 +13,7 @@ namespace Narupa.Frame.Tests
         public void Frame_NoUpdateInfo()
         {
             var frame = Substitute.For<IFrame>();
-            var args = new FrameChangedEventArgs(frame);
+            var args = new FrameChangedEventArgs(frame, FrameChanges.All);
 
             Assert.IsNotNull(args.Changes);
         }
@@ -33,7 +33,7 @@ namespace Narupa.Frame.Tests
         public void IsFrameSet()
         {
             var frame = Substitute.For<IFrame>();
-            var args = new FrameChangedEventArgs(frame);
+            var args = new FrameChangedEventArgs(frame, FrameChanges.All);
 
             Assert.AreEqual(frame, args.Frame);
         }
