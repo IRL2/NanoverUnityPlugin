@@ -35,7 +35,15 @@ namespace Narupa.Visualisation.Editor
             file.WriteLine("rankdir=RL");
 
             var connections = new List<(long, long)>();
-            DrawObject(root, file, connections);
+
+            var gotoChildren = true;
+
+            while (root != null)
+            {
+                DrawObject(root, file, connections, gotoChildren);
+                gotoChildren = false;
+                root = root.transform.parent?.gameObject;
+            }
 
             foreach (var connection in connections)
                 file.WriteLine($"{connection.Item1} -> {connection.Item2};");
@@ -50,7 +58,8 @@ namespace Narupa.Visualisation.Editor
 
         internal static void DrawObject(GameObject root,
                                         TextWriter file,
-                                        List<(long, long)> connections)
+                                        List<(long, long)> connections,
+                                        bool gotoChildren)
         {
             file.WriteLine($"subgraph cluster_{GetId(root)} {{");
             file.WriteLine($"label = \"{root.name}\"");
@@ -108,11 +117,14 @@ namespace Narupa.Visualisation.Editor
                 file.WriteLine("}");
             }
 
-            foreach (var child in Enumerable
-                                  .Range(0, root.transform.childCount)
-                                  .Select(i => root.transform.GetChild(i)))
+            if (gotoChildren)
             {
-                DrawObject(child.gameObject, file, connections);
+                foreach (var child in Enumerable
+                                      .Range(0, root.transform.childCount)
+                                      .Select(i => root.transform.GetChild(i)))
+                {
+                    DrawObject(child.gameObject, file, connections, gotoChildren);
+                }
             }
 
             file.WriteLine("}");

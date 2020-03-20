@@ -11,7 +11,7 @@ namespace Narupa.Visualisation.Node.Adaptor
     /// An <see cref="BaseAdaptorNode"/> which is linked to another adaptor. This adaptor contains its own properties, but links them to the parent. This means that the parent can be changed without listeners to this adaptor needing to change their links.
     /// </summary>
     [Serializable]
-    public class ParentedAdaptor : BaseAdaptorNode
+    public class ParentedAdaptorNode : BaseAdaptorNode
     {
         /// <inheritdoc cref="ParentAdaptor"/>
         [SerializeField]

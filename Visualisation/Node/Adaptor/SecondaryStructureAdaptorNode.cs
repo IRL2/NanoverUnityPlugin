@@ -11,7 +11,7 @@ namespace Narupa.Visualisation.Node.Adaptor
     /// An <see cref="BaseAdaptorNode"/> which injects a 'residue.secondarystructures' key which provides per residue secondary structure based on the DSSP algorithm.
     /// </summary>
     [Serializable]
-    public class SecondaryStructureAdaptorNode : ParentedAdaptor
+    public class SecondaryStructureAdaptorNode : ParentedAdaptorNode
     {
         internal PolypeptideSequenceNode polypeptideSequence = new PolypeptideSequenceNode();
         internal SecondaryStructureNode secondaryStructure = new SecondaryStructureNode();

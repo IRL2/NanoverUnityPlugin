@@ -3,7 +3,7 @@ using Narupa.Visualisation.Node.Adaptor;
 namespace Narupa.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="ParticleFilteredAdaptorNode"/>
-    public class FilteredAdaptor : FrameAdaptorComponent<ParticleFilteredAdaptorNode>
+    public class ParticleFilteredAdaptor : FrameAdaptorComponent<ParticleFilteredAdaptorNode>
     {
         protected override void OnDisable()
         {
