@@ -103,9 +103,10 @@ namespace Narupa.Frontend.Tests
         {
             var poser = new DirectPosedObject();
             var button = new DirectButton();
-            var manipulator = new Manipulator(poser);
             var manipulation = new FakeManipulation();
-            manipulator.BindButtonToManipulation(button, pose => manipulation);
+            var manipulator = new AttemptableManipulator(poser, 
+                                                         pose => manipulation);
+            button.Pressed += manipulator.AttemptManipulation;
 
             poser.SetPose(Transformation.Identity);
 

@@ -8,11 +8,6 @@ using Narupa.Frontend.Input;
 namespace Narupa.Frontend.Manipulation
 {
     /// <summary>
-    /// A function that attempts to start a manipulation given an manipulator pose.
-    /// </summary>
-    public delegate IActiveManipulation ManipulationAttemptHandler(UnitScaleTransformation manipulatorPose);
-
-    /// <summary>
     /// Represents an input device posed in 3D space (e.g a VR controller) that can
     /// engage in a single manipulation.
     /// </summary>
@@ -27,20 +22,7 @@ namespace Narupa.Frontend.Manipulation
         public Manipulator(IPosedObject posedObject)
         {
             this.posedObject = posedObject;
-
             posedObject.PoseChanged += UpdatePose;
-        }
-
-        /// <summary>
-        /// Add listeners such that when the given button is pressed, this manipulator
-        /// will attempt to begin a manipulation using the given handler, and when
-        /// released the active manipulation will be ended.
-        /// </summary>
-        public void BindButtonToManipulation(IButton button,
-                                             ManipulationAttemptHandler manipulationAttempt)
-        {
-            button.Pressed += () => AttemptManipulation(manipulationAttempt);
-            button.Released += EndActiveManipulation;
         }
 
         /// <summary>
@@ -74,15 +56,6 @@ namespace Narupa.Frontend.Manipulation
             }
 
             PoseChanged?.Invoke();
-        }
-
-        private void AttemptManipulation(ManipulationAttemptHandler manipulationAttempt)
-        {
-            if (Pose is Transformation pose
-             && manipulationAttempt(pose.AsUnitTransformWithoutScale()) is IActiveManipulation manipulation)
-            {
-                SetActiveManipulation(manipulation);
-            }
         }
     }
 }

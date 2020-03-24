@@ -19,7 +19,7 @@ namespace Narupa.Visualisation
                                            IFrameConsumer
     {
         /// <inheritdoc cref="ITrajectorySnapshot.CurrentFrame" />
-        public Frame.Frame CurrentFrame => snapshot.CurrentFrame;
+        public Frame.Frame CurrentFrame => snapshot?.CurrentFrame;
 
         /// <inheritdoc cref="ITrajectorySnapshot.FrameChanged" />
         public event FrameChanged FrameChanged;

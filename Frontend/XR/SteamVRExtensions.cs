@@ -50,15 +50,10 @@ namespace Narupa.Frontend.XR
         /// Wrap a SteamVR boolean action and a SteamVR input source into a single
         /// button object that can be used to track a single button state.
         /// </summary>
-        public static IButton WrapAsButton(this SteamVR_Action_Boolean buttonAction,
-                                           SteamVR_Input_Sources buttonSource)
+        public static SteamVrButton WrapAsButton(this SteamVR_Action_Boolean buttonAction,
+                                                 SteamVR_Input_Sources buttonSource)
         {
-            var wrapper = new DirectButton();
-
-            buttonAction.AddOnStateDownListener((_, __) => wrapper.Press(), buttonSource);
-            buttonAction.AddOnStateUpListener((_, __) => wrapper.Release(), buttonSource);
-
-            return wrapper;
+            return new SteamVrButton(buttonAction, buttonSource);
         }
     }
 }
