@@ -47,6 +47,11 @@ namespace Narupa.Frontend.UI
             StartCoroutine(InitialiseWhenInputModuleReady());
         }
 
+        public static void ClearSelection()
+        {
+            (EventSystem.current.currentInputModule as NarupaInputModule).ClearSelection();
+        }
+
         private void Update()
         {
             Vector3? worldPoint;
@@ -55,7 +60,7 @@ namespace Narupa.Frontend.UI
             var newCursorState = worldPoint.HasValue;
             if (!newCursorState && isCursorOnCanvas)
             {
-                (EventSystem.current.currentInputModule as NarupaInputModule).ClearSelection();
+                ClearSelection();
             }
             
             isCursorOnCanvas = newCursorState;

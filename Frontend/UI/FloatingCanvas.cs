@@ -1,7 +1,8 @@
 ﻿﻿using UnityEngine;
 using UnityEngine.Assertions;
+ using UnityEngine.XR;
 
-namespace Narupa.Frontend.UI
+ namespace Narupa.Frontend.UI
 {
     public class FloatingCanvas : MonoBehaviour
     {
@@ -28,19 +29,22 @@ namespace Narupa.Frontend.UI
         private void Start()
         {
             Assert.IsNotNull(camera);
+            InputTracking.trackingAcquired += InputTrackingOntrackingAcquired;
+            UpdatePosition(true);
+        }
+
+        private void InputTrackingOntrackingAcquired(XRNodeState obj)
+        {
+            if (obj.nodeType == XRNode.Head)
+            {
+                UpdatePosition(true);
+            }
         }
 
         private Vector3 velocity = Vector3.zero;
 
-        private bool setup = false;
-
         private void Update()
         {
-            if (!setup)
-            {
-                UpdatePosition(true);
-                setup = true;
-            }
             UpdatePosition();
         }
 
