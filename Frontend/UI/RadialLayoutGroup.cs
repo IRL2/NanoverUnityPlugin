@@ -14,9 +14,7 @@ namespace Narupa.Frontend.UI
 
         private void ArrangeChildrenRadially()
         {
-            var children = Enumerable.Range(0, transform.childCount)
-                                     .Select(i => transform.GetChild(i))
-                                     .Where(t => t.gameObject.activeSelf).ToList();
+            var children = rectChildren;
             var da = 360f / children.Count;
             for (var i = 0; i < children.Count; i++)
             {
