@@ -109,7 +109,7 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 float R2 = edge_scale(1) * _ParticleScale * 0.5;
                 R2 = R2 * R2;
                 
-                float gamma = 1.1;
+                float gamma = 0.6;
                 float G = 1 + gamma * gamma;
                 float U = (R1 - R2) / (2.0 * dist) + (dist  * (G - 1)) / (2.0 * G);
                

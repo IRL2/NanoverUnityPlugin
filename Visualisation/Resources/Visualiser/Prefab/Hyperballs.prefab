@@ -90,7 +90,7 @@ MonoBehaviour:
   node:
     name: particle.scale
     input:
-      value: 0.07
+      value: 0.05
       isValueProvided: 1
 --- !u!114 &7698190664551895981
 MonoBehaviour:
