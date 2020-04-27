@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using Valve.VR;
 
 namespace Narupa.Frontend.Controllers
 {
@@ -31,15 +32,14 @@ namespace Narupa.Frontend.Controllers
 
         [SerializeField]
         private ControllerPivot head;
-        
+
         [SerializeField]
         private UnityEventString showNotification;
 #pragma warning restore 0649
-        
+
         [Serializable]
         public class UnityEventString : UnityEvent<string>
         {
-            
         }
 
         /// <summary>

@@ -16,24 +16,21 @@ namespace Narupa.Frontend.UI
     /// </summary>
     /// <remarks>
     /// All canvases that would like to be interacted with by physical controllers
-    /// should have a script that derives from <see cref="NarupaCanvas" />. This should
+    /// should have a script that derives from <see cref="PhysicalCanvasInput" />. This should
     /// provide the controller and the action which is counted as a 'click'. The
     /// <see cref="RegisterCanvas" /> method can be overriden to provide a custom
     /// <see cref="IPosedObject" /> and <see cref="IButton" /> to provide the cursor
     /// location and click button.
     /// </remarks>
     [RequireComponent(typeof(Canvas))]
-    public class NarupaCanvas : MonoBehaviour
+    public class PhysicalCanvasInput : MonoBehaviour
     {
 #pragma warning disable 0649
         /// <summary>
-        /// The controller that can interact with this canvas.
+        /// The controller manager that provides the left/right controllers
         /// </summary>
-        /// <remarks>
-        /// Currently, only one controller can interact with a given canvas.
-        /// </remarks>
         [SerializeField]
-        private VrController controller;
+        private ControllerManager controllers;
 
         /// <summary>
         /// The SteamVR action that triggers a virtual mouse click for the UI.
@@ -52,11 +49,10 @@ namespace Narupa.Frontend.UI
 
         protected Canvas Canvas => canvas;
 
-        public VrController Controller => controller;
+        public VrController Controller => controllers.GetController(inputSource);
 
         private void Awake()
         {
-            Assert.IsNotNull(controller, $"{nameof(NarupaCanvas)} must have a pointer to the {nameof(VrController)} that will control it.");
             canvas = GetComponent<Canvas>();
         }
 
@@ -71,8 +67,9 @@ namespace Narupa.Frontend.UI
         protected virtual void RegisterCanvas()
         {
             WorldSpaceCursorInput.SetCanvasAndCursor(canvas,
-                                                     controller.CursorPose,
+                                                     Controller.CursorPose,
                                                      inputAction.WrapAsButton(inputSource));
+            controllers.SetDominantHand(inputSource);
         }
 
         private void OnDisable()

@@ -4,6 +4,7 @@
 using System;
 using Narupa.Frontend.Input;
 using UnityEngine;
+using Valve.VR;
 
 namespace Narupa.Frontend.Controllers
 {
@@ -17,6 +18,11 @@ namespace Narupa.Frontend.Controllers
     /// </remarks>
     public class VrController : MonoBehaviour
     {
+        [SerializeField]
+        private NarupaRenderModel renderModel;
+
+        public NarupaRenderModel RenderModel => renderModel;
+
         /// <summary>
         /// Indicate the controller has been reset (connected or disconnected).
         /// </summary>
@@ -110,11 +116,15 @@ namespace Narupa.Frontend.Controllers
 
         private GameObject cursorGizmo = null;
 
+        /// <summary>
+        /// Set the current gizmo at the end of the controller.
+        /// </summary>
+        /// <param name="interactionGizmo">A <see cref="GameObject"/> representing the gizmo at the end of the controller, or null if there should be no gizmo.</param>
         public void InstantiateCursorGizmo(GameObject interactionGizmo)
         {
             if (cursorGizmo != null)
                 Destroy(cursorGizmo);
-            if (cursor != null)
+            if (cursor != null && interactionGizmo != null)
             {
                 cursorGizmo = Instantiate(interactionGizmo, cursor.transform);
             }

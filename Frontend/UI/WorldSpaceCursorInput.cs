@@ -6,6 +6,7 @@ using Narupa.Frontend.Input;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
+using Valve.VR;
 
 namespace Narupa.Frontend.UI
 {

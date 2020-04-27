@@ -482,13 +482,21 @@ namespace Valve.VR
                         existingInfo.IsReadOnly = false;
                     existingInfo.Delete();
                 }
+                
+                // Check if the path is relative to the VR Manifest
+                string action_manifest_path = existingFile.applications[0].action_manifest_path;
+                if (action_manifest_path[0] != '/' && action_manifest_path[0] != '\\')
+                {
+                    action_manifest_path =
+                        Path.GetFullPath(Path.Combine(Path.GetDirectoryName(fullPath), action_manifest_path));
+                }
 
                 if (existingFile != null && existingFile.applications != null && existingFile.applications.Count > 0 &&
-                    existingFile.applications[0].action_manifest_path != fullManifestPath.FullName)
+                    action_manifest_path != fullManifestPath.FullName)
                 {
                     Debug.Log("<b>[SteamVR]</b> Deleting existing VRManifest because it has a different action manifest path:" +
-                        "\nExisting:" + existingFile.applications[0].action_manifest_path +
-                        "\nNew: " + fullManifestPath.FullName);
+                              "\nExisting:" + existingFile.applications[0].action_manifest_path +
+                              "\nNew: " + fullManifestPath.FullName);
                     FileInfo existingInfo = new FileInfo(fullPath);
                     if (existingInfo.IsReadOnly)
                         existingInfo.IsReadOnly = false;
