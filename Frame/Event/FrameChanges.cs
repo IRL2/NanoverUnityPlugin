@@ -16,16 +16,30 @@ namespace Narupa.Frame.Event
         
         private readonly HashSet<string> changed  = new HashSet<string>();
 
+        private FrameChanges()
+        {
+            
+        }
+        
+        /// <summary>
+        /// A <see cref="FrameChanges"/> where no key is marked as having changed.
+        /// </summary>
         public static FrameChanges None => new FrameChanges()
         {
             haveAllChanged = false
         };
 
+        /// <summary>
+        /// A <see cref="FrameChanges"/> where all keys are marked as having changed.
+        /// </summary>
         public static FrameChanges All => new FrameChanges
         {
             haveAllChanged = true
         };
 
+        /// <summary>
+        /// A <see cref="FrameChanges"/> where only the provided keys are marked as having changed.
+        /// </summary>
         public static FrameChanges WithChanges(params string[] keys)
         {
             var changes = None;
