@@ -12,7 +12,7 @@ namespace Narupa.Frontend.Input
     /// This wraps both the custom event syntax and unneeded arguments for the SteamVR
     /// callbacks, exposing them as simple <see cref="Action" /> callbacks.
     /// </remarks>
-    public class SteamVrButton : IButton
+    internal sealed class SteamVrButton : IButton
     {
         private SteamVR_Action_Boolean action;
         private SteamVR_Input_Sources source;
