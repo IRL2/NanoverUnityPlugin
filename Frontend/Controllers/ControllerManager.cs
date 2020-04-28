@@ -141,5 +141,15 @@ namespace Narupa.Frontend.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// If the given <see cref="ControllerInputMode"/> were to be added with
+        /// <see cref="AddInputMode"/>, would its priority mean that it would become the
+        /// current input?
+        /// </summary>
+        public bool WouldBecomeCurrentMode(ControllerInputMode mode)
+        {
+            return CurrentInputMode == null || mode.Priority > CurrentInputMode.Priority;
+        }
     }
 }
