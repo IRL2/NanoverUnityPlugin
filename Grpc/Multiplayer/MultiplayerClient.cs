@@ -124,6 +124,27 @@ namespace Narupa.Network
 
             return response.Success;
         }
+        
+        /// <summary>
+        /// Attempts to remove a key, on behalf of the given player, from the shared
+        /// key value store. This will fail if the key is locked by someone 
+        /// other than the player making the attempt.
+        /// </summary>
+        /// <remarks>
+        /// Corresponds to the RemoveResourceKeyAsync gRPC call.
+        /// </remarks>
+        public async Task<bool> RemoveResourceKey(string playerId, string key)
+        {
+            var request = new RemoveResourceKeyRequest()
+            {
+                PlayerId = playerId,
+                ResourceId = key
+            };
+
+            var response = await Client.RemoveResourceKeyAsync(request);
+
+            return response.Success;
+        }
 
         /// <summary>
         /// Attempts to lock, on behalf of the given player, a key in the 
