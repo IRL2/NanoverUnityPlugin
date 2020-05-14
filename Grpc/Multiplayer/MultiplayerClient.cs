@@ -45,46 +45,6 @@ namespace Narupa.Network
         }
 
         /// <summary>
-        /// Starts an <see cref="IncomingStream{TIncoming}" /> on which the server
-        /// provides the latest avatar positions for each player, at the 
-        /// requested time interval (in seconds).
-        /// </summary>
-        /// <param name="updateInterval">
-        /// How many seconds the service should wait and aggregate updates 
-        /// between  sending them to us.
-        /// </param>
-        /// <remarks>
-        /// Corresponds to the SubscribePlayerAvatars gRPC call.
-        /// </remarks>
-        public IncomingStream<Avatar> SubscribeAvatars(float updateInterval = DefaultUpdateInterval,
-                                                       string ignorePlayerId = "", 
-                                                       CancellationToken externalToken = default)
-        {
-            var request = new SubscribePlayerAvatarsRequest
-            {
-                IgnorePlayerId = ignorePlayerId,
-                UpdateInterval = updateInterval,
-            };
-
-            return GetIncomingStream(Client.SubscribePlayerAvatars, request, externalToken);
-        }
-
-        /// <summary>
-        /// Starts an <see cref="OutgoingStream{Avatar, StreamEndedResponse}"/> 
-        /// where updates to the local player's avatar can be published to the
-        /// service.
-        /// </summary>
-        /// <remarks>
-        /// Corresponds to the UpdatePlayerAvatar gRPC call.
-        /// </remarks>
-        public OutgoingStream<Avatar, StreamEndedResponse> PublishAvatar(
-            string playerId,
-            CancellationToken externalToken = default) 
-        {
-            return GetOutgoingStream(Client.UpdatePlayerAvatar, externalToken);
-        }
-
-        /// <summary>
         /// Starts an <see cref="IncomingStream{ResourceValuesUpdate}" /> on 
         /// which the server provides updates to the shared key/value store at 
         /// the requested time interval (in seconds).
@@ -92,7 +52,7 @@ namespace Narupa.Network
         /// <remarks>
         /// Corresponds to the SubscribeAllResourceValues gRPC call.
         /// </remarks>
-        public IncomingStream<ResourceValuesUpdate> SubscribeAllResourceValues(float updateInterval = 0,
+        public IncomingStream<ResourceValuesUpdate> SubscribeAllResourceValues(float updateInterval = DefaultUpdateInterval,
                                                                                CancellationToken externalToken = default)
         {
             var request = new SubscribeAllResourceValuesRequest

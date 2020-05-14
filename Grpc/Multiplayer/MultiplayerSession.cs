@@ -76,11 +76,6 @@ namespace Narupa.Session
         /// </summary>
         public int ValuePublishInterval { get; set; } = 1000 / 30;
 
-        /// <summary>
-        /// The interval at which avatar updates should be sent to this client.
-        /// </summary>
-        public const float AvatarUpdateInterval = 1f / 30f;
-
         private MultiplayerClient client;
 
         private IncomingStream<ResourceValuesUpdate> IncomingValueUpdates { get; set; }
