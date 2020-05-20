@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Narupa.Core.Collections;
+using Narupa.Frame.Event;
 using Narupa.Visualisation.Node.Adaptor;
 using Narupa.Visualisation.Property;
 using NUnit.Framework;
@@ -65,7 +66,7 @@ namespace Narupa.Visualisation.Tests.Node.Adaptor
         private static void SetAdaptorsFrame(FilteredAdaptorDynamicPropertyTests test)
         {
             var frameSource = new FrameSnapshot();
-            frameSource.Update(test.frameWithPositions);
+            frameSource.Update(test.frameWithPositions, FrameChanges.All);
             test.frameAdaptor.FrameSource = frameSource;
         }
 

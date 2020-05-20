@@ -33,18 +33,18 @@ namespace Narupa.Grpc.Frame
             var frame = previousFrame != null
                             ? Narupa.Frame.Frame.ShallowCopy(previousFrame)
                             : new Narupa.Frame.Frame();
-            var changes = new FrameChanges();
+            var changes = FrameChanges.None;
 
             foreach (var (id, array) in data.Arrays)
             {
                 frame.Data[id] = DeserializeArray(id, array);
-                changes.SetIsChanged(id, true);
+                changes.MarkAsChanged(id);
             }
 
             foreach (var (id, value) in data.Values)
             {
                 frame.Data[id] = DeserializeValue(id, value);
-                changes.SetIsChanged(id, true);
+                changes.MarkAsChanged(id);
             }
 
             return (frame, changes);

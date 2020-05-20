@@ -19,12 +19,17 @@ namespace Narupa.Frame
         public FrameChanges CurrentFrameChanges { get; private set; }
 
         /// <summary>
+        /// Set the current frame to completely empty, with every field changed.
+        /// </summary>
+        public void Clear() => SetCurrentFrame(new Frame(), FrameChanges.All);
+
+        /// <summary>
         /// Set the current frame, replacing the existing one.
         /// </summary>
-        public void SetCurrentFrame(Frame frame, FrameChanges changes = null)
+        public void SetCurrentFrame(Frame frame, FrameChanges changes)
         {
             CurrentFrame = frame;
-            CurrentFrameChanges = changes ?? new FrameChanges();
+            CurrentFrameChanges = changes;
             FrameChanged?.Invoke(CurrentFrame, CurrentFrameChanges);
         }
 

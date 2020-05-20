@@ -51,6 +51,7 @@ namespace Narupa.Grpc.Trajectory
         public void OpenClient(GrpcConnection connection)
         {
             CloseClient();
+            trajectorySnapshot.Clear();
 
             trajectoryClient = new TrajectoryClient(connection);
             frameStream = trajectoryClient.SubscribeLatestFrames(1f / 30f);
