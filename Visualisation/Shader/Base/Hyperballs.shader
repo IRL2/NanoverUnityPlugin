@@ -6,10 +6,10 @@ Shader "NarupaXR/Opaque/Hyperballs"
     Properties
     {
         _Color ("Color", Color) = (1, 1, 1, 1)
-        _EdgeScale ("Edge Scale", Float) = 1
         _Diffuse ("Diffuse", Range(0, 1)) = 0.5
         _ParticleScale ("Particle Scale", Float) = 1
-        _GradientWidth ("Gradient Width", Range(0, 1)) = 1
+        _EdgeSharpness ("Edge Sharpness", Range(0, 1)) = 0
+        _Tension ("Tension", Range(0, 1)) = 0.5
     }
     SubShader
     {
@@ -33,20 +33,20 @@ Shader "NarupaXR/Opaque/Hyperballs"
             #pragma multi_compile __ COLOR_ARRAY
             #pragma multi_compile __ FILTER_ARRAY
             
-            // Width of the gradient
-            float _GradientWidth;
+            // Is the edge smooth (0) or sharp (1)
+            float _EdgeSharpness;
             
             // The scales to apply to the particles
             float _ParticleScale;
-            
-            // The scales to apply to the edges
-            float _EdgeScale;
             
             // Color multiplier
             float4 _Color;
             
             // Diffuse factor (0 for flat, 1 for full diffuse)
             float _Diffuse;
+            
+            // Tension of the hyperballs
+            float _Tension;
             
             #include "UnityCG.cginc"
             #include "../Instancing.cginc"
@@ -109,7 +109,7 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 float R2 = edge_scale(1) * _ParticleScale * 0.5;
                 R2 = R2 * R2;
                 
-                float gamma = 0.6;
+                float gamma = _Tension;
                 float G = 1 + gamma * gamma;
                 float U = (R1 - R2) / (2.0 * dist) + (dist  * (G - 1)) / (2.0 * G);
                
@@ -210,8 +210,12 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 n = normalize(n);
                 
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-    
-                bias = step(U / ((G-1) * (U2 - U)), bias);
+                
+                float cutoff = U / ((G-1) * (U2 - U));
+               
+                
+                float power = log(0.5) / log(cutoff);
+                bias = clamp((lerp(pow(bias, log(0.5) / log(cutoff)), 1 - pow(1 - bias, log(0.5) / log(1-cutoff)), step(cutoff, 0.5)) - 0.5) / ((1-_EdgeSharpness) + 0.0001) + 0.5, 0, 1);
     
                 o.color = DIFFUSE(lerp(i.color1, i.color2, bias), n, l, _Diffuse);
                 

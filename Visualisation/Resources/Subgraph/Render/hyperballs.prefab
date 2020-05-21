@@ -16,8 +16,10 @@ GameObject:
   - component: {fileID: 5176173228503488438}
   - component: {fileID: 2187803143233138763}
   - component: {fileID: 4072638902273047189}
-  - component: {fileID: 1900448658886156697}
+  - component: {fileID: 3720104995046655090}
+  - component: {fileID: 7589667398978776418}
   - component: {fileID: 1900448658886156694}
+  - component: {fileID: 7253382933959509360}
   m_Layer: 0
   m_Name: hyperballs
   m_TagString: Untagged
@@ -165,7 +167,7 @@ MonoBehaviour:
     input:
       value: 0.05
       isValueProvided: 1
---- !u!114 &1900448658886156697
+--- !u!114 &3720104995046655090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,62 +176,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 1900448658886156695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1037303cc04e46cf8d744d8b25d4d244, type: 3}
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 2187803143233138763}
-    sourceFieldName: input
-    destinationFieldName: particlePositions
-  - sourceComponent: {fileID: 8379820703431466785}
-    sourceFieldName: input
-    destinationFieldName: bondPairs
-  - sourceComponent: {fileID: 5176173228503488438}
-    sourceFieldName: input
-    destinationFieldName: particleScales
-  - sourceComponent: {fileID: 3421694816922696361}
-    sourceFieldName: input
-    destinationFieldName: particleColors
-  - sourceComponent: {fileID: 4072638902273047189}
-    sourceFieldName: input
-    destinationFieldName: bondScale
-  - sourceComponent: {fileID: 7604027006933302359}
-    sourceFieldName: input
-    destinationFieldName: particleScale
-  - sourceComponent: {fileID: 6529192864124320622}
-    sourceFieldName: input
-    destinationFieldName: rendererColor
+  inputLinkCollection: []
   node:
-    material:
-      value: {fileID: 2100000, guid: bc865e236cddbdd4696b1b304f9b7180, type: 2}
+    name: sharpness
+    input:
+      value: 0
       isValueProvided: 1
-    mesh:
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &7589667398978776418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900448658886156695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: tension
+    input:
+      value: 0.6
       isValueProvided: 1
-    bondScale:
-      value: 0.06
-      isValueProvided: 0
-    bondPairs:
-      value: []
-      isValueProvided: 0
-    particlePositions:
-      value: []
-      isValueProvided: 0
-    particleColors:
-      value: []
-      isValueProvided: 0
-    particleScales:
-      value: []
-      isValueProvided: 0
-    rendererColor:
-      value: {r: 1, g: 1, b: 1, a: 1}
-      isValueProvided: 0
-    particleScale:
-      value: 1
-      isValueProvided: 0
-    bondOrders:
-      value: 
-      isValueProvided: 0
 --- !u!114 &1900448658886156694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,3 +253,77 @@ MonoBehaviour:
     material:
       value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
       isValueProvided: 1
+--- !u!114 &7253382933959509360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900448658886156695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4018681103b54b9b8d9939a8707c96f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 8379820703431466785}
+    sourceFieldName: input
+    destinationFieldName: bondPairs
+  - sourceComponent: {fileID: 2187803143233138763}
+    sourceFieldName: input
+    destinationFieldName: particlePositions
+  - sourceComponent: {fileID: 3421694816922696361}
+    sourceFieldName: input
+    destinationFieldName: particleColors
+  - sourceComponent: {fileID: 5176173228503488438}
+    sourceFieldName: input
+    destinationFieldName: particleScales
+  - sourceComponent: {fileID: 6529192864124320622}
+    sourceFieldName: input
+    destinationFieldName: rendererColor
+  - sourceComponent: {fileID: 7604027006933302359}
+    sourceFieldName: input
+    destinationFieldName: particleScale
+  - sourceComponent: {fileID: 7589667398978776418}
+    sourceFieldName: input
+    destinationFieldName: tension
+  - sourceComponent: {fileID: 3720104995046655090}
+    sourceFieldName: input
+    destinationFieldName: edgeSharpness
+  node:
+    material:
+      value: {fileID: 2100000, guid: bc865e236cddbdd4696b1b304f9b7180, type: 2}
+      isValueProvided: 1
+    mesh:
+      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      isValueProvided: 1
+    bondScale:
+      value: 0
+      isValueProvided: 0
+    bondPairs:
+      value: []
+      isValueProvided: 0
+    particlePositions:
+      value: []
+      isValueProvided: 0
+    particleColors:
+      value: []
+      isValueProvided: 0
+    particleScales:
+      value: []
+      isValueProvided: 0
+    rendererColor:
+      value: {r: 0, g: 0, b: 0, a: 0}
+      isValueProvided: 0
+    particleScale:
+      value: 0
+      isValueProvided: 0
+    edgeSharpness:
+      value: 0
+      isValueProvided: 0
+    bondOrders:
+      value: 
+      isValueProvided: 0
+    tension:
+      value: 0.2
+      isValueProvided: 0
