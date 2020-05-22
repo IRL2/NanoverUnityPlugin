@@ -4,18 +4,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Narupa.Protocol.Multiplayer;
 using Narupa.Network;
 using UnityEngine;
-using Avatar = Narupa.Protocol.Multiplayer.Avatar;
 using System.Linq;
-using Grpc.Core;
+using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
 using Narupa.Grpc;
 using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
-using UnityEngine.Profiling;
+using Narupa.Protocol.State;
 
 namespace Narupa.Session
 {
@@ -28,10 +26,14 @@ namespace Narupa.Session
     {
         public const string SimulationPoseKey = "scene";
         
+        protected string Token { get; }
+        
         public MultiplayerAvatars Avatars { get; }
 
         public MultiplayerSession()
         {
+            Token = Guid.NewGuid().ToString();
+            
             Avatars = new MultiplayerAvatars(this);
             
             SimulationPose =
@@ -78,7 +80,7 @@ namespace Narupa.Session
 
         private MultiplayerClient client;
 
-        private IncomingStream<ResourceValuesUpdate> IncomingValueUpdates { get; set; }
+        private IncomingStream<StateUpdate> IncomingValueUpdates { get; set; }
 
         private Dictionary<string, object> pendingValues
             = new Dictionary<string, object>();
@@ -145,7 +147,7 @@ namespace Narupa.Session
             PlayerName = playerName;
             PlayerId = response.PlayerId;
 
-            IncomingValueUpdates = client.SubscribeAllResourceValues();
+            IncomingValueUpdates = client.SubscribeStateUpdates();
             IncomingValueUpdates.MessageReceived += OnResourceValuesUpdateReceived;
             IncomingValueUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
 
@@ -188,7 +190,11 @@ namespace Narupa.Session
         /// </summary>
         public async Task<bool> LockResource(string id)
         {
-            return await client.LockResource(PlayerId, id);
+            return await client.UpdateLocks(Token, new Dictionary<string, float>
+                                            {
+                                                [id] = 1f
+                                            },
+                                            new string[0]);
         }
 
         /// <summary>
@@ -196,7 +202,10 @@ namespace Narupa.Session
         /// </summary>
         public async Task<bool> ReleaseResource(string id)
         {
-            return await client.ReleaseResource(PlayerId, id);
+            return await client.UpdateLocks(Token, new Dictionary<string, float>(), new string[]
+            {
+                id
+            });
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
@@ -225,46 +234,34 @@ namespace Narupa.Session
             }
         }
 
-        private void OnResourceValuesUpdateReceived(ResourceValuesUpdate update)
+        private void OnResourceValuesUpdateReceived(StateUpdate update)
         {
-            if (update.ResourceValueChanges != null)
+            foreach (var (key, value1) in update.ChangedKeys.Fields)
             {
-                foreach (var pair in update.ResourceValueChanges.Fields)
+                var value = value1.ToObject();
+                if (value == null)
                 {
-                    var value = pair.Value.ToObject();
-                    SharedStateDictionary[pair.Key] = value;
-                    SharedStateDictionaryKeyUpdated?.Invoke(pair.Key, value);
-                }
-            }
-
-            if (update.ResourceValueRemovals != null)
-            {
-                foreach (var key in update.ResourceValueRemovals)
-                {
+                    SharedStateDictionary.Remove(key);
                     SharedStateDictionaryKeyRemoved?.Invoke(key);
+                }
+                else
+                {
+                    SharedStateDictionary[key] = value;
+                    SharedStateDictionaryKeyUpdated?.Invoke(key, value);
                 }
             }
         }
 
         private void FlushValues()
         {
-            if (!IsOpen || !HasPlayer)
+            if (!IsOpen)
                 return;
 
-            foreach (var pair in pendingValues)
-            {
-                client.SetResourceValue(PlayerId, pair.Key, pair.Value.ToProtobufValue())
-                      .AwaitInBackgroundIgnoreCancellation();
-            }
+            client.UpdateState(Token, pendingValues, pendingRemovals)
+                              .AwaitInBackgroundIgnoreCancellation();
             
-            foreach (var key in pendingRemovals)
-            {
-                client.RemoveResourceKey(PlayerId, key)
-                      .AwaitInBackgroundIgnoreCancellation();
-            }
-            
-            pendingValues.Clear();
-            pendingRemovals.Clear();
+                        pendingValues.Clear();
+                        pendingRemovals.Clear();
         }
 
         private static async Task CallbackInterval(Action callback, int interval)

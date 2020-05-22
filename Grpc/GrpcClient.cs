@@ -33,7 +33,7 @@ namespace Narupa.Grpc
         /// Create a client to a server described by the provided
         /// <see cref="GrpcConnection" />.
         /// </summary>
-        public GrpcClient([NotNull] GrpcConnection connection) : base(
+        protected GrpcClient([NotNull] GrpcConnection connection) : base(
             connection.GetCancellationToken())
         {
             if (connection.IsCancelled)
