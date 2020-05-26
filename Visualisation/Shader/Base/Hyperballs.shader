@@ -95,18 +95,20 @@ Shader "NarupaXR/Opaque/Hyperballs"
                 o.rayOrigin = v;
                 o.rayDirection = v - c;
                 
-                float3 p1 = edge_position(0);
-                float3 p2 = edge_position(1);
+                float3 p1 = mul(ObjectToWorld, float4(edge_position(0).xyz, 1));
+                float3 p2 = mul(ObjectToWorld, float4(edge_position(1).xyz, 1));
                 
                 o.bondStart = p1;
                 o.bondDir = normalize(p2 - p1);
                 
+                float global_scale = length(ObjectToWorld._11_21_31);
+                
                 float dist = length(p2 - p1);
               
-                float R1 = edge_scale(0) * _ParticleScale * 0.5;
+                float R1 = global_scale * edge_scale(0) * _ParticleScale * 0.5;
                 R1 = R1 * R1;
                 
-                float R2 = edge_scale(1) * _ParticleScale * 0.5;
+                float R2 = global_scale * edge_scale(1) * _ParticleScale * 0.5;
                 R2 = R2 * R2;
                 
                 float gamma = _Tension;
