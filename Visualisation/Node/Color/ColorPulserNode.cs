@@ -33,16 +33,13 @@ namespace Narupa.Visualisation.Node.Color
 
         [SerializeField]
         private float minimum = 0f;
-
-
+        
         public bool IsInputDirty => inputColors.IsDirty
                                  || highlightFilter.IsDirty
                                  || count.IsDirty;
 
         private float strength = 1f;
         private float targetStrength = 1f;
-
-        private float darkenAmount = 0.8f;
 
         public void Refresh()
         {
@@ -86,7 +83,6 @@ namespace Narupa.Visualisation.Node.Color
             if (isOutputValid && (strength != targetStrength || isFilterNonZero))
             {
                 strength = Mathf.MoveTowards(strength, targetStrength, speed);
-                var darken = Mathf.Lerp(1f, darkenAmount, targetStrength);
                 var intensity = Mathf.Lerp(minimum, maximum,
                                            targetStrength *
                                            (0.5f + 0.5f * Mathf.Sin(speed * Time.time)));
@@ -94,7 +90,7 @@ namespace Narupa.Visualisation.Node.Color
                 outputColors.Resize(cachedArray.Length);
 
                 for (var i = 0; i < cachedArray.Length; i++)
-                    outputColors.Value[i] = cachedArray[i] * darken;
+                    outputColors.Value[i] = cachedArray[i];
 
                 if (isFilterNonZero)
                 {
