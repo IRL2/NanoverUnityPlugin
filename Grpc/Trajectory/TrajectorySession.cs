@@ -60,9 +60,9 @@ namespace Narupa.Grpc.Trajectory
 
             void Callback(GetFrameResponse response)
             {
+                CurrentFrameIndex = (int) response.FrameIndex;
                 var (frame, changes) = FrameConverter.ConvertFrame(response.Frame, CurrentFrame);
                 trajectorySnapshot.SetCurrentFrame(frame, changes);
-                CurrentFrameIndex = (int) response.FrameIndex;
             }
         }
 

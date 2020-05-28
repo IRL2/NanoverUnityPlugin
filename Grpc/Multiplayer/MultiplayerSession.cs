@@ -92,6 +92,10 @@ namespace Narupa.Session
 
         public event Action<string> SharedStateDictionaryKeyRemoved;
 
+        public event Action BeforeFlushChanges;
+
+        public event Action ReceiveUpdate;
+
         public event Action MultiplayerJoined;
 
         /// <summary>
@@ -227,6 +231,8 @@ namespace Narupa.Session
 
         private void OnResourceValuesUpdateReceived(ResourceValuesUpdate update)
         {
+            ReceiveUpdate?.Invoke();
+            
             if (update.ResourceValueChanges != null)
             {
                 foreach (var pair in update.ResourceValueChanges.Fields)
@@ -250,6 +256,8 @@ namespace Narupa.Session
         {
             if (!IsOpen || !HasPlayer)
                 return;
+
+            BeforeFlushChanges?.Invoke();
 
             foreach (var pair in pendingValues)
             {
