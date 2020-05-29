@@ -52,6 +52,14 @@ namespace Narupa.Grpc.Tests.Multiplayer
             resources[resourceKey] = value;
             return true;
         }
+        
+        public bool SetValueDirect(string resourceKey, object value)
+        {
+            if (locks.ContainsKey(resourceKey))
+                return false;
+            resources[resourceKey] = value;
+            return true;
+        }
 
         public override async Task<ResourceRequestResponse> AcquireResourceLock(
             AcquireLockRequest request,

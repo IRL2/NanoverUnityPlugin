@@ -99,6 +99,25 @@ namespace Narupa.Session
         public event Action MultiplayerJoined;
 
         /// <summary>
+        /// The index of the next update that we will send to the server. A key
+        /// `update.index.{player_id}` will be inserted with this value. By getting this value
+        /// when you've scheduled something to be done to the dictionary, you can then determine
+        /// when a returned update has incorporated your change.
+        /// </summary>
+        public int NextUpdateIndex => nextUpdateIndex;
+
+        /// <summary>
+        /// The index of the latest changes we sent to the server which have been received by us.
+        /// </summary>
+        public int LastReceivedIndex => lastReceivedIndex;
+
+        private int nextUpdateIndex = 0;
+
+        private int lastReceivedIndex = -1;
+
+        private string UpdateIndexKey => $"update.index.{PlayerId}";
+
+        /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
         /// Closes any existing client.
         /// </summary>
@@ -247,6 +266,13 @@ namespace Narupa.Session
         {
             if (update.ResourceValueChanges != null)
             {
+                if (update.ResourceValueChanges.Fields.ContainsKey(UpdateIndexKey))
+                {
+                    lastReceivedIndex = (int) update.ResourceValueChanges
+                                                    .Fields[UpdateIndexKey]
+                                                    .NumberValue;
+                }
+                
                 foreach (var pair in update.ResourceValueChanges.Fields)
                 {
                     var value = pair.Value.ToObject();
@@ -268,7 +294,7 @@ namespace Narupa.Session
         {
             if (!IsOpen || !HasPlayer)
                 return;
-
+            
             foreach (var pair in pendingValues)
             {
                 client.SetResourceValue(PlayerId, pair.Key, pair.Value.ToProtobufValue())
@@ -280,6 +306,11 @@ namespace Narupa.Session
                 client.RemoveResourceKey(PlayerId, key)
                       .AwaitInBackgroundIgnoreCancellation();
             }
+            
+            client.SetResourceValue(PlayerId, UpdateIndexKey, nextUpdateIndex.ToProtobufValue())
+                  .AwaitInBackgroundIgnoreCancellation();
+
+            nextUpdateIndex++;
             
             pendingValues.Clear();
             pendingRemovals.Clear();

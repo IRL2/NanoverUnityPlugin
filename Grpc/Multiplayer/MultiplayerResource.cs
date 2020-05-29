@@ -111,6 +111,7 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         private void CopyLocalValueToRemote()
         {
+            sentUpdateIndex = session.NextUpdateIndex;
             session.SetSharedState(ResourceKey, ValueToObject(value));
         }
         
@@ -127,6 +128,8 @@ namespace Narupa.Grpc.Multiplayer
         public MultiplayerResourceLockState LockState { get; private set; }
 
         private MultiplayerSession session;
+
+        private int sentUpdateIndex = -1;
 
         /// <summary>
         /// Value of this resource. Mirrors the value in the remote dictionary, unless a
@@ -177,6 +180,7 @@ namespace Narupa.Grpc.Multiplayer
         private void OnLockRejected()
         {
             localValuePending = false;
+            sentUpdateIndex = -1;
             CopyRemoteValueToLocal();
             LockRejected?.Invoke();
         }
@@ -226,7 +230,8 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         private void CopyRemoteValueToLocal()
         {
-            if (!localValuePending)
+            // If we don't have a local change, and we are up to date with the server
+            if (!localValuePending && sentUpdateIndex < session.LastReceivedIndex)
             {
                 value = GetRemoteValue();
                 ValueChanged?.Invoke();
