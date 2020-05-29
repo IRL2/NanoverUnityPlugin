@@ -9,12 +9,16 @@ using Narupa.Network;
 using UnityEngine;
 using Avatar = Narupa.Protocol.Multiplayer.Avatar;
 using System.Linq;
+using Google.Protobuf.Collections;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
 using Narupa.Grpc;
 using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
+using Narupa.Grpc.Trajectory;
 using UnityEngine.Profiling;
 
 namespace Narupa.Session
@@ -146,8 +150,22 @@ namespace Narupa.Session
             PlayerId = response.PlayerId;
 
             IncomingValueUpdates = client.SubscribeAllResourceValues();
-            IncomingValueUpdates.MessageReceived += OnResourceValuesUpdateReceived;
-            IncomingValueUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+            BackgroundIncomingStreamReceiver<ResourceValuesUpdate>.Start(IncomingValueUpdates,
+                OnResourceValuesUpdateReceived,
+                MergeResourceUpdates);
+
+            void MergeResourceUpdates(ResourceValuesUpdate dest, ResourceValuesUpdate src)
+            {
+                if (dest.ResourceValueChanges == null)
+                    dest.ResourceValueChanges = new Struct();
+
+                foreach (var (key, value) in src.ResourceValueChanges.Fields)
+                    dest.ResourceValueChanges.Fields[key] = value;
+                
+                foreach(var removal in src.ResourceValueRemovals)
+                    if(!dest.ResourceValueRemovals.Contains(removal))
+                        dest.ResourceValueRemovals.Add(removal);
+            }
 
             MultiplayerJoined?.Invoke();
         }
