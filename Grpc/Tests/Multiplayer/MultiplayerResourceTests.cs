@@ -66,15 +66,18 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
         public MultiplayerResource<string> GetResource()
         {
-            return new MultiplayerResource<string>(session, Key, );
+            return new MultiplayerResource<string>(session, Key);
         }
 
         [AsyncTest]
         public async Task GetResource_InitialValue()
         {
-            service.SetValueDirect(Key, 1.0);
+            service.SetValueDirect(Key, "my_value");
             await Task.Delay(25);
-            var resource = 
+            var resource = GetResource();
+            Assert.AreEqual("my_value", resource.Value);
+            
+            TestFunc(resource.)
         }
     }
 }
