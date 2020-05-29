@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Narupa.Grpc.Multiplayer;
 using Narupa.Session;
 using Narupa.Testing.Async;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Multiplayer
@@ -52,10 +54,11 @@ namespace Narupa.Grpc.Tests.Multiplayer
         }
 
         private const string Key = "abc";
+        private const string OtherPlayerId = "other_player";
         
         private static IEnumerable<AsyncUnitTests.AsyncTestInfo> GetTests()
         {
-            return AsyncUnitTests.FindAsyncTestsInClass<MultiplayerSessionTests>();
+            return AsyncUnitTests.FindAsyncTestsInClass<MultiplayerResourceTests>();
         }
 
         [Test]
@@ -73,11 +76,59 @@ namespace Narupa.Grpc.Tests.Multiplayer
         public async Task GetResource_InitialValue()
         {
             service.SetValueDirect(Key, "my_value");
-            await Task.Delay(25);
+            await Task.Delay(50);
             var resource = GetResource();
             Assert.AreEqual("my_value", resource.Value);
+        }
+
+        [AsyncTest]
+        public async Task RemoteValueChanged_Occurs()
+        {
+            var resource = GetResource();
+            var listener = AsyncAssert.ListenToEvent((cbk) => resource.RemoteValueChanged += cbk);
+            service.SetValueDirect(Key, "my_value");
+
+            await Task.Delay(500);
             
-            TestFunc(resource.)
+            listener.AssertCalledAtLeastOnce();
+        }
+        
+        [AsyncTest]
+        public async Task SimulateSlowConnection()
+        {
+            var resource = GetResource();
+            service.SetValueDirect(Key, "old_value");
+            await Task.Delay(250);
+            
+            // Initially, resource and local share state are "old_value"
+            Assert.AreEqual("old_value", resource.Value);
+            Assert.AreEqual("old_value", session.GetSharedState(Key));
+            
+            // Introduce 500 ms latency to resource stream
+            server.Latency = 500;
+            
+            // Set the resource value to "new_value". Latency means local shared state is
+            // out of date
+            resource.UpdateValueWithLock("new_value");
+            await Task.Delay(50);
+            Assert.AreEqual("new_value", resource.Value);
+            Assert.AreEqual("old_value", session.GetSharedState(Key));
+            
+            // Release the lock. Latency means local shared state is out of data
+            resource.ReleaseLock();
+            Assert.AreEqual("new_value", resource.Value);
+            Assert.AreEqual("old_value", session.GetSharedState(Key));
+
+            // Even a short time later, local shared state is out of date. However, 
+            // value is still correct as an up-to-date update has not been received.
+            await Task.Delay(50);
+            Assert.AreEqual("new_value", resource.Value);
+            Assert.AreEqual("old_value", session.GetSharedState(Key));
+
+            // After latency has been overcome, values now agree.
+            await Task.Delay(1000);
+            Assert.AreEqual("new_value", resource.Value);
+            Assert.AreEqual("new_value", session.GetSharedState(Key));
         }
     }
 }

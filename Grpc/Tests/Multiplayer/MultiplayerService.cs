@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -21,15 +22,16 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
         public IReadOnlyDictionary<string, string> Locks => locks;
 
-        public bool AcquireLock(string playerId, string resourceKey)
+        public async Task<bool> AcquireLock(string playerId, string resourceKey)
         {
             if (locks.ContainsKey(resourceKey))
                 return false;
+
             locks[resourceKey] = playerId;
             return true;
         }
 
-        public bool ReleaseLock(string playerId, string resourceKey)
+        public async Task<bool> ReleaseLock(string playerId, string resourceKey)
         {
             if (!locks.ContainsKey(resourceKey) || locks[resourceKey] != playerId)
                 return false;
@@ -37,7 +39,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             return true;
         }
 
-        private bool RemoveValue(string playerId, string resourceKey)
+        private async Task<bool> RemoveValue(string playerId, string resourceKey)
         {
             if (locks.ContainsKey(resourceKey) && locks[resourceKey] != playerId)
                 return false;
@@ -45,7 +47,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             return true;
         }
 
-        private bool SetValue(string playerId, string resourceKey, object value)
+        private async Task<bool> SetValue(string playerId, string resourceKey, object value)
         {
             if (locks.ContainsKey(resourceKey) && locks[resourceKey] != playerId)
                 return false;
@@ -65,8 +67,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             AcquireLockRequest request,
             ServerCallContext context)
         {
-            var success = AcquireLock(request.PlayerId, request.ResourceId);
-            await Task.Delay(150);
+            var success = await AcquireLock(request.PlayerId, request.ResourceId);
             return new ResourceRequestResponse
             {
                 Success = success
@@ -77,8 +78,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             ReleaseLockRequest request,
             ServerCallContext context)
         {
-            var success = ReleaseLock(request.PlayerId, request.ResourceId);
-            await Task.Delay(150);
+            var success = await ReleaseLock(request.PlayerId, request.ResourceId);
             return new ResourceRequestResponse
             {
                 Success = success
@@ -89,7 +89,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             RemoveResourceKeyRequest request,
             ServerCallContext context)
         {
-            var success = RemoveValue(request.PlayerId, request.ResourceId);
+            var success = await RemoveValue(request.PlayerId, request.ResourceId);
             return new ResourceRequestResponse
             {
                 Success = success
@@ -100,7 +100,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             SetResourceValueRequest request,
             ServerCallContext context)
         {
-            var success = SetValue(request.PlayerId, request.ResourceId,
+            var success = await SetValue(request.PlayerId, request.ResourceId,
                                    request.ResourceValue.ToObject());
             return new ResourceRequestResponse
             {

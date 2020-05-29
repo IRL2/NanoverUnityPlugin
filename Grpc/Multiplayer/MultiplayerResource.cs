@@ -41,6 +41,7 @@ namespace Narupa.Grpc.Multiplayer
             session.SharedStateDictionaryKeyUpdated += SharedStateDictionaryKeyUpdated;
             this.objectToValue = objectToValue;
             this.valueToObject = valueToObject;
+            CopyRemoteValueToLocal();
         }
 
         private readonly Converter<object, TValue> objectToValue;
