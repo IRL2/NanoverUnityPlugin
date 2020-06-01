@@ -9,12 +9,16 @@ using Narupa.Network;
 using UnityEngine;
 using Avatar = Narupa.Protocol.Multiplayer.Avatar;
 using System.Linq;
+using Google.Protobuf.Collections;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
 using Narupa.Grpc;
 using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
+using Narupa.Grpc.Trajectory;
 using UnityEngine.Profiling;
 
 namespace Narupa.Session
@@ -99,6 +103,25 @@ namespace Narupa.Session
         public event Action MultiplayerJoined;
 
         /// <summary>
+        /// The index of the next update that we will send to the server. A key
+        /// `update.index.{player_id}` will be inserted with this value. By getting this value
+        /// when you've scheduled something to be done to the dictionary, you can then determine
+        /// when a returned update has incorporated your change.
+        /// </summary>
+        public int NextUpdateIndex => nextUpdateIndex;
+
+        /// <summary>
+        /// The index of the latest changes we sent to the server which have been received by us.
+        /// </summary>
+        public int LastReceivedIndex => lastReceivedIndex;
+
+        private int nextUpdateIndex = 0;
+
+        private int lastReceivedIndex = -1;
+
+        private string UpdateIndexKey => $"update.index.{PlayerId}";
+
+        /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
         /// Closes any existing client.
         /// </summary>
@@ -150,8 +173,22 @@ namespace Narupa.Session
             PlayerId = response.PlayerId;
 
             IncomingValueUpdates = client.SubscribeAllResourceValues();
-            IncomingValueUpdates.MessageReceived += OnResourceValuesUpdateReceived;
-            IncomingValueUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+            BackgroundIncomingStreamReceiver<ResourceValuesUpdate>.Start(IncomingValueUpdates,
+                OnResourceValuesUpdateReceived,
+                MergeResourceUpdates);
+
+            void MergeResourceUpdates(ResourceValuesUpdate dest, ResourceValuesUpdate src)
+            {
+                if (dest.ResourceValueChanges == null)
+                    dest.ResourceValueChanges = new Struct();
+
+                foreach (var (key, value) in src.ResourceValueChanges.Fields)
+                    dest.ResourceValueChanges.Fields[key] = value;
+                
+                foreach(var removal in src.ResourceValueRemovals)
+                    if(!dest.ResourceValueRemovals.Contains(removal))
+                        dest.ResourceValueRemovals.Add(removal);
+            }
 
             MultiplayerJoined?.Invoke();
         }
@@ -235,6 +272,13 @@ namespace Narupa.Session
             
             if (update.ResourceValueChanges != null)
             {
+                if (update.ResourceValueChanges.Fields.ContainsKey(UpdateIndexKey))
+                {
+                    lastReceivedIndex = (int) update.ResourceValueChanges
+                                                    .Fields[UpdateIndexKey]
+                                                    .NumberValue;
+                }
+                
                 foreach (var pair in update.ResourceValueChanges.Fields)
                 {
                     var value = pair.Value.ToObject();
@@ -256,7 +300,7 @@ namespace Narupa.Session
         {
             if (!IsOpen || !HasPlayer)
                 return;
-
+            
             BeforeFlushChanges?.Invoke();
 
             foreach (var pair in pendingValues)
@@ -270,6 +314,11 @@ namespace Narupa.Session
                 client.RemoveResourceKey(PlayerId, key)
                       .AwaitInBackgroundIgnoreCancellation();
             }
+            
+            client.SetResourceValue(PlayerId, UpdateIndexKey, nextUpdateIndex.ToProtobufValue())
+                  .AwaitInBackgroundIgnoreCancellation();
+
+            nextUpdateIndex++;
             
             pendingValues.Clear();
             pendingRemovals.Clear();

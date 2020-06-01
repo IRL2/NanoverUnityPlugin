@@ -2,11 +2,15 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Frame;
 using Narupa.Grpc.Frame;
 using Narupa.Grpc.Stream;
 using Narupa.Protocol.Trajectory;
+using UnityEngine;
 
 namespace Narupa.Grpc.Trajectory
 {
@@ -55,16 +59,30 @@ namespace Narupa.Grpc.Trajectory
 
             trajectoryClient = new TrajectoryClient(connection);
             frameStream = trajectoryClient.SubscribeLatestFrames(1f / 30f);
-            frameStream.MessageReceived += Callback;
-            frameStream.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+            BackgroundIncomingStreamReceiver<GetFrameResponse>.Start(frameStream, ReceiveFrame, Merge);
 
-            void Callback(GetFrameResponse response)
+            void ReceiveFrame(GetFrameResponse response)
             {
                 CurrentFrameIndex = (int) response.FrameIndex;
                 var (frame, changes) = FrameConverter.ConvertFrame(response.Frame, CurrentFrame);
                 trajectorySnapshot.SetCurrentFrame(frame, changes);
             }
+
+            void Merge(GetFrameResponse dest, GetFrameResponse toMerge)
+            {
+                dest.FrameIndex = toMerge.FrameIndex;
+                if (dest.Frame == null)
+                    dest.Frame = new FrameData();
+                foreach (var (key, array) in toMerge.Frame.Arrays)
+                    dest.Frame.Arrays[key] = array;
+                foreach (var (key, value) in toMerge.Frame.Values)
+                    dest.Frame.Values[key] = value;
+            }
         }
+
+        
+
+        
 
         /// <summary>
         /// Close the current trajectory client.
