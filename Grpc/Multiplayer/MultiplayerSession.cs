@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Narupa.Network;
 using UnityEngine;
 using System.Linq;
+using Google.Protobuf.WellKnownTypes;
 using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
@@ -14,6 +15,7 @@ using Narupa.Grpc;
 using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
 using Narupa.Protocol.State;
+using Narupa.Grpc.Trajectory;
 
 namespace Narupa.Session
 {
@@ -97,6 +99,25 @@ namespace Narupa.Session
         public event Action MultiplayerJoined;
 
         /// <summary>
+        /// The index of the next update that we will send to the server. A key
+        /// `update.index.{player_id}` will be inserted with this value. By getting this value
+        /// when you've scheduled something to be done to the dictionary, you can then determine
+        /// when a returned update has incorporated your change.
+        /// </summary>
+        public int NextUpdateIndex => nextUpdateIndex;
+
+        /// <summary>
+        /// The index of the latest changes we sent to the server which have been received by us.
+        /// </summary>
+        public int LastReceivedIndex => lastReceivedIndex;
+
+        private int nextUpdateIndex = 0;
+
+        private int lastReceivedIndex = -1;
+
+        private string UpdateIndexKey => $"update.index.{PlayerId}";
+
+        /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
         /// Closes any existing client.
         /// </summary>
@@ -146,10 +167,20 @@ namespace Narupa.Session
 
             PlayerName = playerName;
             PlayerId = response.PlayerId;
-
+            
             IncomingValueUpdates = client.SubscribeStateUpdates();
-            IncomingValueUpdates.MessageReceived += OnResourceValuesUpdateReceived;
-            IncomingValueUpdates.StartReceiving().AwaitInBackgroundIgnoreCancellation();
+            BackgroundIncomingStreamReceiver<StateUpdate>.Start(IncomingValueUpdates,
+                                                                         OnResourceValuesUpdateReceived,
+                                                                         MergeResourceUpdates);
+
+            void MergeResourceUpdates(StateUpdate dest, StateUpdate src)
+            {
+                if (dest.ChangedKeys == null)
+                    dest.ChangedKeys = new Struct();
+
+                foreach (var (key, value) in src.ChangedKeys.Fields)
+                    dest.ChangedKeys.Fields[key] = value;
+            }
 
             MultiplayerJoined?.Invoke();
         }
@@ -236,6 +267,13 @@ namespace Narupa.Session
 
         private void OnResourceValuesUpdateReceived(StateUpdate update)
         {
+            if (update.ChangedKeys.Fields.ContainsKey(UpdateIndexKey))
+            {
+                lastReceivedIndex = (int) update.ChangedKeys
+                                                .Fields[UpdateIndexKey]
+                                                .NumberValue;
+            }
+
             foreach (var (key, value1) in update.ChangedKeys.Fields)
             {
                 var value = value1.ToObject();
@@ -256,12 +294,16 @@ namespace Narupa.Session
         {
             if (!IsOpen)
                 return;
-
+                    
+            pendingValues[UpdateIndexKey] = nextUpdateIndex;
+             
             client.UpdateState(Token, pendingValues, pendingRemovals)
                               .AwaitInBackgroundIgnoreCancellation();
             
-                        pendingValues.Clear();
-                        pendingRemovals.Clear();
+            pendingValues.Clear();
+            pendingRemovals.Clear();
+
+            nextUpdateIndex++;
         }
 
         private static async Task CallbackInterval(Action callback, int interval)
