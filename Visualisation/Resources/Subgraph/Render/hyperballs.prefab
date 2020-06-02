@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8379820703431466785}
   - component: {fileID: 5176173228503488438}
   - component: {fileID: 2187803143233138763}
-  - component: {fileID: 4072638902273047189}
   - component: {fileID: 3720104995046655090}
   - component: {fileID: 7589667398978776418}
   - component: {fileID: 1900448658886156694}
@@ -73,7 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: particle.scale
+    name: scale
     input:
       value: 0.1
       isValueProvided: 1
@@ -149,24 +148,6 @@ MonoBehaviour:
     input:
       value: []
       isValueProvided: 0
---- !u!114 &4072638902273047189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900448658886156695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection: []
-  node:
-    name: bond.scale
-    input:
-      value: 0.05
-      isValueProvided: 1
 --- !u!114 &3720104995046655090
 MonoBehaviour:
   m_ObjectHideFlags: 0
