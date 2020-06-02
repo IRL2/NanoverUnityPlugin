@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Grpc.Core.Interceptors;
 using Narupa.Core.Async;
 using Narupa.Grpc.Tests.Trajectory;
 
@@ -12,6 +13,14 @@ namespace Narupa.Grpc.Tests.Multiplayer
     internal class GrpcServer : IAsyncClosable
     {
         private Server server;
+
+        private LatencySimulator latency;
+
+        public int Latency
+        {
+            get => latency.ServerStreamLatency;
+            set => latency.ServerStreamLatency = value;
+        }
 
         public GrpcServer(params IBindableService[] services) : this(
             services.Select(s => s.BindService()).ToArray())
@@ -27,8 +36,9 @@ namespace Narupa.Grpc.Tests.Multiplayer
                     new ServerPort("localhost", 0, ServerCredentials.Insecure)
                 }
             };
+            latency = new LatencySimulator();
             foreach (var service in services)
-                server.Services.Add(service);
+                server.Services.Add(service.Intercept(latency));
             server.Start();
         }
 

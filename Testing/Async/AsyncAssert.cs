@@ -3,6 +3,7 @@
 
 using System;
 using System.Threading.Tasks;
+using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using UnityEditor;
@@ -186,5 +187,33 @@ namespace Narupa.Testing.Async
         {
             await Task.WhenAny(Task.WhenAll(Task.WhenAll(tasks), Task.Delay(duration)), Task.Delay(duration));
         }
+
+        public class EventListener
+        {
+            private readonly Action callback;
+            
+            internal EventListener(Action callback)
+            {
+                this.callback = callback;
+            }
+
+            public void AssertCalledAtLeastOnce()
+            {
+                callback.Received().Invoke();
+            }
+            
+            public void AssertNotCalled()
+            {
+                callback.DidNotReceive().Invoke();
+            }
+        }
+
+        public static EventListener ListenToEvent(Action<Action> subscribe)
+        {
+            var callback = Substitute.For<Action>();
+            subscribe(callback);
+            return new EventListener(callback);
+        }
+
     }
 }
