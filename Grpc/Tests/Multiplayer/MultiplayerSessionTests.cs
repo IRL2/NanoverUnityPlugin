@@ -128,6 +128,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
         [AsyncTest]
         public async Task TryLock_Success()
         {
+            server.Latency = 400;
             var value = session.GetSharedResource("abc");
             value.ObtainLock();
             Assert.AreEqual(MultiplayerResourceLockState.Pending, value.LockState);
@@ -139,7 +140,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
                            && v.Equals(session.PlayerId));
             }
 
-            await AsyncAssert.PassesWithinTimeout(LockSuccessful);
+            await AsyncAssert.PassesWithinTimeout(LockSuccessful, timeout: 2000);
         }
 
         [AsyncTest]
