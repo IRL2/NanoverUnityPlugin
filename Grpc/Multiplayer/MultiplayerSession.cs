@@ -291,6 +291,7 @@ namespace Narupa.Session
             {
                 foreach (var key in update.ResourceValueRemovals)
                 {
+                    SharedStateDictionary.Remove(key);
                     SharedStateDictionaryKeyRemoved?.Invoke(key);
                 }
             }
