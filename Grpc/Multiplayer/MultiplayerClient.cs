@@ -5,12 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using JetBrains.Annotations;
-using Narupa.Protocol.Multiplayer;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Narupa.Grpc;
 using Narupa.Grpc.Stream;
-using Narupa.Protocol.Command;
 using Narupa.Protocol.State;
 using Value = Google.Protobuf.WellKnownTypes.Value;
 
@@ -22,7 +20,7 @@ namespace Narupa.Network
     /// over a <see cref="GrpcConnection" />.
     /// </summary>
     public class MultiplayerClient :
-        GrpcClient<Multiplayer.MultiplayerClient>
+        GrpcClient<State.StateClient>
     {
         // Chosen as an acceptable minimum rate that should ideally be 
         // explicitly increased.
