@@ -36,11 +36,11 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
             connection = new GrpcConnection("localhost", server.Port);
             session.OpenClient(connection);
-            await session.JoinMultiplayer("alex");
+            await session.JoinMultiplayer();
 
             connection2 = new GrpcConnection("localhost", server.Port);
             session2.OpenClient(connection2);
-            await session2.JoinMultiplayer("mike");
+            await session2.JoinMultiplayer();
 
             await Task.Delay(500);
         }

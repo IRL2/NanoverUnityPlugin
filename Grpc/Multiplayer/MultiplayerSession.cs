@@ -65,11 +65,6 @@ namespace Narupa.Session
         public bool HasPlayer => PlayerId != null;
 
         /// <summary>
-        /// Username of the current player, if any.
-        /// </summary>
-        public string PlayerName { get; private set; }
-
-        /// <summary>
         /// ID of the current player, if any.
         /// </summary>
         public string PlayerId { get; private set; }
@@ -145,8 +140,7 @@ namespace Narupa.Session
             client?.CloseAndCancelAllSubscriptions();
             client?.Dispose();
             client = null;
-
-            PlayerName = null;
+            
             PlayerId = null;
 
             ClearSharedState();
@@ -158,15 +152,12 @@ namespace Narupa.Session
         /// Create a new multiplayer with the given username, subscribe avatar 
         /// and value updates, and begin publishing our avatar.
         /// </summary>
-        public async Task JoinMultiplayer(string playerName)
+        public async Task JoinMultiplayer()
         {
             if (HasPlayer)
-                throw new InvalidOperationException($"Multiplayer already joined as {PlayerName}");
-
-            var response = await client.CreatePlayer(playerName);
-
-            PlayerName = playerName;
-            PlayerId = response.PlayerId;
+                throw new InvalidOperationException($"Multiplayer already joined!");
+            
+            PlayerId = Guid.NewGuid().ToString();
             
             IncomingValueUpdates = client.SubscribeStateUpdates();
             BackgroundIncomingStreamReceiver<StateUpdate>.Start(IncomingValueUpdates,

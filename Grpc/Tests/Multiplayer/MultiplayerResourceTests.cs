@@ -32,7 +32,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
             connection = new GrpcConnection("localhost", server.Port);
             session.OpenClient(connection);
-            await session.JoinMultiplayer("alex");
+            await session.JoinMultiplayer();
 
             await Task.Delay(500);
         }

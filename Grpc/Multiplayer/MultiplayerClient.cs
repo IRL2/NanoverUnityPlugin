@@ -37,23 +37,6 @@ namespace Narupa.Network
         {
             StateClient = new State.StateClient(connection.Channel);
         }
-
-        /// <summary>
-        /// Requests a new player ID from the server.
-        /// </summary>
-        /// <remarks>
-        /// Corresponds to the CreatePlayer gRPC call.
-        /// </remarks>
-        public async Task<CreatePlayerResponse> CreatePlayer(string name)
-        {
-            var request = new CreatePlayerRequest
-            {
-                PlayerName = name,
-            };
-
-            return await Client.CreatePlayerAsync(request);
-        }
-        
         
         /// <summary>
         /// Starts an <see cref="IncomingStream{StateUpdate}" /> on 
