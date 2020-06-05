@@ -1,18 +1,16 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Threading;
-using JetBrains.Annotations;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
-using Narupa.Grpc;
+using JetBrains.Annotations;
 using Narupa.Grpc.Stream;
 using Narupa.Protocol.State;
 using Value = Google.Protobuf.WellKnownTypes.Value;
 
-namespace Narupa.Network
+namespace Narupa.Grpc.Multiplayer
 {
     /// <summary>
     /// Wraps a <see cref="Multiplayer.MultiplayerClient" /> and

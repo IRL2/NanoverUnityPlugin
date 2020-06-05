@@ -3,21 +3,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Narupa.Network;
-using UnityEngine;
 using System.Linq;
+using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
-using Narupa.Grpc;
-using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
-using Narupa.Protocol.State;
 using Narupa.Grpc.Trajectory;
+using Narupa.Protocol.State;
+using UnityEngine;
 
-namespace Narupa.Session
+namespace Narupa.Grpc.Multiplayer
 {
     /// <summary>
     /// Manages the state of a single user engaging in multiplayer. Tracks
@@ -121,14 +118,14 @@ namespace Narupa.Session
             CloseClient();
 
             client = new MultiplayerClient(connection);
+            
+            PlayerId = Guid.NewGuid().ToString();
 
             if (valueFlushingTask == null)
             {
                 valueFlushingTask = CallbackInterval(FlushValues, ValuePublishInterval);
                 valueFlushingTask.AwaitInBackground();
             }
-            
-            PlayerId = Guid.NewGuid().ToString();
             
             IncomingValueUpdates = client.SubscribeStateUpdates();
             BackgroundIncomingStreamReceiver<StateUpdate>.Start(IncomingValueUpdates,
