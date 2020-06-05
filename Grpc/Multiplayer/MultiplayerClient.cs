@@ -25,15 +25,9 @@ namespace Narupa.Network
         // Chosen as an acceptable minimum rate that should ideally be 
         // explicitly increased.
         private const float DefaultUpdateInterval = 1f / 30f;
-        
-        /// <summary>
-        /// The client used to access the Command service on the same port as this client.
-        /// </summary>
-        protected State.StateClient StateClient { get; }
 
         public MultiplayerClient([NotNull] GrpcConnection connection) : base(connection)
         {
-            StateClient = new State.StateClient(connection.Channel);
         }
         
         /// <summary>
@@ -52,7 +46,7 @@ namespace Narupa.Network
                 UpdateInterval = updateInterval,
             };
 
-            return GetIncomingStream(StateClient.SubscribeStateUpdates, request, externalToken);
+            return GetIncomingStream(Client.SubscribeStateUpdates, request, externalToken);
         }
         
         public async Task<bool> UpdateState(string token, Dictionary<string, object> updates, List<string> removals)
@@ -63,7 +57,7 @@ namespace Narupa.Network
                 Update = CreateStateUpdate(updates, removals)
             };
 
-            var response = await StateClient.UpdateStateAsync(request);
+            var response = await Client.UpdateStateAsync(request);
 
             return response.Success;
         }
@@ -76,7 +70,7 @@ namespace Narupa.Network
                 LockKeys = CreateLockUpdate(toAcquire, toRemove)
             };
 
-            var response = await StateClient.UpdateLocksAsync(request);
+            var response = await Client.UpdateLocksAsync(request);
 
             return response.Success;
         }

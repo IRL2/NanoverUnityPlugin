@@ -127,6 +127,24 @@ namespace Narupa.Session
                 valueFlushingTask = CallbackInterval(FlushValues, ValuePublishInterval);
                 valueFlushingTask.AwaitInBackground();
             }
+            
+            PlayerId = Guid.NewGuid().ToString();
+            
+            IncomingValueUpdates = client.SubscribeStateUpdates();
+            BackgroundIncomingStreamReceiver<StateUpdate>.Start(IncomingValueUpdates,
+                                                                OnResourceValuesUpdateReceived,
+                                                                MergeResourceUpdates);
+
+            void MergeResourceUpdates(StateUpdate dest, StateUpdate src)
+            {
+                if (dest.ChangedKeys == null)
+                    dest.ChangedKeys = new Struct();
+
+                foreach (var (key, value) in src.ChangedKeys.Fields)
+                    dest.ChangedKeys.Fields[key] = value;
+            }
+
+            MultiplayerJoined?.Invoke();
         }
 
         /// <summary>
@@ -148,34 +166,6 @@ namespace Narupa.Session
             pendingRemovals.Clear();
         }
 
-        /// <summary>
-        /// Create a new multiplayer with the given username, subscribe avatar 
-        /// and value updates, and begin publishing our avatar.
-        /// </summary>
-        public async Task JoinMultiplayer()
-        {
-            if (HasPlayer)
-                throw new InvalidOperationException($"Multiplayer already joined!");
-            
-            PlayerId = Guid.NewGuid().ToString();
-            
-            IncomingValueUpdates = client.SubscribeStateUpdates();
-            BackgroundIncomingStreamReceiver<StateUpdate>.Start(IncomingValueUpdates,
-                                                                         OnResourceValuesUpdateReceived,
-                                                                         MergeResourceUpdates);
-
-            void MergeResourceUpdates(StateUpdate dest, StateUpdate src)
-            {
-                if (dest.ChangedKeys == null)
-                    dest.ChangedKeys = new Struct();
-
-                foreach (var (key, value) in src.ChangedKeys.Fields)
-                    dest.ChangedKeys.Fields[key] = value;
-            }
-
-            MultiplayerJoined?.Invoke();
-        }
-        
         /// <summary>
         /// Set the given key in the shared state dictionary, which will be
         /// sent to the server according in the future according to the publish 
