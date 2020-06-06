@@ -231,8 +231,10 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         private void CopyRemoteValueToLocal()
         {
+            if (!session.IsOpen)
+                return;
             // If we don't have a local change, and we are up to date with the server
-            if (!localValuePending && sentUpdateIndex < session.LastReceivedIndex)
+            if (!localValuePending && sentUpdateIndex <= session.LastReceivedIndex)
             {
                 value = GetRemoteValue();
                 ValueChanged?.Invoke();
