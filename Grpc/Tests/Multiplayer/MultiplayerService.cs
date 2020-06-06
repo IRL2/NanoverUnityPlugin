@@ -7,17 +7,18 @@ using Grpc.Core;
 using Narupa.Core;
 using Narupa.Core.Collections;
 using Narupa.Protocol.State;
+using UnityEngine;
 
 namespace Narupa.Grpc.Tests.Multiplayer
 {
     public class MultiplayerService : State.StateBase, IBindableService
     {
-        private ObservableDictionary<string, object> resources
-            = new ObservableDictionary<string, object>();
+        private ObservableDictionary<string, Value> resources
+            = new ObservableDictionary<string, Value>();
 
         private Dictionary<string, string> locks = new Dictionary<string, string>();
 
-        public IDictionary<string, object> Resources => resources;
+        public IDictionary<string, Value> Resources => resources;
 
         public IReadOnlyDictionary<string, string> Locks => locks;
 
@@ -26,6 +27,8 @@ namespace Narupa.Grpc.Tests.Multiplayer
             ServerCallContext context)
         {
             var token = request.AccessToken;
+            Debug.Log($"Lock with {token}");
+            
             foreach (var requestKey in request.LockKeys.Fields.Keys)
                 if (locks.ContainsKey(requestKey) && locks[requestKey] != token)
                     return new UpdateLocksResponse
@@ -69,7 +72,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 }
                 else
                 {
-                    resources[key] = token;
+                    resources[key] = value;
                 }
             }
 
@@ -96,7 +99,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
 
                 foreach (var change in changes)
-                    update.ChangedKeys.Fields[change] = resources[change].ToProtobufValue();
+                    update.ChangedKeys.Fields[change] = resources[change];
                 foreach (var removal in removals)
                     update.ChangedKeys.Fields[removal] = Value.ForNull();
             }
@@ -122,9 +125,9 @@ namespace Narupa.Grpc.Tests.Multiplayer
             return State.BindService(this);
         }
 
-        public void SetValueDirect(string key, string value)
+        public void SetValueDirect(string key, object value)
         {
-            this.resources[key] = value;
+            this.resources[key] = value.ToProtobufValue();
         }
     }
 }

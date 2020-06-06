@@ -24,15 +24,13 @@ namespace Narupa.Grpc.Multiplayer
     public sealed class MultiplayerSession : IDisposable
     {
         public const string SimulationPoseKey = "scene";
-        
-        protected string Token { get; }
-        
+
+        public string AccessToken { get; set; }
+
         public MultiplayerAvatars Avatars { get; }
 
         public MultiplayerSession()
         {
-            Token = Guid.NewGuid().ToString();
-            
             Avatars = new MultiplayerAvatars(this);
             
             SimulationPose =
@@ -55,16 +53,6 @@ namespace Narupa.Grpc.Multiplayer
         /// Is there an open client on this session?
         /// </summary>
         public bool IsOpen => client != null;
-
-        /// <summary>
-        /// Has this session created a user?
-        /// </summary>
-        public bool HasPlayer => PlayerId != null;
-
-        /// <summary>
-        /// ID of the current player, if any.
-        /// </summary>
-        public string PlayerId { get; private set; }
 
         /// <summary>
         /// How many milliseconds to put between sending our requested value
@@ -107,7 +95,7 @@ namespace Narupa.Grpc.Multiplayer
 
         private int lastReceivedIndex = -1;
 
-        private string UpdateIndexKey => $"update.index.{PlayerId}";
+        private string UpdateIndexKey => $"update.index.{AccessToken}";
 
         /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
@@ -118,8 +106,7 @@ namespace Narupa.Grpc.Multiplayer
             CloseClient();
 
             client = new MultiplayerClient(connection);
-            
-            PlayerId = Guid.NewGuid().ToString();
+            AccessToken = Guid.NewGuid().ToString();
 
             if (valueFlushingTask == null)
             {
@@ -156,7 +143,7 @@ namespace Narupa.Grpc.Multiplayer
             client?.Dispose();
             client = null;
             
-            PlayerId = null;
+            AccessToken = null;
 
             ClearSharedState();
             pendingValues.Clear();
@@ -199,7 +186,7 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         public async Task<bool> LockResource(string id)
         {
-            return await client.UpdateLocks(Token, new Dictionary<string, float>
+            return await client.UpdateLocks(AccessToken, new Dictionary<string, float>
                                             {
                                                 [id] = 1f
                                             },
@@ -211,7 +198,7 @@ namespace Narupa.Grpc.Multiplayer
         /// </summary>
         public async Task<bool> ReleaseResource(string id)
         {
-            return await client.UpdateLocks(Token, new Dictionary<string, float>(), new string[]
+            return await client.UpdateLocks(AccessToken, new Dictionary<string, float>(), new string[]
             {
                 id
             });
@@ -272,16 +259,19 @@ namespace Narupa.Grpc.Multiplayer
         {
             if (!IsOpen)
                 return;
-                    
-            pendingValues[UpdateIndexKey] = nextUpdateIndex;
-             
-            client.UpdateState(Token, pendingValues, pendingRemovals)
-                              .AwaitInBackgroundIgnoreCancellation();
-            
-            pendingValues.Clear();
-            pendingRemovals.Clear();
 
-            nextUpdateIndex++;
+            if (pendingValues.Any() || pendingRemovals.Any())
+            {
+                pendingValues[UpdateIndexKey] = nextUpdateIndex;
+
+                client.UpdateState(AccessToken, pendingValues, pendingRemovals)
+                      .AwaitInBackgroundIgnoreCancellation();
+
+                pendingValues.Clear();
+                pendingRemovals.Clear();
+
+                nextUpdateIndex++;
+            }
         }
 
         private static async Task CallbackInterval(Action callback, int interval)

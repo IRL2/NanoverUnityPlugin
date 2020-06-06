@@ -102,7 +102,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             Assert.AreEqual("old_value", session.GetSharedState(Key));
             
             // Introduce 500 ms latency to resource stream
-            server.Latency = 500;
+            server.StreamLatency = 500;
             
             // Set the resource value to "new_value". Latency means local shared state is
             // out of date

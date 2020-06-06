@@ -16,10 +16,16 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
         private LatencySimulator latency;
 
-        public int Latency
+        public int StreamLatency
         {
             get => latency.ServerStreamLatency;
             set => latency.ServerStreamLatency = value;
+        }
+        
+        public int ReplyLatency
+        {
+            get => latency.ServerReplyLatency;
+            set => latency.ServerReplyLatency = value;
         }
 
         public GrpcServer(params IBindableService[] services) : this(
