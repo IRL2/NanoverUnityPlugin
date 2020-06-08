@@ -260,5 +260,21 @@ namespace Narupa.Grpc
                 throw new ArgumentException("Value is not numeric, and cannot be converted to an integer");
             return (int) value.NumberValue;
         }
+                
+        /// <summary>
+        /// Convert a C# dictionary to a protobuf Struct.
+        /// </summary>
+        public static Struct ToProtobufStruct<T>(this IDictionary<string, T> dictionary)
+        {
+            var @struct = new Struct();
+
+            foreach (var pair in dictionary)
+            {
+                @struct.Fields.Add(pair.Key, pair.Value.ToProtobufValue());
+            }
+            
+            return @struct;
+        }
+
     }
 }

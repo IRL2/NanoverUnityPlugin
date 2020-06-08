@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using System;
+using System.Collections.Generic;
 using System.Threading;
-using JetBrains.Annotations;
-using Narupa.Protocol.Multiplayer;
 using System.Threading.Tasks;
-using Narupa.Grpc;
+using Google.Protobuf.WellKnownTypes;
+using JetBrains.Annotations;
 using Narupa.Grpc.Stream;
+using Narupa.Protocol.State;
 using Value = Google.Protobuf.WellKnownTypes.Value;
 
-namespace Narupa.Network
+namespace Narupa.Grpc.Multiplayer
 {
     /// <summary>
     /// Wraps a <see cref="Multiplayer.MultiplayerClient" /> and
@@ -18,7 +18,7 @@ namespace Narupa.Network
     /// over a <see cref="GrpcConnection" />.
     /// </summary>
     public class MultiplayerClient :
-        GrpcClient<Multiplayer.MultiplayerClient>
+        GrpcClient<State.StateClient>
     {
         // Chosen as an acceptable minimum rate that should ideally be 
         // explicitly increased.
@@ -27,127 +27,68 @@ namespace Narupa.Network
         public MultiplayerClient([NotNull] GrpcConnection connection) : base(connection)
         {
         }
-
+        
         /// <summary>
-        /// Requests a new player ID from the server.
-        /// </summary>
-        /// <remarks>
-        /// Corresponds to the CreatePlayer gRPC call.
-        /// </remarks>
-        public async Task<CreatePlayerResponse> CreatePlayer(string name)
-        {
-            var request = new CreatePlayerRequest
-            {
-                PlayerName = name,
-            };
-
-            return await Client.CreatePlayerAsync(request);
-        }
-
-        /// <summary>
-        /// Starts an <see cref="IncomingStream{ResourceValuesUpdate}" /> on 
+        /// Starts an <see cref="IncomingStream{StateUpdate}" /> on 
         /// which the server provides updates to the shared key/value store at 
         /// the requested time interval (in seconds).
         /// </summary>
         /// <remarks>
-        /// Corresponds to the SubscribeAllResourceValues gRPC call.
+        /// Corresponds to the SubscribeStateUpdates gRPC call.
         /// </remarks>
-        public IncomingStream<ResourceValuesUpdate> SubscribeAllResourceValues(float updateInterval = DefaultUpdateInterval,
-                                                                               CancellationToken externalToken = default)
+        public IncomingStream<StateUpdate> SubscribeStateUpdates(float updateInterval = DefaultUpdateInterval,
+                                                                 CancellationToken externalToken = default)
         {
-            var request = new SubscribeAllResourceValuesRequest
+            var request = new SubscribeStateUpdatesRequest
             {
                 UpdateInterval = updateInterval,
             };
 
-            return GetIncomingStream(Client.SubscribeAllResourceValues, request, externalToken);
+            return GetIncomingStream(Client.SubscribeStateUpdates, request, externalToken);
         }
-
-        /// <summary>
-        /// Attempts a change, on behalf of the given player, to the shared
-        /// key value store. This will fail if the key is locked by someone 
-        /// other than the player making the attempt.
-        /// </summary>
-        /// <remarks>
-        /// Corresponds to the SetResourceValueAsync gRPC call.
-        /// </remarks>
-        public async Task<bool> SetResourceValue(string playerId, string key, Value value)
+        
+        public async Task<bool> UpdateState(string token, Dictionary<string, object> updates, List<string> removals)
         {
-            var request = new SetResourceValueRequest
+            var request = new UpdateStateRequest()
             {
-                PlayerId = playerId,
-                ResourceId = key,
-                ResourceValue = value,
+                AccessToken = token,
+                Update = CreateStateUpdate(updates, removals)
             };
 
-            var response = await Client.SetResourceValueAsync(request);
+            var response = await Client.UpdateStateAsync(request);
 
             return response.Success;
         }
         
-        /// <summary>
-        /// Attempts to remove a key, on behalf of the given player, from the shared
-        /// key value store. This will fail if the key is locked by someone 
-        /// other than the player making the attempt.
-        /// </summary>
-        /// <remarks>
-        /// Corresponds to the RemoveResourceKeyAsync gRPC call.
-        /// </remarks>
-        public async Task<bool> RemoveResourceKey(string playerId, string key)
+        public async Task<bool> UpdateLocks(string token, IDictionary<string, float> toAcquire, IEnumerable<string> toRemove)
         {
-            var request = new RemoveResourceKeyRequest()
+            var request = new UpdateLocksRequest
             {
-                PlayerId = playerId,
-                ResourceId = key
+                AccessToken = token,
+                LockKeys = CreateLockUpdate(toAcquire, toRemove)
             };
 
-            var response = await Client.RemoveResourceKeyAsync(request);
+            var response = await Client.UpdateLocksAsync(request);
 
             return response.Success;
         }
 
-        /// <summary>
-        /// Attempts to lock, on behalf of the given player, a key in the 
-        /// shared key value store. This will fail if the key is locked by 
-        /// someone other than the player making the attempt.
-        /// </summary>
-        /// <remarks>
-        /// Corresponds to the AcquireResourceLockAsync gRPC call.
-        /// </remarks>
-        public async Task<bool> LockResource(string playerId, string key)
+        private Struct CreateLockUpdate(IDictionary<string, float> toAcquire, IEnumerable<string> toRelease)
         {
-            var request = new AcquireLockRequest
-            {
-                PlayerId = playerId,
-                ResourceId = key,
-            };
-
-            var response = await Client.AcquireResourceLockAsync(request, 
-                                                                 null, 
-                                                                 DateTime.UtcNow.AddSeconds(1));
-
-            return response.Success;
+            var str = toAcquire.ToProtobufStruct();
+            foreach(var releasedkey in toRelease)
+                str.Fields[releasedkey] = Value.ForNull();
+            return str;
         }
 
-        /// <summary>
-        /// Attempts, on behalf of the given player, to unlock a key in the
-        /// shared key value store. This will fail if the key is not locked by
-        /// that player.
-        /// </summary>
-        /// <remarks>
-        /// Corresponds to the ReleaseResourceLockAsync gRPC call.
-        /// </remarks>
-        public async Task<bool> ReleaseResource(string playerId, string key)
+        private static StateUpdate CreateStateUpdate(IDictionary<string, object> updates, IEnumerable<string> removals)
         {
-            var request = new ReleaseLockRequest
-            {
-                PlayerId = playerId,
-                ResourceId = key,
-            };
-
-            var response = await Client.ReleaseResourceLockAsync(request);
-
-            return response.Success;
+            var update = new StateUpdate();
+            var updatesAsStruct = updates.ToProtobufStruct();
+            update.ChangedKeys = updatesAsStruct;
+            foreach (var removal in removals)
+                update.ChangedKeys.Fields[removal] = Value.ForNull();
+            return update;
         }
     }
 }

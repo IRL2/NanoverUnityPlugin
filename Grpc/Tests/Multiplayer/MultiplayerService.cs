@@ -1,164 +1,133 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Narupa.Core;
 using Narupa.Core.Collections;
-using Narupa.Protocol.Multiplayer;
+using Narupa.Protocol.State;
 using UnityEngine;
-using static Narupa.Protocol.Multiplayer.Multiplayer;
 
 namespace Narupa.Grpc.Tests.Multiplayer
 {
-    internal class MultiplayerService : MultiplayerBase, IBindableService
+    public class MultiplayerService : State.StateBase, IBindableService
     {
-        private ObservableDictionary<string, object> resources
-            = new ObservableDictionary<string, object>();
+        private ObservableDictionary<string, Value> resources
+            = new ObservableDictionary<string, Value>();
 
         private Dictionary<string, string> locks = new Dictionary<string, string>();
 
-        public IDictionary<string, object> Resources => resources;
+        public IDictionary<string, Value> Resources => resources;
 
         public IReadOnlyDictionary<string, string> Locks => locks;
 
-        public async Task<bool> AcquireLock(string playerId, string resourceKey)
-        {
-            if (locks.ContainsKey(resourceKey))
-                return false;
-
-            locks[resourceKey] = playerId;
-            return true;
-        }
-
-        public async Task<bool> ReleaseLock(string playerId, string resourceKey)
-        {
-            if (!locks.ContainsKey(resourceKey) || locks[resourceKey] != playerId)
-                return false;
-            locks.Remove(resourceKey);
-            return true;
-        }
-
-        private async Task<bool> RemoveValue(string playerId, string resourceKey)
-        {
-            if (locks.ContainsKey(resourceKey) && locks[resourceKey] != playerId)
-                return false;
-            resources.Remove(resourceKey);
-            return true;
-        }
-
-        private async Task<bool> SetValue(string playerId, string resourceKey, object value)
-        {
-            if (locks.ContainsKey(resourceKey) && locks[resourceKey] != playerId)
-                return false;
-            resources[resourceKey] = value;
-            return true;
-        }
-        
-        public bool SetValueDirect(string resourceKey, object value)
-        {
-            if (locks.ContainsKey(resourceKey))
-                return false;
-            resources[resourceKey] = value;
-            return true;
-        }
-
-        public override async Task<ResourceRequestResponse> AcquireResourceLock(
-            AcquireLockRequest request,
+        public override async Task<UpdateLocksResponse> UpdateLocks(
+            UpdateLocksRequest request,
             ServerCallContext context)
         {
-            var success = await AcquireLock(request.PlayerId, request.ResourceId);
-            return new ResourceRequestResponse
+            var token = request.AccessToken;
+            Debug.Log($"Lock with {token}");
+            
+            foreach (var requestKey in request.LockKeys.Fields.Keys)
+                if (locks.ContainsKey(requestKey) && locks[requestKey] != token)
+                    return new UpdateLocksResponse
+                    {
+                        Success = false
+                    };
+            foreach (var (key, lockTime) in request.LockKeys.Fields)
             {
-                Success = success
+                if (lockTime.KindCase == Value.KindOneofCase.NullValue)
+                {
+                    locks.Remove(key);
+                }
+                else
+                {
+                    locks[key] = token;
+                }
+            }
+
+            return new UpdateLocksResponse
+            {
+                Success = true
             };
         }
 
-        public override async Task<ResourceRequestResponse> ReleaseResourceLock(
-            ReleaseLockRequest request,
+        public override async Task<UpdateStateResponse> UpdateState(
+            UpdateStateRequest request,
             ServerCallContext context)
         {
-            var success = await ReleaseLock(request.PlayerId, request.ResourceId);
-            return new ResourceRequestResponse
+            var token = request.AccessToken;
+            foreach (var requestKey in request.Update.ChangedKeys.Fields.Keys)
+                if (locks.ContainsKey(requestKey) && locks[requestKey] != token)
+                    return new UpdateStateResponse
+                    {
+                        Success = false
+                    };
+            foreach (var (key, value) in request.Update.ChangedKeys.Fields)
             {
-                Success = success
+                if (value.KindCase == Value.KindOneofCase.NullValue)
+                {
+                    resources.Remove(key);
+                }
+                else
+                {
+                    resources[key] = value;
+                }
+            }
+
+            return new UpdateStateResponse
+            {
+                Success = true
             };
         }
 
-        public override async Task<ResourceRequestResponse> RemoveResourceKey(
-            RemoveResourceKeyRequest request,
-            ServerCallContext context)
+        public override async Task SubscribeStateUpdates(SubscribeStateUpdatesRequest request,
+                                                         IServerStreamWriter<StateUpdate>
+                                                             responseStream,
+                                                         ServerCallContext context)
         {
-            var success = await RemoveValue(request.PlayerId, request.ResourceId);
-            return new ResourceRequestResponse
+            var millisecondTiming = (int) (request.UpdateInterval * 1000);
+            var update = new StateUpdate
             {
-                Success = success
-            };
-        }
-
-        public override async Task<ResourceRequestResponse> SetResourceValue(
-            SetResourceValueRequest request,
-            ServerCallContext context)
-        {
-            var success = await SetValue(request.PlayerId, request.ResourceId,
-                                   request.ResourceValue.ToObject());
-            return new ResourceRequestResponse
-            {
-                Success = success
-            };
-        }
-
-        public override async Task SubscribeAllResourceValues(
-            SubscribeAllResourceValuesRequest request,
-            IServerStreamWriter<ResourceValuesUpdate>
-                responseStream,
-            ServerCallContext context)
-        {
-            var update = new ResourceValuesUpdate
-            {
-                ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+                ChangedKeys = new Struct()
             };
 
             void ResourcesOnCollectionChanged(object sender,
-                                                    NotifyCollectionChangedEventArgs e)
+                                              NotifyCollectionChangedEventArgs e)
             {
                 var (changes, removals) = e.AsChangesAndRemovals<string>();
 
                 foreach (var change in changes)
-                    update.ResourceValueChanges.Fields[change] = resources[change].ToProtobufValue();
+                    update.ChangedKeys.Fields[change] = resources[change];
                 foreach (var removal in removals)
-                    update.ResourceValueRemovals.Add(removal);
+                    update.ChangedKeys.Fields[removal] = Value.ForNull();
             }
 
             resources.CollectionChanged += ResourcesOnCollectionChanged;
             while (true)
             {
-                await Task.Delay(10);
-                if (update.ResourceValueChanges.Fields.Any() || update.ResourceValueRemovals.Any())
+                await Task.Delay(millisecondTiming);
+                if (update.ChangedKeys.Fields.Any())
                 {
                     var toSend = update;
-                    update = new ResourceValuesUpdate
+                    update = new StateUpdate
                     {
-                        ResourceValueChanges = new Google.Protobuf.WellKnownTypes.Struct()
+                        ChangedKeys = new Struct()
                     };
                     await responseStream.WriteAsync(toSend);
                 }
             }
         }
 
-        private int playerCount = 1;
-
-        public override async Task<CreatePlayerResponse> CreatePlayer(CreatePlayerRequest request, ServerCallContext context)
-        {
-            return new CreatePlayerResponse
-            {
-                PlayerId = $"player{playerCount++}"
-            };
-        }
-
         public ServerServiceDefinition BindService()
         {
-            return Narupa.Protocol.Multiplayer.Multiplayer.BindService(this);
+            return State.BindService(this);
+        }
+
+        public void SetValueDirect(string key, object value)
+        {
+            this.resources[key] = value.ToProtobufValue();
         }
     }
 }

@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Narupa.Grpc.Multiplayer;
 using Narupa.Session;
 using Narupa.Testing.Async;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace Narupa.Grpc.Tests.Multiplayer
@@ -32,7 +30,6 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
             connection = new GrpcConnection("localhost", server.Port);
             session.OpenClient(connection);
-            await session.JoinMultiplayer("alex");
 
             await Task.Delay(500);
         }
@@ -76,7 +73,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
         public async Task GetResource_InitialValue()
         {
             service.SetValueDirect(Key, "my_value");
-            await Task.Delay(50);
+            await Task.Delay(500);
             var resource = GetResource();
             Assert.AreEqual("my_value", resource.Value);
         }
@@ -98,14 +95,14 @@ namespace Narupa.Grpc.Tests.Multiplayer
         {
             var resource = GetResource();
             service.SetValueDirect(Key, "old_value");
-            await Task.Delay(250);
+            await Task.Delay(500);
             
             // Initially, resource and local share state are "old_value"
             Assert.AreEqual("old_value", resource.Value);
             Assert.AreEqual("old_value", session.GetSharedState(Key));
             
             // Introduce 500 ms latency to resource stream
-            server.Latency = 500;
+            server.StreamLatency = 500;
             
             // Set the resource value to "new_value". Latency means local shared state is
             // out of date

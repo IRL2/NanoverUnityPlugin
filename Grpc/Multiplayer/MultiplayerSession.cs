@@ -3,25 +3,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Narupa.Protocol.Multiplayer;
-using Narupa.Network;
-using UnityEngine;
-using Avatar = Narupa.Protocol.Multiplayer.Avatar;
 using System.Linq;
-using Google.Protobuf.Collections;
+using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
-using Grpc.Core;
 using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
-using Narupa.Grpc;
-using Narupa.Grpc.Multiplayer;
 using Narupa.Grpc.Stream;
 using Narupa.Grpc.Trajectory;
-using UnityEngine.Profiling;
+using Narupa.Protocol.State;
+using UnityEngine;
 
-namespace Narupa.Session
+namespace Narupa.Grpc.Multiplayer
 {
     /// <summary>
     /// Manages the state of a single user engaging in multiplayer. Tracks
@@ -31,7 +24,9 @@ namespace Narupa.Session
     public sealed class MultiplayerSession : IDisposable
     {
         public const string SimulationPoseKey = "scene";
-        
+
+        public string AccessToken { get; set; }
+
         public MultiplayerAvatars Avatars { get; }
 
         public MultiplayerSession()
@@ -60,21 +55,6 @@ namespace Narupa.Session
         public bool IsOpen => client != null;
 
         /// <summary>
-        /// Has this session created a user?
-        /// </summary>
-        public bool HasPlayer => PlayerId != null;
-
-        /// <summary>
-        /// Username of the current player, if any.
-        /// </summary>
-        public string PlayerName { get; private set; }
-
-        /// <summary>
-        /// ID of the current player, if any.
-        /// </summary>
-        public string PlayerId { get; private set; } = null;
-
-        /// <summary>
         /// How many milliseconds to put between sending our requested value
         /// changes.
         /// </summary>
@@ -82,7 +62,7 @@ namespace Narupa.Session
 
         private MultiplayerClient client;
 
-        private IncomingStream<ResourceValuesUpdate> IncomingValueUpdates { get; set; }
+        private IncomingStream<StateUpdate> IncomingValueUpdates { get; set; }
 
         private Dictionary<string, object> pendingValues
             = new Dictionary<string, object>();
@@ -119,7 +99,7 @@ namespace Narupa.Session
 
         private int lastReceivedIndex = -1;
 
-        private string UpdateIndexKey => $"update.index.{PlayerId}";
+        private string UpdateIndexKey => $"update.index.{AccessToken}";
 
         /// <summary>
         /// Connect to a Multiplayer service over the given connection. 
@@ -130,12 +110,29 @@ namespace Narupa.Session
             CloseClient();
 
             client = new MultiplayerClient(connection);
+            AccessToken = Guid.NewGuid().ToString();
 
             if (valueFlushingTask == null)
             {
                 valueFlushingTask = CallbackInterval(FlushValues, ValuePublishInterval);
                 valueFlushingTask.AwaitInBackground();
             }
+            
+            IncomingValueUpdates = client.SubscribeStateUpdates();
+            BackgroundIncomingStreamReceiver<StateUpdate>.Start(IncomingValueUpdates,
+                                                                OnResourceValuesUpdateReceived,
+                                                                MergeResourceUpdates);
+
+            void MergeResourceUpdates(StateUpdate dest, StateUpdate src)
+            {
+                if (dest.ChangedKeys == null)
+                    dest.ChangedKeys = new Struct();
+
+                foreach (var (key, value) in src.ChangedKeys.Fields)
+                    dest.ChangedKeys.Fields[key] = value;
+            }
+
+            MultiplayerJoined?.Invoke();
         }
 
         /// <summary>
@@ -149,50 +146,14 @@ namespace Narupa.Session
             client?.CloseAndCancelAllSubscriptions();
             client?.Dispose();
             client = null;
-
-            PlayerName = null;
-            PlayerId = null;
+            
+            AccessToken = null;
 
             ClearSharedState();
             pendingValues.Clear();
             pendingRemovals.Clear();
         }
 
-        /// <summary>
-        /// Create a new multiplayer with the given username, subscribe avatar 
-        /// and value updates, and begin publishing our avatar.
-        /// </summary>
-        public async Task JoinMultiplayer(string playerName)
-        {
-            if (HasPlayer)
-                throw new InvalidOperationException($"Multiplayer already joined as {PlayerName}");
-
-            var response = await client.CreatePlayer(playerName);
-
-            PlayerName = playerName;
-            PlayerId = response.PlayerId;
-
-            IncomingValueUpdates = client.SubscribeAllResourceValues();
-            BackgroundIncomingStreamReceiver<ResourceValuesUpdate>.Start(IncomingValueUpdates,
-                OnResourceValuesUpdateReceived,
-                MergeResourceUpdates);
-
-            void MergeResourceUpdates(ResourceValuesUpdate dest, ResourceValuesUpdate src)
-            {
-                if (dest.ResourceValueChanges == null)
-                    dest.ResourceValueChanges = new Struct();
-
-                foreach (var (key, value) in src.ResourceValueChanges.Fields)
-                    dest.ResourceValueChanges.Fields[key] = value;
-                
-                foreach(var removal in src.ResourceValueRemovals)
-                    if(!dest.ResourceValueRemovals.Contains(removal))
-                        dest.ResourceValueRemovals.Add(removal);
-            }
-
-            MultiplayerJoined?.Invoke();
-        }
-        
         /// <summary>
         /// Set the given key in the shared state dictionary, which will be
         /// sent to the server according in the future according to the publish 
@@ -229,7 +190,11 @@ namespace Narupa.Session
         /// </summary>
         public async Task<bool> LockResource(string id)
         {
-            return await client.LockResource(PlayerId, id);
+            return await client.UpdateLocks(AccessToken, new Dictionary<string, float>
+                                            {
+                                                [id] = 1f
+                                            },
+                                            new string[0]);
         }
 
         /// <summary>
@@ -237,7 +202,10 @@ namespace Narupa.Session
         /// </summary>
         public async Task<bool> ReleaseResource(string id)
         {
-            return await client.ReleaseResource(PlayerId, id);
+            return await client.UpdateLocks(AccessToken, new Dictionary<string, float>(), new string[]
+            {
+                id
+            });
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
@@ -266,63 +234,50 @@ namespace Narupa.Session
             }
         }
 
-        private void OnResourceValuesUpdateReceived(ResourceValuesUpdate update)
+        private void OnResourceValuesUpdateReceived(StateUpdate update)
         {
             ReceiveUpdate?.Invoke();
             
-            if (update.ResourceValueChanges != null)
+            if (update.ChangedKeys.Fields.ContainsKey(UpdateIndexKey))
             {
-                if (update.ResourceValueChanges.Fields.ContainsKey(UpdateIndexKey))
-                {
-                    lastReceivedIndex = (int) update.ResourceValueChanges
-                                                    .Fields[UpdateIndexKey]
-                                                    .NumberValue;
-                }
-                
-                foreach (var pair in update.ResourceValueChanges.Fields)
-                {
-                    var value = pair.Value.ToObject();
-                    SharedStateDictionary[pair.Key] = value;
-                    SharedStateDictionaryKeyUpdated?.Invoke(pair.Key, value);
-                }
+                lastReceivedIndex = (int) update.ChangedKeys
+                                                .Fields[UpdateIndexKey]
+                                                .NumberValue;
             }
 
-            if (update.ResourceValueRemovals != null)
+            foreach (var (key, value1) in update.ChangedKeys.Fields)
             {
-                foreach (var key in update.ResourceValueRemovals)
+                var value = value1.ToObject();
+                if (value == null)
                 {
                     SharedStateDictionary.Remove(key);
                     SharedStateDictionaryKeyRemoved?.Invoke(key);
+                }
+                else
+                {
+                    SharedStateDictionary[key] = value;
+                    SharedStateDictionaryKeyUpdated?.Invoke(key, value);
                 }
             }
         }
 
         private void FlushValues()
         {
-            if (!IsOpen || !HasPlayer)
+            if (!IsOpen)
                 return;
-            
-            BeforeFlushChanges?.Invoke();
 
-            foreach (var pair in pendingValues)
+            if (pendingValues.Any() || pendingRemovals.Any())
             {
-                client.SetResourceValue(PlayerId, pair.Key, pair.Value.ToProtobufValue())
-                      .AwaitInBackgroundIgnoreCancellation();
-            }
-            
-            foreach (var key in pendingRemovals)
-            {
-                client.RemoveResourceKey(PlayerId, key)
-                      .AwaitInBackgroundIgnoreCancellation();
-            }
-            
-            client.SetResourceValue(PlayerId, UpdateIndexKey, nextUpdateIndex.ToProtobufValue())
-                  .AwaitInBackgroundIgnoreCancellation();
+                pendingValues[UpdateIndexKey] = nextUpdateIndex;
 
-            nextUpdateIndex++;
-            
-            pendingValues.Clear();
-            pendingRemovals.Clear();
+                client.UpdateState(AccessToken, pendingValues, pendingRemovals)
+                      .AwaitInBackgroundIgnoreCancellation();
+
+                pendingValues.Clear();
+                pendingRemovals.Clear();
+
+                nextUpdateIndex++;
+            }
         }
 
         private static async Task CallbackInterval(Action callback, int interval)
