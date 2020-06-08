@@ -53,9 +53,9 @@ namespace Narupa.Grpc.Trajectory
                 
                 if (hasReceived)
                 {
+                    hasReceived = false;
                     var newReceivedData = receivedData;
                     receivedData = new TResponse();
-                    hasReceived = false;
                     Callback?.Invoke(newReceivedData);
                 }
 
