@@ -73,7 +73,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
         public async Task GetResource_InitialValue()
         {
             service.SetValueDirect(Key, "my_value");
-            await Task.Delay(50);
+            await Task.Delay(500);
             var resource = GetResource();
             Assert.AreEqual("my_value", resource.Value);
         }
@@ -95,7 +95,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
         {
             var resource = GetResource();
             service.SetValueDirect(Key, "old_value");
-            await Task.Delay(250);
+            await Task.Delay(500);
             
             // Initially, resource and local share state are "old_value"
             Assert.AreEqual("old_value", resource.Value);
