@@ -27,7 +27,6 @@ namespace Narupa.Grpc.Trajectory
                 receivedData = response;
             else
                 Merge(receivedData, response);
-            hasReceived = true;
         }
 
         private IncomingStream<TResponse> stream;
@@ -54,20 +53,17 @@ namespace Narupa.Grpc.Trajectory
                 if (stream.IsCancelled)
                     return;
                 
-                if (hasReceived)
+                if (receivedData != null)
                 {
                     var newReceivedData = receivedData;
                     receivedData = null;
-                    hasReceived = false;
-                    if(newReceivedData != null)
-                        Callback?.Invoke(newReceivedData);
+                    Callback?.Invoke(newReceivedData);
                 }
 
                 await Task.Delay(1, stream.GetCancellationToken());
             }
         }
         
-        private bool hasReceived = true;
         private TResponse receivedData = null;
 
         private Action<TResponse> Callback;
