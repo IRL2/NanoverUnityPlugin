@@ -71,8 +71,6 @@ namespace Narupa.Grpc.Trajectory
             void Merge(GetFrameResponse dest, GetFrameResponse toMerge)
             {
                 dest.FrameIndex = toMerge.FrameIndex;
-                if (dest.Frame == null)
-                    dest.Frame = new FrameData();
                 foreach (var (key, array) in toMerge.Frame.Arrays)
                     dest.Frame.Arrays[key] = array;
                 foreach (var (key, value) in toMerge.Frame.Values)
