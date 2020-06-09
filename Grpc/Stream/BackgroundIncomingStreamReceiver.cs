@@ -14,7 +14,7 @@ namespace Narupa.Grpc.Trajectory
     /// concurrent data together, and a task which runs on the main thread and invokes a callback
     /// on this data.
     /// </summary>
-    public class BackgroundIncomingStreamReceiver<TResponse> where TResponse : new()
+    public class BackgroundIncomingStreamReceiver<TResponse> where TResponse : class
     {
         public static void Start(IncomingStream<TResponse> stream, Action<TResponse> callback, Action<TResponse, TResponse> merge)
         {
@@ -23,7 +23,10 @@ namespace Narupa.Grpc.Trajectory
         
         private void ReceiveOnBackgroundThread(TResponse response)
         {
-            Merge(receivedData, response);
+            if (receivedData == null)
+                receivedData = response;
+            else
+                Merge(receivedData, response);
             hasReceived = true;
         }
 
@@ -54,9 +57,10 @@ namespace Narupa.Grpc.Trajectory
                 if (hasReceived)
                 {
                     var newReceivedData = receivedData;
-                    receivedData = new TResponse();
+                    receivedData = null;
                     hasReceived = false;
-                    Callback?.Invoke(newReceivedData);
+                    if(newReceivedData != null)
+                        Callback?.Invoke(newReceivedData);
                 }
 
                 await Task.Delay(1, stream.GetCancellationToken());
@@ -64,7 +68,7 @@ namespace Narupa.Grpc.Trajectory
         }
         
         private bool hasReceived = true;
-        private TResponse receivedData = new TResponse();
+        private TResponse receivedData = null;
 
         private Action<TResponse> Callback;
         private Action<TResponse, TResponse> Merge;

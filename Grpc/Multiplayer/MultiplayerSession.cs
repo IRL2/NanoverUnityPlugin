@@ -121,9 +121,6 @@ namespace Narupa.Grpc.Multiplayer
 
             void MergeResourceUpdates(StateUpdate dest, StateUpdate src)
             {
-                if (dest.ChangedKeys == null)
-                    dest.ChangedKeys = new Struct();
-
                 foreach (var (key, value) in src.ChangedKeys.Fields)
                     dest.ChangedKeys.Fields[key] = value;
             }
