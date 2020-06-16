@@ -154,9 +154,9 @@ namespace Narupa.Testing.Async
                     test();
                     return;
                 }
-                catch (AssertionException exception)
+                catch (Exception exception)
                 {
-                    // Ignore assertions
+                    // Ignore exceptions
                 }
 
                 time += interval;
