@@ -88,6 +88,7 @@ namespace Narupa.Grpc.Multiplayer
         /// <exception cref="KeyNotFoundException">The key is not in the collection.</exception>
         public TItem GetValue(string key)
         {
+            key = ValidateKey(key);
             if (localRemovals.ContainsKey(key))
                 throw new KeyNotFoundException($"Key removed: {key}");
             if (localChanges.ContainsKey(key))
@@ -134,6 +135,7 @@ namespace Narupa.Grpc.Multiplayer
         /// <param name="value">The value to add to the shared state under the given key.</param>
         public void UpdateValue(string key, TItem value)
         {
+            key = ValidateKey(key);
             if (localRemovals.ContainsKey(key))
                 localRemovals.Remove(key);
             localChanges[key] = (Multiplayer.NextUpdateIndex, value);
@@ -147,6 +149,7 @@ namespace Narupa.Grpc.Multiplayer
         /// <param name="key">The key to remove from the dictionary.</param>
         public void RemoveValue(string key)
         {
+            key = ValidateKey(key);
             if (!multiplayerState.ContainsKey(key) && !localChanges.ContainsKey(key))
                 return;
             if (localChanges.ContainsKey(key))
@@ -219,6 +222,13 @@ namespace Narupa.Grpc.Multiplayer
                 KeyRemoved?.Invoke(key);
             }
             localRemovals.Remove(key);
+        }
+
+        private string ValidateKey(string key)
+        {
+            if (!key.StartsWith(KeyPrefix))
+                return KeyPrefix + key;
+            return key;
         }
     }
 }

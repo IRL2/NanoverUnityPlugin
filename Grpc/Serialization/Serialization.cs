@@ -14,7 +14,8 @@ namespace Narupa.Grpc.Serialization
         {
             Converters =
             {
-                new Vector3Converter()
+                new Vector3Converter(),
+                new QuaternionConverter()
             }
         };
         
