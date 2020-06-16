@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Narupa.Grpc.Multiplayer;
-using Narupa.Session;
 using Narupa.Testing.Async;
 using NSubstitute;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace Narupa.Grpc.Tests.Multiplayer
 {

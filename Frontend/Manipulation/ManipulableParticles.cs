@@ -2,8 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using Narupa.Core.Math;
-using Narupa.Session;
+using Narupa.Grpc.Interactive;
 using UnityEngine;
 
 namespace Narupa.Frontend.Manipulation
@@ -20,7 +21,7 @@ namespace Narupa.Frontend.Manipulation
         public float ForceScale { get; set; } = 100f;
 
         private readonly Transform transform;
-        private readonly ImdSession imdSession;
+        private readonly Interactions interactions;
 
         public IInteractableParticles InteractableParticles { get; set; }
 
@@ -28,11 +29,11 @@ namespace Narupa.Frontend.Manipulation
             = new HashSet<ActiveParticleGrab>();
 
         public ManipulableParticles(Transform transform,
-                                    ImdSession imdSession,
+                                    Interactions interactions,
                                     IInteractableParticles interactableParticles)
         {
             this.transform = transform;
-            this.imdSession = imdSession;
+            this.interactions = interactions;
             this.InteractableParticles = interactableParticles;
         }
 
@@ -63,17 +64,21 @@ namespace Narupa.Frontend.Manipulation
         {
             var position = transform.InverseTransformPoint(grab.GrabPosition);
 
-            imdSession.SetInteraction(grab.Id,
-                                      position,
-                                      forceScale: ForceScale,
-                                      particles: grab.ParticleIndices,
-                                      properties: grab.Properties);
+            grab.Properties.Scale = ForceScale;
+            grab.Properties.InteractionType = "spring";
+            
+            interactions.UpdateValue(grab.Id, new Interaction()
+            {
+                Particles = grab.ParticleIndices.ToList(),
+                Position = position,
+                Properties = grab.Properties
+            });
         }
 
         private void EndParticleGrab(ActiveParticleGrab grab)
         {
             activeGrabs.Remove(grab);
-            imdSession.UnsetInteraction(grab.Id);
+            interactions.RemoveValue(grab.Id);
         }
     }
 }

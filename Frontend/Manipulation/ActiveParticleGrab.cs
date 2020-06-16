@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Narupa.Core.Math;
+using Narupa.Grpc.Interactive;
 using UnityEngine;
 
 namespace Narupa.Frontend.Manipulation
@@ -33,7 +34,7 @@ namespace Narupa.Frontend.Manipulation
         /// <summary>
         /// A set of properties associated with this manipulation.
         /// </summary>
-        public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
+        public Interaction.InteractionProperties Properties { get; } = new Interaction.InteractionProperties();
 
         /// <summary>
         /// Callback for when the grab position is updated.
@@ -57,13 +58,6 @@ namespace Narupa.Frontend.Manipulation
         public void EndManipulation()
         {
             ManipulationEnded?.Invoke();
-        }
-
-        private const string KeyResetVelocities = "reset_velocities";
-
-        public bool ResetVelocities
-        {
-            set => Properties[KeyResetVelocities] = value;
         }
     }
 }
