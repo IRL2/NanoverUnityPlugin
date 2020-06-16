@@ -200,6 +200,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             });
             await AsyncAssert.PassesWithinTimeout(() =>
             {
+                Assert.IsTrue(collection.ContainsKey("item.abc"));
                 Assert.AreEqual("old_value", collection.GetValue("item.abc").NamedField);
             });
             
@@ -210,7 +211,19 @@ namespace Narupa.Grpc.Tests.Multiplayer
             
             await AsyncAssert.PassesWithinTimeout(() =>
             {
+                Assert.IsTrue(collection.ContainsKey("item.abc"));
                 Assert.AreEqual("new_value", collection.GetValue("item.abc").NamedField);
+            });
+        }
+        
+        [AsyncTest]
+        public async Task ServerSetInvalidItem()
+        {
+            await ServerInsertItem();
+            service.SetValueDirect("item.abc", "invalid");
+            await AsyncAssert.PassesWithinTimeout(() =>
+            {
+                Assert.AreEqual(0, collection.Values.Count());
             });
         }
     }

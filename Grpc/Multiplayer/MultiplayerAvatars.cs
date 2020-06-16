@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Narupa.Grpc.Multiplayer
 {
     /// <summary>
-    /// Part of the <see cref="MultiplayerSession"/> who is in charge of managing multiplayer
-    /// avatars.
+    /// A collection of multiplayer avatars stored in the shared state.
     /// </summary>
     public class MultiplayerAvatars : MultiplayerCollection<MultiplayerAvatar>
     {
@@ -23,8 +21,10 @@ namespace Narupa.Grpc.Multiplayer
             };
         }
 
+        /// <inheritdoc cref="MultiplayerCollection{TItem}.KeyPrefix"/>
         protected override string KeyPrefix => "avatar.";
         
+        /// <inheritdoc cref="MultiplayerCollection{TItem}.ParseItem"/>
         protected override bool ParseItem(string key, object value, out MultiplayerAvatar parsed)
         {
             if (value is Dictionary<string, object> dict)
@@ -38,6 +38,7 @@ namespace Narupa.Grpc.Multiplayer
             return false;
         }
 
+        /// <inheritdoc cref="MultiplayerCollection{TItem}.SerializeItem"/>
         protected override object SerializeItem(MultiplayerAvatar item)
         {
             return Serialization.Serialization.ToDataStructure(item);
