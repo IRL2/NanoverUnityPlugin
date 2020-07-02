@@ -20,11 +20,8 @@ namespace Narupa.Grpc.Tests.Interactive
                     8,
                     11
                 },
-                Properties = new Interaction.InteractionProperties
-                {
-                    MassWeighted = false,
-                    InteractionType = "spring"
-                }
+                MassWeighted = false,
+                InteractionType = "spring"
             };
 
             var serialized = Serialization.Serialization.ToDataStructure(interaction);
@@ -33,8 +30,8 @@ namespace Narupa.Grpc.Tests.Interactive
             
             Assert.AreEqual(interaction.Position, deserialized.Position);
             Assert.AreEqual(interaction.Particles, deserialized.Particles);
-            Assert.AreEqual(interaction.Properties.MassWeighted, deserialized.Properties.MassWeighted);
-            Assert.AreEqual(interaction.Properties.InteractionType, deserialized.Properties.InteractionType);
+            Assert.AreEqual(interaction.MassWeighted, deserialized.MassWeighted);
+            Assert.AreEqual(interaction.InteractionType, deserialized.InteractionType);
         }
     }
 }

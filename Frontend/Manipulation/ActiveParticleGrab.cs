@@ -32,11 +32,6 @@ namespace Narupa.Frontend.Manipulation
         public Vector3 GrabPosition { get; private set; }
 
         /// <summary>
-        /// A set of properties associated with this manipulation.
-        /// </summary>
-        public Interaction.InteractionProperties Properties { get; } = new Interaction.InteractionProperties();
-
-        /// <summary>
         /// Callback for when the grab position is updated.
         /// </summary>
         public event Action ParticleGrabUpdated;
