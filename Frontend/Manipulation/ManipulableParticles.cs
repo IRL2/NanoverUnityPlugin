@@ -64,12 +64,14 @@ namespace Narupa.Frontend.Manipulation
         {
             var position = transform.InverseTransformPoint(grab.GrabPosition);
 
+            grab.Properties.Scale = ForceScale;
+            grab.Properties.InteractionType = "spring";
+            
             interactions.UpdateValue(grab.Id, new Interaction()
             {
                 Particles = grab.ParticleIndices.ToList(),
                 Position = position,
-                Scale = ForceScale,
-                InteractionType = "spring"
+                Properties = grab.Properties
             });
         }
 
