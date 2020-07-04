@@ -24,52 +24,39 @@ namespace Narupa.Grpc.Interactive
         public List<int> Particles;
 
         /// <summary>
-        /// Properties of the interaction.
+        /// The interaction type, such as 'string' or 'gaussian'.
         /// </summary>
-        [DataMember(Name = "properties")]
-        public InteractionProperties Properties = new InteractionProperties();
+        [DataMember(Name = "interaction_type")]
+        public string InteractionType = "gaussian";
 
         /// <summary>
-        /// A set of properties describing an iMD interaction.
+        /// The scale of the force.
         /// </summary>
-        [DataContract]
-        public class InteractionProperties
-        {
-            /// <summary>
-            /// The interaction type, such as 'string' or 'gaussian'.
-            /// </summary>
-            [DataMember(Name = "type")]
-            public string InteractionType = "gaussian";
+        [DataMember(Name = "scale")]
+        public float Scale = 1f;
 
-            /// <summary>
-            /// The scale of the force.
-            /// </summary>
-            [DataMember(Name = "scale")]
-            public float Scale = 1f;
+        /// <summary>
+        /// Should this interaction be mass weighted?
+        /// </summary>
+        [DataMember(Name = "mass_weighted")]
+        public bool MassWeighted = true;
 
-            /// <summary>
-            /// Should this interaction be mass weighted?
-            /// </summary>
-            [DataMember(Name = "mass_weighted")]
-            public bool MassWeighted = true;
-
-            /// <summary>
-            /// Should this interaction reset velocities after being applied?
-            /// </summary>
-            [DataMember(Name = "reset_velocities")]
-            public bool ResetVelocities = false;
+        /// <summary>
+        /// Should this interaction reset velocities after being applied?
+        /// </summary>
+        [DataMember(Name = "reset_velocities")]
+        public bool ResetVelocities = false;
             
-            /// <summary>
-            /// The maximum force asserted by this interaction.
-            /// </summary>
-            [DataMember(Name = "max_force")]
-            public float MaxForce = float.PositiveInfinity;
+        /// <summary>
+        /// The maximum force asserted by this interaction.
+        /// </summary>
+        [DataMember(Name = "max_force")]
+        public float MaxForce = float.PositiveInfinity;
             
-            /// <summary>
-            /// Arbitrary key-value data associated with this interaction.
-            /// </summary>
-            [JsonExtensionData]
-            public Dictionary<string, object> Other = new Dictionary<string, object>();
-        }
+        /// <summary>
+        /// Arbitrary key-value data associated with this interaction.
+        /// </summary>
+        [JsonExtensionData]
+        public Dictionary<string, object> Other = new Dictionary<string, object>();
     }
 }

@@ -34,7 +34,7 @@ namespace Narupa.Frontend.Manipulation
         /// <summary>
         /// A set of properties associated with this manipulation.
         /// </summary>
-        public Interaction.InteractionProperties Properties { get; } = new Interaction.InteractionProperties();
+        public bool ResetVelocities { get; set; } = false;
 
         /// <summary>
         /// Callback for when the grab position is updated.
