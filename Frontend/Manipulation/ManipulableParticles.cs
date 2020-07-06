@@ -21,7 +21,7 @@ namespace Narupa.Frontend.Manipulation
         public float ForceScale { get; set; } = 100f;
 
         private readonly Transform transform;
-        private readonly Interactions interactions;
+        private readonly ParticleInteractionCollection interactions;
 
         public IInteractableParticles InteractableParticles { get; set; }
 
@@ -29,7 +29,7 @@ namespace Narupa.Frontend.Manipulation
             = new HashSet<ActiveParticleGrab>();
 
         public ManipulableParticles(Transform transform,
-                                    Interactions interactions,
+                                    ParticleInteractionCollection interactions,
                                     IInteractableParticles interactableParticles)
         {
             this.transform = transform;
@@ -64,7 +64,7 @@ namespace Narupa.Frontend.Manipulation
         {
             var position = transform.InverseTransformPoint(grab.GrabPosition);
 
-            interactions.UpdateValue(grab.Id, new Interaction()
+            interactions.UpdateValue(grab.Id, new ParticleInteraction()
             {
                 Particles = grab.ParticleIndices.ToList(),
                 Position = position,

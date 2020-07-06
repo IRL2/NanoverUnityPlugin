@@ -10,7 +10,7 @@ namespace Narupa.Grpc.Tests.Interactive
         [Test]
         public void SerializeInteraction()
         {
-            var interaction = new Interaction()
+            var interaction = new ParticleInteraction()
             {
                 Position = new Vector3(1f, 0.6f, -2.1f),
                 Particles = new List<int>
@@ -26,7 +26,7 @@ namespace Narupa.Grpc.Tests.Interactive
 
             var serialized = Serialization.Serialization.ToDataStructure(interaction);
             var deserialized =
-                Serialization.Serialization.FromDataStructure<Interaction>(serialized);
+                Serialization.Serialization.FromDataStructure<ParticleInteraction>(serialized);
             
             Assert.AreEqual(interaction.Position, deserialized.Position);
             Assert.AreEqual(interaction.Particles, deserialized.Particles);

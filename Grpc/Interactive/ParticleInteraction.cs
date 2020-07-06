@@ -9,7 +9,7 @@ namespace Narupa.Grpc.Interactive
     /// An interaction with an iMD enabled simulation.
     /// </summary>
     [DataContract]
-    public class Interaction
+    public class ParticleInteraction
     {
         /// <summary>
         /// The position of the interaction.
