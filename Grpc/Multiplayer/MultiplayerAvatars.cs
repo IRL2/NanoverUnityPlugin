@@ -29,7 +29,7 @@ namespace Narupa.Grpc.Multiplayer
         {
             if (value is Dictionary<string, object> dict)
             {
-                parsed = Serialization.Serialization.FromDataStructure<MultiplayerAvatar>(dict);
+                parsed = Core.Serialization.Serialization.FromDataStructure<MultiplayerAvatar>(dict);
                 parsed.ID = key.Remove(0, KeyPrefix.Length);
                 return true;
             }
@@ -41,7 +41,7 @@ namespace Narupa.Grpc.Multiplayer
         /// <inheritdoc cref="MultiplayerCollection{TItem}.SerializeItem"/>
         protected override object SerializeItem(MultiplayerAvatar item)
         {
-            return Serialization.Serialization.ToDataStructure(item);
+            return Core.Serialization.Serialization.ToDataStructure(item);
         }
         
         /// <summary>

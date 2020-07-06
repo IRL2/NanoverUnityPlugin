@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Narupa.Core.Math;
-using Narupa.Grpc.Interactive;
 using UnityEngine;
 
 namespace Narupa.Frontend.Manipulation

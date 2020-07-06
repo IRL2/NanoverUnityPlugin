@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Core;
 using Newtonsoft.Json;
 
-namespace Narupa.Grpc.Serialization
+namespace Narupa.Core.Serialization
 {
     /// <summary>
     /// A <see cref="JsonReader" /> for use with json.NET that can convert an object from a

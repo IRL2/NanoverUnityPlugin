@@ -39,7 +39,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
             {
                 if (value is Dictionary<string, object> dict)
                 {
-                    parsed = Serialization.Serialization.FromDataStructure<Item>(value);
+                    parsed = Core.Serialization.Serialization.FromDataStructure<Item>(value);
                     return true;
                 }
 
@@ -49,7 +49,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
             protected override object SerializeItem(Item item)
             {
-                return Serialization.Serialization.ToDataStructure(item);
+                return Core.Serialization.Serialization.ToDataStructure(item);
             }
         }
         

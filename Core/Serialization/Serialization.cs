@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Narupa.Grpc.Serialization
+namespace Narupa.Core.Serialization
 {
     /// <summary>
     /// Serialization methods for converting to and from serializable C# objects (consisting of

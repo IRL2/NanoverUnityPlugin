@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace Narupa.Grpc.Serialization
+namespace Narupa.Core.Serialization
 {
     /// <summary>
     /// <see cref="JsonConverter{T}" /> for serializing a <see cref="Quaternion" /> as a
