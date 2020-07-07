@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Narupa.Core.Async;
-using Narupa.Session;
 
 namespace Narupa.Grpc.Multiplayer
 {

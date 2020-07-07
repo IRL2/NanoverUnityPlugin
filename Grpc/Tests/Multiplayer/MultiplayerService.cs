@@ -129,5 +129,10 @@ namespace Narupa.Grpc.Tests.Multiplayer
         {
             this.resources[key] = value.ToProtobufValue();
         }
+        
+        public void RemoveValueDirect(string key)
+        {
+            this.resources.Remove(key);
+        }
     }
 }

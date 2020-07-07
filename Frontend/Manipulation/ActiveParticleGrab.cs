@@ -33,7 +33,7 @@ namespace Narupa.Frontend.Manipulation
         /// <summary>
         /// A set of properties associated with this manipulation.
         /// </summary>
-        public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
+        public bool ResetVelocities { get; set; } = false;
 
         /// <summary>
         /// Callback for when the grab position is updated.
@@ -57,13 +57,6 @@ namespace Narupa.Frontend.Manipulation
         public void EndManipulation()
         {
             ManipulationEnded?.Invoke();
-        }
-
-        private const string KeyResetVelocities = "reset_velocities";
-
-        public bool ResetVelocities
-        {
-            set => Properties[KeyResetVelocities] = value;
         }
     }
 }
