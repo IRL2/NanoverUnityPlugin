@@ -2,6 +2,7 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Narupa.Core;
@@ -124,6 +125,11 @@ namespace Narupa.Grpc.Trajectory
         public void Step()
         {
             trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandStep);
+        }
+
+        public void RunCommand(string name, Dictionary<string, object> commands)
+        {
+            trajectoryClient?.RunCommandAsync(name, commands);
         }
 
         public TrajectoryClient Client => trajectoryClient;
