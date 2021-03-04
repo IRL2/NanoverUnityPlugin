@@ -144,7 +144,6 @@ namespace Narupa.Core.Serialization
         }
 
         /// <inheritdoc cref="WriteValue"/>
-        [CLSCompliant(false)]
         public override void WriteValue(uint value)
         {
             base.WriteValue(value);
@@ -159,7 +158,6 @@ namespace Narupa.Core.Serialization
         }
 
         /// <inheritdoc cref="WriteValue"/>
-        [CLSCompliant(false)]
         public override void WriteValue(ulong value)
         {
             base.WriteValue(value);
@@ -195,7 +193,6 @@ namespace Narupa.Core.Serialization
         }
 
         /// <inheritdoc cref="WriteValue"/>
-        [CLSCompliant(false)]
         public override void WriteValue(ushort value)
         {
             base.WriteValue(value);
@@ -217,7 +214,6 @@ namespace Narupa.Core.Serialization
         }
 
         /// <inheritdoc cref="WriteValue"/>
-        [CLSCompliant(false)]
         public override void WriteValue(sbyte value)
         {
             base.WriteValue(value);

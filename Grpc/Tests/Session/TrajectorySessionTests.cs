@@ -43,7 +43,7 @@ namespace Narupa.Grpc.Tests.Session
         }
 
         [AsyncSetUp]
-        public async Task Setup()
+        public Task Setup()
         {
             service = new QueueTrajectoryService(new FrameData());
             commandService = new CommandService();
@@ -52,6 +52,8 @@ namespace Narupa.Grpc.Tests.Session
             session.OpenClient(connection);
             callback = Substitute.For<Action<string, Struct>>();
             commandService.ReceivedCommand += callback;
+
+            return Task.CompletedTask;
         }
 
         [TearDown]

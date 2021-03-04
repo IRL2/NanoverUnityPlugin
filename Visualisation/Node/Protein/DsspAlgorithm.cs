@@ -408,7 +408,6 @@ namespace Narupa.Visualisation.Node.Protein
                 var res1 = residues[i];
                 if (res1.Pattern.HasFlag(SecondaryStructurePattern.FiveTurn))
                 {
-                    var swap = true;
                     if (i > 0 && residues[i - 1]
                                  .Pattern.HasFlag(SecondaryStructurePattern.FiveTurn))
                         continue;

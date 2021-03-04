@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Google.Protobuf.WellKnownTypes;
 using Narupa.Core;
 using Narupa.Core.Async;
 using Narupa.Core.Math;
@@ -75,8 +74,6 @@ namespace Narupa.Grpc.Multiplayer
         public event Action<string, object> SharedStateDictionaryKeyUpdated;
 
         public event Action<string> SharedStateDictionaryKeyRemoved;
-
-        public event Action BeforeFlushChanges;
 
         public event Action ReceiveUpdate;
 

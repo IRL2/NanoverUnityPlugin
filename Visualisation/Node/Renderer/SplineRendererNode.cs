@@ -88,9 +88,7 @@ namespace Narupa.Visualisation.Node.Renderer
         private void GenerateBox(List<Vector3> vertices, List<Vector3> normals, List<int> triangles)
         {
             var height = 1f;
-            var radius = 0.5f;
-
-            var i = 0;
+            
             for (var level = 0; level <= segments; level++)
             {
                 var z = height * level / segments;

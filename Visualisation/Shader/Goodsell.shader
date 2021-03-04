@@ -1,4 +1,4 @@
-Shader "NarupaXR/Goodsell"
+Shader "NarupaIMD/Goodsell"
 {
     Properties
     {

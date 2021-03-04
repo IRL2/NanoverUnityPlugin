@@ -1,7 +1,7 @@
 // Copyright (c) Intangible Realities Laboratory. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-Shader "NarupaXR/Translucent/Raycast Cylinder"
+Shader "NarupaIMD/Translucent/Raycast Cylinder"
 {
     Properties
     {

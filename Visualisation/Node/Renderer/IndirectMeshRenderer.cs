@@ -1,11 +1,10 @@
 using System;
 using Narupa.Visualisation;
-using Narupa.Visualisation.Property;
 using Narupa.Visualisation.Utility;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Plugins.Narupa.Visualisation.Node.Renderer
+namespace Narupa.Visualisation.Node.Renderer
 {
     public abstract class IndirectMeshRenderer : IDisposable
     {

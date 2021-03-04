@@ -29,7 +29,7 @@ namespace Narupa.Visualisation.Editor
         
         private static string structureId = "";
         private static string currentMoleculeFilepath = "";
-        private static FrameSource currentMolecule = null;
+        private static ImmutableFrameSource currentMolecule = null;
 
         /// <summary>
         /// Show a progress message.
@@ -254,7 +254,7 @@ namespace Narupa.Visualisation.Editor
 
         private static string queuedProgressMessage = "";
 
-        private static async Task<Frame.Frame> ImportCifFile(
+        private static Task<Frame.Frame> ImportCifFile(
             string filename,
             ChemicalComponentDictionary dictionary)
         {
@@ -262,10 +262,10 @@ namespace Narupa.Visualisation.Editor
             using (var reader = new StreamReader(file))
             {
                 if (Path.GetExtension(filename).Contains("cif"))
-                    return CifImport.Import(reader, dictionary, new Progress());
+                    return Task.FromResult(CifImport.Import(reader, dictionary, new Progress()));
             }
 
-            return null;
+            return Task.FromResult<Frame.Frame>(null);
         }
 
         private static async void LoadFile(string filename)
@@ -278,7 +278,7 @@ namespace Narupa.Visualisation.Editor
 
 
             frame.RecenterAroundOrigin();
-            currentMolecule = new FrameSource(frame);
+            currentMolecule = new ImmutableFrameSource(frame);
 
             UpdateRenderer(currentMolecule);
 
@@ -315,15 +315,17 @@ namespace Narupa.Visualisation.Editor
             root.gameObject.SendMessage("Update");
         }
 
-        private class FrameSource : ITrajectorySnapshot
+        private class ImmutableFrameSource : ITrajectorySnapshot
         {
-            public FrameSource(Frame.Frame frame)
+            public ImmutableFrameSource(Frame.Frame frame)
             {
                 CurrentFrame = frame;
             }
 
             public Frame.Frame CurrentFrame { get; }
+            #pragma warning disable 0067
             public event FrameChanged FrameChanged;
+            #pragma warning restore 0067
         }
     }
 }

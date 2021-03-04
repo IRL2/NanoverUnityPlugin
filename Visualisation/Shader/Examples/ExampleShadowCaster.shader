@@ -3,7 +3,7 @@
 
 /// Example unlit shader with shadowcaster pass. The shadowcaster pass allows depth to be computed, an important step for raytracing
 
-Shader "NarupaXR/Example/Shadowcaster"
+Shader "NarupaIMD/Example/Shadowcaster"
 {
     Properties
     {

@@ -22,7 +22,7 @@ namespace Narupa.Grpc.Tests.Multiplayer
 
         public IReadOnlyDictionary<string, string> Locks => locks;
 
-        public override async Task<UpdateLocksResponse> UpdateLocks(
+        public override Task<UpdateLocksResponse> UpdateLocks(
             UpdateLocksRequest request,
             ServerCallContext context)
         {
@@ -31,10 +31,10 @@ namespace Narupa.Grpc.Tests.Multiplayer
             
             foreach (var requestKey in request.LockKeys.Fields.Keys)
                 if (locks.ContainsKey(requestKey) && locks[requestKey] != token)
-                    return new UpdateLocksResponse
+                    return Task.FromResult(new UpdateLocksResponse
                     {
                         Success = false
-                    };
+                    });
             foreach (var (key, lockTime) in request.LockKeys.Fields)
             {
                 if (lockTime.KindCase == Value.KindOneofCase.NullValue)
@@ -47,23 +47,23 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 }
             }
 
-            return new UpdateLocksResponse
+            return Task.FromResult(new UpdateLocksResponse
             {
                 Success = true
-            };
+            });
         }
 
-        public override async Task<UpdateStateResponse> UpdateState(
+        public override Task<UpdateStateResponse> UpdateState(
             UpdateStateRequest request,
             ServerCallContext context)
         {
             var token = request.AccessToken;
             foreach (var requestKey in request.Update.ChangedKeys.Fields.Keys)
                 if (locks.ContainsKey(requestKey) && locks[requestKey] != token)
-                    return new UpdateStateResponse
+                    return Task.FromResult(new UpdateStateResponse
                     {
                         Success = false
-                    };
+                    });
             foreach (var (key, value) in request.Update.ChangedKeys.Fields)
             {
                 if (value.KindCase == Value.KindOneofCase.NullValue)
@@ -76,10 +76,10 @@ namespace Narupa.Grpc.Tests.Multiplayer
                 }
             }
 
-            return new UpdateStateResponse
+            return Task.FromResult(new UpdateStateResponse
             {
                 Success = true
-            };
+            });
         }
 
         public override async Task SubscribeStateUpdates(SubscribeStateUpdatesRequest request,

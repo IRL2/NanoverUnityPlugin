@@ -13,7 +13,7 @@ using UnityEngine.Assertions;
         private float verticalOffset;
 
         [SerializeField]
-        private Camera camera;
+        private new Camera camera;
 
         [SerializeField]
         private float smoothTime;

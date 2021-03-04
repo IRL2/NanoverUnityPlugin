@@ -37,10 +37,11 @@ namespace Narupa.Grpc.Tests.Session
         }
 
         [AsyncSetUp]
-        public async Task Setup()
+        public Task Setup()
         {
             service = new QueueTrajectoryService(new FrameData());
             (server, connection) = GrpcServer.CreateServerAndConnection(service);
+            return Task.CompletedTask;
         }
 
         [TearDown]

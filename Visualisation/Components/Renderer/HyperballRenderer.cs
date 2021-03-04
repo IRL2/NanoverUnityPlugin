@@ -14,7 +14,7 @@ namespace Narupa.Visualisation.Components.Renderer
             node.Transform = transform;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             node.Dispose();
         }

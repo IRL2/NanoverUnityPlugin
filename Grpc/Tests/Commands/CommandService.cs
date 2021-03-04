@@ -10,15 +10,15 @@ namespace Narupa.Grpc.Tests.Commands
     {
         public event Action<string, Struct> ReceivedCommand;
 
-        public override async Task<CommandReply> RunCommand(CommandMessage request, ServerCallContext context)
+        public override Task<CommandReply> RunCommand(CommandMessage request, ServerCallContext context)
         {
             ReceivedCommand?.Invoke(request.Name, request.Arguments);
-            return new CommandReply();
+            return Task.FromResult(new CommandReply());
         }
 
-        public override async Task<GetCommandsReply> GetCommands(GetCommandsRequest request, ServerCallContext context)
+        public override Task<GetCommandsReply> GetCommands(GetCommandsRequest request, ServerCallContext context)
         {
-            return new GetCommandsReply();
+            return Task.FromResult(new GetCommandsReply());
         }
 
         public ServerServiceDefinition BindService()

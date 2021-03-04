@@ -2,7 +2,7 @@ using Narupa.Visualisation.Components.Renderer;
 using Narupa.Visualisation.Node.Renderer;
 using UnityEngine;
 
-namespace Plugins.Narupa.Visualisation.Components.Renderer
+namespace Narupa.Visualisation.Components.Renderer
 {
     /// <inheritdoc cref="Narupa.Visualisation.Node.Renderer" />
     public class GoodsellRenderer : VisualisationComponentRenderer<GoodsellRendererNode>
