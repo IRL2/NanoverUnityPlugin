@@ -323,6 +323,8 @@ namespace Narupa.Visualisation.Editor
             }
 
             public Frame.Frame CurrentFrame { get; }
+            
+            // Ignore warning that FrameChanged is never used--this is expected.
             #pragma warning disable 0067
             public event FrameChanged FrameChanged;
             #pragma warning restore 0067
