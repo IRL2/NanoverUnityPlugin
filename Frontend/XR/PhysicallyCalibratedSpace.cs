@@ -75,5 +75,11 @@ namespace Narupa.Frontend.XR
                                                   up: Vector3.up);
             WorldToLocalMatrix = LocalToWorldMatrix.inverse;
         }
+
+        public void CalibrateFromMatrix(Matrix4x4 matrix)
+        {
+            LocalToWorldMatrix = matrix;
+            WorldToLocalMatrix = LocalToWorldMatrix.inverse;
+        }
     }
 }
