@@ -45,8 +45,9 @@ namespace Narupa.Grpc.Trajectory
             // that can handle multiple producers
             while (true)
             {
+                var initial = receivedDataBuffer;
                 // if the buffer is empty, we can just set the new message as the new buffer
-                if (receivedDataBuffer == null)
+                if (initial == null)
                 {
                     receivedDataBuffer = response;
                     break;
@@ -60,8 +61,7 @@ namespace Narupa.Grpc.Trajectory
                     // the whole object. At the swap step we check that the UI hasn't read the original
                     // receivedDataBuffer yet, otherwise we should throw all the work we did and just
                     // set the new message as the buffer
-                    var initial = receivedDataBuffer;
-                    var mergeTarget = receivedDataBuffer.Clone(); // Deep clone in case of a IMessage!
+                    var mergeTarget = initial.Clone(); // Deep clone in case of a IMessage!
                     // Unfortunately although there is a IMessage.MergeFrom method it doesn't work for us 
                     // because the only conflict resolution strategy it has is to fail and we want new data
                     // from the last message to override the buffered data from previous messages.
@@ -94,10 +94,10 @@ namespace Narupa.Grpc.Trajectory
                 if (stream.IsCancelled)
                     return;
 
-                if (receivedDataBuffer != null)
+                // Atomically swap so that there is never a conflict with the merge into the same buffer
+                var newReceivedData = Interlocked.Exchange(ref receivedDataBuffer, null);
+                if (newReceivedData != null)
                 {
-                    // Atomically swap so that there is never a conflict with the merge into the same buffer
-                    var newReceivedData = Interlocked.Exchange(ref receivedDataBuffer, null);
                     messageHandler.Invoke(newReceivedData);
                 }
 
