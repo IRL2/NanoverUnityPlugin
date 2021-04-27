@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using Narupa.Core.Math;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Narupa.Frontend.XR
     {
         public Matrix4x4 LocalToWorldMatrix { get; private set; } = Matrix4x4.identity;
         public Matrix4x4 WorldToLocalMatrix { get; private set; } = Matrix4x4.identity;
+
+        public event Action CalibrationChanged;
 
         /// <summary>
         /// Transform from the shared calibrated space to our personal world 
@@ -60,6 +63,7 @@ namespace Narupa.Frontend.XR
              && trackers[1].GetPose() is Transformation pose1)
             {
                 CalibrateFromTwoControlPoints(pose0.Position, pose1.Position);
+                CalibrationChanged?.Invoke();
             }
         }
 
@@ -74,6 +78,17 @@ namespace Narupa.Frontend.XR
                                                   to: worldPoint1,
                                                   up: Vector3.up);
             WorldToLocalMatrix = LocalToWorldMatrix.inverse;
+            CalibrationChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// Calibrate the space directly from a transform matrix.
+        /// </summary>
+        public void CalibrateFromMatrix(Matrix4x4 matrix)
+        {
+            LocalToWorldMatrix = matrix;
+            WorldToLocalMatrix = LocalToWorldMatrix.inverse;
+            CalibrationChanged?.Invoke();
         }
     }
 }
