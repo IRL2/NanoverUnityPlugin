@@ -15,7 +15,8 @@ namespace Narupa.Core.Serialization
             Converters =
             {
                 new Vector3Converter(),
-                new QuaternionConverter()
+                new QuaternionConverter(),
+                new ColorConverter(),
             }
         };
         

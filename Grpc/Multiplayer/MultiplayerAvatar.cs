@@ -24,6 +24,12 @@ namespace Narupa.Grpc.Multiplayer
         [DataMember(Name="playerid")]
         public string ID { get; set; }
 
+        [DataMember(Name="name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "color")]
+        public Color Color { get; set; }
+
         /// <summary>
         /// List of <see cref="AvatarComponent"/> such as headsets and controllers
         /// </summary>
