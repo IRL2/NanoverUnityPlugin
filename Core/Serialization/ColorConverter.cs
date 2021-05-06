@@ -7,8 +7,8 @@ using UnityEngine;
 namespace Narupa.Core.Serialization
 {
     /// <summary>
-    /// <see cref="JsonConverter{T}" /> for serializing a <see cref="Vector3" /> as a
-    /// list of three floats.
+    /// <see cref="JsonConverter{T}" /> for serializing a <see cref="Color" /> as a
+    /// list of four floats.
     /// </summary>
     public class ColorConverter : JsonConverter
     {
