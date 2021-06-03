@@ -50,8 +50,8 @@ MonoBehaviour:
   inputLinkCollection: []
   node:
     adaptor:
-      unityObject: {fileID: 9131715220313689428}
-      isValueProvided: 0
+      unityObject: {fileID: 0}
+      isValueProvided: 1
     options:
       Cutoff: -0.5
 --- !u!114 &9131715220313689428
@@ -90,7 +90,7 @@ MonoBehaviour:
   node:
     name: scale
     input:
-      value: 0.1
+      value: 0.05
       isValueProvided: 1
 --- !u!114 &-1402476061116011615
 MonoBehaviour:

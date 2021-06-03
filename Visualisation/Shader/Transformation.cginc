@@ -164,6 +164,15 @@
            return m;
         }
 
+    float4x4 get_unit_transformation_inverse_transpose_matrix(float3 ex, float3 ey, float3 ez, float3 p) {
+        float4x4 m = 0;
+        m._11_21_31_41 = float4(ex, -dot(ex, p));
+        m._12_22_32_42 = float4(ey, -dot(ey, p));
+        m._13_23_33_43 = float4(ez, -dot(ez, p));
+        m._14_24_34_44 = float4(0,0,0,1);
+        return m;
+    }
+
 
 
 #endif
