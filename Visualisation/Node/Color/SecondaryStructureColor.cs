@@ -21,15 +21,15 @@ namespace Narupa.Visualisation.Node.Color
             switch (i)
             {
                 case SecondaryStructureAssignment.ThreeTenHelix:
-                    return UnityEngine.Color.blue;
+                    return new UnityEngine.Color(0.6f, 0.0f, 0.5f);
                 case SecondaryStructureAssignment.AlphaHelix:
-                    return UnityEngine.Color.magenta;
+                    return new UnityEngine.Color(1.0f, 0.0f, 0.5f);
                 case SecondaryStructureAssignment.PiHelix:
-                    return UnityEngine.Color.red;
+                    return new UnityEngine.Color(0.4f, 0.0f, 0.5f);
                 case SecondaryStructureAssignment.Turn:
-                    return UnityEngine.Color.cyan;
+                    return new UnityEngine.Color(0.4f, 0.5f, 1.0f);
                 case SecondaryStructureAssignment.Sheet:
-                    return UnityEngine.Color.yellow;
+                    return new UnityEngine.Color(1.0f, 0.8f, 0.0f);
                 default:
                     return UnityEngine.Color.white;
             }
