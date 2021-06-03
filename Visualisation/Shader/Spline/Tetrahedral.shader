@@ -148,7 +148,7 @@
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.worldVertex = v.vertex;
                 
-                o.color = lerp(pow(curve.startColor, 2.2), pow(curve.endColor, 2.2), bias);
+                o.color = lerp(pow(curve.startColor, 2.2), pow(curve.endColor, 2.2), smoothstep(0, 1, bias));
                 o.bias = bias;
                 
                 return o;
