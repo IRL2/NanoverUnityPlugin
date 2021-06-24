@@ -15,13 +15,21 @@ namespace Narupa.Frontend.XR
     {
         [SerializeField]
         private Button button;
-        
+
         [SerializeField]
         private TMP_Text text;
-        
+
+        [Serializable]
+        private class UnityEventString : UnityEvent<string>
+        {
+        }
+
+        [SerializeField]
+        private UnityEventString textChanged;
+
         private void Awake()
         {
-            if(button == null)
+            if (button == null)
                 button = GetComponent<Button>();
             Assert.IsNotNull(button);
             Assert.IsNotNull(text);
@@ -38,10 +46,11 @@ namespace Narupa.Frontend.XR
         {
             this.text.text = text;
         }
-        
+
         private void OnKeyboardFinished(string text)
         {
             this.text.text = text;
+            textChanged?.Invoke(this.text.text);
         }
     }
 }
