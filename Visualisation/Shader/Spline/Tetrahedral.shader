@@ -79,40 +79,39 @@
                 // The center of the spline at this part of the segment
                 float3 pos = GetHermitePoint(bias, curve.startPoint, curve.startTangent, curve.endPoint, curve.endTangent);
             
-                
                 // The tangent at this point of the curve
                 float3 tangent = normalize(GetHermiteTangent(bias, curve.startPoint, curve.startTangent, curve.endPoint, curve.endTangent));
-                
-                // The normal to orientate the plane. To avoid twisting, we use the average of the start and end normal for every part of the segment
-                float3 axis = curve.startNormal + curve.endNormal;
-                axis = axis - dot(axis, tangent) * tangent;
-                axis = normalize(axis);
-            
-                // The binormal, the third axis needed to define the reference frame for this part of the segment
-                float3 binormal = -cross(tangent, axis);
-                binormal = normalize(binormal);
+
+                // The start and end binormals
+                float3 startBinormal = normalize(cross(curve.startTangent, curve.startNormal));
+                float3 endBinormal = normalize(cross(curve.endTangent, curve.endNormal));
+
+                float3 referenceBinormal = startBinormal + endBinormal;
+                referenceBinormal = referenceBinormal - dot(referenceBinormal, tangent) * tangent;
+                referenceBinormal = normalize(referenceBinormal);
+
+                float3 referenceNormal = cross(referenceBinormal, tangent);
+                referenceNormal = normalize(referenceNormal);
                 
                 // Factor to fix x flipping
                 float signX = sign(determinant(ObjectToWorld));
-                binormal *= signX;
+                referenceBinormal *= signX;
                 
                 // The matrix representing this reference frame
-                float4x4 mat = get_transformation_matrix(-binormal.xyz, tangent.xyz, axis.xyz, pos.xyz);
+                float4x4 mat = get_transformation_matrix(referenceBinormal.xyz, tangent.xyz, referenceNormal.xyz, pos.xyz);
                 
-                // The size of the normals
-                float size = lerp(curve.startScale.x, curve.endScale.x, smoothstep(0, 1, bias));
+                float4x4 mat_invt = get_unit_transformation_inverse_transpose_matrix(referenceBinormal.xyz, tangent.xyz, referenceNormal.xyz, pos.xyz);
                 
-                float3 normal = lerp(curve.startNormal, curve.endNormal, bias);
-                normal = normal - dot(normal, tangent) * tangent;
-                normal *= size;
-
-                // Lerp between -start normal to end normal linearly
-                float3 normal2 = lerp(-curve.startNormal, curve.endNormal, bias);
-                normal2 = normal2 - dot(normal2, tangent) * tangent;
-                normal2 *= size;
+                // The actual normal to use
+                float3 startNormal = curve.startScale.x * normalize(cross(curve.startNormal, curve.startTangent));
+                float3 endNormal = curve.endScale.x * normalize(cross(curve.endNormal, curve.endTangent));
                 
-                float2 n1 = float2(dot(normal, normalize(axis)), dot(normal, normalize(binormal)));
-                float2 n2 = float2(dot(normal2, normalize(axis)), dot(normal2, normalize(binormal)));
+                float3 normal = lerp(startNormal, endNormal, smoothstep(0, 1, bias));
+                float3 normal2 = lerp(-startNormal, endNormal, smoothstep(0, 1, bias));
+                
+                // Project the two normals onto the reference frame we have chosen
+                float2 n1 = float2(dot(normal, referenceBinormal), dot(normal, referenceNormal));
+                float2 n2 = float2(dot(normal2, referenceBinormal), dot(normal2, referenceNormal));
                
                 float2 d1 = 0.5 * (n1 + n2);
                 float2 d2 = 0.5 * (n1 - n2);
@@ -120,31 +119,36 @@
                 float2 vNorm = normalize(v.vertex.xz);
                 float2 d1Norm = normalizeButIgnoreZero(d1);
                 float2 d2Norm = normalizeButIgnoreZero(d2);
-      
+
                 float dot1 = dot(vNorm, d1Norm);
-                float dot2 =  dot(vNorm, d2Norm);
+                float dot2 = dot(vNorm, d2Norm);
                 
                 float a1 = abs(dot1);
                 float a2 = abs(dot2);
                 
-                a1 = 1 - (1- a1) * (1-a1);
-                a2 = 1 - (1-a2) * (1-a2);
-               
-                v.vertex.xz = 0.5 * _Radius * v.vertex.xz;
-               
+                v.vertex.xz = 0.5 * _Radius * vNorm;
                 v.vertex.xz += sign(dot1) * a1 * d1 + sign(dot2) * a2 * d2;
+                
+                float2 dd1 = float2(d1.y, -d1.x);
+                float2 dd2 = float2(d2.y, -d2.x);
+                
+                float2 dd1Norm = normalizeButIgnoreZero(dd1);
+                float2 dd2Norm = normalizeButIgnoreZero(dd2);
+                
+                v.normal.y = 0;
+                v.normal.xz = normalize(0.5 * _Radius * vNorm + dd1 * dot(dd1Norm, vNorm) + dd2 * dot(dd2Norm, vNorm));
                 
                 // Transform the vertex by both the reference frame and into world space
                 v.vertex = mul(mat, float4(v.vertex.xyz, 1));
                 v.vertex = mul(ObjectToWorld, float4(v.vertex.xyz, 1));
                 
-                o.normal = normalize(mul(mat, float4(v.normal.xyz, 0)));
+                o.normal = normalize(mul(mat_invt, float4(v.normal.xyz, 0)));
                 o.normal = normalize(mul(ObjectToWorldInverseTranspose, float4(o.normal.xyz, 0)));
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.worldVertex = v.vertex;
                 
-                o.color = lerp(pow(curve.startColor, 2.2), pow(curve.endColor, 2.2), bias);
+                o.color = lerp(pow(curve.startColor, 2.2), pow(curve.endColor, 2.2), smoothstep(0, 1, bias));
                 o.bias = bias;
                 
                 return o;
@@ -157,16 +161,8 @@
                 fixed4 color = i.color;
                 float3 n = normalize(i.normal);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-                float3 c = _WorldSpaceCameraPos.xyz;
-                
-                float d = cos((i.bias + _Time.x * 4) * 3.1415f);
-                d = d * d * d * d;
-                d = d * d;
-                
                
                 color = DIFFUSE(color, n, l, _Diffuse);
-                
-                 //color += 0.25 * fixed4(1,1,1,1) * d;
                 
                 return color;
             }
