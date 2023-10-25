@@ -8,7 +8,7 @@ Unity3D project.
 ```
 cd my-narupa-unity-project
 mkdir -p Assets/Plugins 
-git submodule add git@gitlab.com:intangiblerealities/narupa-unity-plugin.git Assets/Plugins/Narupa
+git submodule add git@github.com:IRL2/NarupaUnityPlugin.git Assets/Plugins/Narupa
 git submodule update --init 
 ```
 
