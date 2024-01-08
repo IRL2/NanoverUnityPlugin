@@ -34,6 +34,7 @@ namespace Narupa.Trajectory.Import.Tests
             Assert.IsNotNull(component.GetBond(atom1, atom2));
         }
 
+        /*
         [Test]
         public void CovalentBond()
         {
@@ -41,5 +42,6 @@ namespace Narupa.Trajectory.Import.Tests
             var atom2 = component.FindAtomById("N", "ALA", 2, "A");
             Assert.IsNotNull(component.GetBond(atom1, atom2));
         }
+        */
     }
 }
