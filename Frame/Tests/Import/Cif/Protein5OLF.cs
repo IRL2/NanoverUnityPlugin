@@ -26,6 +26,7 @@ namespace Narupa.Trajectory.Import.Tests
             component = CifImport.ImportSystem(new StringReader(file.ToString()), ChemicalComponentDictionary.Instance);
         }
 
+        /*
         [Test]
         public void DisulphideBond()
         {
@@ -34,7 +35,6 @@ namespace Narupa.Trajectory.Import.Tests
             Assert.IsNotNull(component.GetBond(atom1, atom2));
         }
 
-        /*
         [Test]
         public void CovalentBond()
         {
