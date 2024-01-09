@@ -133,6 +133,7 @@ namespace Narupa.Frame.Import.CIF.Components
 
         private void DeserializeDictionary()
         {
+            Debug.Log("Hello there!");
             if (string.IsNullOrEmpty(compressedData))
             {
                 return;
