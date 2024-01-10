@@ -152,7 +152,6 @@ namespace Narupa.Frame.Import.CIF.Components
                     for (var i = 0; i < count; i++)
                     {
                         var resId = reader.ReadString();
-                        Debug.Log($"Reading for {resId}");
                         var component = new ChemicalComponent()
                         {
                             ResId = resId
@@ -178,6 +177,7 @@ namespace Narupa.Frame.Import.CIF.Components
                 {
                 }
             }
+            Debug.Log("Done deserializing.");
         }
 
         public void OnAfterDeserialize()
