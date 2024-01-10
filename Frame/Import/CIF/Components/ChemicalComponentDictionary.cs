@@ -44,10 +44,10 @@ namespace Narupa.Frame.Import.CIF.Components
 
             if (_instance == null)
             {
-#if UNITY_EDITOR
-                _instance = CreateInstance<ChemicalComponentDictionary>();
-                AssetDatabase.CreateAsset(_instance, FullInstanceFile);
-#endif
+/* #if UNITY_EDITOR */
+/*                 _instance = CreateInstance<ChemicalComponentDictionary>(); */
+/*                 AssetDatabase.CreateAsset(_instance, FullInstanceFile); */
+/* #endif */
                 if (_instance == null)
                     throw new InvalidOperationException(
                         $"Cannot find mmCIF chemical component dictionary at {InstanceFile}");
