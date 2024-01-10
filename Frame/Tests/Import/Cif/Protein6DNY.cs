@@ -25,7 +25,6 @@ namespace Narupa.Trajectory.Import.Tests
             component = CifImport.ImportSystem(new StringReader(file.ToString()), ChemicalComponentDictionary.Instance);
         }
 
-        /*
         [Test]
         public void CovalentBond()
         {
@@ -33,6 +32,5 @@ namespace Narupa.Trajectory.Import.Tests
             var atom2 = component.FindAtomById("C", "VAL", 4, "A");
             Assert.IsNotNull(component.GetBond(atom1, atom2));
         }
-        */
     }
 }
