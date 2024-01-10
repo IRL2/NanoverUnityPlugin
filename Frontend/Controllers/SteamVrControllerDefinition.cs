@@ -49,8 +49,8 @@ namespace Narupa.Frontend.Controllers
         /// </summary>
         public static SteamVrControllerDefinition GetControllerDefinition(string id)
         {
-            return Resources.LoadAll<SteamVrControllerDefinition>("")
-                            .FirstOrDefault(type => type.controllerId == id);
+            /* return Resources.LoadAll<SteamVrControllerDefinition>("") */
+            /*                 .FirstOrDefault(type => type.controllerId == id); */
         }
 
         /// <summary>
