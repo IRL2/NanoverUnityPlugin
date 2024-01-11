@@ -40,14 +40,11 @@ namespace Narupa.Frame.Import.CIF.Components
         /// </summary>
         private static void LoadInstance()
         {
-            _instance = Resources.Load<ChemicalComponentDictionary>(InstanceFile);
+            _instance = new ChemicalComponentDictionary();
+            _instance.compressedData = Resources.Load<TextAsset>(InstanceFile).text;
 
             if (_instance == null)
             {
-#if UNITY_EDITOR
-                _instance = CreateInstance<ChemicalComponentDictionary>();
-                AssetDatabase.CreateAsset(_instance, FullInstanceFile);
-#endif
                 if (_instance == null)
                     throw new InvalidOperationException(
                         $"Cannot find mmCIF chemical component dictionary at {InstanceFile}");
@@ -89,10 +86,7 @@ namespace Narupa.Frame.Import.CIF.Components
 
 #endif
 
-        private const string InstanceFile = "ChemicalComponentDictionary";
-
-        private const string FullInstanceFile =
-            "Assets/Narupa/Trajectory/Import/Resources/ChemicalComponentDictionary.asset";
+        private const string InstanceFile = "components";
 
         public ChemicalComponent GetResidue(string residueName)
         {
@@ -103,8 +97,6 @@ namespace Narupa.Frame.Import.CIF.Components
         {
         }
 
-        [SerializeField]
-        [HideInInspector]
         private string compressedData = "";
 
         private void SerializeDictionary()
