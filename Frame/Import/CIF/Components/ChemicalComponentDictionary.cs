@@ -41,7 +41,7 @@ namespace Narupa.Frame.Import.CIF.Components
         private static void LoadInstance()
         {
             _instance = new ChemicalComponentDictionary();
-            _instance.compressedData = Resources.Load<TextAsset>("components").text;
+            _instance.compressedData = Resources.Load<TextAsset>(InstanceFile).text;
 
             if (_instance == null)
             {
@@ -86,10 +86,7 @@ namespace Narupa.Frame.Import.CIF.Components
 
 #endif
 
-        private const string InstanceFile = "ChemicalComponentDictionary";
-
-        private const string FullInstanceFile =
-            "Assets/Narupa/Trajectory/Import/Resources/ChemicalComponentDictionary.asset";
+        private const string InstanceFile = "components";
 
         public ChemicalComponent GetResidue(string residueName)
         {
