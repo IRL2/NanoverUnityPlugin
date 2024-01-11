@@ -42,7 +42,7 @@ namespace Narupa.Frame.Import.CIF.Components
         {
             //_instance = Resources.Load<ChemicalComponentDictionary>(InstanceFile);
             _instance = new ChemicalComponentDictionary();
-            _instance.compressedData = Resources.Load<TextAsset>("components").Text;
+            _instance.compressedData = Resources.Load<TextAsset>("components").text;
 
             if (_instance == null)
             {
