@@ -42,7 +42,7 @@ namespace Narupa.Frame.Import.CIF.Components
         {
             //_instance = Resources.Load<ChemicalComponentDictionary>(InstanceFile);
             _instance = new ChemicalComponentDictionary();
-            _instance.compressedData = Resources.Load<TextAsset>("components").Text
+            _instance.compressedData = Resources.Load<TextAsset>("components").Text;
 
             if (_instance == null)
             {
@@ -107,7 +107,7 @@ namespace Narupa.Frame.Import.CIF.Components
 
         //[SerializeField]
         //[HideInInspector]
-        private string compressedData = ""
+        private string compressedData = "";
 
         private void SerializeDictionary()
         {
