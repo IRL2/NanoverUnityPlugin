@@ -1,3 +1,5 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "com.unity.ext.nunit": "1.0.6"
+  }
 }
