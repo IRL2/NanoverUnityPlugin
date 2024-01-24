@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Narupa.Visualisation.Property
+namespace NanoVer.Visualisation.Property
 {
     /// <summary>
     /// Indicates a <see cref="Property" /> is required. This does not enforce

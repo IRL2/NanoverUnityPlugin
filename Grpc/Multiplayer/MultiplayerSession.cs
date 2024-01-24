@@ -5,15 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Narupa.Core;
-using Narupa.Core.Async;
-using Narupa.Core.Math;
-using Narupa.Grpc.Stream;
-using Narupa.Grpc.Trajectory;
-using Narupa.Protocol.State;
+using NanoVer.Core;
+using NanoVer.Core.Async;
+using NanoVer.Core.Math;
+using NanoVer.Grpc.Stream;
+using NanoVer.Grpc.Trajectory;
+using NanoVer.Protocol.State;
 using UnityEngine;
 
-namespace Narupa.Grpc.Multiplayer
+namespace NanoVer.Grpc.Multiplayer
 {
     /// <summary>
     /// Manages the state of a single user engaging in multiplayer. Tracks

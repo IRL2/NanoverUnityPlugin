@@ -2,11 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Narupa.Visualisation.Utility;
+using NanoVer.Visualisation.Utility;
 using NUnit.Framework;
-using Narupa.Core.Collections;
+using NanoVer.Core.Collections;
 
-namespace Narupa.Visualisation.Tests
+namespace NanoVer.Visualisation.Tests
 {
     internal class DictionaryDirtyStateTests
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Narupa.Visualisation.Property
+namespace NanoVer.Visualisation.Property
 {
     /// <summary>
     /// Abstract base class for an implementation of <see cref="IProperty"/>.

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Narupa.Visualisation.Property
+namespace NanoVer.Visualisation.Property
 {
     /// <summary>
     /// A property who's value and its presence are both serialized.

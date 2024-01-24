@@ -2,9 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Math;
+using NanoVer.Core.Math;
 
-namespace Narupa.Frontend.Input
+namespace NanoVer.Frontend.Input
 {
     /// <summary>
     /// An IPosedObject whose pose can be set using

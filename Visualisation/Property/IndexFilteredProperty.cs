@@ -1,7 +1,7 @@
 using System;
-using Narupa.Core.Math;
+using NanoVer.Core.Math;
 
-namespace Narupa.Visualisation.Property
+namespace NanoVer.Visualisation.Property
 {
     /// <summary>
     /// Take an array that represents indices in some data set, and set of indices in

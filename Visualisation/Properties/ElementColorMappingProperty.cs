@@ -1,11 +1,11 @@
 using System;
-using Narupa.Core;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Node.Color;
-using Narupa.Visualisation.Property;
+using NanoVer.Core;
+using NanoVer.Core.Science;
+using NanoVer.Visualisation.Node.Color;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Properties
+namespace NanoVer.Visualisation.Properties
 {
     /// <summary>
     /// Serializable <see cref="Property" /> for a <see cref="ElementColorMapping" />

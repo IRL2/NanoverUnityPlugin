@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Narupa.Core.Math
+namespace NanoVer.Core.Math
 {
     public interface ITransformation
     {

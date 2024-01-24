@@ -1,14 +1,14 @@
 using System;
-using Narupa.Core.Science;
-using Narupa.Frame;
-using Narupa.Frame.Event;
-using Narupa.Protocol.Trajectory;
-using Narupa.Visualisation.Node.Adaptor;
+using NanoVer.Core.Science;
+using NanoVer.Frame;
+using NanoVer.Frame.Event;
+using NanoVer.Protocol.Trajectory;
+using NanoVer.Visualisation.Node.Adaptor;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Tests.Node.Adaptor
+namespace NanoVer.Visualisation.Tests.Node.Adaptor
 {
     public class FrameAdaptorCallbackTests
     {

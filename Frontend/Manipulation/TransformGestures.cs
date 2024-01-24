@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Core.Math;
+using NanoVer.Core.Math;
 using UnityEngine;
 
-namespace Narupa.Frontend.Manipulation
+namespace NanoVer.Frontend.Manipulation
 {
     /// <summary>
     /// Gesture that ties an object's position and orientation to a control

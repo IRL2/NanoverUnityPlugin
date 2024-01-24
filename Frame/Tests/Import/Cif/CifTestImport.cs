@@ -3,9 +3,9 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Narupa.Frame.Import.CIF;
+using NanoVer.Frame.Import.CIF;
 
-namespace Narupa.Trajectory.Import.Tests.Cif
+namespace NanoVer.Trajectory.Import.Tests.Cif
 {
     internal class CifTestImport : CifBaseImport
     {

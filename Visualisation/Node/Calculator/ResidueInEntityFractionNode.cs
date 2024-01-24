@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace NanoVer.Visualisation.Node.Calculator
 {
     /// <summary>
     /// Calculates the relative (0-1) fraction of each residue in an entity.

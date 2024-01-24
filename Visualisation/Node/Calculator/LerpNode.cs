@@ -1,10 +1,10 @@
 using System;
-using Narupa.Visualisation.Node;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Node;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace NanoVer.Visualisation.Node.Calculator
 {
     public abstract class LerpNode<TValue, TProperty> : GenericOutputNode where TProperty : ArrayProperty<TValue>, new()
     {

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Narupa.Core.Science
+namespace NanoVer.Core.Science
 {
     /// <summary>
     /// Mapping between atomic elements and their symbols.

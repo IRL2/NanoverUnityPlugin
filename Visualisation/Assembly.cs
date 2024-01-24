@@ -1,3 +1,3 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Narupa.Visualisation.Editor")]
+[assembly: InternalsVisibleTo("NanoVer.Visualisation.Editor")]

@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Narupa.Testing
+namespace NanoVer.Testing
 {
     /// <summary>
     /// General tests of an IDictionary implementation. Override Setup() to provide the

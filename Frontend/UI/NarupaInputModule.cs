@@ -4,13 +4,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Narupa.Frontend.UI
+namespace NanoVer.Frontend.UI
 {
     /// <summary>
     /// Override for <see cref="StandaloneInputModule" /> that exposes
     /// the current hovered game object.
     /// </summary>
-    public class NarupaInputModule : StandaloneInputModule
+    public class NanoVerInputModule : StandaloneInputModule
     {
         /// <summary>
         /// Get the <see cref="PointerEventData"/> for the UI.

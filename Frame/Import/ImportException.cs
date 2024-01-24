@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Narupa.Frame.Import
+namespace NanoVer.Frame.Import
 {
     /// <summary>
     /// Exception thrown when parsing fails for a given line.

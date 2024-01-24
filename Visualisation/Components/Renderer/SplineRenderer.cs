@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components.Renderer
+namespace NanoVer.Visualisation.Components.Renderer
 {
     public class SplineRenderer : VisualisationComponentRenderer<Node.Renderer.SplineRendererNode>
     {

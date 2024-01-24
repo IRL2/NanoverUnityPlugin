@@ -2,14 +2,14 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.IO;
-using Narupa.Frame.Import.CIF;
-using Narupa.Frame.Import.CIF.Components;
-using Narupa.Frame.Import.CIF.Structures;
+using NanoVer.Frame.Import.CIF;
+using NanoVer.Frame.Import.CIF.Components;
+using NanoVer.Frame.Import.CIF.Structures;
 using NUnit.Framework;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Narupa.Trajectory.Import.Tests
+namespace NanoVer.Trajectory.Import.Tests
 {
     /// <summary>
     /// Contains a cyclic peptide

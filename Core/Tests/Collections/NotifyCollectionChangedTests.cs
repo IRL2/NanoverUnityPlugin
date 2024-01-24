@@ -1,8 +1,8 @@
 using System.Collections.Specialized;
-using Narupa.Core.Collections;
+using NanoVer.Core.Collections;
 using NUnit.Framework;
 
-namespace Narupa.Core.Tests.Collections
+namespace NanoVer.Core.Tests.Collections
 {
     internal class NotifyCollectionChangedTests
     {

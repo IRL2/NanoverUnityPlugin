@@ -1,7 +1,7 @@
 using System;
 using Valve.VR;
 
-namespace Narupa.Frontend.Input
+namespace NanoVer.Frontend.Input
 {
     /// <summary>
     /// Wraps a SteamVR <see cref="SteamVR_Action_Boolean" /> as an

@@ -2,11 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using JetBrains.Annotations;
-using Narupa.Frame;
-using Narupa.Frame.Event;
+using NanoVer.Frame;
+using NanoVer.Frame.Event;
 using UnityEngine;
 
-namespace Narupa.Visualisation
+namespace NanoVer.Visualisation
 {
     /// <summary>
     /// Interface between a <see cref="ITrajectorySnapshot" /> and Unity. Frontend

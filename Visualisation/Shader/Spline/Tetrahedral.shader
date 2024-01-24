@@ -1,4 +1,4 @@
-﻿Shader "Narupa/Spline/Tetrahedral"
+﻿Shader "NanoVer/Spline/Tetrahedral"
 {
     Properties
     {

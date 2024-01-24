@@ -5,9 +5,9 @@ using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using JetBrains.Annotations;
-using Narupa.Protocol.Trajectory;
+using NanoVer.Protocol.Trajectory;
 
-namespace Narupa.Grpc.Tests.Trajectory
+namespace NanoVer.Grpc.Tests.Trajectory
 {
     /// <summary>
     /// Simple implementation of a TrajectoryService that returns a continuous stream

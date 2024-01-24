@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Narupa.Visualisation.Property
+namespace NanoVer.Visualisation.Property
 {
     /// <summary>
     /// A interface-based property which is serialised as a Unity Object.

@@ -1,4 +1,4 @@
-﻿Shader "Narupa/Offset"
+﻿Shader "NanoVer/Offset"
 {
     Properties
     {
@@ -101,5 +101,5 @@
         }
         
     }
-    CustomEditor "Narupa.Visualisation.Editor.RaytraceEditor"
+    CustomEditor "NanoVer.Visualisation.Editor.RaytraceEditor"
 }

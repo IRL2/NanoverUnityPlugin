@@ -4,7 +4,7 @@
 /// Example of a simple raytraced sphere. This shader draws a sphere in object space with a solid color without instancing, 
 /// shadow support or depth
 
-Shader "NarupaIMD/Example/Raytrace Sphere"
+Shader "NanoVerIMD/Example/Raytrace Sphere"
 {
     Properties
     {

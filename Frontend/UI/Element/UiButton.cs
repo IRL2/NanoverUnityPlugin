@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Narupa.Frontend.UI
+namespace NanoVer.Frontend.UI
 {
     /// <summary>
     /// Component to abstract different button prefabs to give a common interface for

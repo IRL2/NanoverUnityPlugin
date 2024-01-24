@@ -3,15 +3,15 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Narupa.Grpc.Tests.Commands;
-using Narupa.Grpc.Tests.Multiplayer;
-using Narupa.Grpc.Tests.Trajectory;
-using Narupa.Grpc.Trajectory;
-using Narupa.Protocol.Trajectory;
-using Narupa.Testing.Async;
+using NanoVer.Grpc.Tests.Commands;
+using NanoVer.Grpc.Tests.Multiplayer;
+using NanoVer.Grpc.Tests.Trajectory;
+using NanoVer.Grpc.Trajectory;
+using NanoVer.Protocol.Trajectory;
+using NanoVer.Testing.Async;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests.Session
+namespace NanoVer.Grpc.Tests.Session
 {
     internal class TrajectorySessionSetupTests
     {

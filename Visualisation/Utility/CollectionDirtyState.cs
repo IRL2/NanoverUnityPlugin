@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace Narupa.Visualisation.Utility
+namespace NanoVer.Visualisation.Utility
 {
     /// <summary>
     /// Tracks the dirty state of an <see cref="IEnumerable" />, by tracking items

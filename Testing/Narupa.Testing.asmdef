@@ -1,7 +1,7 @@
 {
-    "name": "Narupa.Testing",
+    "name": "NanoVer.Testing",
     "references": [
-        "Narupa.Core",
+        "NanoVer.Core",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

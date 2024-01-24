@@ -1,11 +1,11 @@
 using System;
-using Narupa.Visualisation.Node.Protein;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Node.Protein;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Scale
+namespace NanoVer.Visualisation.Node.Scale
 {
     /// <summary>
     /// Provides scales that depend on the secondary structure.

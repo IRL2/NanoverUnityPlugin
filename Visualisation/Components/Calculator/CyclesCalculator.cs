@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Calculator;
+using NanoVer.Visualisation.Node.Calculator;
 
-namespace Narupa.Visualisation.Components.Calculator
+namespace NanoVer.Visualisation.Components.Calculator
 {
     /// <inheritdoc cref="CyclesCalculatorNode" />
     public class CyclesCalculator : VisualisationComponent<CyclesCalculatorNode>

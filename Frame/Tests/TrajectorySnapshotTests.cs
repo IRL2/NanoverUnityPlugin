@@ -2,11 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Frame.Event;
+using NanoVer.Frame.Event;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Narupa.Frame.Tests
+namespace NanoVer.Frame.Tests
 {
     internal class TrajectorySnapshotTests
     {

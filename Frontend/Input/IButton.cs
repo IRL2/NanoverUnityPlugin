@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Narupa.Frontend.Input
+namespace NanoVer.Frontend.Input
 {
     /// <summary>
     /// Represents a button input that can be pressed, held, then released. Allows

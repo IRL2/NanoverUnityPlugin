@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Narupa.Core.Math
+namespace NanoVer.Core.Math
 {
     /// <summary>
     /// A transformation consisting of a scaling by a uniform factor, a rotation and

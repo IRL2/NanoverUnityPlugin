@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace Narupa.Core.Collections
+namespace NanoVer.Core.Collections
 {
     public static class INotifyCollectionChangedExtensions
     {

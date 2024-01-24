@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Narupa.Frame.Import.CIF.Components
+namespace NanoVer.Frame.Import.CIF.Components
 {
     /// <summary>
     /// Serializable representation of a chemical component

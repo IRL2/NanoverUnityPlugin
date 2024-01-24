@@ -1,8 +1,8 @@
 using System;
-using Narupa.Core.Math;
-using Narupa.Frame;
+using NanoVer.Core.Math;
+using NanoVer.Frame;
 
-namespace Narupa.Visualisation.Property
+namespace NanoVer.Visualisation.Property
 {
     /// <summary>
     /// Filters a list of bonds by some index property.

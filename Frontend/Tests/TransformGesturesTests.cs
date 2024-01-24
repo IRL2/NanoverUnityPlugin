@@ -3,15 +3,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Math;
-using Narupa.Frontend.Manipulation;
-using Narupa.Testing;
+using NanoVer.Core.Math;
+using NanoVer.Frontend.Manipulation;
+using NanoVer.Testing;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools.Utils;
-using TransformationPair = System.Tuple<Narupa.Core.Math.Transformation, Narupa.Core.Math.Transformation>;
+using TransformationPair = System.Tuple<NanoVer.Core.Math.Transformation, NanoVer.Core.Math.Transformation>;
 
-namespace Narupa.Frontend.Tests
+namespace NanoVer.Frontend.Tests
 {
     internal class TransformGesturesTests
     {

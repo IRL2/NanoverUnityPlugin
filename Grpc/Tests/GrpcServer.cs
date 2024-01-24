@@ -2,10 +2,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using Narupa.Core.Async;
-using Narupa.Grpc.Tests.Trajectory;
+using NanoVer.Core.Async;
+using NanoVer.Grpc.Tests.Trajectory;
 
-namespace Narupa.Grpc.Tests.Multiplayer
+namespace NanoVer.Grpc.Tests.Multiplayer
 {
     /// <summary>
     /// Generic gRPC server for testing purposes.

@@ -4,7 +4,7 @@
 using System;
 using System.Threading;
 
-namespace Narupa.Core.Async
+namespace NanoVer.Core.Async
 {
     /// <summary>
     /// A base implementation of an object that wraps a

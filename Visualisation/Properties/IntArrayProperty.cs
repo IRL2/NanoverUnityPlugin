@@ -1,8 +1,8 @@
 using System;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 
-namespace Narupa.Visualisation.Properties
+namespace NanoVer.Visualisation.Properties
 {
     /// <summary>
     /// Serializable <see cref="Property" /> for an array of <see cref="int" /> values.

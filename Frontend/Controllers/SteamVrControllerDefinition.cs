@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace NanoVer.Frontend.Controllers
 {
     /// <summary>
     /// Defines for a given SteamVR controller type the prefabs to use for each hand.

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Narupa.Frame
+namespace NanoVer.Frame
 {
     /// <summary>
     /// A single frame with a trajectory. It contains a snapshot of the system, with a

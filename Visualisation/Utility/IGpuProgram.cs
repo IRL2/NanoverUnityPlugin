@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Narupa.Visualisation.Utility
+namespace NanoVer.Visualisation.Utility
 {
     /// <summary>
     /// An abstraction of both traditional rendering shaders and compute shaders,

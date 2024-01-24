@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace Narupa.Visualisation.Utility
+namespace NanoVer.Visualisation.Utility
 {
     /// <summary>
     /// Represents the dirty state of an <see cref="IDictionary{TKey,TValue}" />,

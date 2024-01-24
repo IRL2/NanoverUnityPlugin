@@ -3,7 +3,7 @@
 
 using System.Threading;
 
-namespace Narupa.Core.Async
+namespace NanoVer.Core.Async
 {
     /// <summary>
     /// An object which may be cancelled, providing access to its cancellation

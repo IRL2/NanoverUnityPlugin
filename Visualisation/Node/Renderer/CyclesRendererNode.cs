@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Renderer
+namespace NanoVer.Visualisation.Node.Renderer
 {
     [Serializable]
     public class CyclesRendererNode

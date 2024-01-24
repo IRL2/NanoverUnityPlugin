@@ -6,16 +6,16 @@ using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using Narupa.Frame;
-using Narupa.Frame.Import.CIF;
-using Narupa.Frame.Import.CIF.Components;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Node.Adaptor;
+using NanoVer.Frame;
+using NanoVer.Frame.Import.CIF;
+using NanoVer.Frame.Import.CIF.Components;
+using NanoVer.Visualisation.Components;
+using NanoVer.Visualisation.Node.Adaptor;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Editor
+namespace NanoVer.Visualisation.Editor
 {
     [InitializeOnLoad]
     internal static class VisualiserPrefabEnvironment

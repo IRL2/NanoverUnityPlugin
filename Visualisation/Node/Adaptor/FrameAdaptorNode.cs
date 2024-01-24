@@ -3,12 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using Narupa.Core;
-using Narupa.Frame;
-using Narupa.Frame.Event;
-using Narupa.Visualisation.Property;
+using NanoVer.Core;
+using NanoVer.Frame;
+using NanoVer.Frame.Event;
+using NanoVer.Visualisation.Property;
 
-namespace Narupa.Visualisation.Node.Adaptor
+namespace NanoVer.Visualisation.Node.Adaptor
 {
     /// <summary>
     /// Visualisation node which reads frames using <see cref="IFrameConsumer" /> and

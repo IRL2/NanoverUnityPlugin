@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Protein
+namespace NanoVer.Visualisation.Node.Protein
 {
     public class DsspAlgorithm
     {

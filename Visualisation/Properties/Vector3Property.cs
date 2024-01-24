@@ -1,8 +1,8 @@
 using System;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Properties
+namespace NanoVer.Visualisation.Properties
 {
     /// <summary>
     /// Serializable <see cref="Property" /> for a <see cref="Vector3" /> value.

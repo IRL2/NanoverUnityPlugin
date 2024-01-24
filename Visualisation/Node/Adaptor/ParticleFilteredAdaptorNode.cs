@@ -3,13 +3,13 @@
 
 using System;
 using System.Collections.Generic;
-using Narupa.Core;
-using Narupa.Frame;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using NanoVer.Core;
+using NanoVer.Frame;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Adaptor
+namespace NanoVer.Visualisation.Node.Adaptor
 {
     /// <summary>
     /// A variation of a <see cref="FrameAdaptorNode"/> which applies a filter to any key of the form 'particle.*'.

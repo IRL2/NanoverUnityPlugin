@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Narupa.Core.Math
+namespace NanoVer.Core.Math
 {
     /// <summary>
     /// Bundles position, rotation, and scale of a transformation.

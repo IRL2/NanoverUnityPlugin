@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Spline
+namespace NanoVer.Visualisation.Node.Spline
 {
     /// <summary>
     /// Generate a set of <see cref="SplineSegment"/>s from a set of positions.

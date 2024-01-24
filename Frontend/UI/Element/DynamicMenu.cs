@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Narupa.Frontend.UI
+namespace NanoVer.Frontend.UI
 {
     /// <summary>
     /// A manager for a element which can display a set of options as buttons, such as a radial menu.

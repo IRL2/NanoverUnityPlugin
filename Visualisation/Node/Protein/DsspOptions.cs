@@ -1,6 +1,6 @@
 using System;
 
-namespace Narupa.Visualisation.Node.Protein
+namespace NanoVer.Visualisation.Node.Protein
 {
     [Serializable]
     public class DsspOptions

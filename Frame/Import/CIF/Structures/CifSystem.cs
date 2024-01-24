@@ -4,12 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Collections;
-using Narupa.Core.Science;
-using Narupa.Frame.Import.CIF.Components;
+using NanoVer.Core.Collections;
+using NanoVer.Core.Science;
+using NanoVer.Frame.Import.CIF.Components;
 using UnityEngine;
 
-namespace Narupa.Frame.Import.CIF.Structures
+namespace NanoVer.Frame.Import.CIF.Structures
 {
     /// <summary>
     /// Represents a complete molecular system read from a mmCIF file.
@@ -70,8 +70,8 @@ namespace Narupa.Frame.Import.CIF.Structures
         }
 
         /// <summary>
-        /// Convert the imported molecular system to a <see cref="Narupa.Frame" /> for use in
-        /// Narupa.
+        /// Convert the imported molecular system to a <see cref="NanoVer.Frame" /> for use in
+        /// NanoVer.
         /// </summary>
         public virtual Frame GetFrame()
         {

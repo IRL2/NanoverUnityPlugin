@@ -1,10 +1,10 @@
 {
-    "name": "Narupa.Grpc.Tests",
+    "name": "NanoVer.Grpc.Tests",
     "references": [
-        "Narupa.Grpc",
-        "Narupa.Testing",
-        "Narupa.Frame",
-        "Narupa.Core"
+        "NanoVer.Grpc",
+        "NanoVer.Testing",
+        "NanoVer.Frame",
+        "NanoVer.Core"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
@@ -16,7 +16,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [
-        "Narupa.Protocol.dll",
+        "NanoVer.Protocol.dll",
         "Google.Protobuf.dll",
         "Grpc.Core.Api.dll",
         "Grpc.Core.dll",

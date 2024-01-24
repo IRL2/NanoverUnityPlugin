@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace Narupa.Core.Science
+namespace NanoVer.Core.Science
 {
     /// <summary>
     /// Definition of an amino acid.

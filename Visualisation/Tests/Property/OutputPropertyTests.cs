@@ -1,12 +1,12 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Tests.Property
+namespace NanoVer.Visualisation.Tests.Property
 {
     internal class IntPropertyTests : PropertyTests<IntProperty, int>
     {

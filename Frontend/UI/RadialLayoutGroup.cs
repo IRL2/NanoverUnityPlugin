@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Narupa.Frontend.UI
+namespace NanoVer.Frontend.UI
 {
     /// <summary>
     /// Layout group for arranging UI elements radially around a point

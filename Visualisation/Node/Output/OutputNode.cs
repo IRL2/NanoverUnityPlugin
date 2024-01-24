@@ -2,10 +2,10 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Output
+namespace NanoVer.Visualisation.Node.Output
 {
     /// <summary>
     /// Generic output for the visualisation system that provides some value with a

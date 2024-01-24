@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Narupa.Core.Math
+namespace NanoVer.Core.Math
 {
     /// <summary>
     /// An transformation between two 3D spaces, defined by where it maps the

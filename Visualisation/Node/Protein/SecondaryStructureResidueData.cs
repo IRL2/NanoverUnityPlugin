@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Protein
+namespace NanoVer.Visualisation.Node.Protein
 {
     /// <summary>
     /// Utility class for storing information about protein residues for use with DSSP.

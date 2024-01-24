@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Narupa.Core
+namespace NanoVer.Core
 {
     public static class TransformExtensions
     {

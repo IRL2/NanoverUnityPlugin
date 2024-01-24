@@ -1,8 +1,8 @@
 using System;
-using Narupa.Frame;
-using Narupa.Visualisation.Property;
+using NanoVer.Frame;
+using NanoVer.Visualisation.Property;
 
-namespace Narupa.Visualisation.Properties.Collections
+namespace NanoVer.Visualisation.Properties.Collections
 {
     /// <summary>
     /// Serializable <see cref="Property" /> for an array of <see cref="BondPair" />

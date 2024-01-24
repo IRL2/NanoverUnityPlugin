@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace NanoVer.Visualisation.Node.Calculator
 {
     /// <summary>
     /// List of indices representing a closed cycle, stored in canonical order (first

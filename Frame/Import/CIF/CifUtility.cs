@@ -4,7 +4,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Narupa.Frame.Import.CIF
+namespace NanoVer.Frame.Import.CIF
 {
     public static class CifUtility
     {

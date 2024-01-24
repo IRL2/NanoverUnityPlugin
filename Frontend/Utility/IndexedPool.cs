@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Narupa.Frontend.Utility
+namespace NanoVer.Frontend.Utility
 {
     /// <summary>
     /// Utility class for creating and managing a pool of instances of some 

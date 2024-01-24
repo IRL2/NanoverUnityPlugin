@@ -2,9 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Frame.Event;
+using NanoVer.Frame.Event;
 
-namespace Narupa.Frame
+namespace NanoVer.Frame
 {
     /// <summary>
     /// Maintains a single <see cref="Frame" />, which is updated by receiving new data.

@@ -1,8 +1,8 @@
-using Narupa.Visualisation.Node.Adaptor;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Node.Adaptor;
+using NanoVer.Visualisation.Property;
 using NUnit.Framework;
 
-namespace Narupa.Visualisation.Tests.Node.Adaptor
+namespace NanoVer.Visualisation.Tests.Node.Adaptor
 {
     public class FrameAdaptorDynamicPropertyTests
     {

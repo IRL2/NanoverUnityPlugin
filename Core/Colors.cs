@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Narupa.Core
+namespace NanoVer.Core
 {
     /// <summary>
     /// Utility classes related to colors.

@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 
-namespace Narupa.Grpc.Tests
+namespace NanoVer.Grpc.Tests
 {
     /// <summary>
     /// Wrapper around a <see cref="IServerStreamWriter{T}"/>, which adds latency before writing

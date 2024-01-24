@@ -4,12 +4,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Narupa.Core.Async;
-using Narupa.Grpc.Tests.Multiplayer;
-using Narupa.Testing.Async;
+using NanoVer.Core.Async;
+using NanoVer.Grpc.Tests.Multiplayer;
+using NanoVer.Testing.Async;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests.Async
+namespace NanoVer.Grpc.Tests.Async
 {
     /// <summary>
     /// Setup a client and a server for testing gRPC.

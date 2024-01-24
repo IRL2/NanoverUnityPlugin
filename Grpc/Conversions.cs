@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
-using Narupa.Protocol;
+using NanoVer.Protocol;
 using UnityEngine;
 
-namespace Narupa.Grpc
+namespace NanoVer.Grpc
 {
     /// <summary>
     /// Utility methods for converting from protobuf data structures to C# objects.

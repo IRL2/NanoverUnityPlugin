@@ -3,13 +3,13 @@
 
 using System;
 using System.Collections.Generic;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Core.Science;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Filter
+namespace NanoVer.Visualisation.Node.Filter
 {
     /// <summary>
     /// Filters particles by if they're in a standard amino acid, optionally excluding hydrogens.

@@ -1,4 +1,4 @@
-﻿Shader "Narupa/Spline/Hermite"
+﻿Shader "NanoVer/Spline/Hermite"
 {
     Properties
     {

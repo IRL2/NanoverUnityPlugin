@@ -1,10 +1,10 @@
-using Narupa.Core.Science;
-using Narupa.Visualisation.Node.Scale;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Core.Science;
+using NanoVer.Visualisation.Node.Scale;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using NUnit.Framework;
 
-namespace Narupa.Visualisation.Tests.Node.Scale
+namespace NanoVer.Visualisation.Tests.Node.Scale
 {
     public class VdwScaleTests
     {

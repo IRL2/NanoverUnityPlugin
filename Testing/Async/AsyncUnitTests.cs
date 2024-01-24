@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Narupa.Testing.Async
+namespace NanoVer.Testing.Async
 {
     /// <summary>
     /// Marks a method as an asynchronous unit test. To be invoked by NUnit,

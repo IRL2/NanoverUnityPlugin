@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace NanoVer.Frontend.Controllers
 {
     /// <summary>
     /// Manager class for accessing the left and right controller.

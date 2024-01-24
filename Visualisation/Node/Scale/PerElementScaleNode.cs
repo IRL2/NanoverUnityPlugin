@@ -2,12 +2,12 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Core.Science;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Scale
+namespace NanoVer.Visualisation.Node.Scale
 {
     /// <summary>
     /// Base code for visualiser node which generates scales based upon atomic

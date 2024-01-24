@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Input;
+using NanoVer.Visualisation.Node.Input;
 
-namespace Narupa.Visualisation.Components.Input
+namespace NanoVer.Visualisation.Components.Input
 {
     /// <inheritdoc cref="ColorArrayInputNode" />
     public class ColorArrayInput : VisualisationComponent<ColorArrayInputNode>

@@ -1,7 +1,7 @@
-using Narupa.Core.Math;
+using NanoVer.Core.Math;
 using UnityEngine;
 
-namespace Narupa.Core.Tests.Math
+namespace NanoVer.Core.Tests.Math
 {
     public static class TransformationAssert
     {

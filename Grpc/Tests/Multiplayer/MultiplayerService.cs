@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Narupa.Core;
-using Narupa.Core.Collections;
-using Narupa.Protocol.State;
+using NanoVer.Core;
+using NanoVer.Core.Collections;
+using NanoVer.Protocol.State;
 using UnityEngine;
 
-namespace Narupa.Grpc.Tests.Multiplayer
+namespace NanoVer.Grpc.Tests.Multiplayer
 {
     public class MultiplayerService : State.StateBase, IBindableService
     {

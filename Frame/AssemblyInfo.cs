@@ -3,4 +3,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Narupa.Frame.Tests")]
+[assembly: InternalsVisibleTo("NanoVer.Frame.Tests")]

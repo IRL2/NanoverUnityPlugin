@@ -3,10 +3,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Math;
+using NanoVer.Core.Math;
 using UnityEngine;
 
-namespace Narupa.Testing
+namespace NanoVer.Testing
 {
     public static class SpatialTestData
     {

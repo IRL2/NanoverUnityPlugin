@@ -6,11 +6,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using JetBrains.Annotations;
-using Narupa.Grpc.Stream;
-using Narupa.Protocol.State;
+using NanoVer.Grpc.Stream;
+using NanoVer.Protocol.State;
 using Value = Google.Protobuf.WellKnownTypes.Value;
 
-namespace Narupa.Grpc.Multiplayer
+namespace NanoVer.Grpc.Multiplayer
 {
     /// <summary>
     /// Wraps a <see cref="Multiplayer.MultiplayerClient" /> and

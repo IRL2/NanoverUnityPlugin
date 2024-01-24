@@ -1,6 +1,6 @@
-using Narupa.Core.Math;
+using NanoVer.Core.Math;
 
-namespace Narupa.Frontend.Manipulation
+namespace NanoVer.Frontend.Manipulation
 {
     public interface IInteractableParticles
     {

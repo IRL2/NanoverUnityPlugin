@@ -6,10 +6,10 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Narupa.Core.Async;
+using NanoVer.Core.Async;
 using Channel = System.Threading.Channels.Channel;
 
-namespace Narupa.Grpc.Stream
+namespace NanoVer.Grpc.Stream
 {
     /// <summary>
     /// Delegate for a gRPC server streaming call which takes a number of

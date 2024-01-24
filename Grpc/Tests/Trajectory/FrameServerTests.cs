@@ -4,14 +4,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Narupa.Grpc.Tests.Async;
-using Narupa.Grpc.Trajectory;
-using Narupa.Protocol.Trajectory;
-using Narupa.Testing.Async;
+using NanoVer.Grpc.Tests.Async;
+using NanoVer.Grpc.Trajectory;
+using NanoVer.Protocol.Trajectory;
+using NanoVer.Testing.Async;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests.Trajectory
+namespace NanoVer.Grpc.Tests.Trajectory
 {
     internal class FrameServerTests : BaseClientTests<QueueTrajectoryService, TrajectoryClient>
     {

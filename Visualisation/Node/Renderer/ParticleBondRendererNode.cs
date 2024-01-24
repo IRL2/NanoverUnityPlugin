@@ -2,14 +2,14 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Frame;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
-using Narupa.Visualisation.Utility;
+using NanoVer.Frame;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
+using NanoVer.Visualisation.Utility;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Renderer
+namespace NanoVer.Visualisation.Node.Renderer
 {
     /// <summary>
     /// Visualisation node for rendering bonds between particles.

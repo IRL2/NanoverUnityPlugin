@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace Narupa.Testing.Async
+namespace NanoVer.Testing.Async
 {
     /// <summary>
     /// Example of asynchronous tests

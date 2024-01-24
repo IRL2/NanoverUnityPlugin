@@ -3,12 +3,12 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Frontend.Input;
-using Narupa.Testing;
+using NanoVer.Frontend.Input;
+using NanoVer.Testing;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Frontend.Tests.Input
+namespace NanoVer.Frontend.Tests.Input
 {
     internal class DirectButtonTests
     {

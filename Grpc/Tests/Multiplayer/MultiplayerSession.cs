@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Narupa.Grpc.Multiplayer;
-using Narupa.Testing.Async;
+using NanoVer.Grpc.Multiplayer;
+using NanoVer.Testing.Async;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests.Multiplayer
+namespace NanoVer.Grpc.Tests.Multiplayer
 {
     internal class MultiplayerSessionTests
     {

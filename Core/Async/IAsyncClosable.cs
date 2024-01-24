@@ -3,7 +3,7 @@
 
 using System.Threading.Tasks;
 
-namespace Narupa.Core.Async
+namespace NanoVer.Core.Async
 {
     /// <summary>
     /// Provides a mechanism to close a resource asynchronously and allow

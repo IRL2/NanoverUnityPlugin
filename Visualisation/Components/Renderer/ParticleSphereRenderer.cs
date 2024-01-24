@@ -1,11 +1,11 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Visualisation.Components.Renderer;
-using Narupa.Visualisation.Node.Renderer;
+using NanoVer.Visualisation.Components.Renderer;
+using NanoVer.Visualisation.Node.Renderer;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components.Visualiser
+namespace NanoVer.Visualisation.Components.Visualiser
 {
     /// <inheritdoc cref="ParticleSphereRendererNode" />
     public class ParticleSphereRenderer :

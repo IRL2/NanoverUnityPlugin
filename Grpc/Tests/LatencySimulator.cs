@@ -4,7 +4,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using UnityEngine;
 
-namespace Narupa.Grpc.Tests
+namespace NanoVer.Grpc.Tests
 {
     /// <summary>
     /// gRPC interceptor which adds a configurable latency to messages streamed from the server.

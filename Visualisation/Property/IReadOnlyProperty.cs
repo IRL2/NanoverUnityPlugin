@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Narupa.Visualisation.Property
+namespace NanoVer.Visualisation.Property
 {
     /// <summary>
     /// Properties allow the linking together of inputs and outputs of various objects

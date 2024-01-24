@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Narupa.Frame;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Frame;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Spline
+namespace NanoVer.Visualisation.Node.Spline
 {
     [Serializable]
     public class TetrahedralSplineNode : GenericOutputNode

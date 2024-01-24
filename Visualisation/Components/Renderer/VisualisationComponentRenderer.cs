@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components.Renderer
+namespace NanoVer.Visualisation.Components.Renderer
 {
     public abstract class VisualisationComponentRenderer<T> : VisualisationComponent<T>
         where T : new()

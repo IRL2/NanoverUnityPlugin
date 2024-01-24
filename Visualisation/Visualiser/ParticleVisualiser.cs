@@ -2,18 +2,18 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Narupa.Core;
-using Narupa.Core.Science;
-using Narupa.Frame;
-using Narupa.Visualisation.Node.Adaptor;
-using Narupa.Visualisation.Node.Color;
-using Narupa.Visualisation.Node.Renderer;
-using Narupa.Visualisation.Node.Scale;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using NanoVer.Core;
+using NanoVer.Core.Science;
+using NanoVer.Frame;
+using NanoVer.Visualisation.Node.Adaptor;
+using NanoVer.Visualisation.Node.Color;
+using NanoVer.Visualisation.Node.Renderer;
+using NanoVer.Visualisation.Node.Scale;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Visualiser
+namespace NanoVer.Visualisation.Visualiser
 {
     /// <summary>
     /// Simple integrated visualiser, with several visualisation nodes embedded into

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6324897727274877846}
   - component: {fileID: 4342791882184860749}
   m_Layer: 0
-  m_Name: Narupa EventSystem
+  m_Name: NanoVer EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

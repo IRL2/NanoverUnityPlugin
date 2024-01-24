@@ -1,9 +1,9 @@
 using System;
-using Narupa.Visualisation.Node.Input;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Node.Input;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 
-namespace Narupa.Visualisation.Node.Output
+namespace NanoVer.Visualisation.Node.Output
 {
     [Serializable]
     public class Vector3ArrayOutputNode : OutputNode<Vector3ArrayProperty>

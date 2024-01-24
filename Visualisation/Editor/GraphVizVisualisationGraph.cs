@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Components.Adaptor;
-using Narupa.Visualisation.Node.Input;
-using Narupa.Visualisation.Node.Output;
-using Narupa.Visualisation.Property;
+using NanoVer.Visualisation.Components;
+using NanoVer.Visualisation.Components.Adaptor;
+using NanoVer.Visualisation.Node.Input;
+using NanoVer.Visualisation.Node.Output;
+using NanoVer.Visualisation.Property;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Editor
+namespace NanoVer.Visualisation.Editor
 {
     /// <summary>
     /// Generates a graph of the currently selected visualiser as graph in the DOT
@@ -19,7 +19,7 @@ namespace Narupa.Visualisation.Editor
     /// </summary>
     internal static class GraphVizVisualisationGraph
     {
-        [MenuItem("Narupa/Generate GraphVIZ")]
+        [MenuItem("NanoVer/Generate GraphVIZ")]
         internal static void GenerateGraphViz()
         {
             var root = Selection.activeGameObject;

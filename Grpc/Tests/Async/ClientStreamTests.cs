@@ -4,11 +4,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Narupa.Core.Async;
-using Narupa.Testing.Async;
+using NanoVer.Core.Async;
+using NanoVer.Testing.Async;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests.Async
+namespace NanoVer.Grpc.Tests.Async
 {
     internal abstract class ClientStreamTests<TService, TClient, TStream> :
         ClientTests<TService, TClient>

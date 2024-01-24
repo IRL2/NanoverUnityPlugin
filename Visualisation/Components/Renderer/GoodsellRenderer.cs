@@ -1,10 +1,10 @@
-using Narupa.Visualisation.Components.Renderer;
-using Narupa.Visualisation.Node.Renderer;
+using NanoVer.Visualisation.Components.Renderer;
+using NanoVer.Visualisation.Node.Renderer;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components.Renderer
+namespace NanoVer.Visualisation.Components.Renderer
 {
-    /// <inheritdoc cref="Narupa.Visualisation.Node.Renderer" />
+    /// <inheritdoc cref="NanoVer.Visualisation.Node.Renderer" />
     public class GoodsellRenderer : VisualisationComponentRenderer<GoodsellRendererNode>
     {
         protected override void OnEnable()

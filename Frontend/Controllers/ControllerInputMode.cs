@@ -4,7 +4,7 @@
 using UnityEngine;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace NanoVer.Frontend.Controllers
 {
     /// <summary>
     /// Define the mode of the controller as 'interaction', setting up the correct

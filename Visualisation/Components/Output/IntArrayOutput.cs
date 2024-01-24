@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Output;
+using NanoVer.Visualisation.Node.Output;
 
-namespace Narupa.Visualisation.Components.Output
+namespace NanoVer.Visualisation.Components.Output
 {
     /// <inheritdoc cref="IntArrayOutputNode" />
     public class IntArrayOutput : VisualisationComponent<IntArrayOutputNode>

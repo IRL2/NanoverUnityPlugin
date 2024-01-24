@@ -1,7 +1,7 @@
-using Narupa.Core.Math;
-using Narupa.Frontend.Input;
+using NanoVer.Core.Math;
+using NanoVer.Frontend.Input;
 
-namespace Narupa.Frontend.Manipulation
+namespace NanoVer.Frontend.Manipulation
 {
     /// <summary>
     /// A function that attempts to start a manipulation given an manipulator pose.

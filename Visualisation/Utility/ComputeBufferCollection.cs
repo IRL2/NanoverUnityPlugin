@@ -6,10 +6,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Narupa.Core.Collections;
+using NanoVer.Core.Collections;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Utility
+namespace NanoVer.Visualisation.Utility
 {
     /// <summary>
     /// A collection of <see cref="ComputeBuffer" />'s, which can be assigned to by

@@ -3,13 +3,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Math;
-using Narupa.Frontend.Manipulation;
-using Narupa.Testing;
+using NanoVer.Core.Math;
+using NanoVer.Frontend.Manipulation;
+using NanoVer.Testing;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Frontend.Tests
+namespace NanoVer.Frontend.Tests
 {
     internal class ManipulableTransformTests
     {

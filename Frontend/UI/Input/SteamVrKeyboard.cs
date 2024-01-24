@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Valve.VR;
 
-namespace Narupa.Frontend.XR
+namespace NanoVer.Frontend.XR
 {
     /// <summary>
     /// Interface with SteamVR that allows keyboard input to be done using the SteamVR overlay.

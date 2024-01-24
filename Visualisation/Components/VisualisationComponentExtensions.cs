@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components
+namespace NanoVer.Visualisation.Components
 {
     /// <summary>
     /// Extension methods related to <see cref="VisualisationComponent"/>.

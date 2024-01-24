@@ -1,7 +1,7 @@
-using Narupa.Visualisation.Node.Adaptor;
-using Narupa.Visualisation.Properties;
+using NanoVer.Visualisation.Node.Adaptor;
+using NanoVer.Visualisation.Properties;
 
-namespace Narupa.Visualisation.Components.Adaptor
+namespace NanoVer.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="SecondaryStructureAdaptorNode"/>
     public class SecondaryStructureAdaptor : FrameAdaptorComponent<SecondaryStructureAdaptorNode>

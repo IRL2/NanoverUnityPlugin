@@ -3,7 +3,7 @@
 
 /// Example unlit shader. This shader draws an opaque object with a solid color without instancing or shadow support
 
-Shader "NarupaIMD/Example/Unlit"
+Shader "NanoVerIMD/Example/Unlit"
 {
     Properties
     {

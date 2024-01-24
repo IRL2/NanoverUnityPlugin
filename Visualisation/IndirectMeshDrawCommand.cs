@@ -2,11 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Visualisation.Utility;
+using NanoVer.Visualisation.Utility;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Narupa.Visualisation
+namespace NanoVer.Visualisation
 {
     /// <summary>
     /// Wraps

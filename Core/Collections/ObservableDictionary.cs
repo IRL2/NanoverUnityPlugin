@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace Narupa.Core.Collections
+namespace NanoVer.Core.Collections
 {
     /// <summary>
     /// A dictionary which implements <see cref="INotifyCollectionChanged" /> on the

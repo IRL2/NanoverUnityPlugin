@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Core.Math;
+using NanoVer.Core.Math;
 using UnityEngine;
 
-namespace Narupa.Frontend.Manipulation
+namespace NanoVer.Frontend.Manipulation
 {
     /// <summary>
     /// Represents a grab between a particle and world-space position

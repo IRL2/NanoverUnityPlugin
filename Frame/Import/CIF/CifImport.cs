@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Narupa.Frame.Import.CIF.Components;
-using Narupa.Frame.Import.CIF.Structures;
+using NanoVer.Frame.Import.CIF.Components;
+using NanoVer.Frame.Import.CIF.Structures;
 using UnityEngine;
 
-namespace Narupa.Frame.Import.CIF
+namespace NanoVer.Frame.Import.CIF
 {
     /// <summary>
     /// Importer for the mmCIF file format, used by the RCSB database.

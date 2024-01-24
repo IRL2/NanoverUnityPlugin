@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using Narupa.Core.Science;
+using NanoVer.Core.Science;
 
-namespace Narupa.Frame.Import
+namespace NanoVer.Frame.Import
 {
     public abstract class LineByLineParser
     {

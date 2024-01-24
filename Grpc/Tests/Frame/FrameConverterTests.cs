@@ -3,15 +3,15 @@
 
 using System;
 using Google.Protobuf.WellKnownTypes;
-using Narupa.Core.Science;
-using Narupa.Frame;
-using Narupa.Grpc.Frame;
-using Narupa.Protocol;
-using Narupa.Protocol.Trajectory;
+using NanoVer.Core.Science;
+using NanoVer.Frame;
+using NanoVer.Grpc.Frame;
+using NanoVer.Protocol;
+using NanoVer.Protocol.Trajectory;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Grpc.Tests.Frame
+namespace NanoVer.Grpc.Tests.Frame
 {
     internal class FrameConverterTests
     {

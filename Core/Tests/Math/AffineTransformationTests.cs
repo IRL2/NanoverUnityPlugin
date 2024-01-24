@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Math;
-using Narupa.Testing;
+using NanoVer.Core.Math;
+using NanoVer.Testing;
 using NUnit.Framework;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Narupa.Core.Tests.Math
+namespace NanoVer.Core.Tests.Math
 {
     public class AffineTransformationTests
     {

@@ -1,17 +1,17 @@
 ﻿// Copyright (c) 2019 Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Frontend.Input;
+using NanoVer.Frontend.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Narupa.Core.Async;
-using Narupa.Core.Math;
+using NanoVer.Core.Async;
+using NanoVer.Core.Math;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Narupa.Frontend.XR
+namespace NanoVer.Frontend.XR
 {
     /// <summary>
     /// Extensions for Unity's XR system, in which you make queries about

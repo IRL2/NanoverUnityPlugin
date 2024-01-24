@@ -4,7 +4,7 @@
 using UnityEngine;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace NanoVer.Frontend.Controllers
 {
     public class UiInputMode : ControllerInputMode
     {

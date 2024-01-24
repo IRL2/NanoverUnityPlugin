@@ -2,11 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Frontend.Input;
+using NanoVer.Frontend.Input;
 using UnityEngine;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace NanoVer.Frontend.Controllers
 {
     /// <summary>
     /// The persistent script to represent a left or right controller in VR.
@@ -19,9 +19,9 @@ namespace Narupa.Frontend.Controllers
     public class VrController : MonoBehaviour
     {
         [SerializeField]
-        private NarupaRenderModel renderModel;
+        private NanoVerRenderModel renderModel;
 
-        public NarupaRenderModel RenderModel => renderModel;
+        public NanoVerRenderModel RenderModel => renderModel;
 
         /// <summary>
         /// Indicate the controller has been reset (connected or disconnected).

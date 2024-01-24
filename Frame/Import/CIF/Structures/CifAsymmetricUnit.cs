@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Narupa.Frame.Import.CIF.Structures
+namespace NanoVer.Frame.Import.CIF.Structures
 {
     internal class CifAsymmetricUnit
     {

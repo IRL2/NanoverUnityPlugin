@@ -1,11 +1,11 @@
 using System;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Core.Science;
+using NanoVer.Visualisation.Properties;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Color
+namespace NanoVer.Visualisation.Node.Color
 {
     /// <summary>
     /// Base code for a Visualiser node which generates colors based upon atomic

@@ -1,10 +1,10 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Core.Science;
+using NanoVer.Core.Science;
 using UnityEngine;
 
-namespace Narupa.Frame.Import.CIF.Structures
+namespace NanoVer.Frame.Import.CIF.Structures
 {
     /// <summary>
     /// An atom read from the atom_site table of a mmCIF file.

@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Protein;
+using NanoVer.Visualisation.Node.Protein;
 
-namespace Narupa.Visualisation.Components.Calculator
+namespace NanoVer.Visualisation.Components.Calculator
 {
     /// <inheritdoc cref="ByEntitySequenceNode" />
     public class ByEntitySequence : VisualisationComponent<ByEntitySequenceNode>

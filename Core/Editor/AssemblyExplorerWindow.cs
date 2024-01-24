@@ -9,7 +9,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Narupa.Core.Editor
+namespace NanoVer.Core.Editor
 {
     /// <summary>
     /// Editor window to generate a dependency graph using the DOT graph language.
@@ -34,7 +34,7 @@ namespace Narupa.Core.Editor
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             
-            var validAssemblies = assemblies.Where(a => a.FullName.StartsWith("Narupa"));
+            var validAssemblies = assemblies.Where(a => a.FullName.StartsWith("NanoVer"));
             var graph = PoC(validAssemblies);
             
             EditorGUILayout.BeginVertical();
@@ -56,7 +56,7 @@ namespace Narupa.Core.Editor
 
         string GetDisplayName(string assembly)
         {
-            if (!showTestAssemblies && (assembly.EndsWith("Tests") || assembly == "Narupa.Testing"))
+            if (!showTestAssemblies && (assembly.EndsWith("Tests") || assembly == "NanoVer.Testing"))
                 return null;
             if (assembly == "netstandard")
                 return null;

@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Narupa.Grpc.Stream;
-using Narupa.Testing.Async;
+using NanoVer.Grpc.Stream;
+using NanoVer.Testing.Async;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests
+namespace NanoVer.Grpc.Tests
 {
     internal class AsyncEnumeratorTests
     {

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Narupa.Core.Science
+namespace NanoVer.Core.Science
 {
     /// <summary>
     /// Standard atomic weights of the atomic elements.

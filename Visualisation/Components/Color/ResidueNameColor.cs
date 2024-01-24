@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Color;
+using NanoVer.Visualisation.Node.Color;
 
-namespace Narupa.Visualisation.Components.Color
+namespace NanoVer.Visualisation.Components.Color
 {
     /// <inheritdoc cref="ResidueNameColorNode" />
     public class ResidueNameColor :

@@ -6,9 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using JetBrains.Annotations;
-using Narupa.Core.Async;
+using NanoVer.Core.Async;
 
-namespace Narupa.Grpc
+namespace NanoVer.Grpc
 {
     /// <summary>
     /// Represents a connection to a server using the GRPC protocol. A GRPC

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Narupa.Core.Science
+namespace NanoVer.Core.Science
 {
     /// <summary>
     /// Van der Waals radii of the atomic elements

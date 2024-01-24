@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Spline;
+using NanoVer.Visualisation.Node.Spline;
 
-namespace Narupa.Visualisation.Components.Calculator
+namespace NanoVer.Visualisation.Components.Calculator
 {
     /// <inheritdoc cref="CurvedBondNode" />
     public class CurvedBond : VisualisationComponent<CurvedBondNode>

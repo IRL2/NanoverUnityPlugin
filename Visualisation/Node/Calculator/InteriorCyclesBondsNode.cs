@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Frame;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using NanoVer.Frame;
+using NanoVer.Visualisation.Properties.Collections;
+using NanoVer.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace NanoVer.Visualisation.Node.Calculator
 {
     /// <summary>
     /// Generates all internal bonds requires for a cycle.

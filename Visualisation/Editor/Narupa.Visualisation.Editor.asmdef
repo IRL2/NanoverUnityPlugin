@@ -1,9 +1,9 @@
 {
-    "name": "Narupa.Visualisation.Editor",
+    "name": "NanoVer.Visualisation.Editor",
     "references": [
-        "Narupa.Visualisation",
-        "Narupa.Core",
-        "Narupa.Frame"
+        "NanoVer.Visualisation",
+        "NanoVer.Core",
+        "NanoVer.Frame"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

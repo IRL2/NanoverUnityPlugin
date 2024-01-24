@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Narupa.Frame
+namespace NanoVer.Frame
 {
     /// <summary>
     /// Represents a bond between two particles with indices A and B

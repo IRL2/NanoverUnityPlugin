@@ -3,7 +3,7 @@
 
 using System.Threading;
 
-namespace Narupa.Core.Async
+namespace NanoVer.Core.Async
 {
     /// <summary>
     /// An object which provides a <see cref="CancellationToken" /> using

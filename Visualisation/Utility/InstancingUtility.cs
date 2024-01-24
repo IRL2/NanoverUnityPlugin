@@ -2,14 +2,14 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Runtime.InteropServices;
-using Narupa.Core.Math;
-using Narupa.Frame;
+using NanoVer.Core.Math;
+using NanoVer.Frame;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Utility
+namespace NanoVer.Visualisation.Utility
 {
     /// <summary>
-    /// Utility methods for setting up Narupa-specific instancing parameters
+    /// Utility methods for setting up NanoVer-specific instancing parameters
     /// for shaders.
     /// </summary>
     public static class InstancingUtility

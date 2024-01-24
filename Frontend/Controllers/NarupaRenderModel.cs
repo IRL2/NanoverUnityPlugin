@@ -1,10 +1,10 @@
 using UnityEngine;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace NanoVer.Frontend.Controllers
 {
     [RequireComponent(typeof(SteamVR_RenderModel))]
-    public class NarupaRenderModel : MonoBehaviour
+    public class NanoVerRenderModel : MonoBehaviour
     {
         [SerializeField]
         private VrController controller;
