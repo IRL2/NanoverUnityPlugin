@@ -2,10 +2,10 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Visualisation.Properties;
+using Nanover.Visualisation.Properties;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Renderer
+namespace Nanover.Visualisation.Node.Renderer
 {
     /// <summary>
     /// Visualisation node for rendering hyperballs between particles.

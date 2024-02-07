@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-namespace Narupa.Testing
+namespace Nanover.Testing
 {
     public static class RandomTestData
     {

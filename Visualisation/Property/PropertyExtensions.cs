@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Narupa.Visualisation.Property
+namespace Nanover.Visualisation.Property
 {
     public static class PropertyExtensions
     {

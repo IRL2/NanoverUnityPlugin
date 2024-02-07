@@ -1,7 +1,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Narupa.Visualisation.Property
+namespace Nanover.Visualisation.Property
 {
     /// <summary>
     /// Implementation of a property which does not define if it itself provides a value, but allows linking to other properties.

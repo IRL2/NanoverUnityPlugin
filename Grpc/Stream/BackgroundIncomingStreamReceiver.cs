@@ -2,10 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
-using Narupa.Core.Async;
-using Narupa.Grpc.Stream;
+using Nanover.Core.Async;
+using Nanover.Grpc.Stream;
 
-namespace Narupa.Grpc.Trajectory
+namespace Nanover.Grpc.Trajectory
 {
     /// <summary>
     /// A utility to start two separate tasks for an incoming stream - a background thread which

@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 
-namespace Narupa.Grpc.Stream
+namespace Nanover.Grpc.Stream
 {
     /// <summary>
     /// Extension methods for iterating over asynchronous enumerators

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Narupa.Core
+namespace Nanover.Core
 {
     /// <summary>
     /// Useful extensions for using dictionaries.

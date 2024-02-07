@@ -2,12 +2,12 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Node.Color;
+using Nanover.Core.Science;
+using Nanover.Visualisation.Node.Color;
 using UnityEditor;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Editor
+namespace Nanover.Visualisation.Editor
 {
     /// <summary>
     /// Property drawer to render element palette assignments in the editor.

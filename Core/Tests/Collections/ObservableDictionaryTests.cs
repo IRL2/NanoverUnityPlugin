@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Narupa.Core.Collections;
-using Narupa.Testing;
+using Nanover.Core.Collections;
+using Nanover.Testing;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Narupa.Core.Tests.Collections
+namespace Nanover.Core.Tests.Collections
 {
     internal class ObservableDictionaryTests
     {

@@ -4,7 +4,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Narupa.Core.Async
+namespace Nanover.Core.Async
 {
     /// <summary>
     /// Extension methods for <see cref="Task" />

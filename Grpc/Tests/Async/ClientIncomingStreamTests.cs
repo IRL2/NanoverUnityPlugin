@@ -3,14 +3,14 @@
 
 using System;
 using System.Threading.Tasks;
-using Narupa.Core.Async;
-using Narupa.Grpc.Stream;
-using Narupa.Testing.Async;
+using Nanover.Core.Async;
+using Nanover.Grpc.Stream;
+using Nanover.Testing.Async;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Grpc.Tests.Async
+namespace Nanover.Grpc.Tests.Async
 {
     internal abstract class
         ClientIncomingStreamTests<TService, TClient, TMessage> : ClientStreamTests<

@@ -2,9 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Math;
+using Nanover.Core.Math;
 
-namespace Narupa.Frontend.Manipulation
+namespace Nanover.Frontend.Manipulation
 {
     /// <summary>
     /// A handle for communicating updates from a manipulator (e.g XR controller)

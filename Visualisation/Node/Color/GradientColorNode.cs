@@ -1,10 +1,10 @@
 using System;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Color
+namespace Nanover.Visualisation.Node.Color
 {
     [Serializable]
     public class GradientColorNode : VisualiserColorNode

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Narupa.Visualisation.Property
+namespace Nanover.Visualisation.Property
 {
     /// <summary>
     /// Property that watches a collection <see cref="Property" /> and returns its

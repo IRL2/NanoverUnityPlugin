@@ -3,14 +3,14 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Narupa.Grpc.Stream;
-using Narupa.Grpc.Tests.Async;
-using Narupa.Grpc.Trajectory;
-using Narupa.Protocol.Trajectory;
-using Narupa.Testing.Async;
+using Nanover.Grpc.Stream;
+using Nanover.Grpc.Tests.Async;
+using Nanover.Grpc.Trajectory;
+using Nanover.Protocol.Trajectory;
+using Nanover.Testing.Async;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests.Trajectory
+namespace Nanover.Grpc.Tests.Trajectory
 {
     internal class TrajectoryClientSubscribeLatestFramesTests : ClientIncomingStreamTests<
         InfiniteTrajectoryService,

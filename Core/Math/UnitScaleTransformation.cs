@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Narupa.Core.Math
+namespace Nanover.Core.Math
 {
     /// <summary>
     /// A transformation consisting of a rotation followed by a translation.

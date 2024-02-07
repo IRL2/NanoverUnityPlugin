@@ -3,11 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using Narupa.Core;
-using Narupa.Core.Science;
+using Nanover.Core;
+using Nanover.Core.Science;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Color
+namespace Nanover.Visualisation.Node.Color
 {
     /// <summary>
     /// Stores key-value pair of atomic number and color, for defining CPK style

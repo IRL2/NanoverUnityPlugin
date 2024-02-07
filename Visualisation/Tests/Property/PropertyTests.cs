@@ -1,9 +1,9 @@
 using System;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Property;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Narupa.Visualisation.Tests.Property
+namespace Nanover.Visualisation.Tests.Property
 {
     public abstract class PropertyTests<TProperty, TValue>
         where TProperty : SerializableProperty<TValue>, new()

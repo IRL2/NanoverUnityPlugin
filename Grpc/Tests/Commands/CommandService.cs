@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Narupa.Protocol.Command;
+using Nanover.Protocol.Command;
 
-namespace Narupa.Grpc.Tests.Commands
+namespace Nanover.Grpc.Tests.Commands
 {
     internal class CommandService : Command.CommandBase, IBindableService
     {

@@ -1,10 +1,10 @@
 using System;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
-using Narupa.Visualisation.Utility;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Property;
+using Nanover.Visualisation.Utility;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Renderer
+namespace Nanover.Visualisation.Node.Renderer
 {
     /// <summary>
     /// Extends the normal sphere rendering by providing residue IDs in a separate buffer.

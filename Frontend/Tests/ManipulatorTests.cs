@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Core.Math;
-using Narupa.Frontend.Input;
-using Narupa.Frontend.Manipulation;
+using Nanover.Core.Math;
+using Nanover.Frontend.Input;
+using Nanover.Frontend.Manipulation;
 using NUnit.Framework;
 using System;
 using UnityEngine;
 
-namespace Narupa.Frontend.Tests
+namespace Nanover.Frontend.Tests
 {
     internal class ManipulatorTests
     {

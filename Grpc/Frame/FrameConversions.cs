@@ -2,13 +2,13 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Math;
-using Narupa.Core.Science;
-using Narupa.Frame;
-using Narupa.Protocol;
+using Nanover.Core.Math;
+using Nanover.Core.Science;
+using Nanover.Frame;
+using Nanover.Protocol;
 using UnityEngine;
 
-namespace Narupa.Grpc.Frame
+namespace Nanover.Grpc.Frame
 {
     /// <summary>
     /// Conversion methods for changing between Frame-specific GRPC values and C#

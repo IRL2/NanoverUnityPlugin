@@ -3,14 +3,14 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Visualisation.Node.Adaptor;
-using Narupa.Visualisation.Node.Input;
-using Narupa.Visualisation.Node.Output;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Node.Adaptor;
+using Nanover.Visualisation.Node.Input;
+using Nanover.Visualisation.Node.Output;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components
+namespace Nanover.Visualisation.Components
 {
     /// <summary>
     /// Instantiates a set of visualisation subgraphs (collection of visualisation

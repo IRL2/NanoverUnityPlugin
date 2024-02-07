@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Narupa.Frame.Import.CIF.Components
+namespace Nanover.Frame.Import.CIF.Components
 {
     /// <summary>
     /// A global <see cref="ScriptableObject" /> which holds the mmCIF component
@@ -54,7 +54,7 @@ namespace Narupa.Frame.Import.CIF.Components
         
 
 #if UNITY_EDITOR
-        [MenuItem("Narupa/Load mmCIF Chemical Component Dictionary")]
+        [MenuItem("Nanover/Load mmCIF Chemical Component Dictionary")]
         private static void LoadChemicalComponentDictionary()
         {
             var filename =
@@ -76,7 +76,7 @@ namespace Narupa.Frame.Import.CIF.Components
             foreach (var component in CifChemicalComponentBondsImport.ImportMultiple(stream))
                 chemicalComponents[component.ResId] = component;
 
-            Debug.Log($"<b>Narupa</b>: Loaded {chemicalComponents.Count} CIF components.");
+            Debug.Log($"<b>Nanover</b>: Loaded {chemicalComponents.Count} CIF components.");
 
             SerializeDictionary();
 

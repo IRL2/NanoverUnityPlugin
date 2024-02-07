@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Narupa.Core.Collections
+namespace Nanover.Core.Collections
 {
     public static class EnumerableExtensions
     {

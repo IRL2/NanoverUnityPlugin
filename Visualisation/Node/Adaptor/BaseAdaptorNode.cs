@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Core;
-using Narupa.Core.Science;
-using Narupa.Frame;
-using Narupa.Protocol.Trajectory;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Property;
+using Nanover.Core;
+using Nanover.Core.Science;
+using Nanover.Frame;
+using Nanover.Protocol.Trajectory;
+using Nanover.Visualisation.Components;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Adaptor
+namespace Nanover.Visualisation.Node.Adaptor
 {
     /// <summary>
     /// An Adaptor node is a node which can provide any property. This allows it to act

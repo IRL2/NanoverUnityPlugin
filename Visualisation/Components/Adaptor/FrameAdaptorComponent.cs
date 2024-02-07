@@ -3,11 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using Narupa.Frame;
-using Narupa.Visualisation.Node.Adaptor;
-using Narupa.Visualisation.Property;
+using Nanover.Frame;
+using Nanover.Visualisation.Node.Adaptor;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Components.Adaptor
+namespace Nanover.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="FrameAdaptorNode" />
     public class FrameAdaptorComponent<TAdaptor> : VisualisationComponent<TAdaptor>, IDynamicPropertyProvider

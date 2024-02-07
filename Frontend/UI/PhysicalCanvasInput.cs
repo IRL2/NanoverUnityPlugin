@@ -1,14 +1,14 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Frontend.Controllers;
-using Narupa.Frontend.Input;
-using Narupa.Frontend.XR;
+using Nanover.Frontend.Controllers;
+using Nanover.Frontend.Input;
+using Nanover.Frontend.XR;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Valve.VR;
 
-namespace Narupa.Frontend.UI
+namespace Nanover.Frontend.UI
 {
     /// <summary>
     /// Component required to register a Unity canvas such that the given controller

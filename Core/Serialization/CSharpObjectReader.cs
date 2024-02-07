@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Narupa.Core.Serialization
+namespace Nanover.Core.Serialization
 {
     /// <summary>
     /// A <see cref="JsonReader" /> for use with json.NET that can convert an object from a

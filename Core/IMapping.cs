@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Narupa.Core
+namespace Nanover.Core
 {
     /// <summary>
     /// Defines an interface which provides a mapping between two types. It is

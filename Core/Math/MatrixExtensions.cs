@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Narupa.Core.Math
+namespace Nanover.Core.Math
 {
     /// <summary>
     /// Extension methods for Unity's <see cref="Matrix4x4" />

@@ -2,10 +2,10 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.ObjectModel;
-using Narupa.Visualisation.Utility;
+using Nanover.Visualisation.Utility;
 using NUnit.Framework;
 
-namespace Narupa.Visualisation.Tests
+namespace Nanover.Visualisation.Tests
 {
     internal class CollectionDirtyStateTests
     {

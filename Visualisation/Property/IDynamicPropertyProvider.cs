@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Components
+namespace Nanover.Visualisation.Components
 {
     public interface IDynamicPropertyProvider : IPropertyProvider
     {

@@ -1,8 +1,8 @@
 using System;
-using Narupa.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Properties.Collections;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Spline
+namespace Nanover.Visualisation.Node.Spline
 {
     [Serializable]
     public class CurvedBondNode : GenericOutputNode

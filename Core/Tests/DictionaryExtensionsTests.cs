@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Narupa.Core.Tests
+namespace Nanover.Core.Tests
 {
     internal class DictionaryExtensionsTests
     {

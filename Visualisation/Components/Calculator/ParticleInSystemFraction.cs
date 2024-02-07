@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Calculator;
+using Nanover.Visualisation.Node.Calculator;
 
-namespace Narupa.Visualisation.Components.Calculator
+namespace Nanover.Visualisation.Components.Calculator
 {
     /// <inheritdoc cref="ParticleInSystemFractionNode" />
     public class ParticleInSystemFraction : VisualisationComponent<ParticleInSystemFractionNode>

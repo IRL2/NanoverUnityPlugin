@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using Narupa.Core;
-using Narupa.Core.Math;
+using Nanover.Core;
+using Nanover.Core.Math;
 using UnityEngine;
 
-namespace Narupa.Grpc.Multiplayer
+namespace Nanover.Grpc.Multiplayer
 {
     /// <summary>
     /// A representation of a multiplayer avatar, which is shared with other users

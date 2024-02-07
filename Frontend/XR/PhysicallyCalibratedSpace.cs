@@ -3,11 +3,11 @@
 
 using System;
 using System.Linq;
-using Narupa.Core.Math;
+using Nanover.Core.Math;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Narupa.Frontend.XR
+namespace Nanover.Frontend.XR
 {
     /// <summary>
     /// Represents a shared coordinate space (with uniform scale) that has been 

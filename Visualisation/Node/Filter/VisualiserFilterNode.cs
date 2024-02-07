@@ -4,10 +4,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Node.Filter
+namespace Nanover.Visualisation.Node.Filter
 {
     /// <summary>
     /// Filters particles by some criterea.

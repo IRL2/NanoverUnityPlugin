@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Narupa.Core;
+using Nanover.Core;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 
-namespace Narupa.Visualisation.Node.Renderer
+namespace Nanover.Visualisation.Node.Renderer
 {
     /// <summary>
     /// Base node for a renderer based upon using <see cref="CommandBuffer"/>,

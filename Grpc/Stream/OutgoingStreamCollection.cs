@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Narupa.Core.Async;
+using Nanover.Core.Async;
 
-namespace Narupa.Grpc.Stream
+namespace Nanover.Grpc.Stream
 {
     /// <summary>
     /// Grouping of several outgoing streams to the same location, each with a string

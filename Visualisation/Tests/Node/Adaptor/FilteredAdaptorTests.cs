@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Collections;
-using Narupa.Frame.Event;
-using Narupa.Visualisation.Node.Adaptor;
-using Narupa.Visualisation.Property;
+using Nanover.Core.Collections;
+using Nanover.Frame.Event;
+using Nanover.Visualisation.Node.Adaptor;
+using Nanover.Visualisation.Property;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Tests.Node.Adaptor
+namespace Nanover.Visualisation.Tests.Node.Adaptor
 {
     public class FilteredAdaptorDynamicPropertyTests
     {

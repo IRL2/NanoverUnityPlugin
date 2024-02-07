@@ -1,10 +1,10 @@
 {
-    "name": "Narupa.Visualisation.Tests",
+    "name": "Nanover.Visualisation.Tests",
     "references": [
-        "Narupa.Visualisation",
-        "Narupa.Testing",
-        "Narupa.Frame",
-        "Narupa.Core",
+        "Nanover.Visualisation",
+        "Nanover.Testing",
+        "Nanover.Frame",
+        "Nanover.Core",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
@@ -18,7 +18,7 @@
         "NSubstitute.dll",
         "System.Threading.Tasks.Extensions.dll",
         "nunit.framework.dll",
-        "Narupa.Protocol.dll"
+        "Nanover.Protocol.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

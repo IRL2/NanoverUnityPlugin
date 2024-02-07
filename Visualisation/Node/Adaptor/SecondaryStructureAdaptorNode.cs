@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Visualisation.Node.Protein;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Node.Protein;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Adaptor
+namespace Nanover.Visualisation.Node.Adaptor
 {
     /// <summary>
     /// An <see cref="BaseAdaptorNode"/> which injects a 'residue.secondarystructures' key which provides per residue secondary structure based on the DSSP algorithm.

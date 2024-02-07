@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Narupa.Visualisation.Property
+namespace Nanover.Visualisation.Property
 {
     /// <summary>
     /// Describes something which provides access to visualisation properties.

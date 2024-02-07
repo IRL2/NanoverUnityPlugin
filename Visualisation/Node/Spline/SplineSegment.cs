@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Spline
+namespace Nanover.Visualisation.Node.Spline
 {
     [Serializable]
     public struct SplineSegment

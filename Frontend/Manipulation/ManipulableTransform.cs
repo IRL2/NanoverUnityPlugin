@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using Narupa.Core.Math;
+using Nanover.Core.Math;
 using UnityEngine;
 
-namespace Narupa.Frontend.Manipulation
+namespace Nanover.Frontend.Manipulation
 {
     /// <summary>
     /// Wrapper around a Unity Transform that allows up to two grab manipulations

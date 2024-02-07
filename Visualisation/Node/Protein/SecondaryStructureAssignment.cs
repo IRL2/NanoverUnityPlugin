@@ -1,6 +1,6 @@
 using System;
 
-namespace Narupa.Visualisation.Node.Protein
+namespace Nanover.Visualisation.Node.Protein
 {
     [Flags]
     public enum SecondaryStructureAssignment

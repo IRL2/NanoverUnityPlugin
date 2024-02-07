@@ -1,7 +1,7 @@
-﻿using Narupa.Core.Math;
+﻿using Nanover.Core.Math;
 using UnityEngine;
 
-namespace Narupa.Visualisation
+namespace Nanover.Visualisation
 {
     /// <summary>
     /// Visualiser a box (as represented by an <see cref="AffineTransformation" />).

@@ -4,13 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Components;
+using Nanover.Visualisation.Property;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Narupa.Visualisation.Editor
+namespace Nanover.Visualisation.Editor
 {
     /// <summary>
     /// Property drawer override for drawing <see cref="Property" /> fields

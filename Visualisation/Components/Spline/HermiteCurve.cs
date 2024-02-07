@@ -1,8 +1,8 @@
 using System;
-using Narupa.Visualisation.Node.Spline;
+using Nanover.Visualisation.Node.Spline;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components.Spline
+namespace Nanover.Visualisation.Components.Spline
 {
     /// <inheritdoc cref="HermiteCurveNode" />
     public class HermiteCurve : VisualisationComponent<HermiteCurveNode>

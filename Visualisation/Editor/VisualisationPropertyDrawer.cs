@@ -4,14 +4,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Narupa.Core;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Property;
+using Nanover.Core;
+using Nanover.Core.Science;
+using Nanover.Visualisation.Components;
+using Nanover.Visualisation.Property;
 using UnityEditor;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Editor
+namespace Nanover.Visualisation.Editor
 {
     /// <summary>
     /// Draws a <see cref="Property" /> in the Editor.

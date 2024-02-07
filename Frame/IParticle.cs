@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Intangible Realities Laboratory. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Core.Science;
+using Nanover.Core.Science;
 using UnityEngine;
 
-namespace Narupa.Frame
+namespace Nanover.Frame
 {
     /// <summary>
     /// A particle in a trajectory. Minimally, it has a 0-based index in the frame and

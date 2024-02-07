@@ -3,14 +3,14 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Narupa.Core.Math;
-using Narupa.Testing;
+using Nanover.Core.Math;
+using Nanover.Testing;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools.Utils;
 using MatrixPair = System.Tuple<UnityEngine.Matrix4x4, UnityEngine.Matrix4x4>;
 
-namespace Narupa.Core.Tests.Math
+namespace Nanover.Core.Tests.Math
 {
     internal class MatrixExtensionsTests
     {

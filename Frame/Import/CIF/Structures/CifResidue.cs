@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Narupa.Frame.Import.CIF.Structures
+namespace Nanover.Frame.Import.CIF.Structures
 {
     /// <summary>
     /// A residue inferred from an mmCIF file by a component ID and a sequence ID.

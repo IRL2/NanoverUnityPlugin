@@ -1,7 +1,7 @@
 {
-    "name": "Narupa.Frame",
+    "name": "Nanover.Frame",
     "references": [
-        "Narupa.Core"
+        "Nanover.Core"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
@@ -9,7 +9,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Narupa.Protocol.dll"
+        "Nanover.Protocol.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [],

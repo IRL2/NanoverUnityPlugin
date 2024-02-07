@@ -7,7 +7,7 @@ using UnityEditor;
 
 #endif
 
-namespace Narupa.Visualisation.Utility
+namespace Nanover.Visualisation.Utility
 {
     /// <summary>
     /// A specific kernel (executable program) of a <see cref="ComputeShader" />, which

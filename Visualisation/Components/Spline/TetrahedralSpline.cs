@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Spline;
+using Nanover.Visualisation.Node.Spline;
 
-namespace Narupa.Visualisation.Components.Spline
+namespace Nanover.Visualisation.Components.Spline
 {
     /// <inheritdoc cref="TetrahedralSplineNode" />
     public class TetrahedralSpline : VisualisationComponent<TetrahedralSplineNode>

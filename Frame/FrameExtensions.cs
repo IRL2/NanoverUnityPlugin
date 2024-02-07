@@ -2,9 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Linq;
-using Narupa.Core.Science;
+using Nanover.Core.Science;
 
-namespace Narupa.Frame
+namespace Nanover.Frame
 {
     public static class FrameExtensions
     {

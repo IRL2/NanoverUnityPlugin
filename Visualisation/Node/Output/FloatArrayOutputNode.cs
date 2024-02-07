@@ -1,9 +1,9 @@
 using System;
-using Narupa.Visualisation.Node.Input;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Node.Input;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Node.Output
+namespace Nanover.Visualisation.Node.Output
 {
     [Serializable]
     public class FloatArrayOutputNode : OutputNode<FloatArrayProperty>

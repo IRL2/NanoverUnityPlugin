@@ -1,10 +1,10 @@
 using System;
-using Narupa.Core.Math;
-using Narupa.Core.Science;
-using Narupa.Protocol.Trajectory;
+using Nanover.Core.Math;
+using Nanover.Core.Science;
+using Nanover.Protocol.Trajectory;
 using UnityEngine;
 
-namespace Narupa.Frame
+namespace Nanover.Frame
 {
     /// <summary>
     /// Standard names and types for <see cref="Frame"/>s.

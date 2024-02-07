@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Events;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace Nanover.Frontend.Controllers
 {
     /// <summary>
     /// Describes the various poses which make up a physical controller.

@@ -9,7 +9,7 @@ using NUnit.Framework.Constraints;
 using UnityEditor;
 using UnityEngine;
 
-namespace Narupa.Testing.Async
+namespace Nanover.Testing.Async
 {
     /// <summary>
     /// Delegate used by tests that execute code asynchronously

@@ -1,9 +1,9 @@
-using Narupa.Testing;
+using Nanover.Testing;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools.Utils;
 
-namespace Narupa.Core.Tests.Math
+namespace Nanover.Core.Tests.Math
 {
     public class MathAssert
     {

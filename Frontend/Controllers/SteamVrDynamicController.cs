@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Valve.VR;
 
-namespace Narupa.Frontend.Controllers
+namespace Nanover.Frontend.Controllers
 {
     /// <summary>
     /// Reacts to a change in the SteamVR device name and loads the appropriate prefab.

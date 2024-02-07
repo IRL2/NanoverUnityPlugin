@@ -3,13 +3,13 @@
 
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Narupa.Core;
-using Narupa.Core.Math;
-using Narupa.Core.Science;
-using Narupa.Protocol.Trajectory;
+using Nanover.Core;
+using Nanover.Core.Math;
+using Nanover.Core.Science;
+using Nanover.Protocol.Trajectory;
 using UnityEngine;
 
-namespace Narupa.Frame
+namespace Nanover.Frame
 {
     /// <summary>
     /// A single Frame in a trajectory. It is a snapshot of a system, represented by a

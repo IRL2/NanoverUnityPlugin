@@ -5,10 +5,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Google.Protobuf.WellKnownTypes;
-using Narupa.Grpc;
+using Nanover.Grpc;
 using NUnit.Framework;
 
-namespace Narupa.Utility.Protobuf.Tests
+namespace Nanover.Utility.Protobuf.Tests
 {
     public class ConversionTests
     {

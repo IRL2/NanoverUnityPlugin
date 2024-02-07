@@ -1,9 +1,9 @@
 using System;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Nanover.Visualisation.Node.Calculator
 {
     /// <summary>
     /// Calculates some 0-1 value based on indices.

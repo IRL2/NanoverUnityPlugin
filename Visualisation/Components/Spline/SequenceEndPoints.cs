@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Spline;
+using Nanover.Visualisation.Node.Spline;
 
-namespace Narupa.Visualisation.Components.Spline
+namespace Nanover.Visualisation.Components.Spline
 {
     /// <inheritdoc cref="SequenceEndPointsNode"/>
     public class SequenceEndPoints : VisualisationComponent<SequenceEndPointsNode>

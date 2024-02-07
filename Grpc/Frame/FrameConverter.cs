@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using Google.Protobuf.WellKnownTypes;
 using JetBrains.Annotations;
-using Narupa.Core;
-using Narupa.Frame;
-using Narupa.Frame.Event;
-using Narupa.Protocol;
-using Narupa.Protocol.Trajectory;
+using Nanover.Core;
+using Nanover.Frame;
+using Nanover.Frame.Event;
+using Nanover.Protocol;
+using Nanover.Protocol.Trajectory;
 
-namespace Narupa.Grpc.Frame
+namespace Nanover.Grpc.Frame
 {
     /// <summary>
     /// Conversion methods for converting <see cref="FrameData" />, the standard
@@ -26,13 +26,13 @@ namespace Narupa.Grpc.Frame
         /// <param name="previousFrame">
         /// A previous frame, from which to copy existing arrays if they exist.
         /// </param>
-        public static (Narupa.Frame.Frame Frame, FrameChanges Update) ConvertFrame(
+        public static (Nanover.Frame.Frame Frame, FrameChanges Update) ConvertFrame(
             [NotNull] FrameData data,
-            [CanBeNull] Narupa.Frame.Frame previousFrame = null)
+            [CanBeNull] Nanover.Frame.Frame previousFrame = null)
         {
             var frame = previousFrame != null
-                            ? Narupa.Frame.Frame.ShallowCopy(previousFrame)
-                            : new Narupa.Frame.Frame();
+                            ? Nanover.Frame.Frame.ShallowCopy(previousFrame)
+                            : new Nanover.Frame.Frame();
             var changes = FrameChanges.None;
 
             foreach (var (id, array) in data.Arrays)

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Color
+namespace Nanover.Visualisation.Node.Color
 {
     /// <summary>
     /// Stores key-value pair of atomic number and color, for defining CPK style

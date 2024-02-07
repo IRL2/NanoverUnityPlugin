@@ -5,15 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Narupa.Core;
-using Narupa.Core.Async;
-using Narupa.Frame;
-using Narupa.Grpc.Frame;
-using Narupa.Grpc.Stream;
-using Narupa.Protocol.Trajectory;
+using Nanover.Core;
+using Nanover.Core.Async;
+using Nanover.Frame;
+using Nanover.Grpc.Frame;
+using Nanover.Grpc.Stream;
+using Nanover.Protocol.Trajectory;
 using UnityEngine;
 
-namespace Narupa.Grpc.Trajectory
+namespace Nanover.Grpc.Trajectory
 {
     /// <summary>
     /// Adapts <see cref="TrajectoryClient" /> into an
@@ -23,7 +23,7 @@ namespace Narupa.Grpc.Trajectory
     public class TrajectorySession : ITrajectorySnapshot, IDisposable
     {
         /// <inheritdoc cref="ITrajectorySnapshot.CurrentFrame" />
-        public Narupa.Frame.Frame CurrentFrame => trajectorySnapshot.CurrentFrame;
+        public Nanover.Frame.Frame CurrentFrame => trajectorySnapshot.CurrentFrame;
         
         public int CurrentFrameIndex { get; private set; }
 
