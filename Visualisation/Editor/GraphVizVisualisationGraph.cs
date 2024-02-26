@@ -8,7 +8,7 @@ using Nanover.Visualisation.Node.Input;
 using Nanover.Visualisation.Node.Output;
 using Nanover.Visualisation.Property;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Nanover.Visualisation.Editor
