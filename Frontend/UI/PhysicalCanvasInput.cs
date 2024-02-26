@@ -3,10 +3,8 @@
 
 using Nanover.Frontend.Controllers;
 using Nanover.Frontend.Input;
-using Nanover.Frontend.XR;
+using SteamVRStub;
 using UnityEngine;
-using UnityEngine.Assertions;
-using Valve.VR;
 
 namespace Nanover.Frontend.UI
 {
@@ -68,7 +66,7 @@ namespace Nanover.Frontend.UI
         {
             WorldSpaceCursorInput.SetCanvasAndCursor(canvas,
                                                      Controller.CursorPose,
-                                                     inputAction.WrapAsButton(inputSource));
+                                                     new DirectButton());
             controllers.SetDominantHand(inputSource);
         }
 

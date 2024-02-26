@@ -1,5 +1,5 @@
+using SteamVRStub;
 using UnityEngine;
-using Valve.VR;
 
 namespace Nanover.Frontend.Controllers
 {

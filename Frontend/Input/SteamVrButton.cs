@@ -1,5 +1,5 @@
+using SteamVRStub;
 using System;
-using Valve.VR;
 
 namespace Nanover.Frontend.Input
 {

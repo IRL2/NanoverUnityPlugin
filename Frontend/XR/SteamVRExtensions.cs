@@ -3,8 +3,8 @@
 
 using Nanover.Core.Math;
 using Nanover.Frontend.Input;
+using SteamVRStub;
 using UnityEngine;
-using Valve.VR;
 
 namespace Nanover.Frontend.XR
 {

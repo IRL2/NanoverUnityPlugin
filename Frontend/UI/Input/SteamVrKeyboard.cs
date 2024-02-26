@@ -1,8 +1,8 @@
+using SteamVRStub;
 using System;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Valve.VR;
 
 namespace Nanover.Frontend.XR
 {

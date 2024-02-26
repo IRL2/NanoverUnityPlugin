@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
+using SteamVRStub;
 using System;
 using System.Linq;
 using UnityEngine;
-using Valve.VR;
 
 namespace Nanover.Frontend.Controllers
 {

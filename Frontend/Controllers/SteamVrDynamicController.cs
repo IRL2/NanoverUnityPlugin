@@ -5,7 +5,8 @@ using System;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Valve.VR;
+
+using SteamVRStub;
 
 namespace Nanover.Frontend.Controllers
 {
