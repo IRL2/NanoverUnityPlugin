@@ -1,14 +1,16 @@
 {
   "dependencies": {
+    "org.nuget.system.io.pipelines": "7.0.0",
+    "com.cysharp.yetanotherhttphandler": "1.0.0",
     "com.alexjbinnie.codecoveragetools": "https://gitlab.com/alexjbinnie/code-coverage-tools.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ext.nunit": "1.0.6",
-    "com.unity.ide.rider": "3.0.24",
-    "com.unity.ide.visualstudio": "2.0.18",
+    "com.unity.ide.rider": "3.0.27",
+    "com.unity.ide.visualstudio": "2.0.22",
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.postprocessing": "3.2.2",
     "com.unity.test-framework": "1.1.33",
-    "com.unity.textmeshpro": "3.0.6",
+    "com.unity.textmeshpro": "3.0.8",
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -41,5 +43,21 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "Unity NuGet",
+      "url": "https://unitynuget-registry.azurewebsites.net",
+      "scopes": [
+        "org.nuget"
+      ]
+    },
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.cysharp.yetanotherhttphandler"
+      ]
+    }
+  ]
 }
