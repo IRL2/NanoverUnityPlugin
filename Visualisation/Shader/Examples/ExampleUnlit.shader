@@ -1,6 +1,3 @@
-﻿// Copyright (c) Intangible Realities Laboratory. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
 /// Example unlit shader. This shader draws an opaque object with a solid color without instancing or shadow support
 
 Shader "NanoverIMD/Example/Unlit"

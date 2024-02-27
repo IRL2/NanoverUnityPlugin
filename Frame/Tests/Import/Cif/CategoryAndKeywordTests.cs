@@ -1,6 +1,3 @@
-// Copyright (c) Intangible Realities Laboratory. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
 using Nanover.Frame.Import.CIF;
 using NUnit.Framework;
 using Assert = UnityEngine.Assertions.Assert;

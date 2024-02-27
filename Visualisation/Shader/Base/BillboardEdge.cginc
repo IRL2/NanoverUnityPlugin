@@ -1,6 +1,3 @@
-// Copyright (c) Intangible Realities Laboratory. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
 // Shader code to render quads that are billboarded, but aligned along a given axis
 
 float _EdgeScale;
