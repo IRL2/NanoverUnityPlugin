@@ -1,11 +1,11 @@
 {
     "name": "Nanover.Core.Tests",
+    "rootNamespace": "",
     "references": [
         "Nanover.Testing",
-        "Nanover.Core"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Nanover.Core",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
@@ -14,10 +14,14 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "System.Interactive.Async.dll",
-        "NSubstitute.dll"
+        "NSubstitute.dll",
+        "nunit.framework.dll",
+        "Grpc.Core.dll"
     ],
     "autoReferenced": false,
-    "defineConstraints": [],
-    "versionDefines": []
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
