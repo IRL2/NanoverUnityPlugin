@@ -1,6 +1,3 @@
-// Copyright (c) Intangible Realities Laboratory. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
 // Shader for drawing multiple cylinders along the y axis using raycasting. It can use procedural instancing
 // to draw multiple cylinders between different points
 
