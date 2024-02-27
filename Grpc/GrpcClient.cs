@@ -7,11 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using JetBrains.Annotations;
-using Narupa.Core.Async;
-using Narupa.Grpc.Stream;
-using Narupa.Protocol.Command;
+using Nanover.Core.Async;
+using Nanover.Grpc.Stream;
+using Nanover.Protocol.Command;
 
-namespace Narupa.Grpc
+namespace Nanover.Grpc
 {
     /// <summary>
     /// Base implementation of a C# wrapper around a gRPC client to a specific service.

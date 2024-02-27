@@ -1,7 +1,7 @@
 using System;
-using Narupa.Visualisation.Properties;
+using Nanover.Visualisation.Properties;
 
-namespace Narupa.Visualisation.Node.Output
+namespace Nanover.Visualisation.Node.Output
 {
     [Serializable]
     public class IntArrayOutputNode : OutputNode<IntArrayProperty>

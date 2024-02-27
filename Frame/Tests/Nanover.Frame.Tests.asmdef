@@ -1,8 +1,8 @@
 {
-    "name": "Narupa.Frame.Tests",
+    "name": "Nanover.Frame.Tests",
     "references": [
-        "Narupa.Frame",
-        "Narupa.Core"
+        "Nanover.Frame",
+        "Nanover.Core"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
@@ -14,7 +14,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Narupa.Protocol.dll",
+        "Nanover.Protocol.dll",
         "NSubstitute.dll",
         "System.Threading.Tasks.Extensions.dll",
         "Google.Protobuf.dll"

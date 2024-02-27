@@ -1,6 +1,6 @@
 using System;
 
-namespace Narupa.Visualisation.Node.Protein
+namespace Nanover.Visualisation.Node.Protein
 {
     /// <summary>
     /// Patterns that occur in protein secondary structure.

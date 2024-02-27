@@ -1,8 +1,8 @@
 using System;
-using Narupa.Visualisation.Node.Protein;
-using Narupa.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Node.Protein;
+using Nanover.Visualisation.Properties.Collections;
 
-namespace Narupa.Visualisation.Node.Input
+namespace Nanover.Visualisation.Node.Input
 {
     /// <summary>
     /// Input for the visualisation system that provides a <see cref="SecondaryStructureAssignment" /> value.

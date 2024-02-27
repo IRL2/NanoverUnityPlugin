@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Core.Science;
+using Nanover.Core.Science;
 using NUnit.Framework;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Narupa.Core.Tests.Science
+namespace Nanover.Core.Tests.Science
 {
     internal class AminoAcidTests
     {

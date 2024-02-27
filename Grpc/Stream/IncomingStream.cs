@@ -5,9 +5,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Narupa.Core.Async;
+using Nanover.Core.Async;
 
-namespace Narupa.Grpc.Stream
+namespace Nanover.Grpc.Stream
 {
     /// <summary>
     /// Delegate for a gRPC server streaming call

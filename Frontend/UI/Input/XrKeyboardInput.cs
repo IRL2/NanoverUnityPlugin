@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Narupa.Frontend.XR
+namespace Nanover.Frontend.XR
 {
     /// <summary>
     /// Allows an <see cref="TMP_InputField"/> to be modified in VR.

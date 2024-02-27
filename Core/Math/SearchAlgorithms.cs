@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Narupa.Core.Math
+namespace Nanover.Core.Math
 {
     public class SearchAlgorithms
     {

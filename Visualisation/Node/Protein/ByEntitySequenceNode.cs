@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Visualisation.Properties;
+using Nanover.Visualisation.Properties;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Protein
+namespace Nanover.Visualisation.Node.Protein
 {
     /// <summary>
     /// Works out groupings of continuous entity IDs.

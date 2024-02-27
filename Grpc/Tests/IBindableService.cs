@@ -1,6 +1,6 @@
 using Grpc.Core;
 
-namespace Narupa.Grpc.Tests
+namespace Nanover.Grpc.Tests
 {
     /// <summary>
     /// Wrapper for a gRPC service that knows how to bind itself.

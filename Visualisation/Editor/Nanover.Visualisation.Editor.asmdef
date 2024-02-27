@@ -1,6 +1,10 @@
 {
-    "name": "Narupa.Core.Editor",
-    "references": [],
+    "name": "Nanover.Visualisation.Editor",
+    "references": [
+        "Nanover.Visualisation",
+        "Nanover.Core",
+        "Nanover.Frame"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"

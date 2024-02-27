@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Adaptor;
+using Nanover.Visualisation.Node.Adaptor;
 
-namespace Narupa.Visualisation.Components.Adaptor
+namespace Nanover.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="ParticleFilteredAdaptorNode"/>
     public class ParticleFilteredAdaptor : FrameAdaptorComponent<ParticleFilteredAdaptorNode>

@@ -1,7 +1,7 @@
-using Narupa.Visualisation.Node.Renderer;
+using Nanover.Visualisation.Node.Renderer;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Components.Renderer
+namespace Nanover.Visualisation.Components.Renderer
 {
     public class CyclesRenderer : VisualisationComponentRenderer<CyclesRendererNode>
     {

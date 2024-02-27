@@ -1,12 +1,12 @@
-using Narupa.Core.Science;
-using Narupa.Visualisation.Node.Color;
-using Narupa.Visualisation.Node.Scale;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Core.Science;
+using Nanover.Visualisation.Node.Color;
+using Nanover.Visualisation.Node.Scale;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Tests.Node.Color
+namespace Nanover.Visualisation.Tests.Node.Color
 {
     public class ElementPaletteColorTests
     {

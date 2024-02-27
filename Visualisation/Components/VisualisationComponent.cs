@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Narupa.Core;
-using Narupa.Visualisation.Node.Adaptor;
-using Narupa.Visualisation.Property;
+using Nanover.Core;
+using Nanover.Visualisation.Node.Adaptor;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Narupa.Visualisation.Components
+namespace Nanover.Visualisation.Components
 {
     /// <summary>
     /// Wrapper <see cref="MonoBehaviour" /> around a node of the visualisation system,

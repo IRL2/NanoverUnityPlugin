@@ -1,5 +1,5 @@
 {
-    "name": "Narupa.Visualisation",
+    "name": "Nanover.Grpc",
     "references": [
         "GUID:3fb0ce59dba2a4e7ba4bfc6522aaa4fa",
         "GUID:8cab6cf98f5a0429e9fec1175b7e994a"
@@ -7,9 +7,14 @@
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
+    "overrideReferences": false,
     "precompiledReferences": [
-        "Narupa.Protocol.dll"
+        "Grpc.Core.Api.dll",
+        "Grpc.Core.dll",
+        "Google.Protobuf.dll",
+        "System.Threading.Channels.dll",
+        "Nanover.Protocol.dll",
+        "System.Threading.Tasks.Extensions.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [],

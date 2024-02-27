@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Narupa.Core
+namespace Nanover.Core
 {
     /// <summary>
     /// Utility methods for reflection not included in C#.

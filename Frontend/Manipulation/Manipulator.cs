@@ -2,10 +2,10 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Math;
-using Narupa.Frontend.Input;
+using Nanover.Core.Math;
+using Nanover.Frontend.Input;
 
-namespace Narupa.Frontend.Manipulation
+namespace Nanover.Frontend.Manipulation
 {
     /// <summary>
     /// Represents an input device posed in 3D space (e.g a VR controller) that can

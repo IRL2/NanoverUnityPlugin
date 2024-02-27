@@ -1,12 +1,12 @@
 ﻿// Copyright (c) 2019 Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Core.Math;
-using Narupa.Frontend.Input;
+using Nanover.Core.Math;
+using Nanover.Frontend.Input;
 using UnityEngine;
 using Valve.VR;
 
-namespace Narupa.Frontend.XR
+namespace Nanover.Frontend.XR
 {
     /// <summary>
     /// Extension methods for SteamVR types.

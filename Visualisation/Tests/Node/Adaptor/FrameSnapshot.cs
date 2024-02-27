@@ -1,7 +1,7 @@
-using Narupa.Frame;
-using Narupa.Frame.Event;
+using Nanover.Frame;
+using Nanover.Frame.Event;
 
-namespace Narupa.Visualisation.Tests.Node.Adaptor
+namespace Nanover.Visualisation.Tests.Node.Adaptor
 {
     internal class FrameSnapshot : ITrajectorySnapshot
     {

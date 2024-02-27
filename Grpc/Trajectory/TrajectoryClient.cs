@@ -3,10 +3,10 @@
 
 using System.Threading;
 using JetBrains.Annotations;
-using Narupa.Grpc.Stream;
-using Narupa.Protocol.Trajectory;
+using Nanover.Grpc.Stream;
+using Nanover.Protocol.Trajectory;
 
-namespace Narupa.Grpc.Trajectory
+namespace Nanover.Grpc.Trajectory
 {
     /// <summary>
     /// Callback when a new frame is received.

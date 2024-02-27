@@ -6,7 +6,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools.Utils;
 
-namespace Narupa.Testing
+namespace Nanover.Testing
 {
     /// <summary>
     /// Compares if two matrixes are equal by comparing each row using unity's

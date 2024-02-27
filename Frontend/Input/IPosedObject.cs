@@ -2,9 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Math;
+using Nanover.Core.Math;
 
-namespace Narupa.Frontend.Input
+namespace Nanover.Frontend.Input
 {
     /// <summary>
     /// Represents an object posed in 3D space.

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Frame;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Frame;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Protein
+namespace Nanover.Visualisation.Node.Protein
 {
     /// <summary>
     /// Calculates secondary structure using the DSSP Algorithm.

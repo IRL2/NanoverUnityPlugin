@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Narupa.Visualisation.Node.Renderer
+namespace Nanover.Visualisation.Node.Renderer
 {
     /// <summary>
     /// Renderer which draws spheres using a command buffer, allowing them to be

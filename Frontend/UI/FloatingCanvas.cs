@@ -2,7 +2,7 @@
 using UnityEngine.Assertions;
  using UnityEngine.XR;
 
- namespace Narupa.Frontend.UI
+ namespace Nanover.Frontend.UI
 {
     public class FloatingCanvas : MonoBehaviour
     {

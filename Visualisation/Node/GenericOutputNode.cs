@@ -1,7 +1,7 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-namespace Narupa.Visualisation.Node
+namespace Nanover.Visualisation.Node
 {
     /// <summary>
     /// A generic structure for a visualisation node.

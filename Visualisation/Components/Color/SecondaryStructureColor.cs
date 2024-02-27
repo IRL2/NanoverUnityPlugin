@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Color;
+using Nanover.Visualisation.Node.Color;
 
-namespace Narupa.Visualisation.Components.Color
+namespace Nanover.Visualisation.Components.Color
 {
     /// <inheritdoc cref="Node.Color.SecondaryStructureColor" />
     public class SecondaryStructureColor :

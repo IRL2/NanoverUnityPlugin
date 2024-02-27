@@ -1,9 +1,9 @@
 using System;
-using Narupa.Visualisation.Properties.Collections;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Properties.Collections;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Spline
+namespace Nanover.Visualisation.Node.Spline
 {
     /// <summary>
     /// Rotates normals so within each sequence, the normals only rotate by up to 90 degrees.

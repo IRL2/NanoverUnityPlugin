@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Narupa.Frontend.Input
+namespace Nanover.Frontend.Input
 {
     /// <summary>
     /// An <see cref="IButton" /> that can be triggered using the

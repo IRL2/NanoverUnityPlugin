@@ -2,10 +2,10 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using JetBrains.Annotations;
-using Narupa.Core.Science;
+using Nanover.Core.Science;
 using UnityEngine;
 
-namespace Narupa.Frame
+namespace Nanover.Frame
 {
     /// <summary>
     /// A particle which exists only as an index, pointing to various arrays which

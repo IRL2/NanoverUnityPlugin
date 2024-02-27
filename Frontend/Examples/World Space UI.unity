@@ -419,7 +419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 740608502}
   inputAction:
-    actionPath: /actions/NarupaIMD/in/Interact
+    actionPath: /actions/NanoverIMD/in/Interact
     needsReinit: 0
   inputSource: 2
 --- !u!114 &1294816923
@@ -827,7 +827,7 @@ PrefabInstance:
     - target: {fileID: 1430893537304287173, guid: a927239ff4c55d04db7c3251c95dbe91,
         type: 3}
       propertyPath: m_Name
-      value: Narupa EventSystem
+      value: Nanover EventSystem
       objectReference: {fileID: 0}
     - target: {fileID: 8684444663983782789, guid: a927239ff4c55d04db7c3251c95dbe91,
         type: 3}

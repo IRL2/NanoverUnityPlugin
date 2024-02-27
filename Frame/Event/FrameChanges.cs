@@ -2,12 +2,12 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Narupa.Protocol.Trajectory;
+using Nanover.Protocol.Trajectory;
 
-namespace Narupa.Frame.Event
+namespace Nanover.Frame.Event
 {
     /// <summary>
-    /// A record of known changes to a Narupa frame. Everything is assumed
+    /// A record of known changes to a Nanover frame. Everything is assumed
     /// unchanged unless explicitly set.
     /// </summary>
     public class FrameChanges

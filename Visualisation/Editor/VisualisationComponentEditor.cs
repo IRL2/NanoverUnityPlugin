@@ -2,10 +2,10 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Narupa.Visualisation.Components;
+using Nanover.Visualisation.Components;
 using UnityEditor;
 
-namespace Narupa.Visualisation.Editor
+namespace Nanover.Visualisation.Editor
 {
     /// <summary>
     /// Custom editor for <see cref="VisualisationComponent" />, that draws all the

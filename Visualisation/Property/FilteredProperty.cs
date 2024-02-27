@@ -1,6 +1,6 @@
 using System;
 
-namespace Narupa.Visualisation.Property
+namespace Nanover.Visualisation.Property
 {
     public interface IFilteredProperty
     {

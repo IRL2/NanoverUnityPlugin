@@ -1,11 +1,11 @@
 // Copyright (c) Intangible Realities Laboratory. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Frame.Import.CIF;
+using Nanover.Frame.Import.CIF;
 using NUnit.Framework;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Narupa.Trajectory.Import.Tests.Cif
+namespace Nanover.Trajectory.Import.Tests.Cif
 {
     public class CategoryAndKeywordTests
     {

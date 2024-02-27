@@ -4,14 +4,14 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Narupa.Grpc.Multiplayer;
-using Narupa.Testing.Async;
+using Nanover.Grpc.Multiplayer;
+using Nanover.Testing.Async;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Narupa.Grpc.Tests.Multiplayer
+namespace Nanover.Grpc.Tests.Multiplayer
 {
     public class MultiplayerCollectionTests
     {

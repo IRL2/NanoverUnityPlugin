@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Narupa.Core.Collections
+namespace Nanover.Core.Collections
 {
     /// <summary>
     /// Wrapper around an <see cref="IEnumerable" /> that overrides the

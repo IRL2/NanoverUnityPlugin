@@ -1,10 +1,10 @@
 {
-    "name": "Narupa.Grpc.Tests",
+    "name": "Nanover.Grpc.Tests",
     "references": [
-        "Narupa.Grpc",
-        "Narupa.Testing",
-        "Narupa.Frame",
-        "Narupa.Core"
+        "Nanover.Grpc",
+        "Nanover.Testing",
+        "Nanover.Frame",
+        "Nanover.Core"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
@@ -16,7 +16,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [
-        "Narupa.Protocol.dll",
+        "Nanover.Protocol.dll",
         "Google.Protobuf.dll",
         "Grpc.Core.Api.dll",
         "Grpc.Core.dll",

@@ -2,13 +2,13 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using Nanover.Core;
+using Nanover.Core.Science;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Color
+namespace Nanover.Visualisation.Node.Color
 {
     /// <summary>
     /// Visualiser node that generates atomic colors from atomic positions, based

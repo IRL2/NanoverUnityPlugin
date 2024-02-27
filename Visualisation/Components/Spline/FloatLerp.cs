@@ -1,6 +1,6 @@
-using Narupa.Visualisation.Node.Calculator;
+using Nanover.Visualisation.Node.Calculator;
 
-namespace Narupa.Visualisation.Components.Spline
+namespace Nanover.Visualisation.Components.Spline
 {
     public class FloatLerp : VisualisationComponent<FloatLerpNode>
     {

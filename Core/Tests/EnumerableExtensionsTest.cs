@@ -1,10 +1,10 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Core.Collections;
+using Nanover.Core.Collections;
 using NUnit.Framework;
 
-namespace Narupa.Utility.Tests
+namespace Nanover.Utility.Tests
 {
     public class EnumerableExtensionsTest
     {

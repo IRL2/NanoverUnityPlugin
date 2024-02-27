@@ -1,9 +1,9 @@
 {
-    "name": "Narupa.Frontend.Tests",
+    "name": "Nanover.Frontend.Tests",
     "references": [
-        "Narupa.Frontend",
-        "Narupa.Testing",
-        "Narupa.Core"
+        "Nanover.Frontend",
+        "Nanover.Testing",
+        "Nanover.Core"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

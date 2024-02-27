@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Narupa.Trajectory.Import.Tests.Cif
+namespace Nanover.Trajectory.Import.Tests.Cif
 {
     public class SingleLineTableTests
     {

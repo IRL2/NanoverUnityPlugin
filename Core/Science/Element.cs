@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Narupa.Core.Science
+namespace Nanover.Core.Science
 {
     /// <summary>
     /// Enum containing all atomic elements, with atomic number corresponding to the

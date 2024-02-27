@@ -1,8 +1,8 @@
 using System;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Property;
+using Nanover.Core.Science;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Properties.Collections
+namespace Nanover.Visualisation.Properties.Collections
 {
     /// <summary>
     /// Serializable <see cref="Property" /> for an array of <see cref="Element" />

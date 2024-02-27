@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Narupa.Grpc.Multiplayer;
-using Narupa.Testing.Async;
+using Nanover.Grpc.Multiplayer;
+using Nanover.Testing.Async;
 using NUnit.Framework;
 
-namespace Narupa.Grpc.Tests.Multiplayer
+namespace Nanover.Grpc.Tests.Multiplayer
 {
     public class MultiplayerResourceTests
     {

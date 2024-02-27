@@ -1,9 +1,9 @@
 using System;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Calculator
+namespace Nanover.Visualisation.Node.Calculator
 {
     /// <summary>
     /// Calculates the relative (0-1) fraction of each residue in the system.

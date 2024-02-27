@@ -2,12 +2,12 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Science;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using Nanover.Core.Science;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Scale
+namespace Nanover.Visualisation.Node.Scale
 {
     /// <summary>
     /// Visualiser node which scales each particle by its Van der Waals radius

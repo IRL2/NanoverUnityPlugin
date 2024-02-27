@@ -1,9 +1,9 @@
 using System;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Components.Adaptor;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Components;
+using Nanover.Visualisation.Components.Adaptor;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Properties
+namespace Nanover.Visualisation.Properties
 {
     /// <summary>
     /// Serializable <see cref="Property" /> for a <see cref="IDynamicPropertyProvider" /> value.

@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Frontend.Input;
+using Nanover.Frontend.Input;
 using NUnit.Framework;
 
-namespace Narupa.Frontend.Tests.Input
+namespace Nanover.Frontend.Tests.Input
 {
     internal class DirectPosedObjectTests
     {

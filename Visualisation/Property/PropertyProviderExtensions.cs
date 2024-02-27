@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Narupa.Visualisation.Property;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Components
+namespace Nanover.Visualisation.Components
 {
     /// <summary>
     /// Extension methods for <see cref="IPropertyProvider" />.

@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Text = TMPro.TextMeshProUGUI;
 
-namespace Narupa.Frontend.Utility
+namespace Nanover.Frontend.Utility
 {
     /// <summary>
     /// Component that listens to Unity's log output and outputs it to a

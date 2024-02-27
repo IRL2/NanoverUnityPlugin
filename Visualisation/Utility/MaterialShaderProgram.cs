@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Narupa.Visualisation.Utility
+namespace Nanover.Visualisation.Utility
 {
     /// <summary>
     /// A Unity <see cref="UnityEngine.Material" /> represented as an abstract GPU

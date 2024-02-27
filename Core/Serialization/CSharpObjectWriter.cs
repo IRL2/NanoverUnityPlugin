@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Narupa.Core.Serialization
+namespace Nanover.Core.Serialization
 {
     /// <summary>
     /// A <see cref="JsonWriter" /> for use with json.NET that writes an object to a

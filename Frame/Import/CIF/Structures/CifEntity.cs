@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Narupa.Frame.Import.CIF.Structures
+namespace Nanover.Frame.Import.CIF.Structures
 {
     /// <summary>
     /// An entity defined in an mmCIF file.

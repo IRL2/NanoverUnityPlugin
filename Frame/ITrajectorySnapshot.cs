@@ -2,9 +2,9 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Frame.Event;
+using Nanover.Frame.Event;
 
-namespace Narupa.Frame
+namespace Nanover.Frame
 {
     public delegate void FrameChanged(IFrame frame, FrameChanges changes);
         

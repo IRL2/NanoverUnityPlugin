@@ -1,10 +1,10 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Frame.Event;
+using Nanover.Frame.Event;
 using NUnit.Framework;
 
-namespace Narupa.Frame.Tests
+namespace Nanover.Frame.Tests
 {
     internal class FrameChangesTests
     {

@@ -1,11 +1,11 @@
 using System;
-using Narupa.Core;
-using Narupa.Visualisation.Components;
-using Narupa.Visualisation.Properties;
-using Narupa.Visualisation.Property;
+using Nanover.Core;
+using Nanover.Visualisation.Components;
+using Nanover.Visualisation.Properties;
+using Nanover.Visualisation.Property;
 using UnityEngine;
 
-namespace Narupa.Visualisation.Node.Adaptor
+namespace Nanover.Visualisation.Node.Adaptor
 {
     /// <summary>
     /// An <see cref="BaseAdaptorNode"/> which is linked to another adaptor. This adaptor contains its own properties, but links them to the parent. This means that the parent can be changed without listeners to this adaptor needing to change their links.

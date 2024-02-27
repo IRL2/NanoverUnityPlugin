@@ -2,14 +2,14 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.IO;
-using Narupa.Frame.Import.CIF;
-using Narupa.Frame.Import.CIF.Components;
-using Narupa.Frame.Import.CIF.Structures;
+using Nanover.Frame.Import.CIF;
+using Nanover.Frame.Import.CIF.Components;
+using Nanover.Frame.Import.CIF.Structures;
 using NUnit.Framework;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Narupa.Trajectory.Import.Tests
+namespace Nanover.Trajectory.Import.Tests
 {
     /// <summary>
     /// Contains non-standard monomer 9XQ, covalent bond, disulphide bond, multiple PDB

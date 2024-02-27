@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Narupa.Core.Async;
+using Nanover.Core.Async;
 
-namespace Narupa.Grpc.Multiplayer
+namespace Nanover.Grpc.Multiplayer
 {
     /// <summary>
     /// Represents a multiplayer resource that is shared across the multiplayer

@@ -2,11 +2,11 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System;
-using Narupa.Core.Math;
-using Narupa.Frontend.Input;
+using Nanover.Core.Math;
+using Nanover.Frontend.Input;
 using UnityEngine;
 
-namespace Narupa.Frontend.Controllers
+namespace Nanover.Frontend.Controllers
 {
     /// <summary>
     /// Component to indicate a part of the controller with a position and radius.

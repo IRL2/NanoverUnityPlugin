@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Narupa.Frame.Import.CIF.Components;
+using Nanover.Frame.Import.CIF.Components;
 
-namespace Narupa.Frame.Import.CIF
+namespace Nanover.Frame.Import.CIF
 {
     /// <summary>
     /// mmCIF importer for reading in the chemical component dictionary.

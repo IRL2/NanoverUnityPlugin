@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Narupa.Frame
+namespace Nanover.Frame
 {
     /// <summary>
     /// A virtual collection of particles, which allows the Struct of Arrays (SoA) data

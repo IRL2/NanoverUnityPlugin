@@ -1,10 +1,10 @@
 // Copyright (c) Intangible Realities Lab. All rights reserved.
 // Licensed under the GPL. See License.txt in the project root for license information.
 
-using Narupa.Frame;
-using Narupa.Visualisation.Node.Adaptor;
+using Nanover.Frame;
+using Nanover.Visualisation.Node.Adaptor;
 
-namespace Narupa.Visualisation.Components.Adaptor
+namespace Nanover.Visualisation.Components.Adaptor
 {
     /// <inheritdoc cref="FrameAdaptorNode" />
     public sealed class FrameAdaptor : FrameAdaptorComponent<FrameAdaptorNode>, IFrameConsumer

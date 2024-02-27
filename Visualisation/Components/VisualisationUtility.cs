@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Narupa.Core;
-using Narupa.Visualisation.Property;
+using Nanover.Core;
+using Nanover.Visualisation.Property;
 
-namespace Narupa.Visualisation.Components
+namespace Nanover.Visualisation.Components
 {
     public class VisualisationUtility
     {

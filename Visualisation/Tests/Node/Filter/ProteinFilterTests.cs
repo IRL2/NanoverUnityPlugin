@@ -1,8 +1,8 @@
-using Narupa.Core.Science;
-using Narupa.Visualisation.Node.Filter;
+using Nanover.Core.Science;
+using Nanover.Visualisation.Node.Filter;
 using NUnit.Framework;
 
-namespace Narupa.Visualisation.Tests.Node.Filter
+namespace Nanover.Visualisation.Tests.Node.Filter
 {
     public class ProteinFilterTests
     {

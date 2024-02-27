@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Narupa.Grpc;
-using Narupa.Grpc.Tests.Multiplayer;
-using Narupa.Grpc.Tests.Trajectory;
-using Narupa.Grpc.Trajectory;
-using Narupa.Testing.Async;
+using Nanover.Grpc;
+using Nanover.Grpc.Tests.Multiplayer;
+using Nanover.Grpc.Tests.Trajectory;
+using Nanover.Grpc.Trajectory;
+using Nanover.Testing.Async;
 using NUnit.Framework;
 
-namespace Narupa.Network.Tests
+namespace Nanover.Network.Tests
 {
     public class GrpcConnectionTests
     {

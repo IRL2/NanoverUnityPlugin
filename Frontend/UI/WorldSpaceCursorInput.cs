@@ -2,13 +2,13 @@
 // Licensed under the GPL. See License.txt in the project root for license information.
 
 using System.Collections;
-using Narupa.Frontend.Input;
+using Nanover.Frontend.Input;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Valve.VR;
 
-namespace Narupa.Frontend.UI
+namespace Nanover.Frontend.UI
 {
     /// <summary>
     /// Implementation of <see cref="BaseInput" /> that uses a physical object's near a
@@ -50,7 +50,7 @@ namespace Narupa.Frontend.UI
 
         public static void ClearSelection()
         {
-            (EventSystem.current.currentInputModule as NarupaInputModule).ClearSelection();
+            (EventSystem.current.currentInputModule as NanoverInputModule).ClearSelection();
         }
 
         private void Update()
@@ -160,7 +160,7 @@ namespace Narupa.Frontend.UI
         
         public static void TriggerClick()
         {
-            var hovered = (EventSystem.current.currentInputModule as NarupaInputModule)
+            var hovered = (EventSystem.current.currentInputModule as NanoverInputModule)
                 .CurrentHoverTarget;
             if (hovered != null)
             {

@@ -5,7 +5,7 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine.Assertions;
 
-namespace Narupa.Frame.Event
+namespace Nanover.Frame.Event
 {
     /// <summary>
     /// Event arguments for when a <see cref="Frame" /> has been updated.

@@ -4,9 +4,9 @@
 using System.Threading.Tasks;
 using Grpc.Core;
 using JetBrains.Annotations;
-using Narupa.Protocol.Trajectory;
+using Nanover.Protocol.Trajectory;
 
-namespace Narupa.Grpc.Tests.Trajectory
+namespace Nanover.Grpc.Tests.Trajectory
 {
     /// <summary>
     /// Simple implementation of a TrajectoryService that returns a single provided

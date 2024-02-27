@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Narupa.Core.Science
+namespace Nanover.Core.Science
 {
     /// <summary>
     /// Covalent radii of the atomic elements
