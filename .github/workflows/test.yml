@@ -9,7 +9,7 @@ jobs:
       - name: Checkout host Unity project 🥚
         uses: actions/checkout@v4
         with:
-          ref: refs/heads/host-project
+          ref: refs/heads/host-project-2022.3.8f1
       - name: Checkout repository ⬇️
         uses: actions/checkout@v4
         with:
