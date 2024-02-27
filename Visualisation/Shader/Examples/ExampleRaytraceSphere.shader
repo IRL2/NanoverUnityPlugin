@@ -1,6 +1,3 @@
-﻿// Copyright (c) Intangible Realities Laboratory. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
 /// Example of a simple raytraced sphere. This shader draws a sphere in object space with a solid color without instancing, 
 /// shadow support or depth
 

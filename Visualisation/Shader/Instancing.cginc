@@ -1,6 +1,3 @@
-// Copyright (c) Intangible Realities Laboratory. All rights reserved.
-// Licensed under the GPL. See License.txt in the project root for license information.
-
 /// Contains methods for using instancing to access members of various arrays.
 
 #ifndef INSTANCING_CGINC_INCLUDED
