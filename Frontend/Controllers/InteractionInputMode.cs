@@ -1,5 +1,6 @@
 using SteamVRStub;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -31,7 +32,7 @@ namespace Nanover.Frontend.Controllers
         }
 
         public override void SetupController(VrController controller,
-                                             SteamVR_Input_Sources inputSource)
+                                             InputDeviceCharacteristics inputSource)
         {
             if (controller.IsControllerActive)
                 controller.InstantiateCursorGizmo(gizmo);

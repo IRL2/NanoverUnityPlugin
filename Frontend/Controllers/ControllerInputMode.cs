@@ -1,5 +1,7 @@
 using SteamVRStub;
+using System;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -37,6 +39,6 @@ namespace Nanover.Frontend.Controllers
         public abstract void OnModeStarted();
         public abstract void OnModeEnded();
 
-        public abstract void SetupController(VrController controller, SteamVR_Input_Sources inputSource);
+        public abstract void SetupController(VrController controller, InputDeviceCharacteristics inputSource);
     }
 }

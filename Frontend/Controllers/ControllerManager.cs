@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -19,10 +20,10 @@ namespace Nanover.Frontend.Controllers
         private VrController rightController;
 
         [SerializeField]
-        private SteamVR_Input_Sources dominantHand;
+        private InputDeviceCharacteristics dominantHand;
 #pragma warning restore 0649
 
-        public SteamVR_Input_Sources DominantHand => dominantHand;
+        public InputDeviceCharacteristics DominantHand => dominantHand;
 
         public event Action DominantHandChanged;
         
@@ -35,13 +36,13 @@ namespace Nanover.Frontend.Controllers
         private void SetupRightController()
         {
             if(CurrentInputMode != null)
-                CurrentInputMode.SetupController(rightController, SteamVR_Input_Sources.RightHand);
+                CurrentInputMode.SetupController(rightController, InputDeviceCharacteristics.Right);
         }
 
         private void SetupLeftController()
         {
             if(CurrentInputMode != null)
-                CurrentInputMode.SetupController(leftController, SteamVR_Input_Sources.LeftHand);
+                CurrentInputMode.SetupController(leftController, InputDeviceCharacteristics.Left);
         }
 
         /// <summary>
@@ -54,35 +55,22 @@ namespace Nanover.Frontend.Controllers
         /// </summary>
         public VrController RightController => rightController;
 
-        /// <summary>
-        /// Get the <see cref="VrController" /> corresponding to the given input source.
-        /// </summary>
-        /// <param name="inputSource">
-        /// One of <see cref="SteamVR_Input_Sources.LeftHand" />
-        /// or <see cref="SteamVR_Input_Sources.LeftHand" />
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If
-        /// <paramref name="inputSource" /> is not one of
-        /// <see cref="SteamVR_Input_Sources.LeftHand" /> or
-        /// <see cref="SteamVR_Input_Sources.RightHand" />
-        /// </exception>
-        public VrController GetController(SteamVR_Input_Sources inputSource)
+        public VrController GetController(InputDeviceCharacteristics characteristics)
         {
-            if (inputSource == SteamVR_Input_Sources.LeftHand)
+            if (characteristics == InputDeviceCharacteristics.Left)
                 return LeftController;
-            if (inputSource == SteamVR_Input_Sources.RightHand)
+            if (characteristics == InputDeviceCharacteristics.Right)
                 return RightController;
             throw new ArgumentOutOfRangeException(
-                $"Cannot get VR Controller corresponding to {inputSource}");
+                $"Cannot get VR Controller corresponding to {characteristics}");
         }
 
         /// <summary>
         /// Set the dominant hand, which is the one which is currently in control of UI.
         /// </summary>
-        public void SetDominantHand(SteamVR_Input_Sources inputSource)
+        public void SetDominantHand(InputDeviceCharacteristics characteristics)
         {
-            this.dominantHand = inputSource;
+            this.dominantHand = characteristics;
             this.DominantHandChanged?.Invoke();
         }
 

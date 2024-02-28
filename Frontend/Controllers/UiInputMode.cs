@@ -1,5 +1,6 @@
 using SteamVRStub;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -29,8 +30,8 @@ namespace Nanover.Frontend.Controllers
         {
             // Need to update controllers when dominant hand changes, to correctly show Gizmo and
             // make other hand transparent
-            SetupController(Controllers.LeftController, SteamVR_Input_Sources.LeftHand);
-            SetupController(Controllers.RightController, SteamVR_Input_Sources.RightHand);
+            SetupController(Controllers.LeftController, InputDeviceCharacteristics.Left);
+            SetupController(Controllers.RightController, InputDeviceCharacteristics.Right);
         }
 
         public override void OnModeEnded()
@@ -43,7 +44,7 @@ namespace Nanover.Frontend.Controllers
         }
 
         public override void SetupController(VrController controller,
-                                             SteamVR_Input_Sources inputSource)
+                                             InputDeviceCharacteristics inputSource)
         {
             if (controller.IsControllerActive)
             {

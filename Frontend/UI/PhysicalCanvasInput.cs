@@ -2,6 +2,7 @@ using Nanover.Frontend.Controllers;
 using Nanover.Frontend.Input;
 using SteamVRStub;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.UI
 {
@@ -28,16 +29,10 @@ namespace Nanover.Frontend.UI
         private ControllerManager controllers;
 
         /// <summary>
-        /// The SteamVR action that triggers a virtual mouse click for the UI.
-        /// </summary>
-        [SerializeField]
-        private SteamVR_Action_Boolean inputAction;
-
-        /// <summary>
         /// The input source to use for <see cref="inputAction" />.
         /// </summary>
         [SerializeField]
-        private SteamVR_Input_Sources inputSource;
+        private InputDeviceCharacteristics inputSource;
 #pragma warning restore 0649
 
         private Canvas canvas;
