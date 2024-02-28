@@ -15,23 +15,12 @@ namespace Nanover.Frontend.Controllers
         private VrController left;
         [SerializeField]
         private VrController right;
-
-        [SerializeField]
-        private VrControllerPrefab leftPrefab;
-        [SerializeField]
-        private VrControllerPrefab rightPrefab;
 #pragma warning restore 0649
 
         private Coroutine updatePosesCoroutine;
 
         private void OnEnable()
         {
-            var leftInstance = Instantiate(leftPrefab, left.transform);
-            var rightInstance = Instantiate(rightPrefab, right.transform);
-
-            left.ResetController(leftInstance);
-            right.ResetController(rightInstance);
-
             updatePosesCoroutine = StartCoroutine(UpdatePoses());
         }
 

@@ -1,7 +1,7 @@
-using SteamVRStub;
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -53,11 +53,11 @@ namespace Nanover.Frontend.Controllers
         /// <summary>
         /// Get the prefab for the given input source.
         /// </summary>
-        public VrControllerPrefab GetPrefab(SteamVR_Input_Sources input)
+        public VrControllerPrefab GetPrefab(InputDevice device)
         {
-            if (input == SteamVR_Input_Sources.LeftHand)
+            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left))
                 return leftController.prefab;
-            if (input == SteamVR_Input_Sources.RightHand)
+            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right))
                 return rightController.prefab;
             return null;
         }
