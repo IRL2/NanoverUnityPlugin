@@ -19,65 +19,6 @@ namespace Nanover.Frontend.XR
     public static partial class UnityXRExtensions
     {
         /// <summary>
-        /// Get all XRNodeState for a given XRNode type.
-        /// </summary>
-        public static IEnumerable<XRNodeState> GetNodeStates(this XRNode nodeType)
-        {
-            return NodeStates.Where(state => state.nodeType == nodeType);
-        }
-
-        /// <summary>
-        /// Get the XRNodeState for a given XRNode type, if available.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when there
-        /// are multiple nodes of this type.
-        /// </exception>
-        public static XRNodeState? GetSingleNodeState(this XRNode nodeType)
-        {
-            var nodes = NodeStates.Where(state => state.nodeType == nodeType)
-                                  .ToList();
-
-            if (nodes.Count == 0)
-            {
-                return null;
-            }
-            else if (nodes.Count > 1)
-            {
-                throw new InvalidOperationException(
-                    $"Cannot decide between multiple XRNodes of type {nodeType}.");
-            }
-
-            return nodes[0];
-        }
-
-        /// <summary>
-        /// Return the node state's pose matrix, if available.
-        /// </summary>
-        public static Transformation? GetPose(this XRNodeState node)
-        {
-            if (node.TryGetPosition(out var position)
-             && node.TryGetRotation(out var rotation))
-            {
-                return new Transformation(position, rotation, Vector3.one);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Return the pose matrix for a given XRNode type, if available.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when there are
-        /// multiple nodes of this type
-        /// </exception>
-        public static Transformation? GetSinglePose(this XRNode nodeType)
-        {
-            return nodeType.GetSingleNodeState()?.GetPose();
-        }
-
-        /// <summary>
         /// Return the pose matrix for a given InputDevice, if available.
         /// </summary>
         public static Transformation? GetSinglePose(this InputDevice device)
@@ -90,8 +31,9 @@ namespace Nanover.Frontend.XR
             return null;
         }
 
-        public static IPosedObject WrapAsPosedObject(this XRNode nodeType)
+        public static IPosedObject WrapAsPosedObject(this InputDeviceCharacteristics characteristics)
         {
+            var devices = new List<InputDevice>();
             var wrapper = new DirectPosedObject();
 
             UpdatePoseInBackground().AwaitInBackground();
@@ -100,27 +42,18 @@ namespace Nanover.Frontend.XR
             {
                 while (true)
                 {
-                    wrapper.SetPose(nodeType.GetSinglePose());
+                    wrapper.SetPose(GetDevice().GetSinglePose());
                     await Task.Delay(1);
                 }
             }
 
-            return wrapper;
-        }
-
-        private static readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
-
-        /// <summary>
-        /// Get all the states for tracked XR objects from Unity's XR system.
-        /// </summary>
-        public static IReadOnlyList<XRNodeState> NodeStates
-        {
-            get
+            InputDevice GetDevice()
             {
-                InputTracking.GetNodeStates(nodeStates);
-
-                return nodeStates;
+                InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
+                return devices.FirstOrDefault();
             }
+
+            return wrapper;
         }
     }
 }
