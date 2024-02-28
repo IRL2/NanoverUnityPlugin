@@ -45,7 +45,7 @@ namespace Nanover.Frontend.Controllers
 
         private void OnControllerTypeChanged(string type, InputDevice device)
         {
-            if (type == prevType)
+            if (type == prevType || !device.isValid)
                 return;
 
             if (currentPrefab != null)
