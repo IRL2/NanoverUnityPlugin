@@ -18,6 +18,15 @@ namespace Nanover.Frontend.XR
     /// </summary>
     public static partial class UnityXRExtensions
     {
+        [ThreadStatic]
+        private static List<InputDevice> devices = new List<InputDevice>();
+
+        public static InputDevice GetFirstDevice(this InputDeviceCharacteristics characteristics)
+        {
+            InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
+            return devices.FirstOrDefault();
+        }
+
         /// <summary>
         /// Return the pose matrix for a given InputDevice, if available.
         /// </summary>
@@ -51,6 +60,45 @@ namespace Nanover.Frontend.XR
             {
                 InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
                 return devices.FirstOrDefault();
+            }
+
+            return wrapper;
+        }
+
+        public static bool? GetButtonPressed(this InputDevice device, InputFeatureUsage<bool> usage)
+        {
+            if (device.isValid
+             && device.TryGetFeatureValue(usage, out var pressed))
+                return pressed;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Wrap an InputDeviceCharacteristics and InputFeatureUsage into a single
+        /// button object that can be used to track a single button state. It will
+        /// continously poll the corresponding feature of the first matching
+        /// InputDevice.
+        /// </summary>
+        public static IButton WrapUsageAsButton(this InputDeviceCharacteristics characteristics, InputFeatureUsage<bool> usage)
+        {
+            var wrapper = new DirectButton();
+
+            UpdatePoseInBackground().AwaitInBackground();
+
+            async Task UpdatePoseInBackground()
+            {
+                while (true)
+                {
+                    var pressed = characteristics.GetFirstDevice().GetButtonPressed(usage) ?? wrapper.IsPressed;
+
+                    if (pressed && !wrapper.IsPressed)
+                        wrapper.Press();
+                    else if (!pressed && wrapper.IsPressed)
+                        wrapper.Release();
+
+                    await Task.Delay(1);
+                }
             }
 
             return wrapper;
