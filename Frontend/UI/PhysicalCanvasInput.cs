@@ -2,6 +2,7 @@ using Nanover.Frontend.Controllers;
 using Nanover.Frontend.Input;
 using UnityEngine;
 using UnityEngine.XR;
+using Nanover.Frontend.XR;
 
 namespace Nanover.Frontend.UI
 {
@@ -55,9 +56,11 @@ namespace Nanover.Frontend.UI
         /// </summary>
         protected virtual void RegisterCanvas()
         {
+            var trigger = inputSource.WrapUsageAsButton(CommonUsages.triggerButton);
+
             WorldSpaceCursorInput.SetCanvasAndCursor(canvas,
                                                      Controller.CursorPose,
-                                                     new DirectButton());
+                                                     trigger);
             controllers.SetDominantHand(inputSource);
         }
 
