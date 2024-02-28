@@ -38,8 +38,7 @@ namespace Nanover.Frontend.XR
 
         private void OnClick()
         {
-            if (SteamVrKeyboard.IsKeyboardAvailable)
-                SteamVrKeyboard.ShowKeyboard(text.text, OnKeyboardChanged, OnKeyboardFinished);
+            throw new NotImplementedException("No XR keyboard.");
         }
 
         private void OnKeyboardChanged(string text)

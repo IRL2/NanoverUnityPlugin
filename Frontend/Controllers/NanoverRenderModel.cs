@@ -1,9 +1,7 @@
-using SteamVRStub;
 using UnityEngine;
 
 namespace Nanover.Frontend.Controllers
 {
-    [RequireComponent(typeof(SteamVR_RenderModel))]
     public class NanoverRenderModel : MonoBehaviour
     {
         [SerializeField]

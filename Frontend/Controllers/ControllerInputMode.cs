@@ -1,5 +1,3 @@
-using SteamVRStub;
-using System;
 using UnityEngine;
 using UnityEngine.XR;
 

@@ -1,6 +1,5 @@
 using Nanover.Frontend.Controllers;
 using Nanover.Frontend.Input;
-using SteamVRStub;
 using UnityEngine;
 using UnityEngine.XR;
 

@@ -1,4 +1,3 @@
-using SteamVRStub;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -11,9 +10,6 @@ namespace Nanover.Frontend.Controllers
         private GameObject gizmo;
 
         [SerializeField]
-        private SteamVR_ActionSet[] actionSets;
-
-        [SerializeField]
         private int priority;
 #pragma warning restore 0649
 
@@ -21,8 +17,6 @@ namespace Nanover.Frontend.Controllers
 
         public override void OnModeStarted()
         {
-            foreach (var actionSet in actionSets)
-                actionSet.Activate();
             Controllers.DominantHandChanged += ControllersOnDominantHandChanged;
         }
 
@@ -36,8 +30,6 @@ namespace Nanover.Frontend.Controllers
 
         public override void OnModeEnded()
         {
-            foreach (var actionSet in actionSets)
-                actionSet.Deactivate();
             Controllers.DominantHandChanged -= ControllersOnDominantHandChanged;
             Controllers.LeftController.RenderModel.SetColor(Color.white);
             Controllers.RightController.RenderModel.SetColor(Color.white);
