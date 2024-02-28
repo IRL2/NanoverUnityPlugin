@@ -76,7 +76,20 @@ namespace Nanover.Frontend.XR
         {
             return nodeType.GetSingleNodeState()?.GetPose();
         }
-        
+
+        /// <summary>
+        /// Return the pose matrix for a given InputDevice, if available.
+        /// </summary>
+        public static Transformation? GetSinglePose(this InputDevice device)
+        {
+            if (device.isValid
+             && device.TryGetFeatureValue(CommonUsages.devicePosition, out var position)
+             && device.TryGetFeatureValue(CommonUsages.deviceRotation, out var rotation))
+                return new Transformation(position, rotation, Vector3.one);
+
+            return null;
+        }
+
         public static IPosedObject WrapAsPosedObject(this XRNode nodeType)
         {
             var wrapper = new DirectPosedObject();
