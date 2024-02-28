@@ -103,5 +103,14 @@ namespace Nanover.Frontend.XR
 
             return wrapper;
         }
+
+        public static Vector2? GetJoystickValue(this InputDevice device, InputFeatureUsage<Vector2> usage)
+        {
+            if (device.isValid
+             && device.TryGetFeatureValue(usage, out var value))
+                return value;
+
+            return null;
+        }
     }
 }
