@@ -11,6 +11,9 @@ namespace Nanover.Frontend.Controllers
 
         [SerializeField]
         private int priority;
+
+        [SerializeField]
+        private bool bothHands;
 #pragma warning restore 0649
 
         public override int Priority => priority;
@@ -40,7 +43,7 @@ namespace Nanover.Frontend.Controllers
         {
             if (controller.IsControllerActive)
             {
-                var dominant = (Controllers.DominantHand & inputSource) != InputDeviceCharacteristics.None;
+                var dominant = (Controllers.DominantHand & inputSource) != InputDeviceCharacteristics.None || bothHands;
                 if (dominant)
                     controller.InstantiateCursorGizmo(gizmo);
                 else
