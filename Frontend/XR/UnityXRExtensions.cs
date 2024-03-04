@@ -11,10 +11,8 @@ using UnityEngine.XR;
 namespace Nanover.Frontend.XR
 {
     /// <summary>
-    /// Extensions for Unity's XR system, in which you make queries about
-    /// XRNode types (e.g LeftHand, TrackingReference, etc) and receive
-    /// XRNodeState objects containing identifier and tracking information
-    /// for that XR node.
+    /// Extensions for Unity's XR system to provide convenient querying of
+    /// XR input values e.g device pose and button states.
     /// </summary>
     public static partial class UnityXRExtensions
     {
@@ -78,7 +76,8 @@ namespace Nanover.Frontend.XR
         /// Wrap an InputDeviceCharacteristics and InputFeatureUsage into a single
         /// button object that can be used to track a single button state. It will
         /// continously poll the corresponding feature of the first matching
-        /// InputDevice.
+        /// InputDevice. If a predicate function is provider then the button is
+        /// forced into released when the predicate is false.
         /// </summary>
         public static IButton WrapUsageAsButton(this InputDeviceCharacteristics characteristics, 
                                                 InputFeatureUsage<bool> usage,
