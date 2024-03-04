@@ -39,15 +39,16 @@ namespace Nanover.Frontend.Controllers
         private void UpdateDevice()
         {
             var device = characteristics.GetFirstDevice();
-            OnControllerTypeChanged(device.name, device);
-            prevType = device.name;
+
+            if (device.isValid && device.name != prevType)
+            {
+                OnControllerTypeChanged(device.name, device);
+                prevType = device.name;
+            }
         }
 
         private void OnControllerTypeChanged(string type, InputDevice device)
         {
-            if (type == prevType || !device.isValid)
-                return;
-
             if (currentPrefab != null)
                 Destroy(currentPrefab);
 
