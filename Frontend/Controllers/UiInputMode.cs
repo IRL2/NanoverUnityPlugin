@@ -40,7 +40,7 @@ namespace Nanover.Frontend.Controllers
         {
             if (controller.IsControllerActive)
             {
-                var dominant = Controllers.DominantHand == inputSource;
+                var dominant = (Controllers.DominantHand & inputSource) != InputDeviceCharacteristics.None;
                 if (dominant)
                     controller.InstantiateCursorGizmo(gizmo);
                 else
