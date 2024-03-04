@@ -69,8 +69,8 @@ namespace Nanover.Frontend.Controllers
         /// </summary>
         public void SetDominantHand(InputDeviceCharacteristics characteristics)
         {
-            this.dominantHand = characteristics;
-            this.DominantHandChanged?.Invoke();
+            dominantHand = characteristics;
+            DominantHandChanged?.Invoke();
         }
 
         /// <summary>

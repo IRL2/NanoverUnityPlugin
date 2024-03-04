@@ -80,7 +80,9 @@ namespace Nanover.Frontend.XR
         /// continously poll the corresponding feature of the first matching
         /// InputDevice.
         /// </summary>
-        public static IButton WrapUsageAsButton(this InputDeviceCharacteristics characteristics, InputFeatureUsage<bool> usage)
+        public static IButton WrapUsageAsButton(this InputDeviceCharacteristics characteristics, 
+                                                InputFeatureUsage<bool> usage,
+                                                Func<bool> predicate = null)
         {
             var wrapper = new DirectButton();
 
@@ -91,6 +93,7 @@ namespace Nanover.Frontend.XR
                 while (true)
                 {
                     var pressed = characteristics.GetFirstDevice().GetButtonPressed(usage) ?? wrapper.IsPressed;
+                    pressed &= predicate?.Invoke() ?? true; 
 
                     if (pressed && !wrapper.IsPressed)
                         wrapper.Press();

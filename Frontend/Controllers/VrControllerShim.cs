@@ -15,9 +15,13 @@ namespace Nanover.Frontend.Controllers
         private VrController left;
         [SerializeField]
         private VrController right;
+        [SerializeField]
+        private GameObject[] uiCanvases;
 #pragma warning restore 0649
 
         private Coroutine updatePosesCoroutine;
+
+        public bool UiIsVisible => uiCanvases.Any(canvas => canvas.activeInHierarchy);
 
         private void OnEnable()
         {
