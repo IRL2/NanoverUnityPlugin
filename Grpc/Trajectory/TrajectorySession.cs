@@ -130,7 +130,7 @@ namespace Nanover.Grpc.Trajectory
         {
             var result = await trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandGetSimulationsListing);
             var listing = result["simulations"] as List<object>;
-            return listing.ConvertAll(o => o as string);
+            return listing?.ConvertAll(o => o as string) ?? new List<string>();
         }
 
         /// <inheritdoc cref="TrajectoryClient.CommandSetSimulationIndex"/>
