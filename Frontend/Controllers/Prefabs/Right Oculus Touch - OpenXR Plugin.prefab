@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 6747845785462496252}
   - component: {fileID: 2543036398859962509}
   m_Layer: 0
-  m_Name: Right Oculus Touch
+  m_Name: Right Oculus Touch - OpenXR Plugin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

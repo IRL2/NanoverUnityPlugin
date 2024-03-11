@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
@@ -30,7 +32,7 @@ namespace Nanover.Frontend.Controllers
 #pragma warning disable 0649
         [SerializeField]
         [Tooltip("Internal SteamVR controller ID.")]
-        private string controllerId;
+        private string controllerIdRegex;
 
         [SerializeField]
         [Tooltip("How to handle the left controller.")]
@@ -47,7 +49,7 @@ namespace Nanover.Frontend.Controllers
         public static SteamVrControllerDefinition GetControllerDefinition(string id)
         {
             return Resources.LoadAll<SteamVrControllerDefinition>("Controllers")
-                            .FirstOrDefault(type => type.controllerId == id);
+                            .FirstOrDefault(type => Regex.IsMatch(id, type.controllerIdRegex));
         }
 
         /// <summary>
