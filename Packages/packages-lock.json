@@ -8,11 +8,11 @@
       "hash": "d96ace27fa750c27f2284fb4e76f27b81aac4390"
     },
     "com.cysharp.yetanotherhttphandler": {
-      "version": "1.0.0",
+      "version": "https://github.com/Cysharp/YetAnotherHttpHandler.git?path=/src/YetAnotherHttpHandler#ba1ad4443d242856d3e30c5591e58f9cad1c69b5",
       "depth": 0,
-      "source": "registry",
+      "source": "git",
       "dependencies": {},
-      "url": "https://package.openupm.com"
+      "hash": "ba1ad4443d242856d3e30c5591e58f9cad1c69b5"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -53,7 +53,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.postprocessing": {
-      "version": "3.2.2",
+      "version": "3.4.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
