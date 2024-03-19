@@ -85,9 +85,9 @@ namespace Nanover.Frontend.XR
         {
             var wrapper = new DirectButton();
 
-            UpdatePoseInBackground().AwaitInBackground();
+            UpdatePressedInBackground().AwaitInBackground();
 
-            async Task UpdatePoseInBackground()
+            async Task UpdatePressedInBackground()
             {
                 while (true)
                 {
