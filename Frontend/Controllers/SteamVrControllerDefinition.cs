@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
-using Valve.VR;
+using UnityEngine.Serialization;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -30,7 +32,7 @@ namespace Nanover.Frontend.Controllers
 #pragma warning disable 0649
         [SerializeField]
         [Tooltip("Internal SteamVR controller ID.")]
-        private string controllerId;
+        private string controllerIdRegex;
 
         [SerializeField]
         [Tooltip("How to handle the left controller.")]
@@ -47,17 +49,17 @@ namespace Nanover.Frontend.Controllers
         public static SteamVrControllerDefinition GetControllerDefinition(string id)
         {
             return Resources.LoadAll<SteamVrControllerDefinition>("Controllers")
-                            .FirstOrDefault(type => type.controllerId == id);
+                            .FirstOrDefault(type => Regex.IsMatch(id, type.controllerIdRegex));
         }
 
         /// <summary>
         /// Get the prefab for the given input source.
         /// </summary>
-        public VrControllerPrefab GetPrefab(SteamVR_Input_Sources input)
+        public VrControllerPrefab GetPrefab(InputDevice device)
         {
-            if (input == SteamVR_Input_Sources.LeftHand)
+            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Left))
                 return leftController.prefab;
-            if (input == SteamVR_Input_Sources.RightHand)
+            if (device.characteristics.HasFlag(InputDeviceCharacteristics.Right))
                 return rightController.prefab;
             return null;
         }

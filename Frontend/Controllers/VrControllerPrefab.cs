@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
-using Valve.VR;
 
 namespace Nanover.Frontend.Controllers
 {

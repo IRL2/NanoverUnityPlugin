@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Nanover.Core.Math;
 using UnityEngine;
@@ -50,14 +51,13 @@ namespace Nanover.Frontend.XR
         /// </remarks>
         public void CalibrateFromLighthouses()
         {
-            var trackers = XRNode.TrackingReference.GetNodeStates()
-                                                   .OrderBy(state => state.uniqueID)
-                                                   .Take(2)
-                                                   .ToList();
+            var devices = new List<InputDevice>();
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.TrackingReference, devices);
+            var trackers = devices.OrderBy(tracker => tracker.serialNumber).Take(2).ToList();
 
             if (trackers.Count == 2
-             && trackers[0].GetPose() is Transformation pose0
-             && trackers[1].GetPose() is Transformation pose1)
+             && trackers[0].GetSinglePose() is Transformation pose0
+             && trackers[1].GetSinglePose() is Transformation pose1)
             {
                 CalibrateFromTwoControlPoints(pose0.Position, pose1.Position);
                 CalibrationChanged?.Invoke();

@@ -11,74 +11,36 @@ using UnityEngine.XR;
 namespace Nanover.Frontend.XR
 {
     /// <summary>
-    /// Extensions for Unity's XR system, in which you make queries about
-    /// XRNode types (e.g LeftHand, TrackingReference, etc) and receive
-    /// XRNodeState objects containing identifier and tracking information
-    /// for that XR node.
+    /// Extensions for Unity's XR system to provide convenient querying of
+    /// XR input values e.g device pose and button states.
     /// </summary>
     public static partial class UnityXRExtensions
     {
-        /// <summary>
-        /// Get all XRNodeState for a given XRNode type.
-        /// </summary>
-        public static IEnumerable<XRNodeState> GetNodeStates(this XRNode nodeType)
+        [ThreadStatic]
+        private static List<InputDevice> devices = new List<InputDevice>();
+
+        public static InputDevice GetFirstDevice(this InputDeviceCharacteristics characteristics)
         {
-            return NodeStates.Where(state => state.nodeType == nodeType);
+            InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
+            return devices.FirstOrDefault();
         }
 
         /// <summary>
-        /// Get the XRNodeState for a given XRNode type, if available.
+        /// Return the pose matrix for a given InputDevice, if available.
         /// </summary>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when there
-        /// are multiple nodes of this type.
-        /// </exception>
-        public static XRNodeState? GetSingleNodeState(this XRNode nodeType)
+        public static Transformation? GetSinglePose(this InputDevice device)
         {
-            var nodes = NodeStates.Where(state => state.nodeType == nodeType)
-                                  .ToList();
-
-            if (nodes.Count == 0)
-            {
-                return null;
-            }
-            else if (nodes.Count > 1)
-            {
-                throw new InvalidOperationException(
-                    $"Cannot decide between multiple XRNodes of type {nodeType}.");
-            }
-
-            return nodes[0];
-        }
-
-        /// <summary>
-        /// Return the node state's pose matrix, if available.
-        /// </summary>
-        public static Transformation? GetPose(this XRNodeState node)
-        {
-            if (node.TryGetPosition(out var position)
-             && node.TryGetRotation(out var rotation))
-            {
+            if (device.isValid
+             && device.TryGetFeatureValue(CommonUsages.devicePosition, out var position)
+             && device.TryGetFeatureValue(CommonUsages.deviceRotation, out var rotation))
                 return new Transformation(position, rotation, Vector3.one);
-            }
 
             return null;
         }
 
-        /// <summary>
-        /// Return the pose matrix for a given XRNode type, if available.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when there are
-        /// multiple nodes of this type
-        /// </exception>
-        public static Transformation? GetSinglePose(this XRNode nodeType)
+        public static IPosedObject WrapAsPosedObject(this InputDeviceCharacteristics characteristics)
         {
-            return nodeType.GetSingleNodeState()?.GetPose();
-        }
-        
-        public static IPosedObject WrapAsPosedObject(this XRNode nodeType)
-        {
+            var devices = new List<InputDevice>();
             var wrapper = new DirectPosedObject();
 
             UpdatePoseInBackground().AwaitInBackground();
@@ -87,7 +49,56 @@ namespace Nanover.Frontend.XR
             {
                 while (true)
                 {
-                    wrapper.SetPose(nodeType.GetSinglePose());
+                    wrapper.SetPose(GetDevice().GetSinglePose());
+                    await Task.Delay(1);
+                }
+            }
+
+            InputDevice GetDevice()
+            {
+                InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
+                return devices.FirstOrDefault();
+            }
+
+            return wrapper;
+        }
+
+        public static bool? GetButtonPressed(this InputDevice device, InputFeatureUsage<bool> usage)
+        {
+            if (device.isValid
+             && device.TryGetFeatureValue(usage, out var pressed))
+                return pressed;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Wrap an InputDeviceCharacteristics and InputFeatureUsage into a single
+        /// button object that can be used to track a single button state. It will
+        /// continously poll the corresponding feature of the first matching
+        /// InputDevice. If a predicate function is provider then the button is
+        /// forced into released when the predicate is false.
+        /// </summary>
+        public static IButton WrapUsageAsButton(this InputDeviceCharacteristics characteristics, 
+                                                InputFeatureUsage<bool> usage,
+                                                Func<bool> predicate = null)
+        {
+            var wrapper = new DirectButton();
+
+            UpdatePressedInBackground().AwaitInBackground();
+
+            async Task UpdatePressedInBackground()
+            {
+                while (true)
+                {
+                    var pressed = characteristics.GetFirstDevice().GetButtonPressed(usage) ?? wrapper.IsPressed;
+                    pressed &= predicate?.Invoke() ?? true; 
+
+                    if (pressed && !wrapper.IsPressed)
+                        wrapper.Press();
+                    else if (!pressed && wrapper.IsPressed)
+                        wrapper.Release();
+
                     await Task.Delay(1);
                 }
             }
@@ -95,19 +106,13 @@ namespace Nanover.Frontend.XR
             return wrapper;
         }
 
-        private static readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
-
-        /// <summary>
-        /// Get all the states for tracked XR objects from Unity's XR system.
-        /// </summary>
-        public static IReadOnlyList<XRNodeState> NodeStates
+        public static Vector2? GetJoystickValue(this InputDevice device, InputFeatureUsage<Vector2> usage)
         {
-            get
-            {
-                InputTracking.GetNodeStates(nodeStates);
+            if (device.isValid
+             && device.TryGetFeatureValue(usage, out var value))
+                return value;
 
-                return nodeStates;
-            }
+            return null;
         }
     }
 }

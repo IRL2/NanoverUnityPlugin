@@ -9,7 +9,7 @@ using Nanover.Frame.Import.CIF.Components;
 using Nanover.Visualisation.Components;
 using Nanover.Visualisation.Node.Adaptor;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Nanover.Visualisation.Editor

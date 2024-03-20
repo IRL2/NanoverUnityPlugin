@@ -1,8 +1,8 @@
-using System;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Valve.VR;
+
+using UnityEngine.XR;
+using Nanover.Frontend.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -13,7 +13,7 @@ namespace Nanover.Frontend.Controllers
     {
 #pragma warning disable 0649
         [SerializeField]
-        private SteamVR_Behaviour_Pose steamVrComponent;
+        private InputDeviceCharacteristics characteristics;
 
         [SerializeField]
         private Transform prefabRoot;
@@ -23,31 +23,31 @@ namespace Nanover.Frontend.Controllers
 #pragma warning restore 0649
 
         private VrControllerPrefab currentPrefab;
+        private string prevType;
 
         private void Awake()
         {
-            Assert.IsNotNull(steamVrComponent);
             Assert.IsNotNull(controller);
             Assert.IsNotNull(prefabRoot);
-            steamVrComponent.onDeviceIndexChanged.AddListener(OnDeviceIndexChanged);
         }
 
-
-        private void OnDeviceIndexChanged(SteamVR_Behaviour_Pose pose,
-                                          SteamVR_Input_Sources source,
-                                          int index)
+        private void Update()
         {
-            if (Enum.IsDefined(typeof(SteamVR_TrackedObject.EIndex), index))
+            UpdateDevice();
+        }
+
+        private void UpdateDevice()
+        {
+            var device = characteristics.GetFirstDevice();
+
+            if (device.isValid && device.name != prevType)
             {
-                var eIndex = (SteamVR_TrackedObject.EIndex) index;
-                var controllerType = GetOpenVrProperty(eIndex,
-                                                       ETrackedDeviceProperty
-                                                           .Prop_ControllerType_String);
-                OnControllerTypeChanged(controllerType, source);
+                OnControllerTypeChanged(device.name, device);
+                prevType = device.name;
             }
         }
 
-        private void OnControllerTypeChanged(string type, SteamVR_Input_Sources input)
+        private void OnControllerTypeChanged(string type, InputDevice device)
         {
             if (currentPrefab != null)
                 Destroy(currentPrefab);
@@ -59,11 +59,11 @@ namespace Nanover.Frontend.Controllers
                 definition = SteamVrControllerDefinition.GetControllerDefinition("null");
             }
 
-            var prefab = definition.GetPrefab(input);
+            var prefab = definition.GetPrefab(device);
 
             if (prefab == null)
             {
-                Debug.LogWarning($"Controller type '{type}' is missing prefab for {input}. Controller will be unusable.");
+                Debug.LogWarning($"Controller type '{type}' is missing prefab for {device.name}. Controller will be unusable.");
                 currentPrefab = null;
             }
             else
@@ -72,27 +72,6 @@ namespace Nanover.Frontend.Controllers
             }
 
             controller.ResetController(currentPrefab);
-        }
-        
-        private static string GetOpenVrProperty(SteamVR_TrackedObject.EIndex index,
-                                                ETrackedDeviceProperty property)
-        {
-            var system = OpenVR.System;
-            var error = ETrackedPropertyError.TrackedProp_Success;
-            var capacity =
-                system.GetStringTrackedDeviceProperty((uint) index, property, null, 0, ref error);
-            if (capacity <= 1)
-            {
-                Debug.LogError(
-                    $"<b>[SteamVR]</b> Failed to get property {property} name for tracked object {index}");
-                return null;
-            }
-
-            var buffer = new StringBuilder((int) capacity);
-            system.GetStringTrackedDeviceProperty((uint) index, property, buffer, capacity,
-                                                  ref error);
-
-            return buffer.ToString();
         }
     }
 }

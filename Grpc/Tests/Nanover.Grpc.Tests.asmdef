@@ -1,28 +1,54 @@
 {
     "name": "Nanover.Grpc.Tests",
+    "rootNamespace": "",
     "references": [
         "Nanover.Grpc",
         "Nanover.Testing",
         "Nanover.Frame",
-        "Nanover.Core"
+        "Nanover.Core",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
     ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "Android",
+        "Editor",
+        "EmbeddedLinux",
+        "GameCoreScarlett",
+        "GameCoreXboxOne",
+        "iOS",
+        "LinuxStandalone64",
+        "CloudRendering",
+        "macOSStandalone",
+        "PS4",
+        "PS5",
+        "QNX",
+        "Stadia",
+        "Switch",
+        "tvOS",
+        "WSA",
+        "VisionOS",
+        "WebGL",
+        "WindowsStandalone32",
+        "WindowsStandalone64",
+        "XboxOne"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [
         "Nanover.Protocol.dll",
         "Google.Protobuf.dll",
         "Grpc.Core.Api.dll",
         "Grpc.Core.dll",
-        "NSubstitute.dll"
+        "NSubstitute.dll",
+        "nunit.framework.dll",
+        "Grpc.Net.Client.dll",
+        "Grpc.Net.Common.dll"
     ],
     "autoReferenced": false,
-    "defineConstraints": [],
-    "versionDefines": []
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

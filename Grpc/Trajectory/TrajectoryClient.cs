@@ -37,6 +37,16 @@ namespace Nanover.Grpc.Trajectory
         /// </summary>
         public const string CommandReset = "playback/reset";
 
+        /// <summary>
+        /// Fetch list of available simulations from server.
+        /// </summary>
+        public const string CommandGetSimulationsListing = "playback/list";
+
+        /// <summary>
+        /// Select from the simulations by index of the listing.
+        /// </summary>
+        public const string CommandSetSimulationIndex = "playback/load";
+
         // Chosen as an acceptable minimum rate that should ideally be 
         // explicitly increased.
         private const float DefaultUpdateInterval = 1f / 30f;

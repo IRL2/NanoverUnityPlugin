@@ -3,7 +3,6 @@ using Nanover.Frontend.Input;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
-using Valve.VR;
 
 namespace Nanover.Frontend.UI
 {

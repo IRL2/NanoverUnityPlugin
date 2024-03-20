@@ -1,7 +1,6 @@
 using System;
 using Nanover.Frontend.Input;
 using UnityEngine;
-using Valve.VR;
 
 namespace Nanover.Frontend.Controllers
 {

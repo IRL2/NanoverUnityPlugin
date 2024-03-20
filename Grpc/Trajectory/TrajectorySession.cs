@@ -124,6 +124,21 @@ namespace Nanover.Grpc.Trajectory
             trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandStep);
         }
 
+        // TODO: handle the non-existence of these commands
+        /// <inheritdoc cref="TrajectoryClient.CommandGetSimulationsListing"/>
+        public async Task<List<string>> GetSimulationListing()
+        {
+            var result = await trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandGetSimulationsListing);
+            var listing = result["simulations"] as List<object>;
+            return listing?.ConvertAll(o => o as string) ?? new List<string>();
+        }
+
+        /// <inheritdoc cref="TrajectoryClient.CommandSetSimulationIndex"/>
+        public void SetSimulationIndex(int index)
+        {
+            trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandSetSimulationIndex, new Dictionary<string, object> { { "index", index } });
+        }
+
         public void RunCommand(string name, Dictionary<string, object> commands)
         {
             trajectoryClient?.RunCommandAsync(name, commands);

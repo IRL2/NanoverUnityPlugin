@@ -1,5 +1,5 @@
 using UnityEngine;
-using Valve.VR;
+using UnityEngine.XR;
 
 namespace Nanover.Frontend.Controllers
 {
@@ -10,18 +10,16 @@ namespace Nanover.Frontend.Controllers
         private GameObject gizmo;
 
         [SerializeField]
-        private SteamVR_ActionSet[] actionSets;
+        private int priority;
 
         [SerializeField]
-        private int priority;
+        private bool bothHands;
 #pragma warning restore 0649
 
         public override int Priority => priority;
 
         public override void OnModeStarted()
         {
-            foreach (var actionSet in actionSets)
-                actionSet.Activate();
             Controllers.DominantHandChanged += ControllersOnDominantHandChanged;
         }
 
@@ -29,25 +27,23 @@ namespace Nanover.Frontend.Controllers
         {
             // Need to update controllers when dominant hand changes, to correctly show Gizmo and
             // make other hand transparent
-            SetupController(Controllers.LeftController, SteamVR_Input_Sources.LeftHand);
-            SetupController(Controllers.RightController, SteamVR_Input_Sources.RightHand);
+            SetupController(Controllers.LeftController, InputDeviceCharacteristics.Left);
+            SetupController(Controllers.RightController, InputDeviceCharacteristics.Right);
         }
 
         public override void OnModeEnded()
         {
-            foreach (var actionSet in actionSets)
-                actionSet.Deactivate();
             Controllers.DominantHandChanged -= ControllersOnDominantHandChanged;
             Controllers.LeftController.RenderModel.SetColor(Color.white);
             Controllers.RightController.RenderModel.SetColor(Color.white);
         }
 
         public override void SetupController(VrController controller,
-                                             SteamVR_Input_Sources inputSource)
+                                             InputDeviceCharacteristics inputSource)
         {
             if (controller.IsControllerActive)
             {
-                var dominant = Controllers.DominantHand == inputSource;
+                var dominant = (Controllers.DominantHand & inputSource) != InputDeviceCharacteristics.None || bothHands;
                 if (dominant)
                     controller.InstantiateCursorGizmo(gizmo);
                 else

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -12,6 +14,36 @@ namespace Nanover.Grpc.Tests.Multiplayer
     /// </summary>
     internal class GrpcServer : IAsyncClosable
     {
+        private class ServerCredentials
+        {
+            public static object Insecure { get; internal set; }
+        }
+
+
+
+        private class Service
+        {
+
+        }
+
+        private class Server
+        {
+            public List<ServerPort> Ports { get; internal set; }
+            public List<Service> Services { get; internal set; }
+
+            internal Task KillAsync() => throw new NotImplementedException();
+            internal void Start() => throw new NotImplementedException();
+        }
+
+        private class ServerPort
+        {
+            public ServerPort(string v1, int v2, object insecure)
+            {
+            }
+
+            public int BoundPort { get; internal set; }
+        }
+
         private Server server;
 
         private LatencySimulator latency;
@@ -44,8 +76,10 @@ namespace Nanover.Grpc.Tests.Multiplayer
             };
             latency = new LatencySimulator();
             foreach (var service in services)
-                server.Services.Add(service.Intercept(latency));
+                server.Services.Add(Intercept(service, latency));
             server.Start();
+
+            Service Intercept(ServerServiceDefinition s, LatencySimulator l) => throw new NotImplementedException();
         }
 
         public int Port => server.Ports.First().BoundPort;
