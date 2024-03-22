@@ -569,8 +569,8 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
 
                 float deltaScale = distance / OldDist;
 
-                // Scaling below 0.05 is blocked to prevent inversions or singularities.
-                if (transform.localScale.x >= 0.05 || deltaScale > 1f)
+                // Scaling below 0.005 is blocked to prevent inversions or singularities.
+                if (transform.localScale.x >= 0.005 || deltaScale > 1f)
                 {
 
                     // Grasp point (newPos) in local coordinates of the transform object 

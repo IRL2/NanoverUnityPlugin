@@ -35,7 +35,6 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
     /// respond to controller dis/re/connection events to ensure smooth operation. It will also
     /// instantiate and initialise an input arbiter thereby bootstrapping the input control system.  
     /// </remarks>
-
     public class BasicControllerManager : ControllerManager
     {
 
@@ -176,9 +175,6 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
 
             foreach (var controller in controllers)
                 arbiter.AddController(controller);
-
-
-
 
             arbiterInitialised = true;
         }

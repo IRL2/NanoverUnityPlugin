@@ -33,7 +33,6 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         [SerializeField]
         private GameObject systemObject;
         
-
         /// <summary>
         /// Top level input actions asset from which input action maps can be sourced.
         /// </summary>
