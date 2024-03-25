@@ -140,6 +140,8 @@ namespace Nanover.Frontend.InputControlSystem.InputControllers
 
             interactorLineVisual = gameObject.AddComponent<XRInteractorLineVisual>();
             interactorLineVisual.lineOriginTransform = transform;
+            interactorLineVisual.smoothMovement = true;
+            interactorLineVisual.snapThresholdDistance = 0f;
 
             // The ray interactor should only be viable when it intersects with an element of a user
             // interface. At all other times it will remain hidden.

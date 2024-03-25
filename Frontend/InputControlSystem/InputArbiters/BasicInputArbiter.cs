@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Object = System.Object;
 using State = Nanover.Frontend.InputControlSystem.InputHandlers.State;
 
 // TODO: Rename this to `StaticDuelInputArbiter`.
@@ -887,6 +888,36 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
 
             // Combine and return the two lists.
             return A.Concat(B).ToList();
+        }
+
+        /// <summary>
+        /// This is invoked whenever the input arbiter is disabled.
+        /// </summary>
+        /// <remarks>
+        /// This ensure that the input handlers are explicitly disabled & do not continue to function
+        /// in the background.
+        /// </remarks>
+        void OnDisable()
+        {
+            // Ensure that all input handlers are disabled when the arbiter is. Note that this will
+            // not respect the handler's `Lock` flag.
+            foreach (var handler in inputHandlers) if (handler.State != State.Disabled) handler.State = State.Disabled;
+
+            // Disable the radial selection menus as they will not be needed when the input arbiter
+            // is inactive.
+            foreach (var menuObject in radialSelectorGameObjects) menuObject.GetComponent<RadialInputSelector>().enabled = false;
+        }
+
+        /// <summary>
+        /// This is invoked whenever the input arbiter is re-enabled.
+        /// </summary>
+        /// <remarks>
+        /// When the input arbiter is re-enabled the radial selection menus associated with it should
+        /// also become active.
+        /// </remarks>
+        void OnEnable()
+        {
+            foreach (var menuObject in radialSelectorGameObjects) menuObject.GetComponent<RadialInputSelector>().enabled = true;
         }
     }
 }
