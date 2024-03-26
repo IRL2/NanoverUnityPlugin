@@ -47,9 +47,9 @@ namespace Nanover.Grpc.Trajectory
         /// listen in the background for frame changes. Closes any existing
         /// client.
         /// </summary>
-        public void OpenClient(GrpcConnection connection)
+        public async Task OpenClient(GrpcConnection connection)
         {
-            CloseClient();
+            await CloseClient();
             trajectorySnapshot.Clear();
 
             trajectoryClient = new TrajectoryClient(connection);
@@ -99,7 +99,7 @@ namespace Nanover.Grpc.Trajectory
         /// <summary>
         /// Close the current trajectory client.
         /// </summary>
-        public void CloseClient()
+        public async Task CloseClient()
         {
             trajectoryClient?.CloseAndCancelAllSubscriptions();
             trajectoryClient?.Dispose();
@@ -108,12 +108,14 @@ namespace Nanover.Grpc.Trajectory
             frameStream?.CloseAsync();
             frameStream?.Dispose();
             frameStream = null;
+
+            await Task.CompletedTask;
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
         public void Dispose()
         {
-            CloseClient();
+            CloseClient().AwaitInBackgroundIgnoreCancellation();
         }
         
         /// <inheritdoc cref="TrajectoryClient.CommandPlay"/>
