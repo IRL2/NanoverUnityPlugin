@@ -24,10 +24,14 @@ namespace Nanover.Grpc.Multiplayer
         public string AccessToken { get; set; }
 
         public MultiplayerAvatars Avatars { get; }
+        public PlayAreaCollection PlayAreas { get; }
+        public PlayOriginCollection PlayOrigins { get; }
 
         public MultiplayerSession()
         {
             Avatars = new MultiplayerAvatars(this);
+            PlayAreas = new PlayAreaCollection(this);
+            PlayOrigins = new PlayOriginCollection(this);
             
             SimulationPose =
                 new MultiplayerResource<Transformation>(this, SimulationPoseKey, PoseFromObject,
@@ -131,9 +135,12 @@ namespace Nanover.Grpc.Multiplayer
         /// </summary>
         public void CloseClient()
         {
+            // Remove our personal avatar/playarea/origin
             Avatars.CloseClient();
+            PlayAreas.RemoveValue(AccessToken ?? "");
+            PlayOrigins.RemoveValue(AccessToken ?? "");
             FlushValues();
-            
+
             client?.CloseAndCancelAllSubscriptions();
             client?.Dispose();
             client = null;
@@ -301,6 +308,10 @@ namespace Nanover.Grpc.Multiplayer
                 var scale = list.GetVector3(7);
 
                 return new Transformation(position, rotation, scale);
+            }
+            else if (@object is null)
+            {
+                return Transformation.Identity;
             }
 
             throw new ArgumentOutOfRangeException();
