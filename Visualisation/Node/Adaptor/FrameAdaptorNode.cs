@@ -64,7 +64,7 @@ namespace Nanover.Visualisation.Node.Adaptor
             }
             else
             {
-                property.TrySetValue(null);
+                property.UndefineValue();
             }
         }
 
