@@ -6,6 +6,7 @@ using Google.Protobuf.WellKnownTypes;
 using Nanover.Core;
 using Nanover.Core.Async;
 using Nanover.Frame;
+using Nanover.Frame.Event;
 using Nanover.Grpc.Frame;
 using Nanover.Grpc.Stream;
 using Nanover.Protocol.Trajectory;
@@ -71,6 +72,9 @@ namespace Nanover.Grpc.Trajectory
                 var prevFrame = clear ? null : CurrentFrame;
 
                 var (frame, changes) = FrameConverter.ConvertFrame(nextFrame, prevFrame);
+                
+                if (clear)
+                    changes = FrameChanges.All;
 
                 trajectorySnapshot.SetCurrentFrame(frame, changes);
             }
