@@ -71,12 +71,13 @@ namespace Nanover.Grpc
             if (IsCancelled)
                 return;
 
-            //await Channel.ShutdownAsync();
             CancellationTokenSource?.Cancel();
             CancellationTokenSource?.Dispose();
             Channel?.Dispose();
             Channel = null;
             CancellationTokenSource = null;
+
+            await Task.CompletedTask;
         }
     }
 }
