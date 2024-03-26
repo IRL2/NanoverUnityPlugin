@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Nanover.Core;
 using Nanover.Core.Async;
 using Nanover.Frame;
@@ -59,21 +60,31 @@ namespace Nanover.Grpc.Trajectory
             frameStream = trajectoryClient.SubscribeLatestFrames(1f / 30f);
             BackgroundIncomingStreamReceiver<GetFrameResponse>.Start(frameStream, ReceiveFrame, Merge);
 
+            // Integrating frames from the buffer with the current frame
             void ReceiveFrame(GetFrameResponse response)
             {
                 CurrentFrameIndex = (int) response.FrameIndex;
 
+                var clear = response.Frame.Values.ContainsKey("_clear") 
+                         || response.FrameIndex == 0;
                 var nextFrame = response.Frame;
-                var prevFrame = response.FrameIndex == 0 ? null : CurrentFrame;
+                var prevFrame = clear ? null : CurrentFrame;
 
                 var (frame, changes) = FrameConverter.ConvertFrame(nextFrame, prevFrame);
+
                 trajectorySnapshot.SetCurrentFrame(frame, changes);
             }
 
+            // Aggregating frames while they wait in the buffer
             void Merge(GetFrameResponse dest, GetFrameResponse toMerge)
             {
                 if (toMerge.FrameIndex == 0)
+                {
                     dest.Frame = new FrameData();
+                    // it's possible a later frame will be merged, erasing the
+                    // 0 frame index, so record it in a special field too
+                    dest.Frame.Values["_clear"] = Value.ForBool(true);
+                }
 
                 dest.FrameIndex = toMerge.FrameIndex;
                 foreach (var (key, array) in toMerge.Frame.Arrays)
