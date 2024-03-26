@@ -68,6 +68,9 @@ namespace Nanover.Grpc.Trajectory
 
             void Merge(GetFrameResponse dest, GetFrameResponse toMerge)
             {
+                if (toMerge.FrameIndex == 0)
+                    dest.Frame = new FrameData();
+
                 dest.FrameIndex = toMerge.FrameIndex;
                 foreach (var (key, array) in toMerge.Frame.Arrays)
                     dest.Frame.Arrays[key] = array;
@@ -75,10 +78,6 @@ namespace Nanover.Grpc.Trajectory
                     dest.Frame.Values[key] = value;
             }
         }
-
-        
-
-        
 
         /// <summary>
         /// Close the current trajectory client.
