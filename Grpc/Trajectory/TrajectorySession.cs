@@ -62,7 +62,11 @@ namespace Nanover.Grpc.Trajectory
             void ReceiveFrame(GetFrameResponse response)
             {
                 CurrentFrameIndex = (int) response.FrameIndex;
-                var (frame, changes) = FrameConverter.ConvertFrame(response.Frame, CurrentFrame);
+
+                var nextFrame = response.Frame;
+                var prevFrame = response.FrameIndex == 0 ? null : CurrentFrame;
+
+                var (frame, changes) = FrameConverter.ConvertFrame(nextFrame, prevFrame);
                 trajectorySnapshot.SetCurrentFrame(frame, changes);
             }
 
