@@ -38,32 +38,6 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
     public class BasicControllerManager : ControllerManager
     {
         /// <summary>
-        /// Button used to return to the main menu.
-        /// </summary>
-        /// <remarks>
-        /// When this button is held down for the amount of time specified by <c>returnToMenuHoldTime</c>
-        /// the simulation will be disconnected and the user returned to the main menu.
-        /// </remarks>
-        [Tooltip("This button can be held down to return to the main menu.")]
-        [SerializeField]
-        private InputActionProperty returnToMainMenuButton;
-
-        /// <summary>
-        /// Amount of time the <c>returnToMainMenuButton</c> button should be held down for before
-        /// the user is returned main menu.
-        /// </summary>
-        [Tooltip("How long the button should be held down before returning to the main menu.")]
-        [SerializeField]
-        private float returnToMenuHoldTime = 5f;
-        
-        /// <summary>
-        /// Specifies what actions should be performed to return to the main menu.
-        /// </summary>
-        [Tooltip("What collection of events constitutes a return to the main menu.")]
-        [SerializeField]
-        private UnityEvent returnToMenuEvents = new UnityEvent();
-        
-        /// <summary>
         /// Represents the input controller associated with the user's dominant hand.
         /// </summary>
         /// <remarks>
@@ -93,7 +67,7 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         /// device is detected.
         /// </remarks>
         private GameObject dominantHandControllerGameObject;
-        
+
         /// <summary>
         /// The <c>GameObject</c> to which the <see cref="InputController"/> component representing
         ///  the user's non-dominant had is attached.
@@ -114,6 +88,20 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         /// various input handlers.
         /// </remarks>
         private BasicInputArbiter arbiter;
+
+        /// <summary>
+        /// The <see cref="BasicInputArbiter"/> component that is responsible for the
+        /// <see cref="InputHandler">InputHandlers</see>.
+        /// </summary>
+        /// <remarks>
+        /// The input arbiter is responsible for setting up, managing, and switching between the
+        /// various input handlers.
+        /// </remarks>
+        public BasicInputArbiter Arbiter
+        {
+            get => arbiter;
+            set => arbiter = value;
+        }
 
         /// <summary>
         /// The <c>GameObject</c> to which the <see cref="BasicInputArbiter"/> component specified
@@ -139,33 +127,16 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         private bool arbiterInitialised = false;
 
         /// <summary>
-        /// Used to store the time at which the <c>ReturnToMainMenuButton</c> was pressed down.
+        /// If true the arbiter start in the disabled state.
         /// </summary>
-        private double eventStart;
-
-        /// <summary>
-        /// Checks whether or not the duration for which the <c>ReturnToMainMenuButton</c> was held
-        /// down exceeded that specified by <c>returnToMenuHoldTime</c>. If so, then it invokes the
-        /// command specified by the <c>returnToMenuEvents</c> field.
-        /// </summary>
-        /// <param name="context">Callback context for the button press event.</param>
-        private void ReturnToMainMenu(InputAction.CallbackContext context)
-        {
-            /* Develper's Notes:
-             * This whole approach feels somewhat hacky in general. There should be a clearer more
-             * elegant way of returning users to the main menu. It might be a little better if this
-             * were to show a systems option radial menu.
-             */
-            if (context.phase == InputActionPhase.Performed)
-                eventStart = context.time;
-            else if (context.phase == InputActionPhase.Canceled && ((context.time - eventStart) >= returnToMenuHoldTime))
-                returnToMenuEvents.Invoke();
-        }
-
-
+        /// <remarks>
+        /// This can be used to prevent the input arbiter or its handlers from having any effect
+        /// when the user is in the main menu screen.
+        /// </remarks>
+        protected bool sleepArbiterOnStart = false;
 
         /// <summary>Controller manager initialisation.</summary>
-        public void Awake()
+        protected void Awake()
         {
             // Start watching for controller connection/disconnection events
             RegisterControllerTrackingStateSubscriptions();
@@ -174,17 +145,13 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
             // initialisation is actually performed later on by the `InitialiseInputArbiter` method.
             ArbiterObject = new GameObject("Arbiter") { transform = { parent = transform } };
             arbiter = ArbiterObject.AddComponent<BasicInputArbiter>();
-
-            returnToMainMenuButton.action.canceled += ReturnToMainMenu;
-            returnToMainMenuButton.action.performed += ReturnToMainMenu;
         }
-        
 
         /// <summary>Upon terminating, stop watching for controller connection/disconnection events.</summary>
-        void OnDestroy() => DeregisterControllerTrackingStateSubscriptions();
-        
+        protected void OnDestroy() => DeregisterControllerTrackingStateSubscriptions();
 
-        void Update()
+
+        public void Update()
         {
             // If the arbiter has not yet been initialised, and all the parts necessary to do so are
             // in-place, then perform the initialisation.
@@ -201,7 +168,7 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         /// arbiter. This will likely undergo heavy refactoring once the right and left controller
         /// connection process has been disentangled.
         /// </remarks>
-        private void InitialiseInputArbiter()
+        protected void InitialiseInputArbiter()
         {
             // Generate a list of all controllers
             InputController[] controllers = { dominantHandController, nonDominantHandController };
@@ -226,7 +193,39 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
             foreach (var controller in controllers)
                 arbiter.AddController(controller);
 
+            if (sleepArbiterOnStart) DisableArbiter();
+            else EnableArbiter();
+
             arbiterInitialised = true;
+        }
+
+        /// <summary>
+        /// Disable the input arbiter.
+        /// </summary>
+        public void DisableArbiter()
+        {
+            if (Arbiter != null)
+                Arbiter.enabled = false;
+        }
+
+        /// <summary>
+        /// Enable the input arbiter.
+        /// </summary>
+        public void EnableArbiter()
+        {
+            
+
+            // Don't try to enable an already enabled arbiter
+            if ((Arbiter != null) && !Arbiter.enabled)
+            {
+                Arbiter.enabled = true;
+
+                // When enabling the arbiter ensure that the transform input handler is the first
+                // selected, as it is the most commonly useful handler.
+                Arbiter.RequestInputHandlerActivation(
+                    Arbiter.InputHandlers.OfType<TransformHybridInputHandler>().First());
+            }
+
         }
 
         /// <summary>

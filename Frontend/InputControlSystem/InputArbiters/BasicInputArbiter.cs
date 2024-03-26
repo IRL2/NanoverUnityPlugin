@@ -175,6 +175,13 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
             if (!inputHandlers.Contains(handler))
                 throw new Exception("Attempted to activate an unknown input handler.");
 
+            // Refer the handler's stored `Controller` list to identify which controllers activation
+            // should take place on if no specific controller is specified. This allows hybrid input
+            // handlers to activate on one or both associated controllers. For Mono and Dual input
+            // handlers, the provided targetControllers, if any, match their `Controllers` list.
+            if (targetControllers == null)
+                targetControllers = handler.Controllers.ToList();
+
             // Don't attempt to activate input handlers that are already active
             if (handler is HybridInputHandler hybrid)
             {
@@ -184,13 +191,6 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
                     (handler.State == State.Active)) return true;
             }
             else if (handler.State == State.Active) return true;
-
-            // Refer the handler's stored `Controller` list to identify which controllers activation
-            // should take place on if no specific controller is specified. This allows hybrid input
-            // handlers to activate on one or both associated controllers. For Mono and Dual input
-            // handlers, the provided targetControllers, if any, match their `Controllers` list.
-            if (targetControllers == null)
-                targetControllers = handler.Controllers.ToList();
 
             // Ensure that any provided target controllers are valid; i.e you can only activate an
             // input handler on a controller that it is bound to.
