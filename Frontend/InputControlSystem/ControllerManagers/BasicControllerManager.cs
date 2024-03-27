@@ -12,8 +12,6 @@ using Nanover.Frontend.InputControlSystem.InputHandlers;
 using Nanover.Frontend.InputControlSystem.Utilities;
 using Nanover.Grpc.Multiplayer;
 using Nanover.Grpc.Trajectory;
-using UnityEngine.Events;
-
 
 namespace Nanover.Frontend.InputControlSystem.ControllerManagers
 {
@@ -254,6 +252,7 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
 
         #region "Controller instantiation and management"
 
+
         /// <summary>
         /// Registers callbacks for changes in the tracking state of both the right & left controllers.
         /// These callbacks are designed to respond to the connection, disconnection, & reconnection of
@@ -270,11 +269,6 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         /// </remarks>
         private void RegisterControllerTrackingStateSubscriptions()
         {
-            // Developer's Notes: It should be noted that we are not technically subscribing to the
-            // tracking states here as they have been found to be woefully unreliable. Instead controller
-            // (de)connection events are detected through a phantom button event "Is Tracked". This
-            // button will register as being pressed when the controller connects and released when
-            // it disconnects. This is not a clean solution, but it is stable(er).
 
             // Ensure that the input action map is enabled.
             InputActionAsset.Enable();
@@ -283,13 +277,11 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
             // for the right and left controllers.
             InputActionMap rightControllerInputActionMap = InputActionAsset.FindActionMap("Right Controller");
             rightControllerCallback = context => TrackingStateControllerUpdate(context, rightControllerInputActionMap, InputDeviceCharacteristics.Right);
-            rightControllerInputActionMap.FindAction("Is Tracked").performed += rightControllerCallback;
-            rightControllerInputActionMap.FindAction("Is Tracked").canceled += rightControllerCallback;
+            rightControllerInputActionMap.FindAction("Tracking State").performed += rightControllerCallback;
 
             InputActionMap leftControllerInputActionMap = InputActionAsset.FindActionMap("Left Controller");
             leftControllerCallback = context => TrackingStateControllerUpdate(context, leftControllerInputActionMap, InputDeviceCharacteristics.Left);
-            leftControllerInputActionMap.FindAction("Is Tracked").performed += leftControllerCallback;
-            leftControllerInputActionMap.FindAction("Is Tracked").canceled += leftControllerCallback;
+            leftControllerInputActionMap.FindAction("Tracking State").performed += leftControllerCallback;
         }
 
         /// <summary>
@@ -412,12 +404,12 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
             ref GameObject controllerObject = ref GetControllerObjectByReference(handedness);
             ref BasicInputController controller = ref GetControllerReference(handedness);
 
-            // Controller connection/disconnection events are represented within Unity as button
-            // press/release events. If the `Is Tracked` button is pressed down then the controller
-            // has just (re)registered itself with Unity.
-            if (context.phase == InputActionPhase.Performed)
+            // A tracking state value of zero indicates that no tracking data is provided & therefor
+            // no controller is connected. If the tracking state value changes to anything other
+            // than zero then either a controller has just connected or is has started offering more
+            // or less data than it did previously.
+            if (context.ReadValue<int>() != (int)InputTrackingState.None)
             {
-
                 // 1. a new controller has just connected for the first time. In which case a new
                 //    controller instance must be created.
                 if (controllerObject == null)
@@ -440,7 +432,7 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
 
                 // 2. or a disconnected, but already registered, controller has just been reconnected.
                 //    Thus the controller should be re-enabled.
-                else
+                else if (!controllerObject.activeSelf)
                     controllerObject.SetActive(true);
             }
 
@@ -454,8 +446,11 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
              * disconnection events.
              */
 
+            // Note that the following code is from when the `isTracked` features was used. However,
+            // this was found to be unreliable in practice. If this is to be re-implemented then it
+            // will need to be updated to accommodate this.
             //// Alternatively, if the "button" is "released" then Unity is signalling that the
-            //// controller has just unregistered.  
+            //// controller has just unregistered. 
             //else if (context.phase == InputActionPhase.Canceled)
             //{
             //    if (controllerObject != null)
@@ -471,7 +466,7 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
             //}
 
         }
-
+        
         #endregion
 
     }
