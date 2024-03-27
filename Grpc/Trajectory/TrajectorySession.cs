@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Google.Protobuf.WellKnownTypes;
 using Nanover.Frame;
 using Nanover.Frame.Event;
 using Nanover.Grpc.Frame;
@@ -17,12 +16,6 @@ namespace Nanover.Grpc.Trajectory
     /// </summary>
     public class TrajectorySession : ITrajectorySnapshot, IDisposable
     {
-        /// <summary>
-        /// Key used to indicate that frames merged in the buffer incorporate
-        /// a clearing event (where frame index was 0)
-        /// </summary>
-        private const string FrameClearedKey = "__internal.cleared";
-
         /// <inheritdoc cref="ITrajectorySnapshot.CurrentFrame" />
         public Nanover.Frame.Frame CurrentFrame => trajectorySnapshot.CurrentFrame;
         
@@ -71,7 +64,6 @@ namespace Nanover.Grpc.Trajectory
                 var nextFrame = response.Frame;
                 var clear = ContainsClear(response);
                 var prevFrame = clear ? null : CurrentFrame;
-                nextFrame.Values.Remove(FrameClearedKey);
 
                 var (frame, changes) = FrameConverter.ConvertFrame(nextFrame, prevFrame);
 
@@ -85,14 +77,11 @@ namespace Nanover.Grpc.Trajectory
             void Merge(GetFrameResponse dest, GetFrameResponse toMerge)
             {
                 if (ContainsClear(toMerge))
-                {
                     dest.Frame = new FrameData();
-                    // it's possible a later frame will be merged, erasing the
-                    // 0 frame index, so record it in a special field too
-                    dest.Frame.Values[FrameClearedKey] = Value.ForBool(true);
-                }
 
-                dest.FrameIndex = toMerge.FrameIndex;
+                if (!ContainsClear(dest))
+                    dest.FrameIndex = toMerge.FrameIndex;
+
                 foreach (var (key, array) in toMerge.Frame.Arrays)
                     dest.Frame.Arrays[key] = array;
                 foreach (var (key, value) in toMerge.Frame.Values)
@@ -103,8 +92,7 @@ namespace Nanover.Grpc.Trajectory
             // cleared?
             bool ContainsClear(GetFrameResponse response)
             {
-                return response.Frame.Values.ContainsKey(FrameClearedKey)
-                    || response.FrameIndex == 0;
+                return response.FrameIndex == 0;
             }
         }
 
