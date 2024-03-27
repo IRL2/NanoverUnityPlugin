@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
-using Nanover.Core;
-using Nanover.Core.Async;
 using Nanover.Frame;
 using Nanover.Frame.Event;
 using Nanover.Grpc.Frame;
 using Nanover.Grpc.Stream;
 using Nanover.Protocol.Trajectory;
-using UnityEngine;
 
 namespace Nanover.Grpc.Trajectory
 {
