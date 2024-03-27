@@ -21,6 +21,12 @@ namespace Nanover.Grpc.Trajectory
     /// </summary>
     public class TrajectorySession : ITrajectorySnapshot, IDisposable
     {
+        /// <summary>
+        /// Key used to indicate that frames merged in the buffer incorporate
+        /// a clearing event (where frame index was 0)
+        /// </summary>
+        private const string FrameClearedKey = "__internal.cleared";
+
         /// <inheritdoc cref="ITrajectorySnapshot.CurrentFrame" />
         public Nanover.Frame.Frame CurrentFrame => trajectorySnapshot.CurrentFrame;
         
@@ -66,13 +72,14 @@ namespace Nanover.Grpc.Trajectory
             {
                 CurrentFrameIndex = (int) response.FrameIndex;
 
-                var clear = response.Frame.Values.ContainsKey("_clear") 
-                         || response.FrameIndex == 0;
                 var nextFrame = response.Frame;
+                var clear = response.Frame.Values.ContainsKey(FrameClearedKey) 
+                         || response.FrameIndex == 0;
                 var prevFrame = clear ? null : CurrentFrame;
+                nextFrame.Values.Remove(FrameClearedKey);
 
                 var (frame, changes) = FrameConverter.ConvertFrame(nextFrame, prevFrame);
-                
+
                 if (clear)
                     changes = FrameChanges.All;
 
@@ -87,7 +94,7 @@ namespace Nanover.Grpc.Trajectory
                     dest.Frame = new FrameData();
                     // it's possible a later frame will be merged, erasing the
                     // 0 frame index, so record it in a special field too
-                    dest.Frame.Values["_clear"] = Value.ForBool(true);
+                    dest.Frame.Values[FrameClearedKey] = Value.ForBool(true);
                 }
 
                 dest.FrameIndex = toMerge.FrameIndex;
