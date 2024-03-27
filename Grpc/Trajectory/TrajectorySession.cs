@@ -73,8 +73,7 @@ namespace Nanover.Grpc.Trajectory
                 CurrentFrameIndex = (int) response.FrameIndex;
 
                 var nextFrame = response.Frame;
-                var clear = response.Frame.Values.ContainsKey(FrameClearedKey) 
-                         || response.FrameIndex == 0;
+                var clear = ContainsClear(response);
                 var prevFrame = clear ? null : CurrentFrame;
                 nextFrame.Values.Remove(FrameClearedKey);
 
@@ -89,7 +88,7 @@ namespace Nanover.Grpc.Trajectory
             // Aggregating frames while they wait in the buffer
             void Merge(GetFrameResponse dest, GetFrameResponse toMerge)
             {
-                if (toMerge.FrameIndex == 0)
+                if (ContainsClear(toMerge))
                 {
                     dest.Frame = new FrameData();
                     // it's possible a later frame will be merged, erasing the
@@ -102,6 +101,14 @@ namespace Nanover.Grpc.Trajectory
                     dest.Frame.Arrays[key] = array;
                 foreach (var (key, value) in toMerge.Frame.Values)
                     dest.Frame.Values[key] = value;
+            }
+
+            // Does the frame indicate that previous frame contents should be
+            // cleared?
+            bool ContainsClear(GetFrameResponse response)
+            {
+                return response.Frame.Values.ContainsKey(FrameClearedKey)
+                    || response.FrameIndex == 0;
             }
         }
 
