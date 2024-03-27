@@ -52,7 +52,9 @@ namespace Nanover.Grpc.Multiplayer
         /// <summary>
         /// Is there an open client on this session?
         /// </summary>
-        public bool IsOpen => client != null;
+        public bool IsOpen => client != null && !closing;
+
+        private bool closing = false;
 
         /// <summary>
         /// How many milliseconds to put between sending our requested value
@@ -106,6 +108,7 @@ namespace Nanover.Grpc.Multiplayer
         public async Task OpenClient(GrpcConnection connection)
         {
             await CloseClient();
+            closing = false;
 
             client = new MultiplayerClient(connection);
             AccessToken = Guid.NewGuid().ToString();
@@ -145,8 +148,15 @@ namespace Nanover.Grpc.Multiplayer
         /// </summary>
         public async Task CloseClient()
         {
+            ClearSharedState();
+
             if (!IsOpen)
                 return;
+
+            closing = true;
+
+            IncomingValueUpdates.CloseAsync().AwaitInBackgroundIgnoreCancellation();
+            IncomingValueUpdates = null;
 
             // Remove our personal avatar/playarea/origin
             SimulationPose.ReleaseLock();
@@ -160,10 +170,8 @@ namespace Nanover.Grpc.Multiplayer
             client.CloseAndCancelAllSubscriptions();
             client.Dispose();
             client = null;
-            
-            AccessToken = null;
 
-            ClearSharedState();
+            AccessToken = null;
         }
 
         /// <summary>
@@ -249,6 +257,9 @@ namespace Nanover.Grpc.Multiplayer
 
         private void OnResourceValuesUpdateReceived(StateUpdate update)
         {
+            if (!IsOpen)
+                return;
+
             ReceiveUpdate?.Invoke();
             
             if (update.ChangedKeys.Fields.ContainsKey(UpdateIndexKey))
