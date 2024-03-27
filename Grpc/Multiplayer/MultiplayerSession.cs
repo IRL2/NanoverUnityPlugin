@@ -295,7 +295,7 @@ namespace Nanover.Grpc.Multiplayer
             if (!pendingValues.Any() && !pendingRemovals.Any())
                 return true;
 
-            if (!IsOpen)
+            if (client == null)
                 return false;
 
             if (!pendingRemovals.Contains(UpdateIndexKey))
