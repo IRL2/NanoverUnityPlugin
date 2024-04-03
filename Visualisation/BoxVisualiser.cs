@@ -1,4 +1,5 @@
-﻿using Nanover.Core.Math;
+﻿using System;
+using Nanover.Core.Math;
 using UnityEngine;
 
 namespace Nanover.Visualisation
@@ -14,6 +15,21 @@ namespace Nanover.Visualisation
         /// </summary>
         [SerializeField]
         private AffineTransformation box;
+        
+        /// <summary>
+        /// The current length of the box along the x-axis.
+        /// </summary>
+        public float xMagnitude;
+        
+        /// <summary>
+        /// The previous length of the box along the x-axis.
+        /// </summary>
+        public float previousXMag;
+
+        /// <summary>
+        /// The previous length of the box along the x-axis.
+        /// </summary>
+        public event Action SimulationBoxUpdated;
 
         /// <summary>
         /// The width of the edges of the box.
@@ -71,6 +87,14 @@ namespace Nanover.Visualisation
                 var matrix = transformation.matrix;
                 Graphics.DrawMesh(mesh, transform.localToWorldMatrix * matrix, material, 0);
             }
+
+            xMagnitude = box.axesMagnitudes.x;
+
+            if (!(Math.Abs(xMagnitude - previousXMag) > 0.1f)) return;
+            
+            SimulationBoxUpdated?.Invoke();
+            previousXMag = xMagnitude;
+
         }
 
         /// <summary>
