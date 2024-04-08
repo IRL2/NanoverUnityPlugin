@@ -52,7 +52,9 @@ namespace Nanover.Grpc.Multiplayer
         /// <summary>
         /// Is there an open client on this session?
         /// </summary>
-        public bool IsOpen => client != null;
+        public bool IsOpen => client != null && !closing;
+
+        private bool closing = false;
 
         /// <summary>
         /// How many milliseconds to put between sending our requested value
@@ -103,17 +105,28 @@ namespace Nanover.Grpc.Multiplayer
         /// Connect to a Multiplayer service over the given connection. 
         /// Closes any existing client.
         /// </summary>
-        public void OpenClient(GrpcConnection connection)
+        public async Task OpenClient(GrpcConnection connection)
         {
-            CloseClient();
+            await CloseClient();
+            closing = false;
 
             client = new MultiplayerClient(connection);
             AccessToken = Guid.NewGuid().ToString();
 
             if (valueFlushingTask == null)
             {
-                valueFlushingTask = CallbackInterval(FlushValues, ValuePublishInterval);
+                valueFlushingTask = FlushValuesInterval(ValuePublishInterval);
                 valueFlushingTask.AwaitInBackground();
+
+                async Task FlushValuesInterval(int interval)
+                {
+                    while (true)
+                    {
+                        await Task.WhenAll(
+                            FlushValuesAsync(), 
+                            Task.Delay(interval));
+                    }
+                }
             }
             
             IncomingValueUpdates = client.SubscribeStateUpdates();
@@ -133,23 +146,32 @@ namespace Nanover.Grpc.Multiplayer
         /// <summary>
         /// Close the current Multiplayer client and dispose all streams.
         /// </summary>
-        public void CloseClient()
+        public async Task CloseClient()
         {
+            ClearSharedState();
+
+            if (!IsOpen)
+                return;
+
+            closing = true;
+
+            IncomingValueUpdates.CloseAsync().AwaitInBackgroundIgnoreCancellation();
+            IncomingValueUpdates = null;
+
             // Remove our personal avatar/playarea/origin
+            SimulationPose.ReleaseLock();
             Avatars.CloseClient();
             PlayAreas.RemoveValue(AccessToken ?? "");
             PlayOrigins.RemoveValue(AccessToken ?? "");
-            FlushValues();
+            RemoveSharedStateKey(UpdateIndexKey);
 
-            client?.CloseAndCancelAllSubscriptions();
-            client?.Dispose();
+            await FlushValuesAsync();
+
+            client.CloseAndCancelAllSubscriptions();
+            client.Dispose();
             client = null;
-            
-            AccessToken = null;
 
-            ClearSharedState();
-            pendingValues.Clear();
-            pendingRemovals.Clear();
+            AccessToken = null;
         }
 
         /// <summary>
@@ -209,13 +231,14 @@ namespace Nanover.Grpc.Multiplayer
         /// <inheritdoc cref="IDisposable.Dispose" />
         public void Dispose()
         {
-            FlushValues();
-
-            CloseClient();
+            CloseClient().AwaitInBackgroundIgnoreCancellation();
         }
 
         private void ClearSharedState()
         {
+            pendingValues.Clear();
+            pendingRemovals.Clear();
+
             var keys = SharedStateDictionary.Keys.ToList();
             SharedStateDictionary.Clear();
 
@@ -234,6 +257,9 @@ namespace Nanover.Grpc.Multiplayer
 
         private void OnResourceValuesUpdateReceived(StateUpdate update)
         {
+            if (!IsOpen)
+                return;
+
             ReceiveUpdate?.Invoke();
             
             if (update.ChangedKeys.Fields.ContainsKey(UpdateIndexKey))
@@ -259,32 +285,30 @@ namespace Nanover.Grpc.Multiplayer
             }
         }
 
-        private void FlushValues()
+        /// <summary>
+        /// Attempts to send all pending updates to the server and returns
+        /// false if there were pending changes that failed to send, or true
+        /// otherwise.
+        /// </summary>
+        private async Task<bool> FlushValuesAsync()
         {
-            if (!IsOpen)
-                return;
+            if (!pendingValues.Any() && !pendingRemovals.Any())
+                return true;
 
-            if (pendingValues.Any() || pendingRemovals.Any())
-            {
+            if (client == null)
+                return false;
+
+            if (!pendingRemovals.Contains(UpdateIndexKey))
                 pendingValues[UpdateIndexKey] = nextUpdateIndex;
 
-                client.UpdateState(AccessToken, pendingValues, pendingRemovals)
-                      .AwaitInBackgroundIgnoreCancellation();
+            var update = client.UpdateState(AccessToken, pendingValues, pendingRemovals);
 
-                pendingValues.Clear();
-                pendingRemovals.Clear();
+            pendingValues.Clear();
+            pendingRemovals.Clear();
 
-                nextUpdateIndex++;
-            }
-        }
+            nextUpdateIndex++;
 
-        private static async Task CallbackInterval(Action callback, int interval)
-        {
-            while (true)
-            {
-                callback();
-                await Task.Delay(interval);
-            }
+            return await update;
         }
 
         private static object PoseToObject(Transformation pose)

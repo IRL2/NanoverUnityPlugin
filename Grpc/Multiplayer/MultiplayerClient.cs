@@ -52,7 +52,7 @@ namespace Nanover.Grpc.Multiplayer
                 Update = CreateStateUpdate(updates, removals)
             };
 
-            var response = await Client.UpdateStateAsync(request);
+            var response = await Client.UpdateStateAsync(request, cancellationToken: GetCancellationToken());
 
             return response.Success;
         }
@@ -65,7 +65,7 @@ namespace Nanover.Grpc.Multiplayer
                 LockKeys = CreateLockUpdate(toAcquire, toRemove)
             };
 
-            var response = await Client.UpdateLocksAsync(request);
+            var response = await Client.UpdateLocksAsync(request, cancellationToken: GetCancellationToken());
 
             return response.Success;
         }
