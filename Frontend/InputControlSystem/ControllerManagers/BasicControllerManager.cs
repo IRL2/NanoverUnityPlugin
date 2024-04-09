@@ -12,6 +12,7 @@ using Nanover.Frontend.InputControlSystem.InputHandlers;
 using Nanover.Frontend.InputControlSystem.Utilities;
 using Nanover.Grpc.Multiplayer;
 using Nanover.Grpc.Trajectory;
+using Nanover.Frontend.XR;
 
 namespace Nanover.Frontend.InputControlSystem.ControllerManagers
 {
@@ -120,11 +121,6 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         private Action<InputAction.CallbackContext> leftControllerCallback;
 
         /// <summary>
-        /// Indicates if the arbiter has been initialised yet.
-        /// </summary>
-        private bool arbiterInitialised = false;
-
-        /// <summary>
         /// If true the arbiter start in the disabled state.
         /// </summary>
         /// <remarks>
@@ -141,89 +137,61 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
 
             // Create arbiter & associated game object. Although the arbiter is instantiated here, the
             // initialisation is actually performed later on by the `InitialiseInputArbiter` method.
+
+
+            // Create the input arbiter object and the game object to which it is attached.
             ArbiterObject = new GameObject("Arbiter") { transform = { parent = transform } };
             arbiter = ArbiterObject.AddComponent<BasicInputArbiter>();
+
+
+            /* Initialise the input arbiter by providing it with all of the information required to
+             * build the input handlers. It should be noted that the arbiter will only instantiate
+             * input handlers as and when it is provided with input controllers and input handler
+             * types.
+             *
+             * The code below is more than a little "hacky", this will need to be replaced with a
+             * cleaner approach later on down the line. However, it is "good enough" for the moment.
+             */
+            MultiplayerSession multiplayer = SystemObject.GetComponent<IMultiplayerSessionSource>().Multiplayer;
+            TrajectorySession trajectory = SystemObject.GetComponent<ITrajectorySessionSource>().Trajectory;
+            PhysicallyCalibratedSpace physicallyCalibratedSpace =
+                SystemObject.GetComponent<IPhysicallyCalibratedSpaceSource>().PhysicallyCalibratedSpace;
+            (Transform, Transform) simulationSpaceTransforms =
+                SystemObject.GetComponent<ISimulationSpaceTransformSource>().SimulationSpaceTransforms;
+
+            arbiter.Initialise(simulationSpaceTransforms, multiplayer, trajectory, physicallyCalibratedSpace);
+            
+
+            // Identify all permitted handlers and add them to the input arbiter. Controllers, are
+            // provided to the arbiter as and when they are connected.
+            foreach (var handler in GatherPermittedInputHandlers())
+                arbiter.AddHandler(handler);
+
+            // It is sometimes desirable to disable the arbiter at startup. This prevents the input
+            // handlers from trying to perform actions while the user is still in the main menu.
+            if (sleepArbiterOnStart) DisableArbiter();
+            else EnableArbiter();
         }
 
         /// <summary>Upon terminating, stop watching for controller connection/disconnection events.</summary>
         protected void OnDestroy() => DeregisterControllerTrackingStateSubscriptions();
 
-
-        public void Update()
-        {
-            // If the arbiter has not yet been initialised, and all the parts necessary to do so are
-            // in-place, then perform the initialisation.
-            if ((!arbiterInitialised) && (dominantHandController != null) && (nonDominantHandController != null))
-                InitialiseInputArbiter();
-        }
-
-
-        /// <summary>
-        /// Initialise the input arbiter.
-        /// </summary>
-        /// <remarks>
-        /// This method is called once both controllers have been connected to initialise the input
-        /// arbiter. This will likely undergo heavy refactoring once the right and left controller
-        /// connection process has been disentangled.
-        /// </remarks>
-        protected void InitialiseInputArbiter()
-        {
-            // Generate a list of all controllers
-            InputController[] controllers = { dominantHandController, nonDominantHandController };
-
-            // This is more than a little hacky, this will need to be replaced. However, it
-            // is good enough" for the demo code. Currently, all necessary information, controllers, 
-            // input handlers, and so on are just stuffed into one method `AddControllers` this is
-            // very poor programming, and should be resolved at the earliest convenience.
-
-            // Pull out data sources
-            MultiplayerSession multiplayer = SystemObject.GetComponent<IMultiplayerSessionSource>().Multiplayer;
-            TrajectorySession trajectory = SystemObject.GetComponent<ITrajectorySessionSource>().Trajectory;
-
-            // Pass pass all of the above information, along with a list of all known input handlers,
-            // into the arbiter.
-
-            arbiter.Initialise(SystemObject, multiplayer, trajectory);
-
-            foreach (var handler in GatherPermittedInputHandlers())
-                arbiter.AddHandler(handler);
-
-            foreach (var controller in controllers)
-                arbiter.AddController(controller);
-
-            if (sleepArbiterOnStart) DisableArbiter();
-            else EnableArbiter();
-
-            arbiterInitialised = true;
-        }
-
         /// <summary>
         /// Disable the input arbiter.
         /// </summary>
-        public void DisableArbiter()
-        {
-            if (Arbiter != null)
-                Arbiter.enabled = false;
-        }
+        public void DisableArbiter() => Arbiter.enabled = false;
+        
 
         /// <summary>
         /// Enable the input arbiter.
         /// </summary>
         public void EnableArbiter()
         {
-            
-
-            // Don't try to enable an already enabled arbiter
-            if ((Arbiter != null) && !Arbiter.enabled)
-            {
-                Arbiter.enabled = true;
-
-                // When enabling the arbiter ensure that the transform input handler is the first
-                // selected, as it is the most commonly useful handler.
-                Arbiter.RequestInputHandlerActivation(
-                    Arbiter.InputHandlers.OfType<TransformHybridInputHandler>().First());
-            }
-
+            Arbiter.enabled = true;
+            // When enabling the arbiter ensure that the transform input handler is the first
+            // selected, as it is the most commonly useful handler.
+            var handler = Arbiter.InputHandlers.OfType<TransformHybridInputHandler>().FirstOrDefault();
+            if (handler != null) Arbiter.RequestInputHandlerActivation(handler);
         }
 
         /// <summary>
@@ -233,6 +201,8 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
         /// <returns>A list of all concrete, accessible <see cref="InputHandler"/> derived classes.</returns>
         private Type[] GatherPermittedInputHandlers()
         {
+            // TODO: Implement server negotiation to check which handlers are permitted.
+
             // Find all non-abstract classes that are derived from the `InputHandler` class.
             Assembly assembly = Assembly.GetExecutingAssembly();
             var derivedTypes = AppDomain.CurrentDomain.GetAssemblies()
@@ -245,7 +215,12 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
             // Communicate with the server to identify what modes are supported, and thus what
             // input handlers are supported. The input arbiter will sort out any compatibility
             // issues between controllers and input handlers.
-            // TODO: Implement server check.
+            // ...
+            // ...
+            // Server check goes here
+            // ...
+            // ...
+
 
             return derivedTypes;
         }
@@ -428,6 +403,9 @@ namespace Nanover.Frontend.InputControlSystem.ControllerManagers
 
                     // Pass the required information to the controllers initialisation function to finalise the setup process
                     controller.Initialise(controllerInputActionMap, controllerInputDevices.FirstOrDefault(), handedness == Handedness);
+
+                    // Now that the controller has been initialised it can be passed to the input arbiter
+                    Arbiter.AddController(controller);
                 }
 
                 // 2. or a disconnected, but already registered, controller has just been reconnected.

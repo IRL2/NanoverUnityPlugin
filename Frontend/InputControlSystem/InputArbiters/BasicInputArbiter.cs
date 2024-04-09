@@ -2,6 +2,7 @@
 using Nanover.Frontend.InputControlSystem.InputControllers;
 using Nanover.Frontend.InputControlSystem.InputHandlers;
 using Nanover.Frontend.InputControlSystem.InputSelectors;
+using Nanover.Frontend.XR;
 using Nanover.Grpc.Multiplayer;
 using Nanover.Grpc.Trajectory;
 using System;
@@ -10,11 +11,8 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Object = System.Object;
 using State = Nanover.Frontend.InputControlSystem.InputHandlers.State;
 
-// TODO: Rename this to `StaticDuelInputArbiter`.
-// TODO: Block radial selection menu when input handlers are paused.
 
 namespace Nanover.Frontend.InputControlSystem.InputArbiters
 {
@@ -94,9 +92,11 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
 
         // Caching fields for storing information that might be required when instantiating new
         // input handlers.
-        private GameObject systemObject;
+        private (Transform, Transform) simulationSpaceTransforms;
+        private Transform visualisationSpaceTransform;
         private MultiplayerSession multiplayerSession;
         private TrajectorySession trajectorySession;
+        private PhysicallyCalibratedSpace physicallyCalibratedSpace;
         private bool initialised = false;
 
         /// <summary>
@@ -113,12 +113,14 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
         /// <summary>
         /// Initialises the input arbiter with all data necessary to instantiate an input handler.
         /// </summary>
-        /// <param name="systemObject">The top level game object to that the simulation visualiser
-        /// is attached.</param>
+        /// <param name="simulationSpaceTransforms">The transform objects associated with the
+        /// simulation's outer and inner spaces, respectively.</param>
         /// <param name="multiplayerSession">Provide for input handlers requiring a multiplayer
         /// session, adhering to <c>IMultiplayerSessionDependentInputHandler</c>.</param>
         /// <param name="trajectorySession">Provide for input handlers requiring a trajectory
         /// session, adhering to <c>ITrajectorySessionDependentInputHandler</c>.</param>
+        /// <param name="physicallyCalibratedSpace">Provide for input handlers requiring a link to
+        /// the physically calibrated space, adhering to <c>IPhysicallyCalibratedSpaceDependentInputHandler</c>.</param>
         /// <remarks>
         /// This method primes the input arbiter with the information it needs to satisfy the various
         /// possible requirements that may be encountered when instantiating an input handler. Some
@@ -126,8 +128,8 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
         /// specific pieces of information in order to successfully operate.
         /// </remarks>
         public void Initialise(
-            GameObject systemObject, MultiplayerSession multiplayerSession,
-            TrajectorySession trajectorySession)
+            (Transform, Transform) simulationSpaceTransforms, MultiplayerSession multiplayerSession,
+            TrajectorySession trajectorySession, PhysicallyCalibratedSpace physicallyCalibratedSpace)
         {
             // Calling the `Initialise` method more than once will result in undefined behaviour as
             // this change is not propagated through to the input handlers. This may be changed
@@ -137,10 +139,10 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
 
             // It is fully admitted that this is not an ideal solution to this type of problem. But
             // it will do for now.
-            this.systemObject = systemObject;
             this.multiplayerSession = multiplayerSession;
             this.trajectorySession = trajectorySession;
-
+            this.physicallyCalibratedSpace = physicallyCalibratedSpace;
+            this.simulationSpaceTransforms = simulationSpaceTransforms;
             initialised = true;
         }
 
@@ -170,6 +172,9 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
             // meaningful for activating hybrid input handlers on a single controller. For Mono and
             // Dual input handlers, which must activate on all bound controllers, specifying target
             // controllers is unnecessary.
+            
+            // If the arbiter is itself disabled then it will refuse to active any input handlers.
+            if (!isActiveAndEnabled) return false;
 
             // The arbiter cannot safely activate an input handler that it is not in direct control of.
             if (!inputHandlers.Contains(handler))
@@ -568,7 +573,7 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
             else
                 throw new ArgumentException("Handler type is unknown", nameof(handlerType));
 
-            //// Rebuild the radial selection menus so that they display the newly created options
+            // Rebuild the radial selection menus so that they display the newly created options
             foreach (var controller in affectedControllers)
                 BuildRadialModeSelectionMenu(controller);
         }
@@ -767,16 +772,23 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
             // approach is very poorly written. This should really be abstracted and generalised
             // into a custom entity. Furthermore, source objects should not be stored within the
             // arbiter class as this just makes things dirty. 
-            if (handler is ISystemDependentInputHandler systemDependentHandler)
-                systemDependentHandler.SetSystem(systemObject);
+
+            if (handler is ISimulationSpaceTransformDependentInputHandler simulationSpaceTransformDependentHandler)
+                simulationSpaceTransformDependentHandler.SetSimulationSpaceTransforms(
+                    simulationSpaceTransforms.Item1, simulationSpaceTransforms.Item2);
 
             if (handler is IMultiplayerSessionDependentInputHandler multiplayerSessionDependentHandler)
                 multiplayerSessionDependentHandler.SetMultiplayerSession(multiplayerSession);
 
             if (handler is ITrajectorySessionDependentInputHandler trajectorySessionDependentHandler)
                 trajectorySessionDependentHandler.SetTrajectorySession(trajectorySession);
+
+            if (handler is IPhysicallyCalibratedSpaceDependentInputHandler physicallyCalibratedSpaceDependentHandler)
+                physicallyCalibratedSpaceDependentHandler.SetPhysicallyCalibratedSpace(physicallyCalibratedSpace);
+                
         }
-        
+
+
         /// <summary>
         /// Determine all registered controllers currently lacking active input handlers.
         /// </summary>

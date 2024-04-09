@@ -4,6 +4,7 @@ using System.Linq;
 using Nanover.Frontend.InputControlSystem.InputControllers;
 using Nanover.Frontend.InputControlSystem.InputSelectors;
 using Nanover.Frontend.InputControlSystem.Utilities;
+using Nanover.Frontend.XR;
 using Nanover.Grpc.Multiplayer;
 using Nanover.Grpc.Trajectory;
 using UnityEngine;
@@ -290,25 +291,7 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
         public ushort Priority { get; }
     }
 
-
-    /// <summary>
-    /// Used to indicate that an input handler operates upon the system game object. In this context
-    /// "system" means the game object associated with the atomic system.
-    /// </summary>
-    /// <remarks>
-    /// For example the input handler responsible for allowing users to rotate and translate the atomic
-    /// system must know what game object it should be rotating.
-    /// </remarks>
-    public interface ISystemDependentInputHandler
-    {
-        /// <summary>
-        /// Specify the system which the input handler is responsible for.
-        /// </summary>
-        /// <param name="systemObject">Game object representing the target system</param>
-        public void SetSystem(GameObject systemObject);
-    }
-
-
+    
     /// <summary>
     /// Used to designate input handlers that require a <see cref="MultiplayerSession">multiplayer session</see> to operate.
     /// </summary>
@@ -321,7 +304,6 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
         public void SetMultiplayerSession(MultiplayerSession multiplayer);
     }
 
-
     /// <summary>
     /// Used to signify input handlers that require a <see cref="TrajectorySession">trajectory session</see> to operate.
     /// </summary>
@@ -332,6 +314,46 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
         /// </summary>
         /// <param name="trajectory">The required trajectory session</param>
         public void SetTrajectorySession(TrajectorySession trajectory);
+    }
+
+    /// <summary>
+    /// Used to signify input handlers that require a <see cref="PhysicallyCalibratedSpace">physically calibrated space</see> to operate.
+    /// </summary>
+    public interface IPhysicallyCalibratedSpaceDependentInputHandler
+    {
+        /// <summary>
+        /// Set the required physically calibrated space.
+        /// </summary>
+        /// <param name="physicallyCalibratedSpace">The required physically calibrated space.</param>
+        public void SetPhysicallyCalibratedSpace(PhysicallyCalibratedSpace physicallyCalibratedSpace);
+    }
+
+    /// <summary>
+    /// Used to indicate that an input handler requires access to the outer & inner simulation spaces.
+    /// </summary>
+    public interface ISimulationSpaceTransformDependentInputHandler
+    {
+        /// <summary>
+        /// Set the outer and inner space transforms.
+        /// </summary>
+        /// <param name="outerSimulationSpace">
+        /// The outer simulation space transform. This defines the overall location, orientation,
+        /// and scale of the simulation within the virtual space. This may be freely manipulated as
+        /// needed in the manner that one would expect of an objects transform. However, care must
+        /// be taken to ensure that local changes made to this transform are synced with the server
+        /// using the appropriate multiplayer resource.
+        /// </param>
+        /// <param name="innerSimulationSpace">
+        /// The inner simulation space transform. Molecular simulation packages often adopt the
+        /// right-hand coordinate system, in contrast to Unity's left-handed system. This discrepancy
+        /// results in the rendering of molecular systems as mirror images, with R-enantiomers
+        /// appearing as S-enantiomers. To address this, an inner simulation space with a scale
+        /// value of [-1, 1, 1] is employed to accurately reflect the simulation. Therefore, to
+        /// obtain the correct controller position within the simulation space, this transform must
+        /// be used. It is crucial to note that, unlike the <c>outerSimulationSpaceTransform</c>,
+        /// the inner transform should <u>never</u> be manipulated directly.
+        /// </param>
+        public void SetSimulationSpaceTransforms(Transform outerSimulationSpace, Transform innerSimulationSpace);
     }
 
     // Developer's notes, this can be enabled once Unity offers support for the .NET 6 framework.

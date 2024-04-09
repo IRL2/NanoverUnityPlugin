@@ -15,7 +15,7 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
     /// Selection operations will become more involved over time and thus it is logical to create
     /// a base input handler class that offers all such functionality in one place.
     /// </remarks>
-    public abstract class SelectorMonoInputInputHandler : MonoInputHandler, ISystemDependentInputHandler, ITrajectorySessionDependentInputHandler
+    public abstract class SelectorMonoInputInputHandler : MonoInputHandler, ITrajectorySessionDependentInputHandler, ISimulationSpaceTransformDependentInputHandler
     {
 
         /// <summary>
@@ -75,6 +75,16 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
 
 
         /// <summary>
+        /// Transform of the simulation space.
+        /// </summary>
+        /// <remarks>
+        /// This is needed to convert from global space to simulation space taking into account the
+        /// change in right/left-hand coordinate systems.
+        /// </remarks>
+        protected Transform simulationTransform;
+
+
+        /// <summary>
         /// Object from which frame data can be sourced.
         /// </summary>
         /// <remarks>
@@ -84,10 +94,14 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
         protected SynchronisedFrameSource frameSynchroniser;
 
         /// <summary>
-        /// Specify the system which the input handler is responsible for.
+        /// Transform of the simulation visualisation space.
         /// </summary>
-        /// <param name="systemObject">Game object representing the target system</param>
-        public void SetSystem(GameObject systemObject) => simulationGameObject = systemObject;
+        /// <param name="visualisationSpaceTransform">Transform of visualisaton space.</param>
+        //public void SetVisualisationSpaceTransform(Transform visualisationSpaceTransform) =>
+        //    simulationTransform = visualisationSpaceTransform;
+
+        public void SetSimulationSpaceTransforms(Transform outerSimulationSpace, Transform innerSimulationSpace) =>
+            simulationTransform = innerSimulationSpace;
 
         /// <summary>
         /// Set the required trajectory session.
@@ -325,7 +339,7 @@ namespace Nanover.Frontend.InputControlSystem.InputHandlers
         {
             // Convert the coordinates from world space to the local space coordinates of the game
             // object representing the simulation.
-            Vector3 cursorPosition = simulationGameObject.transform.InverseTransformPoint(position);
+            Vector3 cursorPosition = simulationTransform.InverseTransformPoint(position);
 
             // Fetch the frame object
             var frame = frameSynchroniser.CurrentFrame;
