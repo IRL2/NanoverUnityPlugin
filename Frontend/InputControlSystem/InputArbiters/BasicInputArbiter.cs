@@ -93,7 +93,6 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
         // Caching fields for storing information that might be required when instantiating new
         // input handlers.
         private (Transform, Transform) simulationSpaceTransforms;
-        private Transform visualisationSpaceTransform;
         private MultiplayerSession multiplayerSession;
         private TrajectorySession trajectorySession;
         private PhysicallyCalibratedSpace physicallyCalibratedSpace;
@@ -758,6 +757,10 @@ namespace Nanover.Frontend.InputControlSystem.InputArbiters
             // a call back to the `ActivateInputProcessor` when the user selects and option.
             radialMenu.Initialise(inputHandlers, this, controller,
                 controller.InputActionMap.FindAction(radialMenuPromptActionName));
+
+            // Ensure the that the radial menu is enabled/disabled if the arbiter is
+            radialMenu.enabled = enabled;
+
         }
 
         /// <summary>
