@@ -70,5 +70,12 @@ namespace Nanover.Visualisation
                 changes = FrameChanges.None;
             }
         }
+
+
+    // Alias to enhance backward compatibility
+    [DisallowMultipleComponent]
+    public class SynchronizedFrameSource : SynchronisedFrameSource
+    {
+
     }
 }
