@@ -12,8 +12,10 @@ using UnityEngine.Assertions;
         [SerializeField]
         private float verticalOffset;
 
+#pragma warning disable 0109
         [SerializeField]
         private new Camera camera;
+#pragma warning restore 0109
 
         [SerializeField]
         private float smoothTime;

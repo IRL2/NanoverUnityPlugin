@@ -14,10 +14,10 @@ namespace Nanover.Frontend.UI
     {
         private static WorldSpaceCursorInput Instance { get; set; }
 
-#pragma warning disable 0649
+#pragma warning disable 0649, 0109
         [SerializeField]
-        new private Camera camera;
-#pragma warning restore 0649
+        private new Camera camera;
+#pragma warning restore 0649, 0109
 
         private IPosedObject cursor;
         private Canvas canvas;

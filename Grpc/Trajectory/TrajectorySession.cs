@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using Nanover.Core;
 using Nanover.Core.Async;
 using Nanover.Frame;
+using Nanover.Frame.Event;
 using Nanover.Grpc.Frame;
 using Nanover.Grpc.Stream;
 using Nanover.Protocol.Trajectory;
-using UnityEngine;
 
 namespace Nanover.Grpc.Trajectory
 {
@@ -50,40 +48,59 @@ namespace Nanover.Grpc.Trajectory
         /// listen in the background for frame changes. Closes any existing
         /// client.
         /// </summary>
-        public void OpenClient(GrpcConnection connection)
+        public async Task OpenClient(GrpcConnection connection)
         {
-            CloseClient();
+            await CloseClient();
             trajectorySnapshot.Clear();
 
             trajectoryClient = new TrajectoryClient(connection);
             frameStream = trajectoryClient.SubscribeLatestFrames(1f / 30f);
             BackgroundIncomingStreamReceiver<GetFrameResponse>.Start(frameStream, ReceiveFrame, Merge);
 
+            // Integrating frames from the buffer with the current frame
             void ReceiveFrame(GetFrameResponse response)
             {
                 CurrentFrameIndex = (int) response.FrameIndex;
-                var (frame, changes) = FrameConverter.ConvertFrame(response.Frame, CurrentFrame);
+
+                var nextFrame = response.Frame;
+                var clear = ContainsClear(response);
+                var prevFrame = clear ? null : CurrentFrame;
+
+                var (frame, changes) = FrameConverter.ConvertFrame(nextFrame, prevFrame);
+
+                if (clear)
+                    changes = FrameChanges.All;
+
                 trajectorySnapshot.SetCurrentFrame(frame, changes);
             }
 
+            // Aggregating frames while they wait in the buffer
             void Merge(GetFrameResponse dest, GetFrameResponse toMerge)
             {
-                dest.FrameIndex = toMerge.FrameIndex;
+                if (ContainsClear(toMerge))
+                    dest.Frame = new FrameData();
+
+                if (!ContainsClear(dest))
+                    dest.FrameIndex = toMerge.FrameIndex;
+
                 foreach (var (key, array) in toMerge.Frame.Arrays)
                     dest.Frame.Arrays[key] = array;
                 foreach (var (key, value) in toMerge.Frame.Values)
                     dest.Frame.Values[key] = value;
             }
+
+            // Does the frame indicate that previous frame contents should be
+            // cleared?
+            bool ContainsClear(GetFrameResponse response)
+            {
+                return response.FrameIndex == 0;
+            }
         }
-
-        
-
-        
 
         /// <summary>
         /// Close the current trajectory client.
         /// </summary>
-        public void CloseClient()
+        public async Task CloseClient()
         {
             trajectoryClient?.CloseAndCancelAllSubscriptions();
             trajectoryClient?.Dispose();
@@ -92,12 +109,14 @@ namespace Nanover.Grpc.Trajectory
             frameStream?.CloseAsync();
             frameStream?.Dispose();
             frameStream = null;
+
+            await Task.CompletedTask;
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
         public void Dispose()
         {
-            CloseClient();
+            CloseClient().AwaitInBackgroundIgnoreCancellation();
         }
         
         /// <inheritdoc cref="TrajectoryClient.CommandPlay"/>

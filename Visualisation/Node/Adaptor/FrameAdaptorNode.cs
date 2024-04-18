@@ -56,10 +56,15 @@ namespace Nanover.Visualisation.Node.Adaptor
         {
             if (propertyOverrides.Contains(key))
                 return;
+            
             if (FrameSource?.CurrentFrame != null
              && FrameSource.CurrentFrame.Data.TryGetValue(key, out var value))
             {
                 property.TrySetValue(value);
+            }
+            else
+            {
+                property.UndefineValue();
             }
         }
 
