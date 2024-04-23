@@ -12,8 +12,8 @@ namespace Nanover.Visualisation
     /// </summary>
     [DisallowMultipleComponent]
     public class SynchronisedFrameSource : MonoBehaviour,
-                                           ITrajectorySnapshot,
-                                           IFrameConsumer
+        ITrajectorySnapshot,
+        IFrameConsumer
     {
         /// <inheritdoc cref="ITrajectorySnapshot.CurrentFrame" />
         public Frame.Frame CurrentFrame => snapshot?.CurrentFrame;
@@ -50,8 +50,7 @@ namespace Nanover.Visualisation
             this.changes.MergeChanges(changes);
         }
 
-        [NotNull]
-        private FrameChanges changes = FrameChanges.None;
+        [NotNull] private FrameChanges changes = FrameChanges.None;
 
         private void Update()
         {
@@ -71,6 +70,7 @@ namespace Nanover.Visualisation
             }
         }
 
+    }
 
     // Alias to enhance backward compatibility
     [DisallowMultipleComponent]
