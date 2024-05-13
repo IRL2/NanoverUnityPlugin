@@ -40,6 +40,16 @@ namespace Nanover.Frontend.Manipulation
         /// </summary>
         public event Action ParticleGrabUpdated;
 
+        /// <summary>
+        /// Optional ID of user owning this grab.
+        /// </summary>
+        public string OwnerId { get; set; }
+
+        /// <summary>
+        /// Optional label for this grab.
+        /// </summary>
+        public string Label { get; set; }
+
         public ActiveParticleGrab(IEnumerable<int> particleIndices)
         {
             Id = Guid.NewGuid().ToString();
