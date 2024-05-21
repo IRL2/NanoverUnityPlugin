@@ -7,6 +7,11 @@ namespace Nanover.Visualisation.Node.Protein
     /// </summary>
     public class SecondaryStructureResidueData
     {
+        public bool HasEssentialNamedAtoms => AlphaCarbonIndex >= 0
+                                           && CarbonIndex >= 0
+                                           && NitrogenIndex >= 0
+                                           && OxygenIndex >= 0;
+
         /// <summary>
         /// Index of the alpha carbon.
         /// </summary>

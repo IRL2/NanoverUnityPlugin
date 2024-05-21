@@ -37,29 +37,46 @@ namespace Nanover.Visualisation.Node.Protein
 
             for (var i = 0; i < atomResidues.Length; i++)
             {
-                var name = atomNames[i];
-                var residueIndex = atomResidues[i];
-                if (!residueIndexToOrdinal.ContainsKey(residueIndex))
+                if (GetResidueData(atomResidues[i]) is not { } residue)
                     continue;
 
-                switch (name)
+                switch (atomNames[i])
                 {
                     case "CA":
-                        list[residueIndexToOrdinal[residueIndex]].AlphaCarbonIndex = i;
+                        residue.AlphaCarbonIndex = i;
                         break;
                     case "N":
-                        list[residueIndexToOrdinal[residueIndex]].NitrogenIndex = i;
+                        residue.NitrogenIndex = i;
                         break;
                     case "C":
-                        list[residueIndexToOrdinal[residueIndex]].CarbonIndex = i;
+                        residue.CarbonIndex = i;
                         break;
                     case "O":
-                        list[residueIndexToOrdinal[residueIndex]].OxygenIndex = i;
+                        residue.OxygenIndex = i;
                         break;
                     case "H":
-                        list[residueIndexToOrdinal[residueIndex]].HydrogenIndex = i;
+                        residue.HydrogenIndex = i;
                         break;
                 }
+            }
+
+            // Check for missing oxygen and guess (O is sometimes OC1/OC2)
+            for (var i = atomResidues.Length - 1; i >= 0; i--)
+            {
+                if (GetResidueData(atomResidues[i]) is not { } residue
+                 || !atomNames[i].StartsWith("O")
+                 || residue.OxygenIndex >= 0)
+                    continue;
+
+                residue.OxygenIndex = i;
+            }
+
+            SecondaryStructureResidueData? GetResidueData(int residueIndex)
+            {
+                if (!residueIndexToOrdinal.TryGetValue(residueIndex, out int ordinal))
+                    return null;
+
+                return list[ordinal];
             }
 
             return list;
@@ -70,6 +87,9 @@ namespace Nanover.Visualisation.Node.Protein
         {
             foreach (var residue in residues)
             {
+                if (!residue.HasEssentialNamedAtoms)
+                    continue;
+
                 residue.AlphaCarbonPosition = atomPositions[residue.AlphaCarbonIndex];
                 residue.NitrogenPosition = atomPositions[residue.NitrogenIndex];
                 residue.OxygenPosition = atomPositions[residue.OxygenIndex];
