@@ -62,6 +62,35 @@ namespace Nanover.Visualisation.Node.Protein
                 }
             }
 
+            // Guess missing atoms
+            for (var i = 0; i < atomResidues.Length; i++)
+            {
+                var name = atomNames[i];
+                var residueIndex = atomResidues[i];
+                if (!residueIndexToOrdinal.ContainsKey(residueIndex))
+                    continue;
+
+                var data = list[residueIndexToOrdinal[residueIndex]];
+
+                if (data.HasEssentialNamedAtoms)
+                    continue;
+
+                if (data.AlphaCarbonIndex < 0 && name.StartsWith("C"))
+                    data.AlphaCarbonIndex = i;
+
+                if (data.CarbonIndex < 0 && name.StartsWith("C"))
+                    data.CarbonIndex = i;
+
+                if (data.NitrogenIndex < 0 && name.StartsWith("N"))
+                    data.NitrogenIndex = i;
+
+                if (data.OxygenIndex < 0 && name.StartsWith("O"))
+                    data.OxygenIndex = i;
+
+                if (data.HydrogenIndex < 0 && name.StartsWith("H"))
+                    data.HydrogenIndex = i;
+            }
+
             return list;
         }
 
@@ -70,6 +99,9 @@ namespace Nanover.Visualisation.Node.Protein
         {
             foreach (var residue in residues)
             {
+                if (!residue.HasEssentialNamedAtoms)
+                    continue;
+
                 residue.AlphaCarbonPosition = atomPositions[residue.AlphaCarbonIndex];
                 residue.NitrogenPosition = atomPositions[residue.NitrogenIndex];
                 residue.OxygenPosition = atomPositions[residue.OxygenIndex];
