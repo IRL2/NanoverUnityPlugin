@@ -37,58 +37,46 @@ namespace Nanover.Visualisation.Node.Protein
 
             for (var i = 0; i < atomResidues.Length; i++)
             {
-                var name = atomNames[i];
-                var residueIndex = atomResidues[i];
-                if (!residueIndexToOrdinal.ContainsKey(residueIndex))
+                if (GetResidueData(atomResidues[i]) is not { } residue)
                     continue;
 
-                switch (name)
+                switch (atomNames[i])
                 {
                     case "CA":
-                        list[residueIndexToOrdinal[residueIndex]].AlphaCarbonIndex = i;
+                        residue.AlphaCarbonIndex = i;
                         break;
                     case "N":
-                        list[residueIndexToOrdinal[residueIndex]].NitrogenIndex = i;
+                        residue.NitrogenIndex = i;
                         break;
                     case "C":
-                        list[residueIndexToOrdinal[residueIndex]].CarbonIndex = i;
+                        residue.CarbonIndex = i;
                         break;
                     case "O":
-                        list[residueIndexToOrdinal[residueIndex]].OxygenIndex = i;
+                        residue.OxygenIndex = i;
                         break;
                     case "H":
-                        list[residueIndexToOrdinal[residueIndex]].HydrogenIndex = i;
+                        residue.HydrogenIndex = i;
                         break;
                 }
             }
 
-            // Guess missing atoms
-            for (var i = 0; i < atomResidues.Length; i++)
+            // Check for missing oxygen and guess (O is sometimes OC1/OC2)
+            for (var i = atomResidues.Length - 1; i >= 0; i--)
             {
-                var name = atomNames[i];
-                var residueIndex = atomResidues[i];
-                if (!residueIndexToOrdinal.ContainsKey(residueIndex))
+                if (GetResidueData(atomResidues[i]) is not { } residue
+                 || !atomNames[i].StartsWith("O")
+                 || residue.OxygenIndex >= 0)
                     continue;
 
-                var data = list[residueIndexToOrdinal[residueIndex]];
+                residue.OxygenIndex = i;
+            }
 
-                if (data.HasEssentialNamedAtoms)
-                    continue;
+            SecondaryStructureResidueData? GetResidueData(int residueIndex)
+            {
+                if (!residueIndexToOrdinal.TryGetValue(residueIndex, out int ordinal))
+                    return null;
 
-                if (data.AlphaCarbonIndex < 0 && name.StartsWith("C"))
-                    data.AlphaCarbonIndex = i;
-
-                if (data.CarbonIndex < 0 && name.StartsWith("C"))
-                    data.CarbonIndex = i;
-
-                if (data.NitrogenIndex < 0 && name.StartsWith("N"))
-                    data.NitrogenIndex = i;
-
-                if (data.OxygenIndex < 0 && name.StartsWith("O"))
-                    data.OxygenIndex = i;
-
-                if (data.HydrogenIndex < 0 && name.StartsWith("H"))
-                    data.HydrogenIndex = i;
+                return list[ordinal];
             }
 
             return list;
