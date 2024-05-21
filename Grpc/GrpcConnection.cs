@@ -49,6 +49,7 @@ namespace Nanover.Grpc
                 {
                     HttpHandler = new YetAnotherHttpHandler() { Http2Only = true },
                     DisposeHttpClient = true,
+                    MaxReceiveMessageSize = null,
                 });
             CancellationTokenSource = new CancellationTokenSource();
         }
