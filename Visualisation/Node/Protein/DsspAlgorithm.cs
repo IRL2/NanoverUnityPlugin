@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace Nanover.Visualisation.Node.Protein
 {
     public class DsspAlgorithm
     {
+        [ThreadStatic]
+        private static Dictionary<int, int> residueIndexToOrdinal = new Dictionary<int, int>();
+
         /// <summary>
         /// Get ResidueData for amino acid residues, storing locations of alpha carbons etc.
         /// </summary>
@@ -17,8 +21,8 @@ namespace Nanover.Visualisation.Node.Protein
                                                    string[] atomNames)
         {
             var list = new SecondaryStructureResidueData[aminoAcidResidues.Count];
-            var residueIndexToOrdinal = new Dictionary<int, int>();
             var resDataIndex = 0;
+            residueIndexToOrdinal.Clear();
             foreach (var resIndex in aminoAcidResidues)
             {
                 var data = new SecondaryStructureResidueData
@@ -64,8 +68,8 @@ namespace Nanover.Visualisation.Node.Protein
             for (var i = atomResidues.Length - 1; i >= 0; i--)
             {
                 if (GetResidueData(atomResidues[i]) is not { } residue
-                 || !atomNames[i].StartsWith("O")
-                 || residue.OxygenIndex >= 0)
+                 || residue.OxygenIndex >= 0
+                 || atomNames[i][0] != 'O')
                     continue;
 
                 residue.OxygenIndex = i;
