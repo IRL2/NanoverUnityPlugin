@@ -142,6 +142,11 @@ namespace Nanover.Visualisation.Node.Protein
                 {
                     if (AreResiduesValid)
                         UpdateResidues();
+
+                    atomResidues.IsDirty = false;
+                    peptideResidueSequences.IsDirty = false;
+                    atomNames.IsDirty = false;
+                    residueCount.IsDirty = false;
                 }
 
                 if (atomPositions.IsDirty)

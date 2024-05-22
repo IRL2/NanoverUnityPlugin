@@ -34,12 +34,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540731497701321300}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &62171987914683346
 MonoBehaviour:
@@ -179,6 +180,9 @@ MonoBehaviour:
     splineSegments:
       value: []
       isValueProvided: 0
+    rendererColor:
+      value: {r: 0, g: 0, b: 0, a: 0}
+      isValueProvided: 0
     segments: 32
     sides: 64
     material: {fileID: 2100000, guid: c4ff711234eb21b44b2201ed56702aca, type: 2}
@@ -300,7 +304,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540731497701321300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73992ab43ebd415eb814845a706956c8, type: 3}
   m_Name: 
