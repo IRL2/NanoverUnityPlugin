@@ -9,13 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8528582866378757812}
-  - component: {fileID: -5659216291547400559}
-  - component: {fileID: -5938755693567168428}
-  - component: {fileID: 1319999355676710792}
-  - component: {fileID: 3115571196619778207}
-  - component: {fileID: 2948249340003140760}
+  - component: {fileID: -8527617144813815053}
+  - component: {fileID: -1316592967230673136}
+  - component: {fileID: 6947444575870807714}
+  - component: {fileID: -325998702394479820}
+  - component: {fileID: 934785384729131729}
+  - component: {fileID: -5296850122793706008}
   m_Layer: 0
-  m_Name: SecondaryStructureColourHeatmap
+  m_Name: ResidueMetric
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +37,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5659216291547400559
+--- !u!114 &-8527617144813815053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5333252f644ff099b06cc9fd514aa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: residue.normalised_metric_colour
+    input:
+      value: []
+      isValueProvided: 0
+--- !u!114 &-1316592967230673136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +73,7 @@ MonoBehaviour:
     input:
       value: 
       isValueProvided: 0
---- !u!114 &-5938755693567168428
+--- !u!114 &6947444575870807714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,112 +82,86 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d5333252f644ff099b06cc9fd514aa5, type: 3}
+  m_Script: {fileID: 11500000, guid: b7d4aa2b881744089c4f7917bb2ad882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: residue.normalised_metric_c
-    input:
-      value: []
-      isValueProvided: 0
---- !u!114 &1319999355676710792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b877d0eee4cd9ea4598e75db74187025, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: -5938755693567168428}
-    sourceFieldName: input
-    destinationFieldName: residueNormalisedMetricColour
-  - sourceComponent: {fileID: -5659216291547400559}
-    sourceFieldName: input
-    destinationFieldName: residueIndices
-  node:
-    residueNormalisedMetricColour:
-      value: []
-      isValueProvided: 0
-    residueIndices:
-      value: 
-      isValueProvided: 0
-    gradient:
-      serializedVersion: 2
-      key0: {r: 0.99, g: 0.91, b: 0.15, a: 1}
-      key1: {r: 0.37, g: 0.79, b: 0.38, a: 1}
-      key2: {r: 0.13, g: 0.57, b: 0.55, a: 0}
-      key3: {r: 0.23, g: 0.32, b: 0.55, a: 0}
-      key4: {r: 0.27, g: 0, b: 0.33, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 16384
-      ctime2: 32768
-      ctime3: 49151
-      ctime4: 65535
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_ColorSpace: -1
-      m_NumColorKeys: 5
-      m_NumAlphaKeys: 2
---- !u!114 &3115571196619778207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6aabe9a3ae74eb7b13d59f864c4b9a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 1319999355676710792}
-    sourceFieldName: colors
-    destinationFieldName: input
-  node:
-    input:
-      value: []
-      isValueProvided: 0
-    speed:
-      value: 10
-      isValueProvided: 1
---- !u!114 &2948249340003140760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528582866378757822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f0af7a320c14292938973e5f087d629, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 3115571196619778207}
-    sourceFieldName: output
-    destinationFieldName: output
-  node:
-    name: particle.colors
+    name: particle.scales
     output:
       value: []
+      isValueProvided: 0
+--- !u!114 &-325998702394479820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b724170684659e840bb6f73578202e2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: -8527617144813815053}
+    sourceFieldName: input
+    destinationFieldName: normalisedMetric
+  - sourceComponent: {fileID: -1316592967230673136}
+    sourceFieldName: input
+    destinationFieldName: particleResidues
+  - sourceComponent: {fileID: 934785384729131729}
+    sourceFieldName: input
+    destinationFieldName: from
+  - sourceComponent: {fileID: -5296850122793706008}
+    sourceFieldName: input
+    destinationFieldName: to
+  node:
+    normalisedMetric:
+      value: []
+      isValueProvided: 0
+    particleResidues:
+      value: 
+      isValueProvided: 0
+    from:
+      value: 0
+      isValueProvided: 0
+    to:
+      value: 0
+      isValueProvided: 0
+--- !u!114 &934785384729131729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: residue.scale_min
+    input:
+      value: 0
+      isValueProvided: 0
+--- !u!114 &-5296850122793706008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: residue.scale_max
+    input:
+      value: 0
       isValueProvided: 0

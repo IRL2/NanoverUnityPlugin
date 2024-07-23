@@ -45,7 +45,7 @@ namespace Nanover.Visualisation.Components
                 foreach (var prefab in prefabs)
                 {
                     var subgraph = Instantiate(prefab, transform);
-                    subgraph.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+                    //subgraph.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
                     SetupAllFrameAdaptorsInSubgraph(subgraph);
                     SetupAllInputNodesInSubgraph(subgraph);
                     currentSubgraphs.Add(subgraph);
