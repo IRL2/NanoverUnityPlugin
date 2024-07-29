@@ -77,12 +77,13 @@ namespace Nanover.Visualisation.Node.Renderer
 #pragma warning restore 0649
 
         public override bool ShouldRender => mesh.HasNonNullValue()
-                                          && material.HasNonNullValue()
-                                          && particlePositions.HasNonEmptyValue()
-                                          && rendererColor.HasValue
-                                          && rendererScale.HasValue
-                                          && Transform != null
-                                          && InstanceCount > 0;
+                                             && material.HasNonNullValue()
+                                             && particlePositions.HasNonEmptyValue()
+                                             && rendererColor.HasValue
+                                             && rendererScale.HasValue
+                                             && Transform != null
+                                             && InstanceCount > 0
+                                             && particleScales.HasNonEmptyValue();
 
         private int InstanceCount => particlePositions.Value.Length;
 
