@@ -1,4 +1,5 @@
 using System;
+using Nanover.Visualisation.Properties;
 using Nanover.Visualisation.Properties.Collections;
 using Nanover.Visualisation.Property;
 using UnityEngine;
@@ -8,12 +9,9 @@ namespace Nanover.Visualisation.Node.Color
     /// <summary>
     /// Colours protein residues using a heat-map according to some abstract metric.
     ///
-    /// This will search the graph for a float array output node named "residue.normalised_metric_colour",
-    /// which stores a normalised metric value for each residue in the protein. These metric values
-    /// are then used in conjunction with a colour gradient object to determine the colour of each
-    /// residue. Note, it is imperative that the order of elements within the normalised metric
-    /// array matches the order in which residues are stored in the graph. This is normally not an
-    /// issue as the cartoon graphs always render all residues and, so far, maintain residue order.
+    /// This will take the a float array output node which stores which stores a normalised metric
+    /// value for each residue in the protein. These metric values are then used in conjunction with
+    /// a colour gradient object to determine the colour of each residue.
     /// </summary>
     [Serializable]
     public class SecondaryStructureColorHeatmap: VisualiserColorNode
@@ -31,7 +29,18 @@ namespace Nanover.Visualisation.Node.Color
         [SerializeField]
         private FloatArrayProperty residueNormalisedMetricColour;
 
-
+        /// <summary>
+        /// Residue index values.
+        /// </summary>
+        /// <remarks>
+        /// This specifies the indices of the residues to which each normalised metric value is
+        /// associated. Commonly this is just an array over the range [0, n], however this is
+        /// included to help deal with cases where the order of the normalised metric values might
+        /// not correspond to the order in which the residues appear in the structure. 
+        /// </remarks>
+        [SerializeField]
+        private IntArrayProperty residueIndices;
+        
         /// <summary>
         /// The gradient used for the heat-map.
         /// </summary>
@@ -68,20 +77,54 @@ namespace Nanover.Visualisation.Node.Color
             };
         }
 
-        protected override bool IsInputValid => residueNormalisedMetricColour.HasNonNullValue();
-        protected override bool IsInputDirty => residueNormalisedMetricColour.IsDirty;
-        protected override void ClearDirty() => residueNormalisedMetricColour.IsDirty = false;
+        /// <summary>
+        /// Returns a boolean indicating the validity of the inputs.
+        /// </summary>
+        protected override bool IsInputValid =>
+            residueNormalisedMetricColour.HasNonNullValue() &&
+            residueIndices.HasNonNullValue() &&
+            residueNormalisedMetricColour.Value.Length == residueIndices.Value.Length;
+
+        /// <summary>
+        /// Returns a boolean indicating if the input fields have updated.
+        /// </summary>
+        protected override bool IsInputDirty => residueNormalisedMetricColour.IsDirty || residueIndices.IsDirty;
+
+        /// <summary>
+        /// Clear <c>IsDirtry</c> flag of the attached input fields. 
+        /// </summary>
+        protected override void ClearDirty()
+        {
+            residueNormalisedMetricColour.IsDirty = false;
+            residueIndices.IsDirty = false;
+        }
+
+        /// <summary>
+        /// Purge output fields.
+        /// </summary>
         protected override void ClearOutput() => colors.UndefineValue();
-        
+
+        /// <summary>
+        /// Update output fields.
+        /// </summary>
         protected override void UpdateOutput()
         {
+            // Retrieve the residue id and metric values.
+            var residues = this.residueIndices.Value;
             var metrics = residueNormalisedMetricColour.Value;
+
+            // Ensure that the output array is allocated.
             var colorArray = colors.HasValue ? colors.Value : Array.Empty<UnityEngine.Color>();
-            Array.Resize(ref colorArray, metrics.Length);
 
+            // Verify that the output array is of anticipated length.
+            if (colorArray.Length != metrics.Length)
+                Array.Resize(ref colorArray, metrics.Length);
+
+            // Linearly interpolate the normalised metric values over the colour gradient.
             for (var i = 0; i < metrics.Length; i++)
-                colorArray[i] = gradient.Evaluate(metrics[i]);
+                colorArray[i] = gradient.Evaluate(metrics[residues[i]]);
 
+            // Assign the results to the output array.
             colors.Value = colorArray;
         }
     }

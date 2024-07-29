@@ -163,8 +163,17 @@ namespace Nanover.Visualisation.Property
                 Value = validValue;
             else if (value == default)
                 Value = default;
+            // Check if the `value` is a double and `TValue` is a float (single) if so then cast
+            // `value` from type double to type float (single) and assign. This hack exists to fix
+            // the issue with trying to send single float precision values from the python server.
+            // In theory the only time that this would break is if there are two entities of the
+            // same name present in the graph but with differing data types. However, such an
+            // eventuality is unlikely and would result in a crash anyway. Thus, this hack should,
+            // at least in theory, not pose a problem.
+            else if (value is double asDouble && typeof(TValue) == typeof(float))
+                Value = (TValue)(object)(float)asDouble;
             else
-                throw new ArgumentException($"Tried to set property of type {PropertyType} to {value}.");
+                throw new ArgumentException($"Tried to set property of type {typeof(TValue)} to value '{value}' of type {value.GetType()}.");
         }
 
         /// <inheritdoc cref="Property.TrySetLinkedProperty" />
