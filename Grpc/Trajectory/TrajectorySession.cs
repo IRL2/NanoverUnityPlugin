@@ -143,6 +143,12 @@ namespace Nanover.Grpc.Trajectory
             trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandStep);
         }
 
+        /// <inheritdoc cref="TrajectoryClient.CommandStepBackward"/>
+        public void StepBackward()
+        {
+            trajectoryClient?.RunCommandAsync(TrajectoryClient.CommandStepBackward);
+        }
+
         // TODO: handle the non-existence of these commands
         /// <inheritdoc cref="TrajectoryClient.CommandGetSimulationsListing"/>
         public async Task<List<string>> GetSimulationListing()

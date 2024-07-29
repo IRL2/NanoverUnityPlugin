@@ -31,7 +31,12 @@ namespace Nanover.Grpc.Trajectory
         /// Command the server to advance by one simulation step.
         /// </summary>
         public const string CommandStep = "playback/step";
-        
+
+        /// <summary>
+        /// Command the server to go back by one simulation step.
+        /// </summary>
+        public const string CommandStepBackward = "playback/step_back";
+
         /// <summary>
         /// Command the server to reset the simulation to its initial state.
         /// </summary>
