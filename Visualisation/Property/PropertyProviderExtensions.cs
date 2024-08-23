@@ -61,16 +61,22 @@ namespace Nanover.Visualisation.Components
                                               string name,
                                               Type type)
         {
-            return (bool) typeof(IPropertyProvider)
-                          .GetMethod(nameof(provider.CanDynamicallyProvideProperty),
-                                     BindingFlags.Public
-                                   | BindingFlags.NonPublic
-                                   | BindingFlags.Instance)
-                          .MakeGenericMethod(type)
-                          .Invoke(provider, new object[]
-                          {
-                              name
-                          });
+            // Check for null method to prevent NullReferenceException during dynamic method invocation.
+            var method = typeof(IPropertyProvider)
+                .GetMethod(nameof(provider.CanDynamicallyProvideProperty),
+                    BindingFlags.Public
+                    | BindingFlags.NonPublic
+                    | BindingFlags.Instance);
+
+            if (method == null)
+                return false;
+
+            return (bool)method
+                .MakeGenericMethod(type)
+                .Invoke(provider, new object[]
+                {
+                    name
+                });
         }
 
         /// <inheritdoc cref="IDynamicPropertyProvider.GetOrCreateProperty{T}"/>
