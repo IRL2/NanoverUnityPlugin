@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8528582866378757812}
   - component: {fileID: -5659216291547400559}
   - component: {fileID: -5938755693567168428}
+  - component: {fileID: 3124310403901587804}
   - component: {fileID: 1319999355676710792}
   - component: {fileID: 3115571196619778207}
   - component: {fileID: 2948249340003140760}
@@ -72,6 +73,24 @@ MonoBehaviour:
     input:
       value: []
       isValueProvided: 0
+--- !u!114 &3124310403901587804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5333252f644ff099b06cc9fd514aa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: residue.colour_gradient
+    input:
+      value: []
+      isValueProvided: 0
 --- !u!114 &1319999355676710792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,6 +110,9 @@ MonoBehaviour:
   - sourceComponent: {fileID: -5659216291547400559}
     sourceFieldName: input
     destinationFieldName: residueIndices
+  - sourceComponent: {fileID: 3124310403901587804}
+    sourceFieldName: input
+    destinationFieldName: gradientColourArray
   node:
     residueNormalisedMetricColour:
       value: []
@@ -98,13 +120,16 @@ MonoBehaviour:
     residueIndices:
       value: 
       isValueProvided: 0
+    gradientColourArray:
+      value: []
+      isValueProvided: 0
     gradient:
       serializedVersion: 2
-      key0: {r: 0.99, g: 0.91, b: 0.15, a: 1}
-      key1: {r: 0.37, g: 0.79, b: 0.38, a: 1}
+      key0: {r: 0.27, g: 0, b: 0.33, a: 1}
+      key1: {r: 0.23, g: 0.32, b: 0.55, a: 1}
       key2: {r: 0.13, g: 0.57, b: 0.55, a: 0}
-      key3: {r: 0.23, g: 0.32, b: 0.55, a: 0}
-      key4: {r: 0.27, g: 0, b: 0.33, a: 0}
+      key3: {r: 0.37, g: 0.79, b: 0.38, a: 0}
+      key4: {r: 0.99, g: 0.91, b: 0.15, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}

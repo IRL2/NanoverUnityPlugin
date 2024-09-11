@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7698190664551895981}
   - component: {fileID: -1496068623698430050}
   - component: {fileID: -5168891448943398208}
+  - component: {fileID: -8253390842730488204}
   m_Layer: 0
   m_Name: cartoon extended
   m_TagString: Untagged
@@ -50,14 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4689b01528f34e1d87f7fc4115d255a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 0}
-    sourceFieldName: 
-    destinationFieldName: adaptor
+  inputLinkCollection: []
   node:
     adaptor:
       unityObject: {fileID: 0}
-      isValueProvided: 0
+      isValueProvided: 1
     options:
       Cutoff: -0.5
 --- !u!114 &9131715220313689428
@@ -178,4 +176,25 @@ MonoBehaviour:
     name: residue.scale_to
     input:
       value: 1
+      isValueProvided: 0
+--- !u!114 &-8253390842730488204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75182077779563847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5333252f644ff099b06cc9fd514aa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: -2248793339919527569}
+    sourceFieldName: residue.colour_gradient
+    destinationFieldName: input
+  node:
+    name: residue.colour_gradient
+    input:
+      value: []
       isValueProvided: 0
