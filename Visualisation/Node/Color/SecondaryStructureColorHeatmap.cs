@@ -223,6 +223,7 @@ namespace Nanover.Visualisation.Node.Color
             // Linearly interpolate the normalised metric values over the colour gradient.
             for (var i = 0; i < metrics.Length; i++)
                 colorArray[i] = gradient.Evaluate(metrics[residues[i]]);
+            
 
             // Assign the results to the output array.
             colors.Value = colorArray;
