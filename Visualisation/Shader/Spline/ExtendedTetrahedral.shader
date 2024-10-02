@@ -13,7 +13,7 @@
      */
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
 
 
         LOD 100
@@ -180,7 +180,7 @@
             {
 
                 fixed4 color = i.color;
-                if (color.a > 0.99)
+                if (color.a < 0.99)
                 {
                     clip(-1);
                 }
@@ -217,7 +217,7 @@
             {
 
                 fixed4 color = i.color;
-                if (color.a <= 0.99)
+                if (color.a >= 0.99)
                 {
                     clip(-1);
                 }
