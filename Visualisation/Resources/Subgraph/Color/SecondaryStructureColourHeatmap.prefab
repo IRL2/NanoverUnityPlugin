@@ -174,7 +174,7 @@ MonoBehaviour:
       value: []
       isValueProvided: 0
     speed:
-      value: 10
+      value: 10000
       isValueProvided: 1
 --- !u!114 &2948249340003140760
 MonoBehaviour:
