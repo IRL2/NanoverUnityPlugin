@@ -9,10 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8528582866378757812}
-  - component: {fileID: 2948249340003140760}
+  - component: {fileID: -5659216291547400559}
   - component: {fileID: -5938755693567168428}
+  - component: {fileID: 3124310403901587804}
   - component: {fileID: 1319999355676710792}
   - component: {fileID: 3115571196619778207}
+  - component: {fileID: 2948249340003140760}
   m_Layer: 0
   m_Name: SecondaryStructureColourHeatmap
   m_TagString: Untagged
@@ -35,7 +37,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2948249340003140760
+--- !u!114 &-5659216291547400559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,17 +46,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528582866378757822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f0af7a320c14292938973e5f087d629, type: 3}
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 3115571196619778207}
-    sourceFieldName: output
-    destinationFieldName: output
+  inputLinkCollection: []
   node:
-    name: particle.colors
-    output:
-      value: []
+    name: particle.residues
+    input:
+      value: 
       isValueProvided: 0
 --- !u!114 &-5938755693567168428
 MonoBehaviour:
@@ -70,7 +69,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputLinkCollection: []
   node:
-    name: residue.normalised_metric_colour
+    name: residue.normalised_metric_c
+    input:
+      value: []
+      isValueProvided: 0
+--- !u!114 &3124310403901587804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5333252f644ff099b06cc9fd514aa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: residue.colour_gradient
     input:
       value: []
       isValueProvided: 0
@@ -90,17 +107,29 @@ MonoBehaviour:
   - sourceComponent: {fileID: -5938755693567168428}
     sourceFieldName: input
     destinationFieldName: residueNormalisedMetricColour
+  - sourceComponent: {fileID: -5659216291547400559}
+    sourceFieldName: input
+    destinationFieldName: residueIndices
+  - sourceComponent: {fileID: 3124310403901587804}
+    sourceFieldName: input
+    destinationFieldName: gradientColourArray
   node:
     residueNormalisedMetricColour:
       value: []
       isValueProvided: 0
+    residueIndices:
+      value: 
+      isValueProvided: 0
+    gradientColourArray:
+      value: []
+      isValueProvided: 0
     gradient:
       serializedVersion: 2
-      key0: {r: 0.99, g: 0.91, b: 0.15, a: 1}
-      key1: {r: 0.37, g: 0.79, b: 0.38, a: 1}
+      key0: {r: 0.27, g: 0, b: 0.33, a: 1}
+      key1: {r: 0.23, g: 0.32, b: 0.55, a: 1}
       key2: {r: 0.13, g: 0.57, b: 0.55, a: 0}
-      key3: {r: 0.23, g: 0.32, b: 0.55, a: 0}
-      key4: {r: 0.27, g: 0, b: 0.33, a: 0}
+      key3: {r: 0.37, g: 0.79, b: 0.38, a: 0}
+      key4: {r: 0.99, g: 0.91, b: 0.15, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
@@ -145,5 +174,26 @@ MonoBehaviour:
       value: []
       isValueProvided: 0
     speed:
-      value: 10
+      value: 10000
       isValueProvided: 1
+--- !u!114 &2948249340003140760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528582866378757822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0af7a320c14292938973e5f087d629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 3115571196619778207}
+    sourceFieldName: output
+    destinationFieldName: output
+  node:
+    name: particle.colors
+    output:
+      value: []
+      isValueProvided: 0

@@ -9,19 +9,23 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 980129253944296179}
-  - component: {fileID: 62171987914683346}
-  - component: {fileID: 3105218395282516518}
-  - component: {fileID: 5719908467661665455}
-  - component: {fileID: 4514542854052834982}
+  - component: {fileID: -2401115251861236970}
+  - component: {fileID: 3579990150504793560}
+  - component: {fileID: 9076171131034568140}
+  - component: {fileID: -5084591411209289235}
+  - component: {fileID: 4688260566607047548}
   - component: {fileID: 4984550295642847123}
   - component: {fileID: 2446882684586993040}
   - component: {fileID: 5017277406944769200}
   - component: {fileID: 388422638878536012}
   - component: {fileID: 3398256802243044189}
   - component: {fileID: -1505358463544815047}
-  - component: {fileID: 1491414476553930106}
+  - component: {fileID: 62171987914683346}
+  - component: {fileID: 3105218395282516518}
+  - component: {fileID: -2811717054948658500}
+  - component: {fileID: -7818880005182726311}
   m_Layer: 0
-  m_Name: elliptic spline
+  m_Name: Extended Elliptic Spline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +46,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &62171987914683346
+--- !u!114 &-2401115251861236970
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -51,27 +55,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 540731497701321300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08252f6767724dc9b9e53b5debd36295, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d5333252f644ff099b06cc9fd514aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 2446882684586993040}
-    sourceFieldName: input
-    destinationFieldName: sequences
-  - sourceComponent: {fileID: 4984550295642847123}
-    sourceFieldName: input
-    destinationFieldName: positions
+  inputLinkCollection: []
   node:
-    positions:
+    name: residue.normalised_metric_c
+    input:
       value: []
       isValueProvided: 0
-    sequences:
+--- !u!114 &3579990150504793560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540731497701321300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fb2bb5e9984368aaff39a10335ae4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: particle.residues
+    input:
       value: 
       isValueProvided: 0
-    shape:
-      value: 0.5
+--- !u!114 &9076171131034568140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540731497701321300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection: []
+  node:
+    name: residue.scale_from
+    input:
+      value: 1
       isValueProvided: 1
---- !u!114 &3105218395282516518
+--- !u!114 &-5084591411209289235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,24 +109,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 540731497701321300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80bd9557e3c64d81ad6bbaa9f8de8809, type: 3}
+  m_Script: {fileID: 11500000, guid: 59fb6635fa334c77838b8fb3a4c1b07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 62171987914683346}
-    sourceFieldName: normals
-    destinationFieldName: inputNormals
-  - sourceComponent: {fileID: 62171987914683346}
-    sourceFieldName: tangents
-    destinationFieldName: inputTangents
+  inputLinkCollection: []
   node:
-    inputNormals:
-      value: []
-      isValueProvided: 0
-    inputTangents:
-      value: []
-      isValueProvided: 0
---- !u!114 &5719908467661665455
+    name: residue.scale_to
+    input:
+      value: 1
+      isValueProvided: 1
+--- !u!114 &4688260566607047548
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,89 +127,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 540731497701321300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bd0b12b1dbc43f0b09739fae78b0cc2, type: 3}
+  m_Script: {fileID: 11500000, guid: b724170684659e840bb6f73578202e2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
-  - sourceComponent: {fileID: 2446882684586993040}
+  - sourceComponent: {fileID: -2401115251861236970}
     sourceFieldName: input
-    destinationFieldName: sequenceCounts
-  - sourceComponent: {fileID: 4984550295642847123}
+    destinationFieldName: normalisedMetric
+  - sourceComponent: {fileID: 3579990150504793560}
     sourceFieldName: input
-    destinationFieldName: vertexPositions
-  - sourceComponent: {fileID: 3105218395282516518}
-    sourceFieldName: outputNormals
-    destinationFieldName: vertexNormals
-  - sourceComponent: {fileID: 62171987914683346}
-    sourceFieldName: tangents
-    destinationFieldName: vertexTangents
-  - sourceComponent: {fileID: 5017277406944769200}
+    destinationFieldName: residueIndices
+  - sourceComponent: {fileID: 9076171131034568140}
     sourceFieldName: input
-    destinationFieldName: vertexColors
-  - sourceComponent: {fileID: 388422638878536012}
+    destinationFieldName: from
+  - sourceComponent: {fileID: -5084591411209289235}
     sourceFieldName: input
-    destinationFieldName: vertexScales
-  - sourceComponent: {fileID: -1505358463544815047}
-    sourceFieldName: input
-    destinationFieldName: radius
+    destinationFieldName: to
   node:
-    sequenceCounts:
+    from:
+      value: 1
+      isValueProvided: 1
+    to:
+      value: 5
+      isValueProvided: 0
+    normalisedMetric:
+      value: []
+      isValueProvided: 0
+    residueIndices:
       value: 
       isValueProvided: 0
-    vertexPositions:
-      value: []
-      isValueProvided: 0
-    vertexNormals:
-      value: []
-      isValueProvided: 0
-    vertexTangents:
-      value: []
-      isValueProvided: 0
-    vertexColors:
-      value: []
-      isValueProvided: 0
-    vertexScales:
-      value: []
-      isValueProvided: 0
-    color:
-      value: {r: 1, g: 1, b: 1, a: 1}
-      isValueProvided: 1
-    radius:
-      value: 0
-      isValueProvided: 1
---- !u!114 &4514542854052834982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 540731497701321300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 813dfcdf0bd04e00b9eba60edaf70c1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputLinkCollection:
-  - sourceComponent: {fileID: 5719908467661665455}
-    sourceFieldName: splineSegments
-    destinationFieldName: splineSegments
-  - sourceComponent: {fileID: 3398256802243044189}
-    sourceFieldName: input
-    destinationFieldName: splineRadius
-  node:
-    useBox: 0
-    splineSegments:
-      value: []
-      isValueProvided: 0
-    rendererColor:
-      value: {r: 0, g: 0, b: 0, a: 0}
-      isValueProvided: 0
-    segments: 32
-    sides: 64
-    material: {fileID: 2100000, guid: c4ff711234eb21b44b2201ed56702aca, type: 2}
-    splineRadius:
-      value: 0.5
-      isValueProvided: 1
 --- !u!114 &4984550295642847123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,47 +264,156 @@ MonoBehaviour:
     input:
       value: 0.1
       isValueProvided: 1
---- !u!114 &1491414476553930106
+--- !u!114 &62171987914683346
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540731497701321300}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73992ab43ebd415eb814845a706956c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 08252f6767724dc9b9e53b5debd36295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputLinkCollection:
+  - sourceComponent: {fileID: 2446882684586993040}
+    sourceFieldName: input
+    destinationFieldName: sequences
   - sourceComponent: {fileID: 4984550295642847123}
     sourceFieldName: input
-    destinationFieldName: particlePositions
+    destinationFieldName: positions
+  node:
+    positions:
+      value: []
+      isValueProvided: 0
+    sequences:
+      value: 
+      isValueProvided: 0
+    shape:
+      value: 0.5
+      isValueProvided: 1
+--- !u!114 &3105218395282516518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540731497701321300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80bd9557e3c64d81ad6bbaa9f8de8809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: 62171987914683346}
+    sourceFieldName: normals
+    destinationFieldName: inputNormals
+  - sourceComponent: {fileID: 62171987914683346}
+    sourceFieldName: tangents
+    destinationFieldName: inputTangents
+  node:
+    inputNormals:
+      value: []
+      isValueProvided: 0
+    inputTangents:
+      value: []
+      isValueProvided: 0
+--- !u!114 &-2811717054948658500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540731497701321300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 155883ae91ce82345b6cb82cb77e8eea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
   - sourceComponent: {fileID: 5017277406944769200}
     sourceFieldName: input
-    destinationFieldName: particleColors
+    destinationFieldName: vertexColors
+  - sourceComponent: {fileID: 388422638878536012}
+    sourceFieldName: input
+    destinationFieldName: vertexScales
+  - sourceComponent: {fileID: 2446882684586993040}
+    sourceFieldName: input
+    destinationFieldName: sequenceCounts
+  - sourceComponent: {fileID: 4984550295642847123}
+    sourceFieldName: input
+    destinationFieldName: vertexPositions
+  - sourceComponent: {fileID: 3105218395282516518}
+    sourceFieldName: outputNormals
+    destinationFieldName: vertexNormals
+  - sourceComponent: {fileID: 62171987914683346}
+    sourceFieldName: tangents
+    destinationFieldName: vertexTangents
+  - sourceComponent: {fileID: 4688260566607047548}
+    sourceFieldName: output
+    destinationFieldName: residueRadii
+  - sourceComponent: {fileID: -1505358463544815047}
+    sourceFieldName: input
+    destinationFieldName: width
+  node:
+    sequenceCounts:
+      value: 
+      isValueProvided: 0
+    vertexPositions:
+      value: []
+      isValueProvided: 0
+    vertexNormals:
+      value: []
+      isValueProvided: 0
+    vertexTangents:
+      value: []
+      isValueProvided: 0
+    vertexColors:
+      value: []
+      isValueProvided: 0
+    vertexScales:
+      value: []
+      isValueProvided: 0
+    color:
+      value: {r: 1, g: 1, b: 1, a: 1}
+      isValueProvided: 1
+    width:
+      value: 0
+      isValueProvided: 0
+    residueRadii:
+      value: []
+      isValueProvided: 0
+--- !u!114 &-7818880005182726311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540731497701321300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31480066a13601b41becbf554dc4f15b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputLinkCollection:
+  - sourceComponent: {fileID: -2811717054948658500}
+    sourceFieldName: splineSegments
+    destinationFieldName: splineSegments
   - sourceComponent: {fileID: 3398256802243044189}
     sourceFieldName: input
-    destinationFieldName: rendererScale
+    destinationFieldName: splineRadius
   node:
-    particlePositions:
-      value: []
-      isValueProvided: 0
-    particleColors:
-      value: []
-      isValueProvided: 0
-    particleScales:
+    useBox: 0
+    splineSegments:
       value: []
       isValueProvided: 0
     rendererColor:
-      value: {r: 1, g: 1, b: 1, a: 1}
-      isValueProvided: 1
-    rendererScale:
+      value: {r: 0, g: 0, b: 0, a: 0}
+      isValueProvided: 0
+    segments: 32
+    sides: 64
+    material: {fileID: 2100000, guid: c1cb68af83b4c504ba08228b450ac643, type: 2}
+    splineRadius:
       value: 0
-      isValueProvided: 1
-    mesh:
-      value: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-      isValueProvided: 1
-    material:
-      value: {fileID: 2100000, guid: 393f247d900223443927eecea10d89e8, type: 2}
       isValueProvided: 1
