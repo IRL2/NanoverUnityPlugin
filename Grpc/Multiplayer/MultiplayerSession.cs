@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Nanover.Core;
 using Nanover.Core.Async;
 using Nanover.Core.Math;
 using Nanover.Grpc.Stream;
@@ -165,7 +164,7 @@ namespace Nanover.Grpc.Multiplayer
             PlayOrigins.RemoveValue(AccessToken ?? "");
             RemoveSharedStateKey(UpdateIndexKey);
 
-            await FlushValuesAsync();
+            await Task.WhenAny(FlushValuesAsync(), Task.Delay(1000));
 
             client.CloseAndCancelAllSubscriptions();
             client.Dispose();
