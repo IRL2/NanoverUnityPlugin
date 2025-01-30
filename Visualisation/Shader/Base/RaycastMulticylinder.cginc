@@ -42,8 +42,8 @@ struct v2f
     float4 vertex : SV_POSITION;
     float4 q : TEXCOORD0;
     float4 d : TEXCOORD1;
-    fixed4 color1 : TEXCOORD2;
-    fixed4 color2 : TEXCOORD3;
+    float4 color1 : TEXCOORD2;
+    float4 color2 : TEXCOORD3;
     float3 a : TEXCOORD4;
     float4 b : TEXCOORD5;
 };
@@ -105,7 +105,7 @@ v2f vert (appdata i)
 
 
 struct fout {
-    fixed4 color : SV_Target;
+    float4 color : SV_Target;
     float depth : SV_Depth;
 };
 
@@ -152,7 +152,7 @@ fout frag (v2f i)
     float lerpt = 0.5 + 0.5 * proj;
     
     lerpt = clamp((lerpt - 0.5) / (_GradientWidth + 0.0001) + 0.5, 0, 1);
-    fixed4 color = lerp(i.color1, i.color2, lerpt);
+    float4 color = lerp(i.color1, i.color2, lerpt);
     
     o.color = DIFFUSE(color, n, l, _Diffuse);
     

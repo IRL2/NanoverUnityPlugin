@@ -25,12 +25,12 @@ struct appdata
 struct v2f
 {
     float4 vertex : SV_POSITION;
-    fixed4 color : TEXCOORD1;
+    float4 color : TEXCOORD1;
     float2 uv : TEXCOORD0;
 };
 
 struct fout {
-    fixed4 color : SV_Target;
+    float4 color : SV_Target;
 };
 
 v2f vert (appdata i)

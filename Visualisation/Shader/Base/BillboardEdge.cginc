@@ -24,8 +24,8 @@ struct appdata
 struct v2f
 {
     float4 vertex : SV_POSITION;
-    fixed4 color1 : TEXCOORD2;
-    fixed4 color2 : TEXCOORD3;
+    float4 color1 : TEXCOORD2;
+    float4 color2 : TEXCOORD3;
     
     // Lerp value from 0 (start) to 1 (end)
     float lerp :TEXCOORD1;
@@ -64,7 +64,7 @@ v2f vert (appdata i)
 }
 
 struct fout {
-    fixed4 color : SV_Target;
+    float4 color : SV_Target;
 };
 
 fout frag (v2f i)

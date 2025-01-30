@@ -20,7 +20,7 @@ Shader "NanoverIMD/Example/Shadowcaster"
             
             #include "UnityCG.cginc"
             
-            fixed4 _Color;
+            float4 _Color;
 
             struct appdata
             {
@@ -34,7 +34,7 @@ Shader "NanoverIMD/Example/Shadowcaster"
             
             struct fout
             {
-                fixed4 color : SV_Target;
+                float4 color : SV_Target;
             };
 
             v2f vert (appdata v)

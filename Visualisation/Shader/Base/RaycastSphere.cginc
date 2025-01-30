@@ -60,7 +60,7 @@ struct v2f
     float4 vertex : SV_POSITION;
     float4 q : TEXCOORD0;
     float4 d : TEXCOORD1;
-    fixed4 color : TEXCOORD2;
+    float4 color : TEXCOORD2;
 };
 
 v2f vert (appdata i)
@@ -88,7 +88,7 @@ v2f vert (appdata i)
 }
 
 struct fout {
-    fixed4 color : SV_Target;
+    float4 color : SV_Target;
     float depth : SV_Depth;
 };
 

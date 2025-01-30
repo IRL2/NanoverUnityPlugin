@@ -20,8 +20,8 @@
         float3 endTangent;
         float3 startNormal;
         float3 endNormal;
-        fixed4 startColor;
-        fixed4 endColor;
+        float4 startColor;
+        float4 endColor;
         float3 startScale;
         float3 endScale;
         float startRadius;

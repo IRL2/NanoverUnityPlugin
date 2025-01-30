@@ -75,8 +75,8 @@ Shader "NanoverIMD/Opaque/Hyperballs"
                 float3 bondStart : TEXCOORD2;
                 float3 bondDir : TEXCOORD3;
                 float4 bondConst : TEXCOORD4;
-                fixed4 color1 : TEXCOORD5;
-                fixed4 color2 : TEXCOORD6;
+                float4 color1 : TEXCOORD5;
+                float4 color2 : TEXCOORD6;
             };
             
             v2f vert (appdata i)
@@ -133,7 +133,7 @@ Shader "NanoverIMD/Opaque/Hyperballs"
             }
             
             struct fout {
-                fixed4 color : SV_Target;
+                float4 color : SV_Target;
                 float depth : SV_Depth;
             };
             
@@ -159,7 +159,7 @@ Shader "NanoverIMD/Opaque/Hyperballs"
             fout frag (v2f i)
             {
                 fout o;
-                o.color = fixed4(1,1,1,1);
+                o.color = float4(1,1,1,1);
                 
                 float4 p = float4(i.rayOrigin, 1);
                 float4 d = float4(i.rayDirection, 0);
