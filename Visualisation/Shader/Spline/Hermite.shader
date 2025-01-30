@@ -105,9 +105,9 @@
             
             #include "Lighting.cginc"
             
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
-                fixed4 color = i.color;
+                float4 color = i.color;
                 float3 n = normalize(i.normal);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
                 float3 c = _WorldSpaceCameraPos.xyz;

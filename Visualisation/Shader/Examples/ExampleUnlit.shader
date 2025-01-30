@@ -19,7 +19,7 @@ Shader "NanoverIMD/Example/Unlit"
             
             #include "UnityCG.cginc"
             
-            fixed4 _Color;
+            float4 _Color;
 
             struct appdata
             {
@@ -33,7 +33,7 @@ Shader "NanoverIMD/Example/Unlit"
             
             struct fout
             {
-                fixed4 color : SV_Target;
+                float4 color : SV_Target;
             };
 
             v2f vert (appdata v)

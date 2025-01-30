@@ -176,10 +176,10 @@
             }
 
             
-            fixed4 frag(v2f i) : SV_Target
+            float4 frag(v2f i) : SV_Target
             {
 
-                fixed4 color = i.color;
+                float4 color = i.color;
                 if (color.a < 0.99)
                 {
                     clip(-1);
@@ -213,10 +213,10 @@
                 return vertexTransformation(v);
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            float4 frag(v2f i) : SV_Target
             {
 
-                fixed4 color = i.color;
+                float4 color = i.color;
                 if (color.a >= 0.99)
                 {
                     clip(-1);

@@ -20,7 +20,7 @@ Shader "NanoverIMD/Example/Raytrace Sphere"
             
             #include "UnityCG.cginc"
             
-            fixed4 _Color;
+            float4 _Color;
             
             struct Ray {
                 float4 origin;
@@ -65,7 +65,7 @@ Shader "NanoverIMD/Example/Raytrace Sphere"
             
             struct fout
             {
-                fixed4 color : SV_Target;
+                float4 color : SV_Target;
             };
 
             v2f vert (appdata v)

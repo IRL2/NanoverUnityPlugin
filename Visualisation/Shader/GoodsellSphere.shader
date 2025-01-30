@@ -72,7 +72,7 @@ Shader "NanoverIMD/Goodsell Sphere"
                 float4 vertex : SV_POSITION;
                 float4 q : TEXCOORD0;
                 float4 d : TEXCOORD1;
-                fixed4 color : TEXCOORD2;
+                float4 color : TEXCOORD2;
                 float resid : TEXCOORD3;
             };
             
@@ -102,7 +102,7 @@ Shader "NanoverIMD/Goodsell Sphere"
             }
             
             struct fout {
-                fixed4 color : SV_Target0;
+                float4 color : SV_Target0;
                 float depthColor : SV_Target1;
                 float resId : SV_Target2;
                 float depth : SV_Depth;

@@ -45,7 +45,7 @@ Shader "NanoverIMD/Goodsell"
             }
             
             struct fout {
-                fixed4 color : SV_Target;
+                float4 color : SV_Target;
                 float depth : SV_Depth;
             };
             
@@ -95,7 +95,7 @@ Shader "NanoverIMD/Goodsell"
             {
                 fout o;
                 
-                fixed4 col = tex2D(_MainTex, i.uv);
+                float4 col = tex2D(_MainTex, i.uv);
                 
                 float centerdepth = SampleDepth(i.uv);
                 

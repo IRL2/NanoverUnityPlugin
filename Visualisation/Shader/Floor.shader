@@ -38,7 +38,7 @@ Shader "Unlit/Floor"
 
             float _Frequency;
             float _Falloff;
-            fixed4 _Color;
+            float4 _Color;
 
             v2f vert (appdata v)
             {
@@ -49,9 +49,9 @@ Shader "Unlit/Floor"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
-                fixed4 col = _Color;
+                float4 col = _Color;
                 
                 float2 cameraXZ = _WorldSpaceCameraPos.xz;
                 float2 worldXZ = i.world.xz;

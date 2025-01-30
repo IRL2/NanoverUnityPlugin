@@ -20,18 +20,18 @@
         {
             float4 vertex : POSITION;
             float4 normal : NORMAL;
-            fixed4 color : COLOR;
+            float4 color : COLOR;
         };
 
         struct v2f
         {
             float4 vertex : SV_POSITION;
-            fixed4 color : TEXCOORD2;
+            float4 color : TEXCOORD2;
             float4 normal : TEXCOORD0;
         };
 
         float _Offset;
-        fixed4 _Color;
+        float4 _Color;
 
         v2f offset_vert (appdata v, float mult)
         {
@@ -64,9 +64,9 @@
             
             v2f vert (appdata v) { return offset_vert(v, 1); }
             
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
-                fixed4 color = i.color;
+                float4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
                 return _Color *color * saturate(lerp(1, dot(n, l), _Diffuse));
@@ -89,9 +89,9 @@
             
             v2f vert (appdata v) { return offset_vert(v, -1); }
             
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
-                fixed4 color = i.color;
+                float4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
                 return _Color * color * saturate(lerp(1, dot(n, l), _Diffuse));;
