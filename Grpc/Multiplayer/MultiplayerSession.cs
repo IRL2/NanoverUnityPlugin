@@ -119,11 +119,18 @@ namespace Nanover.Grpc.Multiplayer
 
                 async Task FlushValuesInterval(int interval)
                 {
-                    while (true)
+                    try
                     {
-                        await Task.WhenAll(
-                            FlushValuesAsync(), 
-                            Task.Delay(interval));
+                        while (true)
+                        {
+                            await Task.WhenAll(
+                                FlushValuesAsync(),
+                                Task.Delay(interval));
+                        }
+                    }
+                    finally
+                    {
+                        valueFlushingTask = null;
                     }
                 }
             }
