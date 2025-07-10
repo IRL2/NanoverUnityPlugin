@@ -94,9 +94,14 @@ namespace Nanover.Grpc.Multiplayer
         /// </summary>
         public int LastReceivedIndex => lastReceivedIndex;
 
+        public float TimeSinceIndex => AwaitingIndex ? Time.realtimeSinceStartup - lastReceivedIndexTime : 0;
+        public bool AwaitingIndex => IsOpen && lastReceivedIndexTime != -1 && lastSentIndex > lastReceivedIndex;
+
         private int nextUpdateIndex = 0;
 
+        private int lastSentIndex = -1;
         private int lastReceivedIndex = -1;
+        private float lastReceivedIndexTime = -1;
 
         private string UpdateIndexKey => $"update.index.{AccessToken}";
 
@@ -155,6 +160,10 @@ namespace Nanover.Grpc.Multiplayer
         public async Task CloseClient()
         {
             ClearSharedState();
+
+            lastReceivedIndex = -1;
+            lastSentIndex = -1;
+            lastReceivedIndexTime = -1;
 
             if (!IsOpen)
                 return;
@@ -273,6 +282,7 @@ namespace Nanover.Grpc.Multiplayer
                 lastReceivedIndex = (int) update.ChangedKeys
                                                 .Fields[UpdateIndexKey]
                                                 .NumberValue;
+                lastReceivedIndexTime = Time.realtimeSinceStartup;
             }
 
             foreach (var (key, value1) in update.ChangedKeys.Fields)
@@ -290,6 +300,12 @@ namespace Nanover.Grpc.Multiplayer
                 }
             }
         }
+        
+        public void Heartbeat()
+        {
+            pendingValues[UpdateIndexKey] = nextUpdateIndex;
+            lastSentIndex = nextUpdateIndex;
+        }
 
         /// <summary>
         /// Attempts to send all pending updates to the server and returns
@@ -305,7 +321,9 @@ namespace Nanover.Grpc.Multiplayer
                 return false;
 
             if (!pendingRemovals.Contains(UpdateIndexKey))
-                pendingValues[UpdateIndexKey] = nextUpdateIndex;
+            {
+                Heartbeat();
+            }
 
             var update = client.UpdateState(AccessToken, pendingValues, pendingRemovals);
 

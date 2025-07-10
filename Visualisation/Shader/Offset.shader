@@ -1,4 +1,4 @@
-﻿Shader "Nanover/Offset"
+Shader "Nanover/Offset"
 {
     Properties
     {
@@ -8,13 +8,17 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { 
+            "RenderType"="Opaque"
+            "LightMode"="ForwardBase"
+        }
         LOD 100
         
         CGINCLUDE
         
         #include "UnityCG.cginc"
         #include "UnityLightingCommon.cginc"
+        #include "Lighting.cginc"
         
         struct appdata
         {
@@ -69,7 +73,7 @@
                 float4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-                return _Color *color * saturate(lerp(1, dot(n, l), _Diffuse));
+                return _Color * DIFFUSE(color, n, l, _Diffuse);
             }
 
             ENDCG
@@ -94,7 +98,7 @@
                 float4 color = i.color;
                 float3 n = normalize(i.normal.xyz);
                 float3 l = normalize(_WorldSpaceLightPos0.xyz);
-                return _Color * color * saturate(lerp(1, dot(n, l), _Diffuse));;
+                return _Color * DIFFUSE(color, n, l, _Diffuse);
             }
 
             ENDCG
