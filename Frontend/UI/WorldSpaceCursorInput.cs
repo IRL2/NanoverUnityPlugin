@@ -46,7 +46,8 @@ namespace Nanover.Frontend.UI
 
         public static void ClearSelection()
         {
-            (EventSystem.current.currentInputModule as NanoverInputModule).ClearSelection();
+            if (EventSystem.current != null && EventSystem.current.currentInputModule is NanoverInputModule currentInputModule)
+                currentInputModule.ClearSelection();
         }
 
         private void Update()

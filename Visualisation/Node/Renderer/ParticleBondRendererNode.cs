@@ -99,11 +99,12 @@ namespace Nanover.Visualisation.Node.Renderer
         #endregion
 
         public override bool ShouldRender => mesh.HasNonNullValue()
-                                          && material.HasNonNullValue()
-                                          && bondPairs.HasNonEmptyValue()
-                                          && particlePositions.HasNonEmptyValue()
-                                          && rendererColor.HasValue
-                                          && particleScale.HasValue;
+                                             && material.HasNonNullValue()
+                                             && bondPairs.HasNonEmptyValue()
+                                             && particlePositions.HasNonEmptyValue()
+                                             && rendererColor.HasValue
+                                             && particleScale.HasValue
+                                             && particleScales.HasNonEmptyValue();
 
         private int InstanceCount => bondPairs.Value.Length;
 
